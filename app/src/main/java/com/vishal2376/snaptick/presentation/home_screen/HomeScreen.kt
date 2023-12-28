@@ -8,7 +8,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -55,6 +58,13 @@ fun HomeScreen() {
 					tint = Yellow, modifier = Modifier.size(22.dp)
 				)
 			})
+	}, floatingActionButton = {
+		FloatingActionButton(
+			onClick = { /*TODO*/ }, containerColor = MaterialTheme.colorScheme.secondary,
+			contentColor = Color.White
+		) {
+			Icon(imageVector = Icons.Default.Add, contentDescription = null)
+		}
 	}) { innerPadding ->
 		Column(modifier = Modifier.padding(innerPadding)) {
 			Row(
