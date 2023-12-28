@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Snaptick</string>
+    <string name="today_tasks">Today Tasks</string>
 </resources>
