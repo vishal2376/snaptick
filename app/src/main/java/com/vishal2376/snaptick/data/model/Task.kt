@@ -8,6 +8,6 @@ data class Task(
 	@PrimaryKey val id: Int? = 0,
 	val title: String,
 	val isCompleted: Boolean,
-	val startTime: String,
-	val endTime: String,
+	val startTime: Long,
+	val endTime: Long
 )
