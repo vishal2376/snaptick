@@ -27,13 +27,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vishal2376.snaptick.R
+import com.vishal2376.snaptick.data.model.Task
 import com.vishal2376.snaptick.presentation.common.taskDescTextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.ui.theme.Green
 import com.vishal2376.snaptick.ui.theme.LightGray
 
 @Composable
-fun TaskComponent() {
+fun TaskComponent(task: Task) {
 	Box(
 		modifier = Modifier
 			.fillMaxWidth()
@@ -59,17 +60,18 @@ fun TaskComponent() {
 				IconButton(
 					onClick = { /*TODO*/ }, modifier = Modifier.size(32.dp)
 				) {
-					Box(
-						modifier = Modifier
+
+					if (task.isCompleted) {
+						Icon(
+							painter = painterResource(id = R.drawable.ic_check_circle),
+							contentDescription = null, tint = Green, modifier = Modifier.size(20.dp)
+						)
+					} else {
+						Box(modifier = Modifier
 							.size(20.dp)
 							.border(width = 2.dp, color = LightGray, shape = CircleShape),
-						contentAlignment = Alignment.Center
-					) { }
-
-//					Icon(
-//						painter = painterResource(id = R.drawable.ic_check_circle),
-//						contentDescription = null, tint = Green, modifier = Modifier.size(20.dp)
-//					)
+						    contentAlignment = Alignment.Center, content = {})
+					}
 
 				}
 
@@ -80,7 +82,7 @@ fun TaskComponent() {
 				) {
 
 					Column(verticalArrangement = Arrangement.Center) {
-						Text(text = "Drink Water", style = taskTextStyle, color = Color.White)
+						Text(text = task.title, style = taskTextStyle, color = Color.White)
 						Spacer(modifier = Modifier.height(4.dp))
 						Row(
 							horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -92,7 +94,7 @@ fun TaskComponent() {
 								tint = LightGray
 							)
 							Text(
-								text = "11:00 - 01:00 PM", style = taskDescTextStyle,
+								text = task.getFormattedTime(), style = taskDescTextStyle,
 								color = LightGray
 							)
 						}
@@ -113,5 +115,9 @@ fun TaskComponent() {
 @Preview
 @Composable
 fun TaskComponentPreview() {
-	TaskComponent()
+	val task = Task(
+		id = 0, title = "Drink Water", isCompleted = false, startTime = System.currentTimeMillis(),
+		endTime = System.currentTimeMillis() + 3600000
+	)
+	TaskComponent(task = task)
 }
