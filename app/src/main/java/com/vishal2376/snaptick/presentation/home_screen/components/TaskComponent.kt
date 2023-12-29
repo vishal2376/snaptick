@@ -30,15 +30,24 @@ import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.common.taskDescTextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
+import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.ui.theme.Green
 import com.vishal2376.snaptick.ui.theme.LightGray
+import com.vishal2376.snaptick.ui.theme.Red
 
 @Composable
 fun TaskComponent(task: Task) {
+
+	val randomColor = listOf(Green, Blue, Red).random()
+
 	Box(
 		modifier = Modifier
 			.fillMaxWidth()
-			.background(Green, RoundedCornerShape(8.dp))
+			.background(
+				randomColor, RoundedCornerShape(
+					topStart = 8.dp, bottomStart = 8.dp, topEnd = 20.dp, bottomEnd = 20.dp
+				)
+			)
 			.padding(start = 10.dp)
 	) {
 		Box(
