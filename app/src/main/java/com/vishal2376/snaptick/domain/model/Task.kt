@@ -1,4 +1,4 @@
-package com.vishal2376.snaptick.data.model
+package com.vishal2376.snaptick.domain.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
