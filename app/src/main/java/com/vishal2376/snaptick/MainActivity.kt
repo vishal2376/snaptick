@@ -3,47 +3,23 @@ package com.vishal2376.snaptick
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.activity.viewModels
+import com.vishal2376.snaptick.presentation.TaskViewModel
+import com.vishal2376.snaptick.presentation.navigation.AppNavigation
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+	private val taskViewmodel by viewModels<TaskViewModel>()
+
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContent {
 			SnaptickTheme {
-				// A surface container using the 'background' color from the theme
-				Surface(
-					modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
-				) {
-					Greeting("Android")
-				}
+				AppNavigation(viewmodel = taskViewmodel)
 			}
 		}
-	}
-}
-
-@Composable
-fun Greeting(
-	name: String,
-	modifier: Modifier = Modifier
-) {
-	Text(
-		text = "Hello $name!", modifier = modifier
-	)
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-	SnaptickTheme {
-		Greeting("Android")
 	}
 }
