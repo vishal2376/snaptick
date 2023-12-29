@@ -2,11 +2,11 @@ package com.vishal2376.snaptick.presentation.home_screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -51,6 +51,9 @@ fun HomeScreen(viewmodel: TaskViewModel) {
 
 	val tasks by viewmodel.taskList.collectAsStateWithLifecycle(initialValue = emptyList())
 
+	val totalTasks = tasks.size
+	val completedTasks = tasks.count { it.isCompleted }
+
 	Scaffold(topBar = {
 		TopAppBar(modifier = Modifier.padding(end = 16.dp),
 		          colors = TopAppBarDefaults.topAppBarColors(
@@ -70,8 +73,20 @@ fun HomeScreen(viewmodel: TaskViewModel) {
 			})
 	}, floatingActionButton = {
 		FloatingActionButton(
-			onClick = { /*TODO*/ }, containerColor = MaterialTheme.colorScheme.secondary,
-			contentColor = Color.White
+			onClick = {
+
+//				//todo : remove after testing
+//				(1..10).map { index ->
+//					viewmodel.insertTask(
+//						Task(
+//							id = index, title = "Task $index", isCompleted = index % 2 == 0,
+//							startTime = System.currentTimeMillis(),
+//							endTime = System.currentTimeMillis() + (index * 2) * 3600000
+//						)
+//					)
+//				}
+
+			}, containerColor = MaterialTheme.colorScheme.secondary, contentColor = Color.White
 		) {
 			Icon(imageVector = Icons.Default.Add, contentDescription = null)
 		}
@@ -86,8 +101,9 @@ fun HomeScreen(viewmodel: TaskViewModel) {
 			) {
 
 				InfoComponent(
-					title = "Completed", desc = "1/3 Tasks", icon = R.drawable.ic_task_list,
-					backgroundColor = Green, modifier = Modifier.weight(1f)
+					title = "Completed", desc = "$completedTasks/$totalTasks Tasks",
+					icon = R.drawable.ic_task_list, backgroundColor = Green,
+					modifier = Modifier.weight(1f)
 				)
 
 				InfoComponent(
@@ -108,11 +124,11 @@ fun HomeScreen(viewmodel: TaskViewModel) {
 				LazyColumn(
 					modifier = Modifier
 						.fillMaxSize()
-						.padding(8.dp),
-					contentPadding = PaddingValues(16.dp)
+						.padding(16.dp, 0.dp)
 				) {
 					items(items = tasks, key = { it.id }) { task ->
 						TaskComponent(task = task)
+						Spacer(modifier = Modifier.height(10.dp))
 					}
 				}
 			}
