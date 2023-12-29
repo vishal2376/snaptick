@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.vishal2376.snaptick.data.local.TaskDao
 import com.vishal2376.snaptick.data.local.TaskDatabase
-import com.vishal2376.snaptick.repositories.TaskRepository
+import com.vishal2376.snaptick.data.repositories.TaskRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

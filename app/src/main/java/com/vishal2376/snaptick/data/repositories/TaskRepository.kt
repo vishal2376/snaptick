@@ -1,4 +1,4 @@
-package com.vishal2376.snaptick.repositories
+package com.vishal2376.snaptick.data.repositories
 
 import com.vishal2376.snaptick.data.local.TaskDao
 import com.vishal2376.snaptick.domain.model.Task
