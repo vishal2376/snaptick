@@ -13,7 +13,7 @@ fun AppNavigation(viewmodel: TaskViewModel) {
 
 	NavHost(navController = navController, startDestination = Routes.HomeScreen.name) {
 		composable(route = Routes.HomeScreen.name) {
-			HomeScreen(viewmodel)
+			HomeScreen(viewmodel,)
 		}
 	}
 }

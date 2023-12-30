@@ -12,7 +12,7 @@ android {
 
 	defaultConfig {
 		applicationId = "com.vishal2376.snaptick"
-		minSdk = 24
+		minSdk = 26
 		targetSdk = 34
 		versionCode = 1
 		versionName = "1.0"
@@ -52,8 +52,7 @@ android {
 
 	ksp {
 		arg(
-			"room.schemaLocation",
-			"$projectDir/schemas"
+			"room.schemaLocation", "$projectDir/schemas"
 		)
 	}
 
@@ -85,6 +84,8 @@ dependencies {
 
 	//lifecycle
 	implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
+
+	implementation("com.github.commandiron:WheelPickerCompose:1.1.11")
 
 	testImplementation("junit:junit:4.13.2")
 	androidTestImplementation("androidx.test.ext:junit:1.1.5")

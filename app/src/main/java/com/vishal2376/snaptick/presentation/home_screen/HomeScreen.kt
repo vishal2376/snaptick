@@ -24,6 +24,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,6 +41,7 @@ import com.vishal2376.snaptick.presentation.TaskViewModel
 import com.vishal2376.snaptick.presentation.common.fontRoboto
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
+import com.vishal2376.snaptick.presentation.home_screen.components.BottomSheetComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.EmptyTaskComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.InfoComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.TaskComponent
@@ -47,68 +51,93 @@ import com.vishal2376.snaptick.ui.theme.Yellow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(viewmodel: TaskViewModel) {
+fun HomeScreen(
+	taskViewModel: TaskViewModel,
+) {
 
-	val tasks by viewmodel.taskList.collectAsStateWithLifecycle(initialValue = emptyList())
+	val tasks by taskViewModel.taskList.collectAsStateWithLifecycle(initialValue = emptyList())
 
 	val totalTasks = tasks.size
 	val completedTasks = tasks.count { it.isCompleted }
+
+	var showBottomSheet by rememberSaveable {
+		mutableStateOf(false)
+	}
 
 	Scaffold(topBar = {
 		TopAppBar(modifier = Modifier.padding(end = 16.dp),
 		          colors = TopAppBarDefaults.topAppBarColors(
 			          containerColor = MaterialTheme.colorScheme.background
-		          ), title = {
-				Text(text = stringResource(id = R.string.app_name), style = h1TextStyle)
-			}, actions = {
-				Text(
-					text = "10", fontSize = 18.sp, fontFamily = fontRoboto,
-					fontWeight = FontWeight.Bold
-				)
-				Spacer(modifier = Modifier.width(4.dp))
-				Icon(
-					painter = painterResource(id = R.drawable.ic_fire), contentDescription = null,
-					tint = Yellow, modifier = Modifier.size(22.dp)
-				)
-			})
-	}, floatingActionButton = {
-		FloatingActionButton(
-			onClick = {
+		          ),
+		          title = {
+			          Text(
+				          text = stringResource(id = R.string.app_name),
+				          style = h1TextStyle
+			          )
+		          },
+		          actions = {
+			          Text(
+				          text = "10",
+				          fontSize = 18.sp,
+				          fontFamily = fontRoboto,
+				          fontWeight = FontWeight.Bold
+			          )
+			          Spacer(modifier = Modifier.width(4.dp))
+			          Icon(
+				          painter = painterResource(id = R.drawable.ic_fire),
+				          contentDescription = null,
+				          tint = Yellow,
+				          modifier = Modifier.size(22.dp)
+			          )
+		          })
+	},
+	         floatingActionButton = {
+		         FloatingActionButton(
+			         onClick = {
+				         showBottomSheet = true
+			         },
+			         containerColor = MaterialTheme.colorScheme.secondary,
+			         contentColor = Color.White
+		         ) {
+			         Icon(
+				         imageVector = Icons.Default.Add,
+				         contentDescription = null
+			         )
+		         }
+	         }) { innerPadding ->
 
-//				//todo : remove after testing
-//				(1..10).map { index ->
-//					viewmodel.insertTask(
-//						Task(
-//							id = index, title = "Task $index", isCompleted = index % 2 == 0,
-//							startTime = System.currentTimeMillis(),
-//							endTime = System.currentTimeMillis() + (index * 2) * 3600000
-//						)
-//					)
-//				}
+		BottomSheetComponent(
+			showBottomSheet,
+			onClose = { showBottomSheet = false },
+			taskViewModel = taskViewModel
+		)
 
-			}, containerColor = MaterialTheme.colorScheme.secondary, contentColor = Color.White
-		) {
-			Icon(imageVector = Icons.Default.Add, contentDescription = null)
-		}
-	}) { innerPadding ->
 		Column(modifier = Modifier.padding(innerPadding)) {
 			Row(
 				modifier = Modifier
 					.fillMaxWidth()
-					.padding(16.dp, 8.dp),
+					.padding(
+						16.dp,
+						8.dp
+					),
 				horizontalArrangement = Arrangement.spacedBy(16.dp),
 				verticalAlignment = Alignment.CenterVertically
 			) {
 
 				InfoComponent(
-					title = "Completed", desc = "$completedTasks/$totalTasks Tasks",
-					icon = R.drawable.ic_task_list, backgroundColor = Green,
+					title = "Completed",
+					desc = "$completedTasks/$totalTasks Tasks",
+					icon = R.drawable.ic_task_list,
+					backgroundColor = Green,
 					modifier = Modifier.weight(1f)
 				)
 
 				InfoComponent(
-					title = "Free Time", desc = "8 hours", icon = R.drawable.ic_clock,
-					backgroundColor = Blue, modifier = Modifier.weight(1f)
+					title = "Free Time",
+					desc = "8 hours",
+					icon = R.drawable.ic_clock,
+					backgroundColor = Blue,
+					modifier = Modifier.weight(1f)
 				)
 
 			}
@@ -117,16 +146,22 @@ fun HomeScreen(viewmodel: TaskViewModel) {
 				EmptyTaskComponent()
 			} else {
 				Text(
-					text = stringResource(R.string.today_tasks), style = h2TextStyle,
-					color = Color.White, modifier = Modifier.padding(16.dp)
+					text = stringResource(R.string.today_tasks),
+					style = h2TextStyle,
+					color = Color.White,
+					modifier = Modifier.padding(16.dp)
 				)
 
 				LazyColumn(
 					modifier = Modifier
 						.fillMaxSize()
-						.padding(16.dp, 0.dp)
+						.padding(
+							16.dp,
+							0.dp
+						)
 				) {
-					items(items = tasks, key = { it.id }) { task ->
+					items(items = tasks,
+					      key = { it.id }) { task ->
 						TaskComponent(task = task)
 						Spacer(modifier = Modifier.height(10.dp))
 					}
