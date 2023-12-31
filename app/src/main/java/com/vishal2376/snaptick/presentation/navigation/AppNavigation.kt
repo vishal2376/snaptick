@@ -11,9 +11,12 @@ import com.vishal2376.snaptick.presentation.home_screen.HomeScreen
 fun AppNavigation(viewmodel: TaskViewModel) {
 	val navController = rememberNavController()
 
-	NavHost(navController = navController, startDestination = Routes.HomeScreen.name) {
+	NavHost(
+		navController = navController,
+		startDestination = Routes.HomeScreen.name
+	) {
 		composable(route = Routes.HomeScreen.name) {
-			HomeScreen(viewmodel,)
+			HomeScreen(viewmodel)
 		}
 	}
 }

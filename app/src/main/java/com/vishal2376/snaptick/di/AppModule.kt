@@ -20,7 +20,9 @@ object AppModule {
 	@Singleton
 	fun providesLocalDatabase(@ApplicationContext context: Context): TaskDatabase {
 		return Room.databaseBuilder(
-			context, TaskDatabase::class.java, "local_db"
+			context,
+			TaskDatabase::class.java,
+			"local_db"
 		).build()
 	}
 

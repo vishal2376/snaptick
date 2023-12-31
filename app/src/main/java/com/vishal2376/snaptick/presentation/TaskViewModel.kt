@@ -15,7 +15,13 @@ import javax.inject.Inject
 class TaskViewModel @Inject constructor(private val repository: TaskRepository) : ViewModel() {
 
 	var task: Task by mutableStateOf(
-		Task(id = 0, title = "", isCompleted = false, startTime = 0, endTime = 0)
+		Task(
+			id = 0,
+			title = "",
+			isCompleted = false,
+			startTime = 0,
+			endTime = 0
+		)
 	)
 		private set
 

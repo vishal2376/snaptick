@@ -38,14 +38,22 @@ import com.vishal2376.snaptick.ui.theme.Red
 @Composable
 fun TaskComponent(task: Task) {
 
-	val randomColor = listOf(Green, Blue, Red).random()
+	val randomColor = listOf(
+		Green,
+		Blue,
+		Red
+	).random()
 
 	Box(
 		modifier = Modifier
 			.fillMaxWidth()
 			.background(
-				randomColor, RoundedCornerShape(
-					topStart = 8.dp, bottomStart = 8.dp, topEnd = 20.dp, bottomEnd = 20.dp
+				randomColor,
+				RoundedCornerShape(
+					topStart = 8.dp,
+					bottomStart = 8.dp,
+					topEnd = 20.dp,
+					bottomEnd = 20.dp
 				)
 			)
 			.padding(start = 10.dp)
@@ -54,32 +62,46 @@ fun TaskComponent(task: Task) {
 			modifier = Modifier
 				.fillMaxWidth()
 				.background(
-					MaterialTheme.colorScheme.secondary, RoundedCornerShape(
-						topEnd = 8.dp, bottomEnd = 8.dp
+					MaterialTheme.colorScheme.secondary,
+					RoundedCornerShape(
+						topEnd = 8.dp,
+						bottomEnd = 8.dp
 					)
 				)
-				.padding(8.dp, 16.dp)
+				.padding(
+					8.dp,
+					16.dp
+				)
 		) {
 
 			Row(
-				modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically,
+				modifier = Modifier.fillMaxWidth(),
+				verticalAlignment = Alignment.CenterVertically,
 				horizontalArrangement = Arrangement.spacedBy(8.dp)
 			) {
 
 				IconButton(
-					onClick = { /*TODO*/ }, modifier = Modifier.size(32.dp)
+					onClick = { /*TODO*/ },
+					modifier = Modifier.size(32.dp)
 				) {
 
 					if (task.isCompleted) {
 						Icon(
 							painter = painterResource(id = R.drawable.ic_check_circle),
-							contentDescription = null, tint = Green, modifier = Modifier.size(20.dp)
+							contentDescription = null,
+							tint = Green,
+							modifier = Modifier.size(20.dp)
 						)
 					} else {
 						Box(modifier = Modifier
 							.size(20.dp)
-							.border(width = 2.dp, color = LightGray, shape = CircleShape),
-						    contentAlignment = Alignment.Center, content = {})
+							.border(
+								width = 2.dp,
+								color = LightGray,
+								shape = CircleShape
+							),
+						    contentAlignment = Alignment.Center,
+						    content = {})
 					}
 
 				}
@@ -91,7 +113,11 @@ fun TaskComponent(task: Task) {
 				) {
 
 					Column(verticalArrangement = Arrangement.Center) {
-						Text(text = task.title, style = taskTextStyle, color = Color.White)
+						Text(
+							text = task.title,
+							style = taskTextStyle,
+							color = Color.White
+						)
 						Spacer(modifier = Modifier.height(4.dp))
 						Row(
 							horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -99,18 +125,21 @@ fun TaskComponent(task: Task) {
 						) {
 							Icon(
 								painter = painterResource(id = R.drawable.ic_clock),
-								contentDescription = null, modifier = Modifier.size(15.dp),
+								contentDescription = null,
+								modifier = Modifier.size(15.dp),
 								tint = LightGray
 							)
 							Text(
-								text = task.getFormattedTime(), style = taskDescTextStyle,
+								text = task.getFormattedTime(),
+								style = taskDescTextStyle,
 								color = LightGray
 							)
 						}
 					}
 
 					Icon(
-						imageVector = Icons.Default.MoreVert, contentDescription = null,
+						imageVector = Icons.Default.MoreVert,
+						contentDescription = null,
 						tint = Color.White
 					)
 				}
@@ -125,7 +154,10 @@ fun TaskComponent(task: Task) {
 @Composable
 fun TaskComponentPreview() {
 	val task = Task(
-		id = 0, title = "Drink Water", isCompleted = false, startTime = System.currentTimeMillis(),
+		id = 0,
+		title = "Drink Water",
+		isCompleted = false,
+		startTime = System.currentTimeMillis(),
 		endTime = System.currentTimeMillis() + 3600000
 	)
 	TaskComponent(task = task)

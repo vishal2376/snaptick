@@ -19,16 +19,22 @@ import com.vishal2376.snaptick.presentation.common.h1TextStyle
 @Composable
 fun EmptyTaskComponent() {
 	Box(
-		modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
+		modifier = Modifier.fillMaxSize(),
+		contentAlignment = Alignment.Center
 	) {
 		Column(
 			horizontalAlignment = Alignment.CenterHorizontally
 		) {
 			Image(
-				painter = painterResource(id = R.drawable.no_tasks), contentDescription = null,
+				painter = painterResource(id = R.drawable.no_tasks),
+				contentDescription = null,
 				modifier = Modifier.size(250.dp)
 			)
-			Text(text = "No Tasks", style = h1TextStyle, color = Color.White)
+			Text(
+				text = "No Tasks",
+				style = h1TextStyle,
+				color = Color.White
+			)
 		}
 	}
 }

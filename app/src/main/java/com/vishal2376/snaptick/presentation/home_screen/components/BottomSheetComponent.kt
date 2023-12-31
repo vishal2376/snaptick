@@ -104,9 +104,11 @@ fun BottomSheetComponent(
 				TextField(
 					value = taskTitle,
 					singleLine = true,
-					colors = TextFieldDefaults.textFieldColors(
-						containerColor = Blue200,
-						cursorColor = Color.White
+					colors = TextFieldDefaults.colors(
+						focusedContainerColor = Blue200,
+						unfocusedContainerColor = Blue200,
+						disabledContainerColor = Blue200,
+						cursorColor = Color.White,
 					),
 					textStyle = TextStyle.Default.copy(fontFamily = fontRoboto),
 					onValueChange = {

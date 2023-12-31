@@ -34,19 +34,24 @@ fun InfoComponent(
 	modifier: Modifier
 ) {
 	Card(
-		modifier = modifier, shape = RoundedCornerShape(16.dp),
+		modifier = modifier,
+		shape = RoundedCornerShape(16.dp),
 		colors = CardDefaults.cardColors(containerColor = backgroundColor)
 	) {
 		Column(
 			modifier = Modifier
 				.fillMaxWidth()
-				.padding(24.dp, 16.dp),
+				.padding(
+					24.dp,
+					16.dp
+				),
 			horizontalAlignment = Alignment.CenterHorizontally,
 			verticalArrangement = Arrangement.Center
 		) {
 
 			Text(
-				text = title, style = infoTextStyle
+				text = title,
+				style = infoTextStyle
 			)
 
 			Spacer(modifier = Modifier.height(4.dp))
@@ -55,11 +60,13 @@ fun InfoComponent(
 				horizontalArrangement = Arrangement.spacedBy(8.dp)
 			) {
 				Icon(
-					painter = painterResource(id = icon), contentDescription = null,
+					painter = painterResource(id = icon),
+					contentDescription = null,
 					modifier = Modifier.size(20.dp)
 				)
 				Text(
-					text = desc, style = infoDescTextStyle
+					text = desc,
+					style = infoDescTextStyle
 				)
 			}
 		}
@@ -70,7 +77,10 @@ fun InfoComponent(
 @Composable
 private fun InfoComponentPreview() {
 	InfoComponent(
-		title = "Completed", desc = "1/3 Tasks", icon = R.drawable.ic_task_list,
-		backgroundColor = Blue, modifier = Modifier
+		title = "Completed",
+		desc = "1/3 Tasks",
+		icon = R.drawable.ic_task_list,
+		backgroundColor = Blue,
+		modifier = Modifier
 	)
 }

@@ -21,7 +21,10 @@ data class Task(
 	}
 
 	private fun formatTime(time: Long): String {
-		val sdf = SimpleDateFormat("hh:mm a", Locale.getDefault())
+		val sdf = SimpleDateFormat(
+			"hh:mm a",
+			Locale.getDefault()
+		)
 		val date = Date(time)
 		return sdf.format(date)
 	}
