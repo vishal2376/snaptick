@@ -162,7 +162,7 @@ fun BottomSheetComponent(
 
 				Button(
 					onClick = {
-						if (taskTitle.isNotBlank() && taskStartTime < taskEndTime) {
+						if (taskTitle.isNotBlank()) {
 							taskViewModel.insertTask(task)
 							taskTitle = ""
 
@@ -171,10 +171,16 @@ fun BottomSheetComponent(
 									onClose()
 								}
 							}
+						} else if (taskStartTime >= taskEndTime) {
+							Toast.makeText(
+								context,
+								"Invalid Time",
+								Toast.LENGTH_SHORT
+							).show()
 						} else {
 							Toast.makeText(
 								context,
-								"Task Empty!!!",
+								"Title can't be empty",
 								Toast.LENGTH_SHORT
 							).show()
 						}
