@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Snaptick</string>
     <string name="today_tasks">Today Tasks</string>
+    <string name="what_would_you_like_to_do">What would you like to do ?</string>
+    <string name="edit_task">Edit Task</string>
+    <string name="add_task">Add Task</string>
 </resources>
