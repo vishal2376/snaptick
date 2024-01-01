@@ -12,19 +12,19 @@ val fontRoboto = FontFamily(Font(R.font.roboto))
 val fontMontserrat = FontFamily(Font(R.font.montserrat))
 
 var h1TextStyle = TextStyle(
-	fontSize = 26.sp,
+	fontSize = 24.sp,
 	fontFamily = fontMontserrat,
 	fontWeight = FontWeight.Bold
 )
 
 var h2TextStyle = TextStyle(
-	fontSize = 22.sp,
+	fontSize = 20.sp,
 	fontFamily = fontMontserrat,
 	fontWeight = FontWeight.Bold
 )
 
 val infoTextStyle = TextStyle(
-	fontSize = 20.sp,
+	fontSize = 18.sp,
 	fontFamily = fontMontserrat,
 	fontWeight = FontWeight.SemiBold
 )
@@ -40,6 +40,6 @@ var taskDescTextStyle = TextStyle(
 )
 
 var taskTextStyle = TextStyle(
-	fontSize = 18.sp,
+	fontSize = 16.sp,
 	fontFamily = fontRoboto,
 )
