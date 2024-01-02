@@ -46,6 +46,24 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 		}
 	}
 
+	fun updateTask(task: Task) {
+		viewModelScope.launch {
+			repository.updateTask(task)
+		}
+	}
+
+	fun updateTitle(title: String) {
+		task.copy(title = title)
+	}
+
+	fun updateStartTime(time: Long) {
+		task.copy(startTime = time)
+	}
+
+	fun updateEndTime(time: Long) {
+		task.copy(endTime = time)
+	}
+
 	fun undoDeletedTask() {
 		deletedTask?.let {
 			viewModelScope.launch {

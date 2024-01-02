@@ -49,7 +49,8 @@ import com.vishal2376.snaptick.ui.theme.Yellow
 @Composable
 fun HomeScreen(
 	taskViewModel: TaskViewModel,
-	onAddEdit: (id: Int) -> Unit,
+	onEditTask: (id: Int) -> Unit,
+	onAddTask: () -> Unit,
 ) {
 
 	val tasks by taskViewModel.taskList.collectAsStateWithLifecycle(initialValue = emptyList())
@@ -87,7 +88,7 @@ fun HomeScreen(
 		floatingActionButton = {
 			FloatingActionButton(
 				onClick = {
-					onAddEdit(-1)
+					onAddTask()
 				},
 				containerColor = MaterialTheme.colorScheme.secondary,
 				contentColor = Color.White
@@ -151,7 +152,7 @@ fun HomeScreen(
 						key = { it.id }) { task ->
 						TaskComponent(
 							task = task,
-							onUpdate = onAddEdit
+							onUpdate = onEditTask
 						)
 						Spacer(modifier = Modifier.height(10.dp))
 					}
