@@ -24,9 +24,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,7 +38,6 @@ import com.vishal2376.snaptick.presentation.TaskViewModel
 import com.vishal2376.snaptick.presentation.common.fontRoboto
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
-import com.vishal2376.snaptick.presentation.home_screen.components.BottomSheetComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.EmptyTaskComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.InfoComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.TaskComponent
@@ -53,16 +49,14 @@ import com.vishal2376.snaptick.ui.theme.Yellow
 @Composable
 fun HomeScreen(
 	taskViewModel: TaskViewModel,
+	onUpdate: (id: Int) -> Unit,
+	onAdd: () -> Unit
 ) {
 
 	val tasks by taskViewModel.taskList.collectAsStateWithLifecycle(initialValue = emptyList())
 
 	val totalTasks = tasks.size
 	val completedTasks = tasks.count { it.isCompleted }
-
-	var showBottomSheet by rememberSaveable {
-		mutableStateOf(false)
-	}
 
 	Scaffold(topBar = {
 		TopAppBar(modifier = Modifier.padding(end = 16.dp),
@@ -94,7 +88,7 @@ fun HomeScreen(
 	         floatingActionButton = {
 		         FloatingActionButton(
 			         onClick = {
-				         showBottomSheet = true
+				         onAdd()
 			         },
 			         containerColor = MaterialTheme.colorScheme.secondary,
 			         contentColor = Color.White
@@ -105,12 +99,6 @@ fun HomeScreen(
 			         )
 		         }
 	         }) { innerPadding ->
-
-		BottomSheetComponent(
-			showBottomSheet,
-			onClose = { showBottomSheet = false },
-			taskViewModel = taskViewModel
-		)
 
 		Column(modifier = Modifier.padding(innerPadding)) {
 			Row(
@@ -162,7 +150,10 @@ fun HomeScreen(
 				) {
 					items(items = tasks,
 					      key = { it.id }) { task ->
-						TaskComponent(task = task)
+						TaskComponent(
+							task = task,
+							onUpdate = onUpdate
+						)
 						Spacer(modifier = Modifier.height(10.dp))
 					}
 				}
