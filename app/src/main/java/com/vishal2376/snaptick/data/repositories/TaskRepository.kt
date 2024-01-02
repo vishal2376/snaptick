@@ -13,6 +13,10 @@ class TaskRepository(private val dao: TaskDao) {
 		dao.deleteTask(task)
 	}
 
+	suspend fun updateTask(task: Task) {
+		dao.updateTask(task)
+	}
+
 	suspend fun getTaskById(id: Int): Task {
 		return dao.getTaskById(id)
 	}
@@ -20,4 +24,5 @@ class TaskRepository(private val dao: TaskDao) {
 	fun getAllTasks(): Flow<List<Task>> {
 		return dao.getAllTasks()
 	}
+
 }
