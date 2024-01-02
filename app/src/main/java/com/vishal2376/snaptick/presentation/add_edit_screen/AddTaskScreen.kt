@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -51,6 +50,7 @@ import androidx.compose.ui.unit.sp
 import com.commandiron.wheel_picker_compose.WheelTimePicker
 import com.commandiron.wheel_picker_compose.core.TimeFormat
 import com.vishal2376.snaptick.R
+import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.TaskViewModel
 import com.vishal2376.snaptick.presentation.common.fontRoboto
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
@@ -59,76 +59,64 @@ import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.ui.theme.Blue200
 import com.vishal2376.snaptick.ui.theme.Green
 import com.vishal2376.snaptick.ui.theme.Red
+import kotlinx.coroutines.job
 import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddEditScreen(
+fun AddTaskScreen(
 	taskViewModel: TaskViewModel,
-	onBack: () -> Unit,
-	taskId: Int = -1
+	onClose: () -> Unit
 ) {
-	val task = taskViewModel.task
-
-	var appBarTitle = stringResource(R.string.add_task)
-	var buttonTitle = stringResource(R.string.add_task)
-
-	if (taskId != -1) {
-
-		buttonTitle = stringResource(R.string.update_task)
-		appBarTitle = stringResource(R.string.edit_task)
-
-		LaunchedEffect(key1 = true,
-			block = {
-				taskViewModel.getTaskById(taskId)
-			})
-
-	}
-
-	val context = LocalContext.current
-	val focusRequester = FocusRequester()
 
 	var taskTitle by remember { mutableStateOf("") }
 	var taskStartTime by remember { mutableLongStateOf(0) }
 	var taskEndTime by remember { mutableLongStateOf(0) }
-
 	var isTaskReminderOn by remember {
 		mutableStateOf(true)
 	}
 
+	val task = Task(
+		0,
+		taskTitle,
+		false,
+		taskStartTime,
+		taskEndTime
+	)
+
+	val context = LocalContext.current
+	val focusRequester = FocusRequester()
+
 	Scaffold(topBar = {
-		TopAppBar(modifier = Modifier.padding(8.dp),
+		TopAppBar(
+			modifier = Modifier.padding(8.dp),
 			colors = TopAppBarDefaults.topAppBarColors(
 				containerColor = MaterialTheme.colorScheme.background,
 			),
 			title = {
 				Text(
-					text = appBarTitle,
+					text = stringResource(R.string.add_task),
 					style = h1TextStyle
 				)
 			},
 			navigationIcon = {
-				IconButton(onClick = { onBack() }) {
+				IconButton(onClick = { onClose() }) {
 					Icon(
 						imageVector = Icons.Rounded.ArrowBack,
 						contentDescription = null
 					)
 				}
 			},
-			actions = {
-				if (taskId != null) {
-					IconButton(onClick = {
-						taskViewModel.deleteTask(task)
-						onBack()
-					}) {
-						Icon(
-							imageVector = Icons.Default.Delete,
-							contentDescription = null
-						)
-					}
+		)
+	}) { innerPadding ->
+
+		LaunchedEffect(key1 = true,
+			block = {
+				coroutineContext.job.invokeOnCompletion {
+					focusRequester.requestFocus()
 				}
 			})
-	}) { innerPadding ->
+
 		Column(
 			modifier = Modifier
 				.fillMaxSize()
@@ -268,6 +256,7 @@ fun AddEditScreen(
 					onClick = {
 						if (taskTitle.isNotBlank()) {
 							taskViewModel.insertTask(task)
+							onClose()
 						} else if (taskStartTime >= taskEndTime) {
 							Toast.makeText(
 								context,
@@ -290,7 +279,7 @@ fun AddEditScreen(
 					modifier = Modifier.fillMaxWidth()
 				) {
 					Text(
-						text = buttonTitle,
+						text = stringResource(R.string.add_task),
 						fontWeight = FontWeight.Bold,
 						fontSize = 16.sp,
 						modifier = Modifier.padding(8.dp)
