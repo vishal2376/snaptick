@@ -25,7 +25,7 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 					navController.navigate(route = "${Routes.EditTaskScreen.name}/$id")
 				},
 				onAddTask = {
-					navController.navigate(route = Routes.EditTaskScreen.name)
+					navController.navigate(route = Routes.AddTaskScreen.name)
 				})
 		}
 
