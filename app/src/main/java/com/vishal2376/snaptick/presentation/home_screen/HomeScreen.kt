@@ -49,8 +49,7 @@ import com.vishal2376.snaptick.ui.theme.Yellow
 @Composable
 fun HomeScreen(
 	taskViewModel: TaskViewModel,
-	onUpdate: (id: Int) -> Unit,
-	onAdd: () -> Unit
+	onAddEdit: (id: Int) -> Unit,
 ) {
 
 	val tasks by taskViewModel.taskList.collectAsStateWithLifecycle(initialValue = emptyList())
@@ -60,45 +59,45 @@ fun HomeScreen(
 
 	Scaffold(topBar = {
 		TopAppBar(modifier = Modifier.padding(end = 16.dp),
-		          colors = TopAppBarDefaults.topAppBarColors(
-			          containerColor = MaterialTheme.colorScheme.background
-		          ),
-		          title = {
-			          Text(
-				          text = stringResource(id = R.string.app_name),
-				          style = h1TextStyle
-			          )
-		          },
-		          actions = {
-			          Text(
-				          text = "10",
-				          fontSize = 18.sp,
-				          fontFamily = fontRoboto,
-				          fontWeight = FontWeight.Bold
-			          )
-			          Spacer(modifier = Modifier.width(4.dp))
-			          Icon(
-				          painter = painterResource(id = R.drawable.ic_fire),
-				          contentDescription = null,
-				          tint = Yellow,
-				          modifier = Modifier.size(22.dp)
-			          )
-		          })
+			colors = TopAppBarDefaults.topAppBarColors(
+				containerColor = MaterialTheme.colorScheme.background
+			),
+			title = {
+				Text(
+					text = stringResource(id = R.string.app_name),
+					style = h1TextStyle
+				)
+			},
+			actions = {
+				Text(
+					text = "10",
+					fontSize = 18.sp,
+					fontFamily = fontRoboto,
+					fontWeight = FontWeight.Bold
+				)
+				Spacer(modifier = Modifier.width(4.dp))
+				Icon(
+					painter = painterResource(id = R.drawable.ic_fire),
+					contentDescription = null,
+					tint = Yellow,
+					modifier = Modifier.size(22.dp)
+				)
+			})
 	},
-	         floatingActionButton = {
-		         FloatingActionButton(
-			         onClick = {
-				         onAdd()
-			         },
-			         containerColor = MaterialTheme.colorScheme.secondary,
-			         contentColor = Color.White
-		         ) {
-			         Icon(
-				         imageVector = Icons.Default.Add,
-				         contentDescription = null
-			         )
-		         }
-	         }) { innerPadding ->
+		floatingActionButton = {
+			FloatingActionButton(
+				onClick = {
+					onAddEdit(-1)
+				},
+				containerColor = MaterialTheme.colorScheme.secondary,
+				contentColor = Color.White
+			) {
+				Icon(
+					imageVector = Icons.Default.Add,
+					contentDescription = null
+				)
+			}
+		}) { innerPadding ->
 
 		Column(modifier = Modifier.padding(innerPadding)) {
 			Row(
@@ -149,10 +148,10 @@ fun HomeScreen(
 						)
 				) {
 					items(items = tasks,
-					      key = { it.id }) { task ->
+						key = { it.id }) { task ->
 						TaskComponent(
 							task = task,
-							onUpdate = onUpdate
+							onUpdate = onAddEdit
 						)
 						Spacer(modifier = Modifier.height(10.dp))
 					}

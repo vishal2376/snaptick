@@ -66,22 +66,22 @@ import java.time.LocalTime
 fun AddEditScreen(
 	taskViewModel: TaskViewModel,
 	onBack: () -> Unit,
-	taskId: Int? = null
+	taskId: Int = -1
 ) {
 	val task = taskViewModel.task
 
 	var appBarTitle = stringResource(R.string.add_task)
 	var buttonTitle = stringResource(R.string.add_task)
 
-	taskId?.let {
+	if (taskId != -1) {
 
 		buttonTitle = stringResource(R.string.update_task)
 		appBarTitle = stringResource(R.string.edit_task)
 
 		LaunchedEffect(key1 = true,
-		               block = {
-			               taskViewModel.getTaskById(taskId)
-		               })
+			block = {
+				taskViewModel.getTaskById(taskId)
+			})
 
 	}
 
@@ -98,36 +98,36 @@ fun AddEditScreen(
 
 	Scaffold(topBar = {
 		TopAppBar(modifier = Modifier.padding(8.dp),
-		          colors = TopAppBarDefaults.topAppBarColors(
-			          containerColor = MaterialTheme.colorScheme.background,
-		          ),
-		          title = {
-			          Text(
-				          text = appBarTitle,
-				          style = h1TextStyle
-			          )
-		          },
-		          navigationIcon = {
-			          IconButton(onClick = { onBack() }) {
-				          Icon(
-					          imageVector = Icons.Rounded.ArrowBack,
-					          contentDescription = null
-				          )
-			          }
-		          },
-		          actions = {
-			          if (taskId != null) {
-				          IconButton(onClick = {
-					          taskViewModel.deleteTask(task)
-					          onBack()
-				          }) {
-					          Icon(
-						          imageVector = Icons.Default.Delete,
-						          contentDescription = null
-					          )
-				          }
-			          }
-		          })
+			colors = TopAppBarDefaults.topAppBarColors(
+				containerColor = MaterialTheme.colorScheme.background,
+			),
+			title = {
+				Text(
+					text = appBarTitle,
+					style = h1TextStyle
+				)
+			},
+			navigationIcon = {
+				IconButton(onClick = { onBack() }) {
+					Icon(
+						imageVector = Icons.Rounded.ArrowBack,
+						contentDescription = null
+					)
+				}
+			},
+			actions = {
+				if (taskId != null) {
+					IconButton(onClick = {
+						taskViewModel.deleteTask(task)
+						onBack()
+					}) {
+						Icon(
+							imageVector = Icons.Default.Delete,
+							contentDescription = null
+						)
+					}
+				}
+			})
 	}) { innerPadding ->
 		Column(
 			modifier = Modifier

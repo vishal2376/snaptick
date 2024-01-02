@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
 		super.onCreate(savedInstanceState)
 		setContent {
 			SnaptickTheme {
-				AppNavigation(viewmodel = taskViewmodel)
+				AppNavigation(taskViewModel = taskViewmodel)
 			}
 		}
 	}
