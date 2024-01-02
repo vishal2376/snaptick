@@ -76,14 +76,6 @@ fun AddTaskScreen(
 		mutableStateOf(true)
 	}
 
-	val task = Task(
-		0,
-		taskTitle,
-		false,
-		taskStartTime,
-		taskEndTime
-	)
-
 	val context = LocalContext.current
 	val focusRequester = FocusRequester()
 
@@ -255,6 +247,13 @@ fun AddTaskScreen(
 				Button(
 					onClick = {
 						if (taskTitle.isNotBlank()) {
+							val task = Task(
+								0,
+								taskTitle,
+								false,
+								taskStartTime,
+								taskEndTime
+							)
 							taskViewModel.insertTask(task)
 							onClose()
 						} else if (taskStartTime >= taskEndTime) {
