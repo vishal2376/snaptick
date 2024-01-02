@@ -4,4 +4,5 @@
     <string name="what_would_you_like_to_do">What would you like to do ?</string>
     <string name="edit_task">Edit Task</string>
     <string name="add_task">Add Task</string>
+    <string name="update_task">Update Task</string>
 </resources>

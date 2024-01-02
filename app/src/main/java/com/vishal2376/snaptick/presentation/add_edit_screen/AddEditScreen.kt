@@ -29,6 +29,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -45,12 +46,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.commandiron.wheel_picker_compose.WheelTimePicker
 import com.commandiron.wheel_picker_compose.core.TimeFormat
 import com.vishal2376.snaptick.R
+import com.vishal2376.snaptick.presentation.TaskViewModel
 import com.vishal2376.snaptick.presentation.common.fontRoboto
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
@@ -58,20 +59,30 @@ import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.ui.theme.Blue200
 import com.vishal2376.snaptick.ui.theme.Green
 import com.vishal2376.snaptick.ui.theme.Red
-import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddEditScreen() {
+fun AddEditScreen(
+	taskViewModel: TaskViewModel,
+	onBack: () -> Unit,
+	taskId: Int? = null
+) {
+	val task = taskViewModel.task
 
-	//todo: remove after testing
-	val taskId: Int? = 20
+	var appBarTitle = stringResource(R.string.add_task)
+	var buttonTitle = stringResource(R.string.add_task)
 
-	val appBarTitle = if (taskId == null) {
-		stringResource(R.string.add_task)
-	} else {
-		stringResource(R.string.edit_task)
+	taskId?.let {
+
+		buttonTitle = stringResource(R.string.update_task)
+		appBarTitle = stringResource(R.string.edit_task)
+
+		LaunchedEffect(key1 = true,
+		               block = {
+			               taskViewModel.getTaskById(taskId)
+		               })
+
 	}
 
 	val context = LocalContext.current
@@ -97,7 +108,7 @@ fun AddEditScreen() {
 			          )
 		          },
 		          navigationIcon = {
-			          IconButton(onClick = { }) {
+			          IconButton(onClick = { onBack() }) {
 				          Icon(
 					          imageVector = Icons.Rounded.ArrowBack,
 					          contentDescription = null
@@ -106,7 +117,10 @@ fun AddEditScreen() {
 		          },
 		          actions = {
 			          if (taskId != null) {
-				          IconButton(onClick = { /*TODO*/ }) {
+				          IconButton(onClick = {
+					          taskViewModel.deleteTask(task)
+					          onBack()
+				          }) {
 					          Icon(
 						          imageVector = Icons.Default.Delete,
 						          contentDescription = null
@@ -253,9 +267,7 @@ fun AddEditScreen() {
 				Button(
 					onClick = {
 						if (taskTitle.isNotBlank()) {
-							//						taskViewModel.insertTask(task)
-							taskTitle = ""
-
+							taskViewModel.insertTask(task)
 						} else if (taskStartTime >= taskEndTime) {
 							Toast.makeText(
 								context,
@@ -278,7 +290,7 @@ fun AddEditScreen() {
 					modifier = Modifier.fillMaxWidth()
 				) {
 					Text(
-						text = appBarTitle,
+						text = buttonTitle,
 						fontWeight = FontWeight.Bold,
 						fontSize = 16.sp,
 						modifier = Modifier.padding(8.dp)
@@ -286,17 +298,5 @@ fun AddEditScreen() {
 				}
 			}
 		}
-	}
-}
-
-
-@Preview
-@Composable
-fun AddEditScreenPreview() {
-	SnaptickTheme(
-		darkTheme = true,
-		dynamicColor = false
-	) {
-		AddEditScreen()
 	}
 }
