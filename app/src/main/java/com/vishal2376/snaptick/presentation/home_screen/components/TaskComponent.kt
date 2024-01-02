@@ -36,7 +36,10 @@ import com.vishal2376.snaptick.ui.theme.LightGray
 import com.vishal2376.snaptick.ui.theme.Red
 
 @Composable
-fun TaskComponent(task: Task) {
+fun TaskComponent(
+	task: Task,
+	onUpdate: (Int) -> Unit
+) {
 
 	val randomColor = listOf(
 		Green,
@@ -137,11 +140,13 @@ fun TaskComponent(task: Task) {
 						}
 					}
 
-					Icon(
-						imageVector = Icons.Default.MoreVert,
-						contentDescription = null,
-						tint = Color.White
-					)
+					IconButton(onClick = { onUpdate(task.id) }) {
+						Icon(
+							imageVector = Icons.Default.MoreVert,
+							contentDescription = null,
+							tint = Color.White
+						)
+					}
 				}
 			}
 
@@ -160,5 +165,6 @@ fun TaskComponentPreview() {
 		startTime = System.currentTimeMillis(),
 		endTime = System.currentTimeMillis() + 3600000
 	)
-	TaskComponent(task = task)
+	TaskComponent(task = task,
+	              {})
 }
