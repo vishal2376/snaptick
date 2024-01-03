@@ -9,6 +9,7 @@ import com.vishal2376.snaptick.data.repositories.TaskRepository
 import com.vishal2376.snaptick.domain.model.Task
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.time.LocalTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,8 +20,8 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 			id = 0,
 			title = "",
 			isCompleted = false,
-			startTime = 0,
-			endTime = 0
+			startTime = LocalTime.now(),
+			endTime = LocalTime.now()
 		)
 	)
 		private set
@@ -56,11 +57,11 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 		task.copy(title = title)
 	}
 
-	fun updateStartTime(time: Long) {
+	fun updateStartTime(time: LocalTime) {
 		task.copy(startTime = time)
 	}
 
-	fun updateEndTime(time: Long) {
+	fun updateEndTime(time: LocalTime) {
 		task.copy(endTime = time)
 	}
 

@@ -34,6 +34,7 @@ import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.ui.theme.Green
 import com.vishal2376.snaptick.ui.theme.LightGray
 import com.vishal2376.snaptick.ui.theme.Red
+import java.time.LocalTime
 
 @Composable
 fun TaskComponent(
@@ -162,8 +163,8 @@ fun TaskComponentPreview() {
 		id = 0,
 		title = "Drink Water",
 		isCompleted = false,
-		startTime = System.currentTimeMillis(),
-		endTime = System.currentTimeMillis() + 3600000
+		startTime = LocalTime.now(),
+		endTime = LocalTime.now()
 	)
 	TaskComponent(task = task,
 		{})
