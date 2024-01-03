@@ -30,7 +30,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -70,8 +69,8 @@ fun AddTaskScreen(
 ) {
 
 	var taskTitle by remember { mutableStateOf("") }
-	var taskStartTime by remember { mutableLongStateOf(0) }
-	var taskEndTime by remember { mutableLongStateOf(0) }
+	var taskStartTime by remember { mutableStateOf(LocalTime.now()) }
+	var taskEndTime by remember { mutableStateOf(LocalTime.now()) }
 	var isTaskReminderOn by remember {
 		mutableStateOf(true)
 	}
@@ -111,8 +110,8 @@ fun AddTaskScreen(
 
 		Column(
 			modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding),
+				.fillMaxSize()
+				.padding(innerPadding),
 			horizontalAlignment = Alignment.CenterHorizontally,
 			verticalArrangement = Arrangement.SpaceBetween
 		) {
@@ -138,12 +137,12 @@ fun AddTaskScreen(
 					placeholder = { Text(text = stringResource(id = R.string.what_would_you_like_to_do)) },
 					shape = RoundedCornerShape(16.dp),
 					modifier = Modifier
-                        .focusRequester(focusRequester)
-                        .fillMaxWidth()
-                        .padding(
-                            32.dp,
-                            8.dp
-                        ),
+						.focusRequester(focusRequester)
+						.fillMaxWidth()
+						.padding(
+							32.dp,
+							8.dp
+						),
 					keyboardOptions = KeyboardOptions(
 						capitalization = KeyboardCapitalization.Sentences,
 						imeAction = ImeAction.Done
@@ -152,8 +151,8 @@ fun AddTaskScreen(
 				Row(
 					horizontalArrangement = Arrangement.SpaceBetween,
 					modifier = Modifier
-                        .fillMaxWidth(.8f)
-                        .padding(top = 32.dp)
+						.fillMaxWidth(.8f)
+						.padding(top = 32.dp)
 				) {
 					Column(horizontalAlignment = Alignment.CenterHorizontally) {
 						Text(
@@ -168,7 +167,7 @@ fun AddTaskScreen(
 							startTime = LocalTime.now(),
 							textColor = Color.White
 						) { snappedTime ->
-							taskStartTime = snappedTime.toNanoOfDay()
+							taskStartTime = snappedTime
 						}
 					}
 					Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -184,7 +183,7 @@ fun AddTaskScreen(
 							minTime = LocalTime.now().plusMinutes(5),
 							startTime = LocalTime.now().plusHours(1)
 						) { snappedTime ->
-							taskEndTime = snappedTime.toNanoOfDay()
+							taskEndTime = snappedTime
 						}
 
 					}
@@ -192,11 +191,11 @@ fun AddTaskScreen(
 
 				Row(
 					modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            32.dp,
-                            24.dp
-                        ),
+						.fillMaxWidth()
+						.padding(
+							32.dp,
+							24.dp
+						),
 					horizontalArrangement = Arrangement.SpaceBetween,
 					verticalAlignment = Alignment.CenterVertically
 				) {
@@ -221,8 +220,8 @@ fun AddTaskScreen(
 			//bottom action buttons
 			Column(
 				modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(32.dp),
+					.fillMaxWidth()
+					.padding(32.dp),
 				verticalArrangement = Arrangement.spacedBy(16.dp)
 			) {
 				Button(
