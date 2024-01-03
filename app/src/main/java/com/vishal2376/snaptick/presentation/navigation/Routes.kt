@@ -1,5 +1,5 @@
 package com.vishal2376.snaptick.presentation.navigation
 
 enum class Routes {
-	HomeScreen, AddTaskScreen,EditTaskScreen
+	HomeScreen, AddTaskScreen, EditTaskScreen
 }

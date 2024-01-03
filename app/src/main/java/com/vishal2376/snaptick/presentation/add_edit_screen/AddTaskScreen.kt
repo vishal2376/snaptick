@@ -111,8 +111,8 @@ fun AddTaskScreen(
 
 		Column(
 			modifier = Modifier
-				.fillMaxSize()
-				.padding(innerPadding),
+                .fillMaxSize()
+                .padding(innerPadding),
 			horizontalAlignment = Alignment.CenterHorizontally,
 			verticalArrangement = Arrangement.SpaceBetween
 		) {
@@ -138,12 +138,12 @@ fun AddTaskScreen(
 					placeholder = { Text(text = stringResource(id = R.string.what_would_you_like_to_do)) },
 					shape = RoundedCornerShape(16.dp),
 					modifier = Modifier
-						.focusRequester(focusRequester)
-						.fillMaxWidth()
-						.padding(
-							32.dp,
-							8.dp
-						),
+                        .focusRequester(focusRequester)
+                        .fillMaxWidth()
+                        .padding(
+                            32.dp,
+                            8.dp
+                        ),
 					keyboardOptions = KeyboardOptions(
 						capitalization = KeyboardCapitalization.Sentences,
 						imeAction = ImeAction.Done
@@ -152,8 +152,8 @@ fun AddTaskScreen(
 				Row(
 					horizontalArrangement = Arrangement.SpaceBetween,
 					modifier = Modifier
-						.fillMaxWidth(.8f)
-						.padding(top = 32.dp)
+                        .fillMaxWidth(.8f)
+                        .padding(top = 32.dp)
 				) {
 					Column(horizontalAlignment = Alignment.CenterHorizontally) {
 						Text(
@@ -192,11 +192,11 @@ fun AddTaskScreen(
 
 				Row(
 					modifier = Modifier
-						.fillMaxWidth()
-						.padding(
-							32.dp,
-							24.dp
-						),
+                        .fillMaxWidth()
+                        .padding(
+                            32.dp,
+                            24.dp
+                        ),
 					horizontalArrangement = Arrangement.SpaceBetween,
 					verticalAlignment = Alignment.CenterVertically
 				) {
@@ -221,8 +221,8 @@ fun AddTaskScreen(
 			//bottom action buttons
 			Column(
 				modifier = Modifier
-					.fillMaxWidth()
-					.padding(32.dp),
+                    .fillMaxWidth()
+                    .padding(32.dp),
 				verticalArrangement = Arrangement.spacedBy(16.dp)
 			) {
 				Button(

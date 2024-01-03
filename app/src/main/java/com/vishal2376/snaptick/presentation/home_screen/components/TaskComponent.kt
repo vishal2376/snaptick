@@ -103,8 +103,8 @@ fun TaskComponent(
 								color = LightGray,
 								shape = CircleShape
 							),
-						    contentAlignment = Alignment.Center,
-						    content = {})
+							contentAlignment = Alignment.Center,
+							content = {})
 					}
 
 				}
@@ -166,5 +166,5 @@ fun TaskComponentPreview() {
 		endTime = System.currentTimeMillis() + 3600000
 	)
 	TaskComponent(task = task,
-	              {})
+		{})
 }
