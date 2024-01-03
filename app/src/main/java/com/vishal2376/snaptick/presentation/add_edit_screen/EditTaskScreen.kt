@@ -87,7 +87,7 @@ fun EditTaskScreen(
 			),
 			title = {
 				Text(
-					text = stringResource(R.string.update_task),
+					text = stringResource(R.string.edit_task),
 					style = h1TextStyle
 				)
 			},
@@ -274,7 +274,7 @@ fun EditTaskScreen(
 					modifier = Modifier.fillMaxWidth()
 				) {
 					Text(
-						text = stringResource(R.string.edit_task),
+						text = stringResource(R.string.update_task),
 						fontWeight = FontWeight.Bold,
 						fontSize = 16.sp,
 						modifier = Modifier.padding(8.dp)
