@@ -36,8 +36,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -58,7 +56,6 @@ import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.ui.theme.Blue200
 import com.vishal2376.snaptick.ui.theme.Green
 import com.vishal2376.snaptick.ui.theme.Red
-import kotlinx.coroutines.job
 import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -73,7 +70,6 @@ fun EditTaskScreen(
 	val taskEndTime = taskViewModel.task.endTime
 
 	val context = LocalContext.current
-	val focusRequester = FocusRequester()
 
 	var isTaskReminderOn by remember {
 		mutableStateOf(true)
@@ -114,13 +110,6 @@ fun EditTaskScreen(
 			})
 	}) { innerPadding ->
 
-		LaunchedEffect(key1 = true,
-			block = {
-				coroutineContext.job.invokeOnCompletion {
-					focusRequester.requestFocus()
-				}
-			})
-
 		Column(
 			modifier = Modifier
 				.fillMaxSize()
@@ -145,12 +134,11 @@ fun EditTaskScreen(
 					),
 					textStyle = TextStyle.Default.copy(fontFamily = fontRoboto),
 					onValueChange = {
-						taskViewModel.updateTitle(title = it)
+						taskViewModel.updateTitle(it)
 					},
 					placeholder = { Text(text = stringResource(id = R.string.what_would_you_like_to_do)) },
 					shape = RoundedCornerShape(16.dp),
 					modifier = Modifier
-						.focusRequester(focusRequester)
 						.fillMaxWidth()
 						.padding(
 							32.dp,
@@ -174,13 +162,15 @@ fun EditTaskScreen(
 							color = Green
 						)
 						Spacer(modifier = Modifier.height(8.dp))
-						WheelTimePicker(
-							timeFormat = TimeFormat.AM_PM,
-							minTime = LocalTime.now(),
-							startTime = LocalTime.ofNanoOfDay(taskStartTime),
-							textColor = Color.White
-						) { snappedTime ->
-							taskViewModel.updateStartTime(snappedTime.toNanoOfDay())
+						if (taskTitle.isNotEmpty()) {
+							WheelTimePicker(
+								timeFormat = TimeFormat.AM_PM,
+								minTime = LocalTime.now(),
+								startTime = taskStartTime,
+								textColor = Color.White
+							) { snappedTime ->
+								taskViewModel.updateStartTime(snappedTime)
+							}
 						}
 					}
 					Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -190,13 +180,15 @@ fun EditTaskScreen(
 							color = Red
 						)
 						Spacer(modifier = Modifier.height(8.dp))
-						WheelTimePicker(
-							timeFormat = TimeFormat.AM_PM,
-							textColor = Color.White,
-							minTime = LocalTime.now().plusMinutes(5),
-							startTime = LocalTime.now().plusHours(1)
-						) { snappedTime ->
-							taskViewModel.updateEndTime(snappedTime.toNanoOfDay())
+						if (taskTitle.isNotEmpty()) {
+							WheelTimePicker(
+								timeFormat = TimeFormat.AM_PM,
+								textColor = Color.White,
+								minTime = LocalTime.now().plusMinutes(5),
+								startTime = taskEndTime
+							) { snappedTime ->
+								taskViewModel.updateEndTime(snappedTime)
+							}
 						}
 					}
 				}
