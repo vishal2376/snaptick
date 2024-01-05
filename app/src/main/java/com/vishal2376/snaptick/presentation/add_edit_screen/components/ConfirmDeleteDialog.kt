@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -22,7 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.vishal2376.snaptick.R
-import com.vishal2376.snaptick.presentation.common.h3TextStyle
+import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.ui.theme.Blue200
 import com.vishal2376.snaptick.ui.theme.Blue500
 import com.vishal2376.snaptick.ui.theme.LightGray
@@ -47,16 +48,16 @@ fun ConfirmDeleteDialog() {
 						16.dp
 					),
 				horizontalAlignment = Alignment.CenterHorizontally,
-				verticalArrangement = Arrangement.spacedBy(24.dp)
 			) {
 				Text(
 					text = "Delete Task ?",
 					color = Color.White,
-					style = h3TextStyle
+					style = h2TextStyle
 				)
 				Image(
 					painter = painterResource(id = R.drawable.delete_task),
-					contentDescription = null
+					contentDescription = null,
+					Modifier.size(150.dp)
 				)
 
 				Row(
