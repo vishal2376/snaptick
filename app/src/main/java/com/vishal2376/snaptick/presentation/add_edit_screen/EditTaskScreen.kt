@@ -2,13 +2,17 @@ package com.vishal2376.snaptick.presentation.add_edit_screen
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -137,8 +141,8 @@ fun EditTaskScreen(
 		if (showBottomSheet) {
 			AddReminderBottomSheet(
 				onClose = { showBottomSheet = false },
-				onDone = {
-					// todo: logic to add reminder chips
+				onDone = { availableReminders ->
+					taskViewModel.updateReminderList(availableReminders)
 					showBottomSheet = false
 				}
 			)
@@ -252,6 +256,25 @@ fun EditTaskScreen(
 							uncheckedTrackColor = Blue200
 						)
 					)
+				}
+			}
+
+			LazyRow(
+				modifier = Modifier.fillMaxWidth(),
+				contentPadding = PaddingValues(8.dp)
+			) {
+				items(taskViewModel.task.reminderList) { reminder ->
+					if (reminder.isTurnedOn) {
+						Box(
+							modifier = Modifier.padding(8.dp),
+							contentAlignment = Alignment.Center
+						) {
+							Text(
+								text = "${reminder.time} minutes before",
+								color = Color.White
+							)
+						}
+					}
 				}
 			}
 
