@@ -31,8 +31,8 @@ import com.vishal2376.snaptick.ui.theme.Red
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 
 @Composable
-fun ConfirmDeleteDialog() {
-	Dialog(onDismissRequest = { /*TODO*/ }) {
+fun ConfirmDeleteDialog(onClose: () -> Unit, onDelete: () -> Unit) {
+	Dialog(onDismissRequest = { onClose() }) {
 		Card(
 			modifier = Modifier
 				.fillMaxWidth()
@@ -65,7 +65,7 @@ fun ConfirmDeleteDialog() {
 					horizontalArrangement = Arrangement.SpaceBetween
 				) {
 					Button(
-						onClick = { /*TODO*/ },
+						onClick = { onClose() },
 						colors = ButtonDefaults.buttonColors(containerColor = Blue500),
 						shape = RoundedCornerShape(8.dp),
 						border = BorderStroke(
@@ -79,7 +79,7 @@ fun ConfirmDeleteDialog() {
 						)
 					}
 					Button(
-						onClick = { /*TODO*/ },
+						onClick = { onDelete() },
 						colors = ButtonDefaults.buttonColors(containerColor = Red),
 						shape = RoundedCornerShape(8.dp),
 					) {
@@ -101,6 +101,8 @@ fun ConfirmDeleteDialogPreview() {
 		darkTheme = true,
 		dynamicColor = false
 	) {
-		ConfirmDeleteDialog()
+		ConfirmDeleteDialog(
+			{},
+			{})
 	}
 }

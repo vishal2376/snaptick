@@ -49,6 +49,7 @@ import com.commandiron.wheel_picker_compose.WheelTimePicker
 import com.commandiron.wheel_picker_compose.core.TimeFormat
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.presentation.TaskViewModel
+import com.vishal2376.snaptick.presentation.add_edit_screen.components.ConfirmDeleteDialog
 import com.vishal2376.snaptick.presentation.common.fontRoboto
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
@@ -73,6 +74,10 @@ fun EditTaskScreen(
 
 	var isTaskReminderOn by remember {
 		mutableStateOf(true)
+	}
+
+	var showDialog by remember {
+		mutableStateOf(false)
 	}
 
 	LaunchedEffect(key1 = true,
@@ -101,7 +106,7 @@ fun EditTaskScreen(
 			},
 			actions = {
 
-				IconButton(onClick = { /*TODO : impl delete task logic*/ }) {
+				IconButton(onClick = { showDialog = true }) {
 					Icon(
 						imageVector = Icons.Default.Delete,
 						contentDescription = null
@@ -109,6 +114,19 @@ fun EditTaskScreen(
 				}
 			})
 	}) { innerPadding ->
+
+
+		// confirm delete dialog
+		if (showDialog) {
+			ConfirmDeleteDialog(
+				onClose = { showDialog = false },
+				onDelete = {
+					taskViewModel.deleteTask(taskViewModel.task)
+					showDialog = false
+					onBack()
+				}
+			)
+		}
 
 		Column(
 			modifier = Modifier
