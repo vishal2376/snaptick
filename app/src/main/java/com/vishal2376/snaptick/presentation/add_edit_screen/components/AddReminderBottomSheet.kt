@@ -40,7 +40,7 @@ import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddReminderBottomSheet(onClose: () -> Unit, onDone: () -> Unit) {
+fun AddReminderBottomSheet(onClose: () -> Unit, onDone: (List<Reminder>) -> Unit) {
 
 	val availableReminder = remember {
 		mutableStateListOf(
@@ -104,7 +104,7 @@ fun AddReminderBottomSheet(onClose: () -> Unit, onDone: () -> Unit) {
 					)
 				}
 				Button(
-					onClick = { onDone() },
+					onClick = { onDone(availableReminder) },
 					colors = ButtonDefaults.buttonColors(containerColor = Green),
 					contentPadding = PaddingValues(
 						40.dp,
