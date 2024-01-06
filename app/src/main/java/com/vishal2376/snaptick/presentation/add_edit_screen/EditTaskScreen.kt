@@ -297,7 +297,7 @@ fun EditTaskScreen(
 					modifier = Modifier.fillMaxWidth()
 				) {
 					Text(
-						text = "Add Reminder",
+						text = "Edit Reminder",
 						fontWeight = FontWeight.Bold,
 						fontSize = 15.sp,
 						modifier = Modifier.padding(8.dp)
