@@ -40,11 +40,7 @@ import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddReminderBottomSheet() {
-
-	var checkValue by remember {
-		mutableStateOf(false)
-	}
+fun AddReminderBottomSheet(onClose: () -> Unit, onDone: () -> Unit) {
 
 	val availableReminder = remember {
 		mutableStateListOf(
@@ -56,7 +52,7 @@ fun AddReminderBottomSheet() {
 	}
 
 	ModalBottomSheet(
-		onDismissRequest = { /*TODO*/ },
+		onDismissRequest = { onClose() },
 		containerColor = Blue200
 	) {
 		Column(
@@ -90,7 +86,7 @@ fun AddReminderBottomSheet() {
 				horizontalArrangement = Arrangement.SpaceBetween
 			) {
 				Button(
-					onClick = { /*TODO*/ },
+					onClick = { onClose() },
 					colors = ButtonDefaults.buttonColors(containerColor = Blue500),
 					shape = RoundedCornerShape(8.dp),
 					contentPadding = PaddingValues(
@@ -108,7 +104,7 @@ fun AddReminderBottomSheet() {
 					)
 				}
 				Button(
-					onClick = { /*TODO*/ },
+					onClick = { onDone() },
 					colors = ButtonDefaults.buttonColors(containerColor = Green),
 					contentPadding = PaddingValues(
 						40.dp,
@@ -168,6 +164,7 @@ fun AddReminderBottomSheetPreview() {
 		darkTheme = true,
 		dynamicColor = false
 	) {
-		AddReminderBottomSheet()
+		AddReminderBottomSheet({},
+			{})
 	}
 }

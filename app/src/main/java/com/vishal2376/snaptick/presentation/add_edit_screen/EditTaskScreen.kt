@@ -49,6 +49,7 @@ import com.commandiron.wheel_picker_compose.WheelTimePicker
 import com.commandiron.wheel_picker_compose.core.TimeFormat
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.presentation.TaskViewModel
+import com.vishal2376.snaptick.presentation.add_edit_screen.components.AddReminderBottomSheet
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.ConfirmDeleteDialog
 import com.vishal2376.snaptick.presentation.common.fontRoboto
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
@@ -77,6 +78,10 @@ fun EditTaskScreen(
 	}
 
 	var showDialog by remember {
+		mutableStateOf(false)
+	}
+
+	var showBottomSheet by remember {
 		mutableStateOf(false)
 	}
 
@@ -124,6 +129,17 @@ fun EditTaskScreen(
 					taskViewModel.deleteTask(taskViewModel.task)
 					showDialog = false
 					onBack()
+				}
+			)
+		}
+
+		// add reminder bottom sheet
+		if (showBottomSheet) {
+			AddReminderBottomSheet(
+				onClose = { showBottomSheet = false },
+				onDone = {
+					// todo: logic to add reminder chips
+					showBottomSheet = false
 				}
 			)
 		}
@@ -248,7 +264,7 @@ fun EditTaskScreen(
 			) {
 				Button(
 					onClick = {
-						//todo: add logic
+						showBottomSheet = true
 					},
 					colors = ButtonDefaults.buttonColors(
 						containerColor = Blue200,
