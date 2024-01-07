@@ -71,9 +71,8 @@ fun AddTaskScreen(
 	var taskTitle by remember { mutableStateOf("") }
 	var taskStartTime by remember { mutableStateOf(LocalTime.now()) }
 	var taskEndTime by remember { mutableStateOf(LocalTime.now()) }
-	var isTaskReminderOn by remember {
-		mutableStateOf(true)
-	}
+	var isTaskReminderOn by remember { mutableStateOf(true) }
+	var taskCategory by remember { mutableStateOf("") }
 
 	val context = LocalContext.current
 	val focusRequester = FocusRequester()
@@ -232,7 +231,9 @@ fun AddTaskScreen(
 								taskTitle,
 								false,
 								taskStartTime,
-								taskEndTime
+								taskEndTime,
+								isTaskReminderOn,
+								taskCategory
 							)
 							taskViewModel.insertTask(task)
 							onClose()

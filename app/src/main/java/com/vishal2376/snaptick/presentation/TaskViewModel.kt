@@ -21,13 +21,14 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 			title = "",
 			isCompleted = false,
 			startTime = LocalTime.now(),
-			endTime = LocalTime.now()
+			endTime = LocalTime.now(),
+			reminder = false,
+			category = ""
 		)
 	)
 		private set
 
 	var taskList = repository.getAllTasks()
-	private val deletedTask: Task? = null
 
 	fun insertTask(task: Task) {
 		viewModelScope.launch {
@@ -59,6 +60,14 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 
 	fun updateStartTime(time: LocalTime) {
 		task = task.copy(startTime = time)
+	}
+
+	fun updateReminder(isReminderOn: Boolean) {
+		task = task.copy(reminder = isReminderOn)
+	}
+
+	fun updateCategory(category: String) {
+		task = task.copy(category = category)
 	}
 
 	fun updateEndTime(time: LocalTime) {

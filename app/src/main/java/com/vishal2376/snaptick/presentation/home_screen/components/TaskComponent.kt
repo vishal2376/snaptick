@@ -164,7 +164,9 @@ fun TaskComponentPreview() {
 		title = "Drink Water",
 		isCompleted = false,
 		startTime = LocalTime.now(),
-		endTime = LocalTime.now()
+		endTime = LocalTime.now(),
+		reminder = true,
+		"Others"
 	)
 	TaskComponent(task = task,
 		{})

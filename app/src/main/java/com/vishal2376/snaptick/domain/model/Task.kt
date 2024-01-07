@@ -16,7 +16,9 @@ data class Task(
 	val title: String,
 	val isCompleted: Boolean,
 	val startTime: LocalTime,
-	val endTime: LocalTime
+	val endTime: LocalTime,
+	val reminder: Boolean,
+	val category: String
 ) {
 	fun getFormattedTime(): String {
 		val startTimeFormat = formatTime(startTime)
