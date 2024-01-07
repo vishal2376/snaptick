@@ -226,25 +226,6 @@ fun AddTaskScreen(
 			) {
 				Button(
 					onClick = {
-						//todo: add logic
-					},
-					colors = ButtonDefaults.buttonColors(
-						containerColor = Blue200,
-						contentColor = Color.White
-					),
-					shape = RoundedCornerShape(16.dp),
-					modifier = Modifier.fillMaxWidth()
-				) {
-					Text(
-						text = "Add Reminder",
-						fontWeight = FontWeight.Bold,
-						fontSize = 15.sp,
-						modifier = Modifier.padding(8.dp)
-					)
-				}
-
-				Button(
-					onClick = {
 						if (taskTitle.isNotBlank()) {
 							val task = Task(
 								0,

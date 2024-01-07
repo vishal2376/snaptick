@@ -85,9 +85,6 @@ dependencies {
 	//lifecycle
 	implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
 
-	//gson
-	implementation("com.google.code.gson:gson:2.8.9")
-
 	//time picker
 	implementation("com.github.commandiron:WheelPickerCompose:1.1.11")
 

@@ -1,5 +1,6 @@
 package com.vishal2376.snaptick.presentation.home_screen.components
 
+import android.graphics.Color
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

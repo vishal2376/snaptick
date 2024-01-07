@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "83b87af5283f3877f562c7d1dd1b9641",
+    "identityHash": "fdf793a8f717644d065b6807d97ca01c",
     "entities": [
       {
         "tableName": "task_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `isCompleted` INTEGER NOT NULL, `startTime` TEXT NOT NULL, `endTime` TEXT NOT NULL, `reminderList` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `isCompleted` INTEGER NOT NULL, `startTime` TEXT NOT NULL, `endTime` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -37,12 +37,6 @@
             "columnName": "endTime",
             "affinity": "TEXT",
             "notNull": true
-          },
-          {
-            "fieldPath": "reminderList",
-            "columnName": "reminderList",
-            "affinity": "TEXT",
-            "notNull": true
           }
         ],
         "primaryKey": {
@@ -58,7 +52,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '83b87af5283f3877f562c7d1dd1b9641')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'fdf793a8f717644d065b6807d97ca01c')"
     ]
   }
 }

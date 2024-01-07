@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vishal2376.snaptick.data.repositories.TaskRepository
-import com.vishal2376.snaptick.domain.model.Reminder
 import com.vishal2376.snaptick.domain.model.Task
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -16,26 +15,13 @@ import javax.inject.Inject
 @HiltViewModel
 class TaskViewModel @Inject constructor(private val repository: TaskRepository) : ViewModel() {
 
-	var availableReminder: List<Reminder> = listOf(
-		Reminder(5),
-		Reminder(10),
-		Reminder(15),
-		Reminder(30),
-	)
-
 	var task: Task by mutableStateOf(
 		Task(
 			id = 0,
 			title = "",
 			isCompleted = false,
 			startTime = LocalTime.now(),
-			endTime = LocalTime.now(),
-			reminderList = listOf(
-				Reminder(5),
-				Reminder(10),
-				Reminder(15),
-				Reminder(30)
-			)
+			endTime = LocalTime.now()
 		)
 	)
 		private set
@@ -77,18 +63,6 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 
 	fun updateEndTime(time: LocalTime) {
 		task = task.copy(endTime = time)
-	}
-
-	fun updateReminderList(reminderList: List<Reminder>) {
-		task = task.copy(reminderList = reminderList)
-	}
-
-	fun undoDeletedTask() {
-		deletedTask?.let {
-			viewModelScope.launch {
-				repository.insertTask(it)
-			}
-		}
 	}
 
 }

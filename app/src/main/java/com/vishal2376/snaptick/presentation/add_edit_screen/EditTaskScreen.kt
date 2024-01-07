@@ -2,17 +2,13 @@ package com.vishal2376.snaptick.presentation.add_edit_screen
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -53,7 +49,6 @@ import com.commandiron.wheel_picker_compose.WheelTimePicker
 import com.commandiron.wheel_picker_compose.core.TimeFormat
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.presentation.TaskViewModel
-import com.vishal2376.snaptick.presentation.add_edit_screen.components.AddReminderBottomSheet
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.ConfirmDeleteDialog
 import com.vishal2376.snaptick.presentation.common.fontRoboto
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
@@ -82,10 +77,6 @@ fun EditTaskScreen(
 	}
 
 	var showDialog by remember {
-		mutableStateOf(false)
-	}
-
-	var showBottomSheet by remember {
 		mutableStateOf(false)
 	}
 
@@ -133,17 +124,6 @@ fun EditTaskScreen(
 					taskViewModel.deleteTask(taskViewModel.task)
 					showDialog = false
 					onBack()
-				}
-			)
-		}
-
-		// add reminder bottom sheet
-		if (showBottomSheet) {
-			AddReminderBottomSheet(
-				onClose = { showBottomSheet = false },
-				onDone = { availableReminders ->
-					taskViewModel.updateReminderList(availableReminders)
-					showBottomSheet = false
 				}
 			)
 		}
@@ -258,26 +238,7 @@ fun EditTaskScreen(
 					)
 				}
 			}
-
-			LazyRow(
-				modifier = Modifier.fillMaxWidth(),
-				contentPadding = PaddingValues(8.dp)
-			) {
-				items(taskViewModel.task.reminderList) { reminder ->
-					if (reminder.isTurnedOn) {
-						Box(
-							modifier = Modifier.padding(8.dp),
-							contentAlignment = Alignment.Center
-						) {
-							Text(
-								text = "${reminder.time} minutes before",
-								color = Color.White
-							)
-						}
-					}
-				}
-			}
-
+			
 			//bottom action buttons
 			Column(
 				modifier = Modifier
@@ -285,25 +246,6 @@ fun EditTaskScreen(
 					.padding(32.dp),
 				verticalArrangement = Arrangement.spacedBy(16.dp)
 			) {
-				Button(
-					onClick = {
-						showBottomSheet = true
-					},
-					colors = ButtonDefaults.buttonColors(
-						containerColor = Blue200,
-						contentColor = Color.White
-					),
-					shape = RoundedCornerShape(16.dp),
-					modifier = Modifier.fillMaxWidth()
-				) {
-					Text(
-						text = "Edit Reminder",
-						fontWeight = FontWeight.Bold,
-						fontSize = 15.sp,
-						modifier = Modifier.padding(8.dp)
-					)
-				}
-
 				Button(
 					onClick = {
 						if (taskTitle.isNotBlank()) {
