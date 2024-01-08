@@ -39,7 +39,8 @@ import java.time.LocalTime
 @Composable
 fun TaskComponent(
 	task: Task,
-	onUpdate: (Int) -> Unit
+	onUpdate: (Int) -> Unit,
+	onComplete: (Int) -> Unit
 ) {
 
 	val randomColor = listOf(
@@ -85,7 +86,7 @@ fun TaskComponent(
 			) {
 
 				IconButton(
-					onClick = { /*TODO*/ },
+					onClick = { onComplete(task.id) },
 					modifier = Modifier.size(32.dp)
 				) {
 
@@ -169,5 +170,6 @@ fun TaskComponentPreview() {
 		"Others"
 	)
 	TaskComponent(task = task,
+		{},
 		{})
 }

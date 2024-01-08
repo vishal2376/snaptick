@@ -62,6 +62,10 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 		task = task.copy(startTime = time)
 	}
 
+	fun updateIsCompleted(isCompleted: Boolean) {
+		task = task.copy(isCompleted = isCompleted)
+	}
+
 	fun updateReminder(isReminderOn: Boolean) {
 		task = task.copy(reminder = isReminderOn)
 	}

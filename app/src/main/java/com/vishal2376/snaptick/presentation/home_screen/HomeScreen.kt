@@ -152,7 +152,12 @@ fun HomeScreen(
 						key = { it.id }) { task ->
 						TaskComponent(
 							task = task,
-							onUpdate = onEditTask
+							onUpdate = onEditTask,
+							onComplete = { taskId ->
+								taskViewModel.getTaskById(taskId)
+								taskViewModel.updateIsCompleted(isCompleted = !taskViewModel.task.isCompleted)
+								taskViewModel.updateTask(taskViewModel.task)
+							}
 						)
 						Spacer(modifier = Modifier.height(10.dp))
 					}
