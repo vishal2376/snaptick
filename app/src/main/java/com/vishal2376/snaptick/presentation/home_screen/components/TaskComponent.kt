@@ -30,10 +30,10 @@ import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.common.taskDescTextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
-import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.ui.theme.Green
 import com.vishal2376.snaptick.ui.theme.LightGray
 import com.vishal2376.snaptick.ui.theme.Red
+import com.vishal2376.snaptick.ui.theme.Yellow
 import java.time.LocalTime
 
 @Composable
@@ -43,17 +43,17 @@ fun TaskComponent(
 	onComplete: (Int) -> Unit
 ) {
 
-	val randomColor = listOf(
-		Green,
-		Blue,
+	val priorityColors = listOf(
+		LightGray,
+		Yellow,
 		Red
-	).random()
+	)
 
 	Box(
 		modifier = Modifier
 			.fillMaxWidth()
 			.background(
-				randomColor,
+				priorityColors[task.priority],
 				RoundedCornerShape(
 					topStart = 8.dp,
 					bottomStart = 8.dp,

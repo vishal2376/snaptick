@@ -52,13 +52,16 @@ import com.commandiron.wheel_picker_compose.core.TimeFormat
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.TaskViewModel
+import com.vishal2376.snaptick.presentation.add_edit_screen.components.PriorityComponent
 import com.vishal2376.snaptick.presentation.common.fontRoboto
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.ui.theme.Blue200
 import com.vishal2376.snaptick.ui.theme.Green
+import com.vishal2376.snaptick.ui.theme.LightGray
 import com.vishal2376.snaptick.ui.theme.Red
+import com.vishal2376.snaptick.ui.theme.Yellow
 import kotlinx.coroutines.job
 import java.time.LocalTime
 
@@ -214,6 +217,38 @@ fun AddTaskScreen(
 							checkedTrackColor = Blue200,
 							uncheckedTrackColor = Blue200
 						)
+					)
+				}
+
+				Row(
+					modifier = Modifier
+						.fillMaxWidth()
+						.padding(
+							24.dp,
+							0.dp
+						),
+					horizontalArrangement = Arrangement.spacedBy(10.dp)
+				) {
+
+					PriorityComponent(
+						title = "Low",
+						backgroundColor = LightGray,
+						modifier = Modifier.weight(0.3f),
+						onClick = { taskPriority = 0 }
+					)
+
+					PriorityComponent(
+						title = "Medium",
+						backgroundColor = Yellow,
+						modifier = Modifier.weight(0.4f),
+						onClick = { taskPriority = 1 }
+					)
+
+					PriorityComponent(
+						title = "High",
+						backgroundColor = Red,
+						modifier = Modifier.weight(0.3f),
+						onClick = { taskPriority = 2 }
 					)
 				}
 			}

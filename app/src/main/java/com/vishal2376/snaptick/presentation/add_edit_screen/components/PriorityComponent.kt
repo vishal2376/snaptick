@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -17,29 +18,37 @@ import com.vishal2376.snaptick.presentation.common.h3TextStyle
 import com.vishal2376.snaptick.ui.theme.Red
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PriorityComponent(
 	title: String,
 	backgroundColor: Color,
+	modifier: Modifier,
+	onClick: () -> Unit
 ) {
 	Card(
-		modifier = Modifier
+		modifier = modifier
 			.fillMaxWidth(),
 		shape = RoundedCornerShape(8.dp),
-		colors = CardDefaults.cardColors(containerColor = backgroundColor)
-	) {
+		colors = CardDefaults.cardColors(containerColor = backgroundColor),
+		onClick = { onClick() },
+
+		) {
 		Text(
 			text = title,
 			style = h3TextStyle,
 			modifier = Modifier
 				.fillMaxWidth()
 				.wrapContentSize(Alignment.Center)
-				.padding(16.dp)
+				.padding(
+					16.dp,
+					24.dp
+				)
 		)
 	}
 }
 
-@Preview
+@Preview(showSystemUi = true)
 @Composable
 fun PriorityComponentPreview() {
 	SnaptickTheme(
@@ -48,7 +57,9 @@ fun PriorityComponentPreview() {
 	) {
 		PriorityComponent(
 			"High",
-			Red
+			Red,
+			Modifier,
+			{}
 		)
 	}
 }
