@@ -90,8 +90,8 @@ fun HomeScreen(
 				onClick = {
 					onAddTask()
 				},
-				containerColor = MaterialTheme.colorScheme.secondary,
-				contentColor = Color.White
+				containerColor = Blue,
+				contentColor = MaterialTheme.colorScheme.secondary
 			) {
 				Icon(
 					imageVector = Icons.Default.Add,
