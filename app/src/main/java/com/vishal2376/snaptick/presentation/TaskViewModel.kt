@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.vishal2376.snaptick.data.repositories.TaskRepository
 import com.vishal2376.snaptick.domain.model.Task
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.time.LocalTime
 import javax.inject.Inject
@@ -70,6 +69,10 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 
 	fun updateReminder(isReminderOn: Boolean) {
 		task = task.copy(reminder = isReminderOn)
+	}
+
+	fun updatePriority(priority: Int) {
+		task = task.copy(priority = priority)
 	}
 
 	fun updateCategory(category: String) {

@@ -31,6 +31,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -50,13 +51,16 @@ import com.commandiron.wheel_picker_compose.core.TimeFormat
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.presentation.TaskViewModel
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.ConfirmDeleteDialog
+import com.vishal2376.snaptick.presentation.add_edit_screen.components.PriorityComponent
 import com.vishal2376.snaptick.presentation.common.fontRoboto
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.ui.theme.Blue200
 import com.vishal2376.snaptick.ui.theme.Green
+import com.vishal2376.snaptick.ui.theme.LightGray
 import com.vishal2376.snaptick.ui.theme.Red
+import com.vishal2376.snaptick.ui.theme.Yellow
 import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -70,11 +74,13 @@ fun EditTaskScreen(
 	val taskStartTime = taskViewModel.task.startTime
 	val taskEndTime = taskViewModel.task.endTime
 
-	val context = LocalContext.current
+	var taskPriority by remember { mutableIntStateOf(taskViewModel.task.priority) }
 
 	var isTaskReminderOn by remember {
-		mutableStateOf(true)
+		mutableStateOf(taskViewModel.task.reminder)
 	}
+
+	val context = LocalContext.current
 
 	var showDialog by remember {
 		mutableStateOf(false)
@@ -229,7 +235,10 @@ fun EditTaskScreen(
 
 					Switch(
 						checked = isTaskReminderOn,
-						onCheckedChange = { isTaskReminderOn = it },
+						onCheckedChange = {
+							taskViewModel.updateReminder(it)
+							isTaskReminderOn = it
+						},
 						colors = SwitchDefaults.colors(
 							checkedThumbColor = Green,
 							checkedTrackColor = Blue200,
@@ -237,8 +246,39 @@ fun EditTaskScreen(
 						)
 					)
 				}
+				Row(
+					modifier = Modifier
+						.fillMaxWidth()
+						.padding(
+							24.dp,
+							0.dp
+						),
+					horizontalArrangement = Arrangement.spacedBy(10.dp)
+				) {
+
+					PriorityComponent(
+						title = "Low",
+						backgroundColor = LightGray,
+						modifier = Modifier.weight(0.3f),
+						onClick = { taskViewModel.updatePriority(0) }
+					)
+
+					PriorityComponent(
+						title = "Medium",
+						backgroundColor = Yellow,
+						modifier = Modifier.weight(0.4f),
+						onClick = { taskViewModel.updatePriority(1) }
+					)
+
+					PriorityComponent(
+						title = "High",
+						backgroundColor = Red,
+						modifier = Modifier.weight(0.3f),
+						onClick = { taskViewModel.updatePriority(2) }
+					)
+				}
 			}
-			
+
 			//bottom action buttons
 			Column(
 				modifier = Modifier
