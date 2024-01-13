@@ -46,7 +46,7 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 		}
 	}
 
-	// Add Edit Screen Events
+	// Add/Edit Screen Events
 	fun onEvent(event: AddEditScreenEvent) {
 		when (event) {
 			is AddEditScreenEvent.OnAddTaskClick -> {
@@ -55,28 +55,38 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 				}
 			}
 
-			is AddEditScreenEvent.OnDeleteTaskClick -> TODO()
+			is AddEditScreenEvent.OnDeleteTaskClick -> {
+				viewModelScope.launch {
+					repository.deleteTask(task)
+				}
+			}
+
 			is AddEditScreenEvent.OnUpdateTitle -> {
 				task = task.copy(title = event.title)
 			}
 
-			is AddEditScreenEvent.OnUpdateEndTime -> TODO()
-			is AddEditScreenEvent.OnUpdatePriority -> TODO()
-			is AddEditScreenEvent.OnUpdateReminder -> TODO()
-			is AddEditScreenEvent.OnUpdateStartTime -> TODO()
-			is AddEditScreenEvent.OnUpdateTask -> TODO()
-		}
-	}
+			is AddEditScreenEvent.OnUpdateStartTime -> {
+				task = task.copy(startTime = event.time)
+			}
 
-	fun insertTask(task: Task) {
-		viewModelScope.launch {
-			repository.insertTask(task)
-		}
-	}
+			is AddEditScreenEvent.OnUpdateEndTime -> {
+				task = task.copy(endTime = event.time)
+			}
 
-	fun deleteTask(task: Task) {
-		viewModelScope.launch {
-			repository.deleteTask(task)
+			is AddEditScreenEvent.OnUpdatePriority -> {
+				task = task.copy(priority = event.priority.ordinal)
+			}
+
+			is AddEditScreenEvent.OnUpdateReminder -> {
+				task = task.copy(reminder = event.reminder)
+			}
+
+			is AddEditScreenEvent.OnUpdateTask -> {
+				viewModelScope.launch {
+					repository.updateTask(task)
+				}
+			}
+
 		}
 	}
 
@@ -87,38 +97,5 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 		return task
 	}
 
-	fun updateTask(task: Task) {
-		viewModelScope.launch {
-			repository.updateTask(task)
-		}
-	}
-
-	fun updateTitle(title: String) {
-		task = task.copy(title = title)
-	}
-
-	fun updateStartTime(time: LocalTime) {
-		task = task.copy(startTime = time)
-	}
-
-	fun updateIsCompleted(isCompleted: Boolean) {
-		task = task.copy(isCompleted = isCompleted)
-	}
-
-	fun updateReminder(isReminderOn: Boolean) {
-		task = task.copy(reminder = isReminderOn)
-	}
-
-	fun updatePriority(priority: Int) {
-		task = task.copy(priority = priority)
-	}
-
-	fun updateCategory(category: String) {
-		task = task.copy(category = category)
-	}
-
-	fun updateEndTime(time: LocalTime) {
-		task = task.copy(endTime = time)
-	}
 
 }
