@@ -23,18 +23,17 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.vishal2376.snaptick.R
-import com.vishal2376.snaptick.presentation.TaskViewModel
+import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.common.fontRoboto
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
@@ -43,18 +42,17 @@ import com.vishal2376.snaptick.presentation.home_screen.components.InfoComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.TaskComponent
 import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.ui.theme.Green
+import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.ui.theme.Yellow
+import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-	taskViewModel: TaskViewModel,
+	tasks: List<Task>,
 	onEditTask: (id: Int) -> Unit,
 	onAddTask: () -> Unit,
 ) {
-
-	val tasks by taskViewModel.taskList.collectAsStateWithLifecycle(initialValue = emptyList())
-
 	val totalTasks = tasks.size
 	val completedTasks = tasks.count { it.isCompleted }
 
@@ -154,9 +152,9 @@ fun HomeScreen(
 							task = task,
 							onUpdate = onEditTask,
 							onComplete = { taskId ->
-								taskViewModel.getTaskById(taskId)
-								taskViewModel.updateIsCompleted(isCompleted = !taskViewModel.task.isCompleted)
-								taskViewModel.updateTask(taskViewModel.task)
+//								taskViewModel.getTaskById(taskId)
+//								taskViewModel.updateIsCompleted(isCompleted = !taskViewModel.task.isCompleted)
+//								taskViewModel.updateTask(taskViewModel.task)
 							}
 						)
 						Spacer(modifier = Modifier.height(10.dp))
@@ -164,5 +162,42 @@ fun HomeScreen(
 				}
 			}
 		}
+	}
+}
+
+@Preview
+@Composable
+fun HomeScreenPreview() {
+	SnaptickTheme(
+		darkTheme = true,
+		dynamicColor = false
+	) {
+		val tasks = listOf(
+			Task(
+				id = 1,
+				title = "Learn Kotlin",
+				isCompleted = false,
+				startTime = LocalTime.now(),
+				endTime = LocalTime.now(),
+				reminder = true,
+				category = "",
+				priority = 0
+			),
+			Task(
+				id = 2,
+				title = "Drink Water",
+				isCompleted = true,
+				startTime = LocalTime.now(),
+				endTime = LocalTime.now(),
+				reminder = false,
+				category = "",
+				priority = 1
+			)
+		)
+		HomeScreen(
+			tasks = tasks,
+			{},
+			{}
+		)
 	}
 }

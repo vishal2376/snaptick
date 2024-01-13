@@ -1,6 +1,8 @@
 package com.vishal2376.snaptick.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -20,7 +22,9 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 		startDestination = Routes.HomeScreen.name
 	) {
 		composable(route = Routes.HomeScreen.name) {
-			HomeScreen(taskViewModel,
+			val tasks by taskViewModel.taskList.collectAsStateWithLifecycle(initialValue = emptyList())
+
+			HomeScreen(tasks,
 				onEditTask = { id ->
 					navController.navigate(route = "${Routes.EditTaskScreen.name}/$id")
 				},
