@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vishal2376.snaptick.data.repositories.TaskRepository
 import com.vishal2376.snaptick.domain.model.Task
+import com.vishal2376.snaptick.presentation.home_screen.HomeScreenEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalTime
@@ -30,6 +31,19 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 		private set
 
 	var taskList = repository.getAllTasks()
+
+	// Home Screen Events
+	fun onEvent(event: HomeScreenEvent) {
+		when (event) {
+			is HomeScreenEvent.onCompleted -> {
+				viewModelScope.launch {
+					task = repository.getTaskById(event.taskId)
+					task = task.copy(isCompleted = true)
+					repository.updateTask(task)
+				}
+			}
+		}
+	}
 
 	fun insertTask(task: Task) {
 		viewModelScope.launch {

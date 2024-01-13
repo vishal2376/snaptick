@@ -24,7 +24,9 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 		composable(route = Routes.HomeScreen.name) {
 			val tasks by taskViewModel.taskList.collectAsStateWithLifecycle(initialValue = emptyList())
 
-			HomeScreen(tasks,
+			HomeScreen(
+				tasks = tasks,
+				onEvent = taskViewModel::onEvent,
 				onEditTask = { id ->
 					navController.navigate(route = "${Routes.EditTaskScreen.name}/$id")
 				},
