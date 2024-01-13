@@ -1,6 +1,7 @@
 package com.vishal2376.snaptick.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavType
@@ -48,8 +49,12 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 			})
 		) { navBackStackEntry ->
 			navBackStackEntry.arguments?.getInt("id").let { id ->
-				val task = taskViewModel.getTaskById(id!!)
-				EditTaskScreen(task = task,
+				LaunchedEffect(
+					key1 = true
+				) {
+					taskViewModel.getTaskById(id!!)
+				}
+				EditTaskScreen(task = taskViewModel.task,
 					onEvent = taskViewModel::onEvent,
 					onBack = { navController.popBackStack() })
 			}
