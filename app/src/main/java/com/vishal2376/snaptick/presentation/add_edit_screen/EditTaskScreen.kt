@@ -38,7 +38,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -51,7 +50,6 @@ import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.ConfirmDeleteDialog
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.PriorityComponent
-import com.vishal2376.snaptick.presentation.common.fontRoboto
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
@@ -152,7 +150,7 @@ fun EditTaskScreen(
 						focusedIndicatorColor = Color.Transparent,
 						cursorColor = Color.White
 					),
-					textStyle = TextStyle.Default.copy(fontFamily = fontRoboto),
+					textStyle = taskTextStyle,
 					onValueChange = {
 						onEvent(AddEditScreenEvent.OnUpdateTitle(it))
 					},
