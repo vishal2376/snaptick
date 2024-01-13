@@ -54,8 +54,15 @@ fun HomeScreen(
 	onEditTask: (id: Int) -> Unit,
 	onAddTask: () -> Unit,
 ) {
+
+	val completedTasks = mutableListOf<Task>()
+	val inCompletedTasks = mutableListOf<Task>()
+
+	tasks.filterTo(completedTasks) { it.isCompleted }
+	tasks.filterTo(inCompletedTasks) { !it.isCompleted }
+
 	val totalTasks = tasks.size
-	val completedTasks = tasks.count { it.isCompleted }
+	val totalCompletedTasks = completedTasks.size
 
 	Scaffold(topBar = {
 		TopAppBar(modifier = Modifier.padding(end = 16.dp),
@@ -113,7 +120,7 @@ fun HomeScreen(
 
 				InfoComponent(
 					title = "Completed",
-					desc = "$completedTasks/$totalTasks Tasks",
+					desc = "$totalCompletedTasks/$totalTasks Tasks",
 					icon = R.drawable.ic_task_list,
 					backgroundColor = Green,
 					modifier = Modifier.weight(1f)
@@ -129,7 +136,7 @@ fun HomeScreen(
 
 			}
 
-			if (tasks.isEmpty()) {
+			if (inCompletedTasks.isEmpty()) {
 				EmptyTaskComponent()
 			} else {
 				Text(
@@ -147,13 +154,18 @@ fun HomeScreen(
 							0.dp
 						)
 				) {
-					items(items = tasks,
+					items(items = inCompletedTasks,
 						key = { it.id }) { task ->
 						TaskComponent(
 							task = task,
 							onUpdate = onEditTask,
 							onComplete = {
-								onEvent(HomeScreenEvent.OnCompleted(it))
+								onEvent(
+									HomeScreenEvent.OnCompleted(
+										it,
+										true
+									)
+								)
 							}
 						)
 						Spacer(modifier = Modifier.height(10.dp))

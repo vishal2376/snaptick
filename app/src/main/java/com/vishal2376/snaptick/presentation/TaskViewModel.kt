@@ -39,7 +39,7 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 			is HomeScreenEvent.OnCompleted -> {
 				viewModelScope.launch {
 					task = repository.getTaskById(event.taskId)
-					task = task.copy(isCompleted = true)
+					task = task.copy(isCompleted = event.isCompleted)
 					repository.updateTask(task)
 				}
 			}
