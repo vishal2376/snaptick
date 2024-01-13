@@ -133,6 +133,8 @@ fun AddTaskScreen(
 						focusedContainerColor = Blue200,
 						unfocusedContainerColor = Blue200,
 						disabledContainerColor = Blue200,
+						unfocusedIndicatorColor = Color.Transparent,
+						focusedIndicatorColor = Color.Transparent,
 						cursorColor = Color.White,
 					),
 					textStyle = TextStyle.Default.copy(fontFamily = fontRoboto),

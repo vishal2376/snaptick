@@ -85,12 +85,6 @@ fun EditTaskScreen(
 		mutableStateOf(false)
 	}
 
-//	LaunchedEffect(key1 = true,
-//		block = {
-//			tempTask = task.copy()
-////			taskViewModel.getTaskById(taskId)
-//		})
-
 	Scaffold(topBar = {
 		TopAppBar(modifier = Modifier.padding(8.dp),
 			colors = TopAppBarDefaults.topAppBarColors(
@@ -154,7 +148,9 @@ fun EditTaskScreen(
 						focusedContainerColor = Blue200,
 						unfocusedContainerColor = Blue200,
 						disabledContainerColor = Blue200,
-						cursorColor = Color.White,
+						unfocusedIndicatorColor = Color.Transparent,
+						focusedIndicatorColor = Color.Transparent,
+						cursorColor = Color.White
 					),
 					textStyle = TextStyle.Default.copy(fontFamily = fontRoboto),
 					onValueChange = {
