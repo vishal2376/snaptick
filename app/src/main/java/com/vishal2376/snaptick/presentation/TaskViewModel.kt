@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vishal2376.snaptick.data.repositories.TaskRepository
 import com.vishal2376.snaptick.domain.model.Task
+import com.vishal2376.snaptick.presentation.add_edit_screen.AddEditScreenEvent
 import com.vishal2376.snaptick.presentation.home_screen.HomeScreenEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -40,6 +41,17 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 					task = repository.getTaskById(event.taskId)
 					task = task.copy(isCompleted = true)
 					repository.updateTask(task)
+				}
+			}
+		}
+	}
+
+	// Add Edit Screen Events
+	fun onEvent(event: AddEditScreenEvent) {
+		when (event) {
+			is AddEditScreenEvent.onAddTaskClick -> {
+				viewModelScope.launch {
+					repository.insertTask(event.task)
 				}
 			}
 		}

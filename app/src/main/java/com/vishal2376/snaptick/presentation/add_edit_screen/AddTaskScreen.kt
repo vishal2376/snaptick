@@ -45,13 +45,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.commandiron.wheel_picker_compose.WheelTimePicker
 import com.commandiron.wheel_picker_compose.core.TimeFormat
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
-import com.vishal2376.snaptick.presentation.TaskViewModel
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.PriorityComponent
 import com.vishal2376.snaptick.presentation.common.fontRoboto
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
@@ -61,6 +61,7 @@ import com.vishal2376.snaptick.ui.theme.Blue200
 import com.vishal2376.snaptick.ui.theme.Green
 import com.vishal2376.snaptick.ui.theme.LightGray
 import com.vishal2376.snaptick.ui.theme.Red
+import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.ui.theme.Yellow
 import kotlinx.coroutines.job
 import java.time.LocalTime
@@ -68,7 +69,7 @@ import java.time.LocalTime
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddTaskScreen(
-	taskViewModel: TaskViewModel,
+	onEvent: (AddEditScreenEvent) -> Unit,
 	onClose: () -> Unit
 ) {
 
@@ -273,7 +274,7 @@ fun AddTaskScreen(
 								taskCategory,
 								taskPriority
 							)
-							taskViewModel.insertTask(task)
+							onEvent(AddEditScreenEvent.onAddTaskClick(task))
 							onClose()
 						} else if (taskStartTime >= taskEndTime) {
 							Toast.makeText(
@@ -305,5 +306,17 @@ fun AddTaskScreen(
 				}
 			}
 		}
+	}
+}
+
+@Preview
+@Composable
+fun AddTaskScreenPreview() {
+	SnaptickTheme(
+		darkTheme = true,
+		dynamicColor = false
+	) {
+		AddTaskScreen(onEvent = {},
+			{})
 	}
 }

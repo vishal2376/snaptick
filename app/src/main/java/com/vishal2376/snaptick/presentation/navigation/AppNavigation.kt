@@ -36,7 +36,8 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 		}
 
 		composable(route = Routes.AddTaskScreen.name) {
-			AddTaskScreen(taskViewModel = taskViewModel,
+			AddTaskScreen(
+				onEvent = taskViewModel::onEvent,
 				onClose = { navController.popBackStack() })
 		}
 
