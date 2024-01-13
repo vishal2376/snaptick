@@ -53,6 +53,7 @@ fun HomeScreen(
 	onEvent: (HomeScreenEvent) -> Unit,
 	onEditTask: (id: Int) -> Unit,
 	onAddTask: () -> Unit,
+	onClickCompletedInfo: () -> Unit
 ) {
 
 	val completedTasks = mutableListOf<Task>()
@@ -123,7 +124,8 @@ fun HomeScreen(
 					desc = "$totalCompletedTasks/$totalTasks Tasks",
 					icon = R.drawable.ic_task_list,
 					backgroundColor = Green,
-					modifier = Modifier.weight(1f)
+					modifier = Modifier.weight(1f),
+					onClick = { onClickCompletedInfo() }
 				)
 
 				InfoComponent(
@@ -131,7 +133,8 @@ fun HomeScreen(
 					desc = "8 hours",
 					icon = R.drawable.ic_clock,
 					backgroundColor = Blue,
-					modifier = Modifier.weight(1f)
+					modifier = Modifier.weight(1f),
+					onClick = {}
 				)
 
 			}
@@ -207,6 +210,7 @@ fun HomeScreenPreview() {
 		)
 		HomeScreen(
 			tasks = tasks,
+			{},
 			{},
 			{},
 			{}

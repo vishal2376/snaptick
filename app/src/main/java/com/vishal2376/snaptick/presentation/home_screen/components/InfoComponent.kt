@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,18 +26,21 @@ import com.vishal2376.snaptick.presentation.common.infoDescTextStyle
 import com.vishal2376.snaptick.presentation.common.infoTextStyle
 import com.vishal2376.snaptick.ui.theme.Blue
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InfoComponent(
 	title: String,
 	desc: String,
 	icon: Int,
 	backgroundColor: Color,
-	modifier: Modifier
+	modifier: Modifier,
+	onClick: () -> Unit
 ) {
 	Card(
 		modifier = modifier,
 		shape = RoundedCornerShape(16.dp),
-		colors = CardDefaults.cardColors(containerColor = backgroundColor)
+		colors = CardDefaults.cardColors(containerColor = backgroundColor),
+		onClick = { onClick() }
 	) {
 		Column(
 			modifier = Modifier
@@ -81,6 +85,7 @@ private fun InfoComponentPreview() {
 		desc = "1/3 Tasks",
 		icon = R.drawable.ic_task_list,
 		backgroundColor = Blue,
-		modifier = Modifier
+		modifier = Modifier,
+		{}
 	)
 }

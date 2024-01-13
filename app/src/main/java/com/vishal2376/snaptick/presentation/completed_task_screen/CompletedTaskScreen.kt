@@ -32,10 +32,14 @@ import java.time.LocalTime
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CompletedTaskScreen(
-	completedTasks: List<Task>,
+	tasks: List<Task>,
 	onEvent: (HomeScreenEvent) -> Unit,
 	onClose: () -> Unit
 ) {
+
+	val completedTasks = mutableListOf<Task>()
+	tasks.filterTo(completedTasks) { it.isCompleted }
+
 	Scaffold(topBar = {
 		TopAppBar(
 			modifier = Modifier.padding(8.dp),
@@ -124,7 +128,7 @@ fun CompletedTaskScreenPreview() {
 			)
 		)
 		CompletedTaskScreen(
-			completedTasks = tasks,
+			tasks = tasks,
 			{},
 			{}
 		)

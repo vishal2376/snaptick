@@ -12,6 +12,7 @@ import androidx.navigation.navArgument
 import com.vishal2376.snaptick.presentation.TaskViewModel
 import com.vishal2376.snaptick.presentation.add_edit_screen.AddTaskScreen
 import com.vishal2376.snaptick.presentation.add_edit_screen.EditTaskScreen
+import com.vishal2376.snaptick.presentation.completed_task_screen.CompletedTaskScreen
 import com.vishal2376.snaptick.presentation.home_screen.HomeScreen
 
 @Composable
@@ -33,7 +34,18 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 				},
 				onAddTask = {
 					navController.navigate(route = Routes.AddTaskScreen.name)
+				},
+				onClickCompletedInfo = {
+					navController.navigate(route = Routes.CompletedTaskScreen.name)
 				})
+		}
+
+		composable(route = Routes.CompletedTaskScreen.name) {
+			val tasks by taskViewModel.taskList.collectAsStateWithLifecycle(initialValue = emptyList())
+			CompletedTaskScreen(
+				tasks = tasks,
+				onEvent = taskViewModel::onEvent,
+				onClose = { navController.popBackStack() })
 		}
 
 		composable(route = Routes.AddTaskScreen.name) {
