@@ -54,6 +54,17 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 					repository.insertTask(event.task)
 				}
 			}
+
+			is AddEditScreenEvent.OnDeleteTaskClick -> TODO()
+			is AddEditScreenEvent.OnUpdateTitle -> {
+				task = task.copy(title = event.title)
+			}
+
+			is AddEditScreenEvent.OnUpdateEndTime -> TODO()
+			is AddEditScreenEvent.OnUpdatePriority -> TODO()
+			is AddEditScreenEvent.OnUpdateReminder -> TODO()
+			is AddEditScreenEvent.OnUpdateStartTime -> TODO()
+			is AddEditScreenEvent.OnUpdateTask -> TODO()
 		}
 	}
 
@@ -69,10 +80,11 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 		}
 	}
 
-	fun getTaskById(id: Int) {
+	fun getTaskById(id: Int): Task {
 		viewModelScope.launch {
 			task = repository.getTaskById(id)
 		}
+		return task
 	}
 
 	fun updateTask(task: Task) {

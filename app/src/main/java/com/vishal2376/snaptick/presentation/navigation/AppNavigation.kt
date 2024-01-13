@@ -48,8 +48,9 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 			})
 		) { navBackStackEntry ->
 			navBackStackEntry.arguments?.getInt("id").let { id ->
-				EditTaskScreen(taskId = id!!,
-					taskViewModel = taskViewModel,
+				val task = taskViewModel.getTaskById(id!!)
+				EditTaskScreen(task = task,
+					onEvent = taskViewModel::onEvent,
 					onBack = { navController.popBackStack() })
 			}
 		}
