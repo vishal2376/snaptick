@@ -274,7 +274,7 @@ fun AddTaskScreen(
 								taskCategory,
 								taskPriority
 							)
-							onEvent(AddEditScreenEvent.onAddTaskClick(task))
+							onEvent(AddEditScreenEvent.OnAddTaskClick(task))
 							onClose()
 						} else if (taskStartTime >= taskEndTime) {
 							Toast.makeText(

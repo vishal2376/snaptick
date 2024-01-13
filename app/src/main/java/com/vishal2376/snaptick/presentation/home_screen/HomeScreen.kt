@@ -153,7 +153,7 @@ fun HomeScreen(
 							task = task,
 							onUpdate = onEditTask,
 							onComplete = {
-								onEvent(HomeScreenEvent.onCompleted(it))
+								onEvent(HomeScreenEvent.OnCompleted(it))
 							}
 						)
 						Spacer(modifier = Modifier.height(10.dp))
