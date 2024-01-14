@@ -48,3 +48,8 @@ var taskTextStyle = TextStyle(
 	fontSize = 16.sp,
 	fontFamily = fontRoboto,
 )
+
+var timerTextStyle = TextStyle(
+	fontSize = 36.sp,
+	fontFamily = fontMontserrat,
+)

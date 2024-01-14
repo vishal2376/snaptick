@@ -1,7 +1,7 @@
 package com.vishal2376.snaptick.presentation.pomodoro_screen.components
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,13 +22,13 @@ fun CustomCircularProgressBar(
 	progress: Float = 10f,
 	progressMax: Float = 100f,
 	progressBarColor: Color = Blue,
-	progressBarWidth: Dp = 15.dp,
+	progressBarWidth: Dp = 10.dp,
 	backgroundProgressBarColor: Color = MaterialTheme.colorScheme.secondary,
 	backgroundProgressBarWidth: Dp = 3.dp,
 	roundBorder: Boolean = true,
 	startAngle: Float = 0f
 ) {
-	Canvas(modifier = Modifier.fillMaxSize()) {
+	Canvas(modifier = Modifier.size(250.dp)) {
 
 		val canvasSize = size.minDimension
 
