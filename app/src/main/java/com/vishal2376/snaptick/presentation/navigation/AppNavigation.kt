@@ -14,6 +14,7 @@ import com.vishal2376.snaptick.presentation.add_edit_screen.AddTaskScreen
 import com.vishal2376.snaptick.presentation.add_edit_screen.EditTaskScreen
 import com.vishal2376.snaptick.presentation.completed_task_screen.CompletedTaskScreen
 import com.vishal2376.snaptick.presentation.home_screen.HomeScreen
+import com.vishal2376.snaptick.presentation.pomodoro_screen.PomodoroScreen
 
 @Composable
 fun AppNavigation(taskViewModel: TaskViewModel) {
@@ -37,6 +38,9 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 				},
 				onClickCompletedInfo = {
 					navController.navigate(route = Routes.CompletedTaskScreen.name)
+				},
+				onPomodoroTask = { id ->
+					navController.navigate(route = "${Routes.PomodoroScreen.name}/$id")
 				})
 		}
 
@@ -68,6 +72,23 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 				}
 				EditTaskScreen(task = taskViewModel.task,
 					onEvent = taskViewModel::onEvent,
+					onBack = { navController.popBackStack() })
+			}
+		}
+
+		composable(
+			route = "${Routes.PomodoroScreen.name}/{id}",
+			arguments = listOf(navArgument("id") {
+				type = NavType.IntType
+			})
+		) { navBackStackEntry ->
+			navBackStackEntry.arguments?.getInt("id").let { id ->
+				LaunchedEffect(
+					key1 = true
+				) {
+					taskViewModel.getTaskById(id!!)
+				}
+				PomodoroScreen(task = taskViewModel.task,
 					onBack = { navController.popBackStack() })
 			}
 		}

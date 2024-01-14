@@ -58,7 +58,8 @@ fun HomeScreen(
 	onEvent: (HomeScreenEvent) -> Unit,
 	onEditTask: (id: Int) -> Unit,
 	onAddTask: () -> Unit,
-	onClickCompletedInfo: () -> Unit
+	onClickCompletedInfo: () -> Unit,
+	onPomodoroTask: (id: Int) -> Unit,
 ) {
 
 	val completedTasks = mutableListOf<Task>()
@@ -175,7 +176,9 @@ fun HomeScreen(
 											true
 										)
 									)
-								}
+								},
+								onPomodoro = onPomodoroTask
+
 							)
 						}
 						Spacer(modifier = Modifier.height(10.dp))
@@ -217,6 +220,7 @@ fun HomeScreenPreview() {
 		)
 		HomeScreen(
 			tasks = tasks,
+			{},
 			{},
 			{},
 			{},

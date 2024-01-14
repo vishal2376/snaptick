@@ -154,12 +154,14 @@ fun TaskComponent(
 							}
 						}
 					}
-					IconButton(onClick = { onPomodoro(task.id) }) {
-						Icon(
-							painter = painterResource(id = R.drawable.ic_timer),
-							tint = LightGray,
-							contentDescription = null
-						)
+					if (!task.isCompleted) {
+						IconButton(onClick = { onPomodoro(task.id) }) {
+							Icon(
+								painter = painterResource(id = R.drawable.ic_timer),
+								tint = LightGray,
+								contentDescription = null
+							)
+						}
 					}
 				}
 			}
