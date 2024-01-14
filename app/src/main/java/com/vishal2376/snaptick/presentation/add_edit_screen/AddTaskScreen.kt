@@ -168,7 +168,6 @@ fun AddTaskScreen(
 						Spacer(modifier = Modifier.height(8.dp))
 						WheelTimePicker(
 							timeFormat = TimeFormat.AM_PM,
-							minTime = LocalTime.now(),
 							startTime = LocalTime.now(),
 							textColor = Color.White
 						) { snappedTime ->
@@ -185,7 +184,6 @@ fun AddTaskScreen(
 						WheelTimePicker(
 							timeFormat = TimeFormat.AM_PM,
 							textColor = Color.White,
-							minTime = LocalTime.now().plusMinutes(5),
 							startTime = LocalTime.now().plusHours(1)
 						) { snappedTime ->
 							taskEndTime = snappedTime

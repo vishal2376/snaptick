@@ -31,4 +31,29 @@ data class Task(
 		val dtf = DateTimeFormatter.ofPattern("hh:mm a")
 		return time.format(dtf)
 	}
+
+	fun getDuration(): Long {
+		return (endTime.toSecondOfDay() - startTime.toSecondOfDay()).toLong()
+	}
+
+	fun getFormattedDuration(duration: Long): String {
+		val hours = duration / 3600
+		val minutes = (duration % 3600) / 60
+		val seconds = duration % 60
+		val formattedTime = if (hours == 0L) {
+			String.format(
+				"%02d:%02d",
+				minutes,
+				seconds
+			)
+		} else {
+			String.format(
+				"%02d:%02d:%02d",
+				hours,
+				minutes,
+				seconds
+			)
+		}
+		return formattedTime
+	}
 }

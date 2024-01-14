@@ -54,16 +54,19 @@ fun PomodoroScreen(
 ) {
 
 	var timeLeft by remember {
-		mutableLongStateOf(30)
+		mutableLongStateOf(task.getDuration())
 	}
 
 	var isPaused by remember {
 		mutableStateOf(false)
 	}
 
-	LaunchedEffect(key1 = timeLeft,key2 = isPaused) {
+	LaunchedEffect(
+		key1 = timeLeft,
+		key2 = isPaused
+	) {
 		while (timeLeft > 0 && !isPaused) {
-			delay(1000)
+			delay(1000L)
 			timeLeft--
 		}
 	}
@@ -114,7 +117,7 @@ fun PomodoroScreen(
 				contentAlignment = Alignment.Center
 			) {
 				Text(
-					text = "$timeLeft",
+					text = task.getFormattedDuration(timeLeft),
 					style = timerTextStyle,
 					color = Color.White
 				)
@@ -164,8 +167,14 @@ fun PomodoroScreenPreview() {
 			id = 1,
 			title = "Learn Kotlin",
 			isCompleted = false,
-			startTime = LocalTime.now(),
-			endTime = LocalTime.now(),
+			startTime = LocalTime.of(
+				10,
+				0
+			),
+			endTime = LocalTime.of(
+				11,
+				0
+			),
 			reminder = true,
 			category = "",
 			priority = 0
