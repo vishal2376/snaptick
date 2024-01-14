@@ -1,13 +1,10 @@
 package com.vishal2376.snaptick.presentation.pomodoro_screen
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.rounded.ArrowBack
@@ -26,7 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vishal2376.snaptick.domain.model.Task
-import com.vishal2376.snaptick.presentation.common.h2TextStyle
+import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.presentation.common.timerTextStyle
 import com.vishal2376.snaptick.presentation.pomodoro_screen.components.CustomCircularProgressBar
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
@@ -45,7 +42,13 @@ fun PomodoroScreen(
 				containerColor = MaterialTheme.colorScheme.background,
 			),
 			title = {
-				Text(text = "")
+				Text(
+					modifier = Modifier
+						.fillMaxWidth()
+						.wrapContentSize(Alignment.Center),
+					text = task.title,
+					style = taskTextStyle
+				)
 			},
 			navigationIcon = {
 				IconButton(onClick = { onBack() }) {
@@ -66,35 +69,19 @@ fun PomodoroScreen(
 			}
 		)
 	}) { innerPadding ->
-		Column(
+
+		Box(
 			modifier = Modifier
 				.padding(innerPadding)
 				.fillMaxSize(),
-			horizontalAlignment = Alignment.CenterHorizontally,
-			verticalArrangement = Arrangement.Center
+			contentAlignment = Alignment.Center
 		) {
-
 			Text(
-				text = task.title,
-				style = h2TextStyle,
+				text = "01 : 30",
+				style = timerTextStyle,
 				color = Color.White
 			)
-
-			Spacer(modifier = Modifier.height(80.dp))
-
-			Box(
-				modifier = Modifier.fillMaxWidth(),
-				contentAlignment = Alignment.Center
-			) {
-				Text(
-					text = "01 : 30",
-					style = timerTextStyle,
-					color = Color.White
-				)
-				CustomCircularProgressBar()
-			}
-
-			Spacer(modifier = Modifier.height(100.dp))
+			CustomCircularProgressBar()
 		}
 	}
 }
