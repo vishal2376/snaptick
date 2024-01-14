@@ -1,5 +1,7 @@
 package com.vishal2376.snaptick.presentation.completed_task_screen
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,7 +31,10 @@ import com.vishal2376.snaptick.presentation.home_screen.components.TaskComponent
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import java.time.LocalTime
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(
+	ExperimentalMaterial3Api::class,
+	ExperimentalFoundationApi::class
+)
 @Composable
 fun CompletedTaskScreen(
 	tasks: List<Task>,
@@ -78,18 +83,20 @@ fun CompletedTaskScreen(
 				) {
 					items(items = completedTasks,
 						key = { it.id }) { task ->
-						TaskComponent(
-							task = task,
-							onUpdate = {},
-							onComplete = {
-								onEvent(
-									HomeScreenEvent.OnCompleted(
-										it,
-										false
+						Box(modifier = Modifier.animateItemPlacement()) {
+							TaskComponent(
+								task = task,
+								onUpdate = {},
+								onComplete = {
+									onEvent(
+										HomeScreenEvent.OnCompleted(
+											it,
+											false
+										)
 									)
-								)
-							}
-						)
+								}
+							)
+						}
 						Spacer(modifier = Modifier.height(10.dp))
 					}
 				}

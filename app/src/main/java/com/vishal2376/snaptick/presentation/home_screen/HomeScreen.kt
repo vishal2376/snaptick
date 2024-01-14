@@ -1,6 +1,8 @@
 package com.vishal2376.snaptick.presentation.home_screen
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -46,7 +48,10 @@ import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.ui.theme.Yellow
 import java.time.LocalTime
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(
+	ExperimentalMaterial3Api::class,
+	ExperimentalFoundationApi::class
+)
 @Composable
 fun HomeScreen(
 	tasks: List<Task>,
@@ -159,18 +164,20 @@ fun HomeScreen(
 				) {
 					items(items = inCompletedTasks,
 						key = { it.id }) { task ->
-						TaskComponent(
-							task = task,
-							onUpdate = onEditTask,
-							onComplete = {
-								onEvent(
-									HomeScreenEvent.OnCompleted(
-										it,
-										true
+						Box(modifier = Modifier.animateItemPlacement()) {
+							TaskComponent(
+								task = task,
+								onUpdate = onEditTask,
+								onComplete = {
+									onEvent(
+										HomeScreenEvent.OnCompleted(
+											it,
+											true
+										)
 									)
-								)
-							}
-						)
+								}
+							)
+						}
 						Spacer(modifier = Modifier.height(10.dp))
 					}
 				}
