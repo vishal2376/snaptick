@@ -41,7 +41,8 @@ import java.time.LocalTime
 fun TaskComponent(
 	task: Task,
 	onUpdate: (Int) -> Unit,
-	onComplete: (Int) -> Unit
+	onComplete: (Int) -> Unit,
+	onPomodoro: (Int) -> Unit
 ) {
 
 	val priorityColors = listOf(
@@ -153,6 +154,13 @@ fun TaskComponent(
 							}
 						}
 					}
+					IconButton(onClick = { onPomodoro(task.id) }) {
+						Icon(
+							painter = painterResource(id = R.drawable.ic_timer),
+							tint = LightGray,
+							contentDescription = null
+						)
+					}
 				}
 			}
 
@@ -174,6 +182,7 @@ fun TaskComponentPreview() {
 		"Others"
 	)
 	TaskComponent(task = task,
+		{},
 		{},
 		{})
 }
