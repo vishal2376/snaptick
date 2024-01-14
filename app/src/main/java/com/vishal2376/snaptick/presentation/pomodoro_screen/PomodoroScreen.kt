@@ -1,8 +1,12 @@
 package com.vishal2376.snaptick.presentation.pomodoro_screen
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
@@ -70,18 +74,25 @@ fun PomodoroScreen(
 		)
 	}) { innerPadding ->
 
-		Box(
+		Column(
 			modifier = Modifier
-				.padding(innerPadding)
-				.fillMaxSize(),
-			contentAlignment = Alignment.Center
+				.fillMaxSize()
+				.padding(innerPadding),
+			verticalArrangement = Arrangement.Center,
+			horizontalAlignment = Alignment.CenterHorizontally
 		) {
-			Text(
-				text = "01 : 30",
-				style = timerTextStyle,
-				color = Color.White
-			)
-			CustomCircularProgressBar()
+			Box(
+				contentAlignment = Alignment.Center
+			) {
+				Text(
+					text = "01 : 30",
+					style = timerTextStyle,
+					color = Color.White
+				)
+				CustomCircularProgressBar()
+			}
+
+			Spacer(modifier = Modifier.height(innerPadding.calculateTopPadding()))
 		}
 	}
 }
