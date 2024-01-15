@@ -10,6 +10,7 @@ import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.add_edit_screen.AddEditScreenEvent
 import com.vishal2376.snaptick.presentation.home_screen.HomeScreenEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalTime
 import javax.inject.Inject
@@ -37,7 +38,7 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 	fun onEvent(event: HomeScreenEvent) {
 		when (event) {
 			is HomeScreenEvent.OnCompleted -> {
-				viewModelScope.launch {
+				viewModelScope.launch(Dispatchers.IO) {
 					task = repository.getTaskById(event.taskId)
 					task = task.copy(isCompleted = event.isCompleted)
 					repository.updateTask(task)
@@ -50,13 +51,13 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 	fun onEvent(event: AddEditScreenEvent) {
 		when (event) {
 			is AddEditScreenEvent.OnAddTaskClick -> {
-				viewModelScope.launch {
+				viewModelScope.launch(Dispatchers.IO) {
 					repository.insertTask(event.task)
 				}
 			}
 
 			is AddEditScreenEvent.OnDeleteTaskClick -> {
-				viewModelScope.launch {
+				viewModelScope.launch(Dispatchers.IO) {
 					repository.deleteTask(task)
 				}
 			}
@@ -82,7 +83,7 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 			}
 
 			is AddEditScreenEvent.OnUpdateTask -> {
-				viewModelScope.launch {
+				viewModelScope.launch(Dispatchers.IO) {
 					repository.updateTask(task)
 				}
 			}
@@ -91,7 +92,7 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 	}
 
 	fun getTaskById(id: Int) {
-		viewModelScope.launch {
+		viewModelScope.launch(Dispatchers.IO) {
 			task = repository.getTaskById(id)
 		}
 	}

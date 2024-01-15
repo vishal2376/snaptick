@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.rounded.ArrowBack
@@ -26,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
@@ -77,6 +79,13 @@ fun PomodoroScreen(
 		while (timeLeft > 0 && !isPaused) {
 			delay(1000L)
 			timeLeft--
+		}
+	}
+
+	DisposableEffect(Unit) {
+		onDispose {
+			totalTime = 0L
+			timeLeft = 0L
 		}
 	}
 
@@ -144,7 +153,7 @@ fun PomodoroScreen(
 					contentColor = LightGray
 				) {
 					Icon(
-						imageVector = Icons.Default.PlayArrow,
+						imageVector = if (isPaused) Icons.Default.PlayArrow else Icons.Default.Pause,
 						contentDescription = null
 					)
 				}
