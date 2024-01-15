@@ -150,7 +150,10 @@ fun PomodoroScreen(
 				}
 
 				FloatingActionButton(
-					onClick = { /*TODO*/ },
+					onClick = {
+						timeLeft = totalTime
+						isPaused = true
+					},
 					shape = CircleShape,
 					containerColor = MaterialTheme.colorScheme.secondary,
 					contentColor = LightGray
