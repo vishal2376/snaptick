@@ -53,8 +53,17 @@ fun PomodoroScreen(
 	onBack: () -> Unit
 ) {
 
+	var totalTime by remember {
+		mutableLongStateOf(0L)
+	}
+
 	var timeLeft by remember {
-		mutableLongStateOf(task.getDuration())
+		mutableLongStateOf(0L)
+	}
+
+	if (task.title.isNotEmpty() && totalTime == 0L) {
+		totalTime = task.getDuration()
+		timeLeft = task.getDuration()
 	}
 
 	var isPaused by remember {
@@ -121,7 +130,8 @@ fun PomodoroScreen(
 					style = timerTextStyle,
 					color = Color.White
 				)
-				CustomCircularProgressBar(progress = timeLeft.toFloat())
+				val calcProgress = 100f - ((timeLeft.toFloat() / totalTime.toFloat()) * 100f)
+				CustomCircularProgressBar(progress = calcProgress)
 			}
 
 			Spacer(modifier = Modifier.height(64.dp))
