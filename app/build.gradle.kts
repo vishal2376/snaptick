@@ -27,7 +27,8 @@ android {
 		release {
 			isMinifyEnabled = false
 			proguardFiles(
-				getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+				getDefaultProguardFile("proguard-android-optimize.txt"),
+				"proguard-rules.pro"
 			)
 		}
 	}
@@ -52,7 +53,8 @@ android {
 
 	ksp {
 		arg(
-			"room.schemaLocation", "$projectDir/schemas"
+			"room.schemaLocation",
+			"$projectDir/schemas"
 		)
 	}
 
@@ -87,6 +89,9 @@ dependencies {
 
 	//time picker
 	implementation("com.github.commandiron:WheelPickerCompose:1.1.11")
+
+	//material icons extended
+	implementation("androidx.compose.material:material-icons-extended:1.5.4")
 
 	testImplementation("junit:junit:4.13.2")
 	androidTestImplementation("androidx.test.ext:junit:1.1.5")
