@@ -1,5 +1,10 @@
 package com.vishal2376.snaptick.presentation.pomodoro_screen
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,6 +42,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vishal2376.snaptick.domain.model.Task
@@ -46,6 +52,7 @@ import com.vishal2376.snaptick.presentation.pomodoro_screen.components.CustomCir
 import com.vishal2376.snaptick.ui.theme.LightGray
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -72,6 +79,11 @@ fun PomodoroScreen(
 		mutableStateOf(false)
 	}
 
+	//flicker animation
+	val alphaValue = remember {
+		Animatable(1f)
+	}
+
 	LaunchedEffect(
 		key1 = timeLeft,
 		key2 = isPaused
@@ -79,6 +91,22 @@ fun PomodoroScreen(
 		while (timeLeft > 0 && !isPaused) {
 			delay(1000L)
 			timeLeft--
+		}
+
+		//flicker animation
+		launch {
+			if (isPaused) {
+				alphaValue.animateTo(
+					targetValue = 0.2f,
+					animationSpec = infiniteRepeatable(
+						tween(
+							1000,
+							easing = LinearEasing
+						),
+						repeatMode = RepeatMode.Reverse
+					)
+				)
+			}
 		}
 	}
 
@@ -132,6 +160,9 @@ fun PomodoroScreen(
 			horizontalAlignment = Alignment.CenterHorizontally
 		) {
 			Box(
+				modifier = Modifier.graphicsLayer {
+					alpha = alphaValue.value
+				},
 				contentAlignment = Alignment.Center
 			) {
 				Text(
@@ -160,8 +191,8 @@ fun PomodoroScreen(
 
 				FloatingActionButton(
 					onClick = {
-						timeLeft = totalTime
 						isPaused = true
+						timeLeft = totalTime
 					},
 					shape = CircleShape,
 					containerColor = MaterialTheme.colorScheme.secondary,
