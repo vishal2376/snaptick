@@ -1,6 +1,8 @@
 package com.vishal2376.snaptick.presentation.home_screen.components
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -37,6 +39,7 @@ import com.vishal2376.snaptick.ui.theme.Red
 import com.vishal2376.snaptick.ui.theme.Yellow
 import java.time.LocalTime
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TaskComponent(
 	task: Task,
@@ -92,7 +95,9 @@ fun TaskComponent(
 
 				IconButton(
 					onClick = { onComplete(task.id) },
-					modifier = Modifier.size(32.dp)
+					modifier = Modifier
+						.size(32.dp)
+						.weight(0.1f)
 				) {
 
 					if (task.isCompleted) {
@@ -117,13 +122,16 @@ fun TaskComponent(
 				}
 
 				Row(
-					modifier = Modifier.fillMaxWidth(),
+					modifier = Modifier.weight(0.8f),
 					verticalAlignment = Alignment.CenterVertically,
 					horizontalArrangement = Arrangement.SpaceBetween
 				) {
 
 					Column(verticalArrangement = Arrangement.Center) {
 						Text(
+							modifier = Modifier
+								.fillMaxWidth()
+								.basicMarquee(delayMillis = 1000,),
 							text = task.title,
 							style = taskTextStyle,
 							color = Color.White
@@ -154,18 +162,21 @@ fun TaskComponent(
 							}
 						}
 					}
-					if (!task.isCompleted) {
-						IconButton(onClick = { onPomodoro(task.id) }) {
-							Icon(
-								painter = painterResource(id = R.drawable.ic_timer),
-								tint = LightGray,
-								contentDescription = null
-							)
-						}
+
+				}
+				if (!task.isCompleted) {
+					IconButton(
+						onClick = { onPomodoro(task.id) },
+						modifier = Modifier.weight(0.1f)
+					) {
+						Icon(
+							painter = painterResource(id = R.drawable.ic_timer),
+							tint = LightGray,
+							contentDescription = null
+						)
 					}
 				}
 			}
-
 		}
 
 	}
