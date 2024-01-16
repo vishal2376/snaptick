@@ -41,8 +41,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vishal2376.snaptick.domain.model.Task
@@ -159,13 +159,9 @@ fun PomodoroScreen(
 			verticalArrangement = Arrangement.Center,
 			horizontalAlignment = Alignment.CenterHorizontally
 		) {
-			Box(
-				modifier = Modifier.graphicsLayer {
-					alpha = alphaValue.value
-				},
-				contentAlignment = Alignment.Center
-			) {
+			Box(contentAlignment = Alignment.Center) {
 				Text(
+					modifier = Modifier.alpha(alphaValue.value),
 					text = task.getFormattedDuration(timeLeft),
 					style = timerTextStyle,
 					color = Color.White
