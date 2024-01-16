@@ -179,7 +179,6 @@ fun EditTaskScreen(
 						if (task.title.isNotEmpty()) {
 							WheelTimePicker(
 								timeFormat = TimeFormat.AM_PM,
-								minTime = LocalTime.now(),
 								startTime = task.startTime,
 								textColor = Color.White
 							) { snappedTime ->
@@ -198,7 +197,6 @@ fun EditTaskScreen(
 							WheelTimePicker(
 								timeFormat = TimeFormat.AM_PM,
 								textColor = Color.White,
-								minTime = LocalTime.now().plusMinutes(5),
 								startTime = task.endTime
 							) { snappedTime ->
 								onEvent(AddEditScreenEvent.OnUpdateEndTime(snappedTime))
