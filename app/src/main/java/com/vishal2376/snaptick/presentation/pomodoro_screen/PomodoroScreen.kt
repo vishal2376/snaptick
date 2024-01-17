@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.presentation.common.timerTextStyle
+import com.vishal2376.snaptick.presentation.home_screen.HomeScreenEvent
 import com.vishal2376.snaptick.presentation.pomodoro_screen.components.CustomCircularProgressBar
 import com.vishal2376.snaptick.ui.theme.LightGray
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
@@ -59,6 +60,7 @@ import java.time.LocalTime
 @Composable
 fun PomodoroScreen(
 	task: Task,
+	onEvent: (HomeScreenEvent) -> Unit,
 	onBack: () -> Unit
 ) {
 
@@ -141,7 +143,15 @@ fun PomodoroScreen(
 				}
 			},
 			actions = {
-				IconButton(onClick = { /*TODO*/ }) {
+				IconButton(onClick = {
+					onEvent(
+						HomeScreenEvent.OnCompleted(
+							taskId = task.id,
+							isCompleted = true
+						)
+					)
+					onBack()
+				}) {
 					Icon(
 						imageVector = Icons.Default.Check,
 						contentDescription = null,
@@ -229,6 +239,7 @@ fun PomodoroScreenPreview() {
 			priority = 0
 		)
 		PomodoroScreen(task,
+			{},
 			{})
 	}
 }

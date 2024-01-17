@@ -89,6 +89,7 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 					taskViewModel.getTaskById(id!!)
 				}
 				PomodoroScreen(task = taskViewModel.task,
+					onEvent = taskViewModel::onEvent,
 					onBack = { navController.popBackStack() })
 			}
 		}
