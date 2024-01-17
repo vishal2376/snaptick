@@ -9,6 +9,7 @@ import com.vishal2376.snaptick.R
 
 
 val fontRoboto = FontFamily(Font(R.font.roboto))
+val fontRobotoMonoThin = FontFamily(Font(R.font.roboto_mono_thin))
 val fontMontserrat = FontFamily(Font(R.font.montserrat))
 
 var h1TextStyle = TextStyle(
@@ -51,5 +52,5 @@ var taskTextStyle = TextStyle(
 
 var timerTextStyle = TextStyle(
 	fontSize = 42.sp,
-	fontFamily = fontMontserrat
+	fontFamily = fontRobotoMonoThin
 )
