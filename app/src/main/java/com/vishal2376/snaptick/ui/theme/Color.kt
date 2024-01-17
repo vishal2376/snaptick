@@ -18,3 +18,6 @@ val Green = Color(0xFFC7E9A7)
 val Blue = Color(0xFF83BCFF)
 val Yellow = Color(0xFFFF9737)
 val LightGray = Color(0xFFCCD2D8)
+
+val Black500 = Color(0xFF000000)
+val Black200 = Color(0xFF252526)
