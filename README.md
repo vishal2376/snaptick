@@ -4,19 +4,32 @@
 
 # **Snaptick**
 
-<br/>
+Snaptick is a free daily task planner app designed to help users to increase productivity. With an easy-to-use interface and features like pomodoro timer, users can easily organize and achieve their daily plans.
 
+<br/>
 
 <img src="https://img.shields.io/github/stars/vishal2376/snaptick?style=for-the-badge&logo=powerpages&color=cba6f7&logoColor=D9E0EE&labelColor=302D41"/>
 <img src="https://img.shields.io/github/last-commit/vishal2376/snaptick?style=for-the-badge&logo=github&color=a6da95&logoColor=D9E0EE&labelColor=302D41"/>
 <img src="https://img.shields.io/github/repo-size/vishal2376/snaptick?style=for-the-badge&logo=dropbox&color=7dc4e4&logoColor=D9E0EE&labelColor=302D41"/>
 
 <br/>
-<br/>
+
+<h2>
+ ⚠️ Currently in Development, Follow Progress on <a href="https://twitter.com/vishal2376"><img src="https://img.shields.io/badge/twitter-%231DA1F2.svg?&style=for-the-badge&logo=twitter&logoColor=white" /></a>
+</h2>
 
 </div>
 
 ## Features
+- Create and Edit tasks
+- Manage task priority
+- Pomodoro Timer
+- Manage Free time `Not implemented yet`
+- Sort tasks (based on priority,name,created) `Not implemented yet`
+- Reminder Notification `Not implemented yet`
+- Incomplete Tasks Widget `Not implemented yet`
+- Analyze your progress `Not implemented yet`
+- Backup and Restore Progress `Not implemented yet`
 
 ## Screenshots
 
