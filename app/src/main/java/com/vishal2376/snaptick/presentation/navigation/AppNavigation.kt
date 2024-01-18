@@ -9,11 +9,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.vishal2376.snaptick.presentation.TaskViewModel
 import com.vishal2376.snaptick.presentation.add_edit_screen.AddTaskScreen
 import com.vishal2376.snaptick.presentation.add_edit_screen.EditTaskScreen
 import com.vishal2376.snaptick.presentation.completed_task_screen.CompletedTaskScreen
 import com.vishal2376.snaptick.presentation.home_screen.HomeScreen
+import com.vishal2376.snaptick.presentation.main.TaskViewModel
 import com.vishal2376.snaptick.presentation.pomodoro_screen.PomodoroScreen
 
 @Composable
