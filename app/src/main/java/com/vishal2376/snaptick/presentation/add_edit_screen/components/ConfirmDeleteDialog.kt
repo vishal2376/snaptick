@@ -13,6 +13,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,8 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
-import com.vishal2376.snaptick.ui.theme.Blue200
-import com.vishal2376.snaptick.ui.theme.Blue500
 import com.vishal2376.snaptick.ui.theme.LightGray
 import com.vishal2376.snaptick.ui.theme.Red
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
@@ -38,7 +37,7 @@ fun ConfirmDeleteDialog(onClose: () -> Unit, onDelete: () -> Unit) {
 				.fillMaxWidth()
 				.padding(16.dp),
 			shape = RoundedCornerShape(16.dp),
-			colors = CardDefaults.cardColors(containerColor = Blue200)
+			colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondary)
 		) {
 			Column(
 				modifier = Modifier
@@ -66,7 +65,7 @@ fun ConfirmDeleteDialog(onClose: () -> Unit, onDelete: () -> Unit) {
 				) {
 					Button(
 						onClick = { onClose() },
-						colors = ButtonDefaults.buttonColors(containerColor = Blue500),
+						colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
 						shape = RoundedCornerShape(8.dp),
 						border = BorderStroke(
 							2.dp,

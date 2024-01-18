@@ -55,7 +55,6 @@ import com.vishal2376.snaptick.presentation.add_edit_screen.components.PriorityC
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
-import com.vishal2376.snaptick.ui.theme.Blue200
 import com.vishal2376.snaptick.ui.theme.Green
 import com.vishal2376.snaptick.ui.theme.LightGray
 import com.vishal2376.snaptick.ui.theme.Red
@@ -128,9 +127,9 @@ fun AddTaskScreen(
 					value = taskTitle,
 					singleLine = true,
 					colors = TextFieldDefaults.colors(
-						focusedContainerColor = Blue200,
-						unfocusedContainerColor = Blue200,
-						disabledContainerColor = Blue200,
+						focusedContainerColor = MaterialTheme.colorScheme.secondary,
+						unfocusedContainerColor = MaterialTheme.colorScheme.secondary,
+						disabledContainerColor = MaterialTheme.colorScheme.secondary,
 						unfocusedIndicatorColor = Color.Transparent,
 						focusedIndicatorColor = Color.Transparent,
 						cursorColor = Color.White,
@@ -213,8 +212,8 @@ fun AddTaskScreen(
 						onCheckedChange = { isTaskReminderOn = it },
 						colors = SwitchDefaults.colors(
 							checkedThumbColor = Green,
-							checkedTrackColor = Blue200,
-							uncheckedTrackColor = Blue200
+							checkedTrackColor = MaterialTheme.colorScheme.secondary,
+							uncheckedTrackColor = MaterialTheme.colorScheme.secondary
 						)
 					)
 				}
