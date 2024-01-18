@@ -29,6 +29,7 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 
 			HomeScreen(
 				tasks = tasks,
+				onMainEvent = taskViewModel::onEvent,
 				onEvent = taskViewModel::onEvent,
 				onEditTask = { id ->
 					navController.navigate(route = "${Routes.EditTaskScreen.name}/$id")

@@ -42,6 +42,8 @@ import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.home_screen.components.EmptyTaskComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.InfoComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.TaskComponent
+import com.vishal2376.snaptick.presentation.main.MainEvent
+import com.vishal2376.snaptick.ui.theme.AppTheme
 import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.ui.theme.Green
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
@@ -55,6 +57,7 @@ import java.time.LocalTime
 @Composable
 fun HomeScreen(
 	tasks: List<Task>,
+	onMainEvent: (MainEvent) -> Unit,
 	onEvent: (HomeScreenEvent) -> Unit,
 	onEditTask: (id: Int) -> Unit,
 	onAddTask: () -> Unit,
@@ -140,7 +143,7 @@ fun HomeScreen(
 					icon = R.drawable.ic_clock,
 					backgroundColor = Blue,
 					modifier = Modifier.weight(1f),
-					onClick = {}
+					onClick = { onMainEvent(MainEvent.ChangeTheme(AppTheme.Amoled)) }
 				)
 
 			}
@@ -220,6 +223,7 @@ fun HomeScreenPreview() {
 		)
 		HomeScreen(
 			tasks = tasks,
+			{},
 			{},
 			{},
 			{},

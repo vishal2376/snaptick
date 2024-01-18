@@ -12,13 +12,13 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-	private val taskViewmodel by viewModels<TaskViewModel>()
+	private val taskViewModel by viewModels<TaskViewModel>()
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContent {
-			SnaptickTheme {
-				AppNavigation(taskViewModel = taskViewmodel)
+			SnaptickTheme(theme = taskViewModel.appState.theme) {
+				AppNavigation(taskViewModel = taskViewModel)
 			}
 		}
 	}
