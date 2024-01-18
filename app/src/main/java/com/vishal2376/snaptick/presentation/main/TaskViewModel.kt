@@ -9,6 +9,7 @@ import com.vishal2376.snaptick.data.repositories.TaskRepository
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.add_edit_screen.AddEditScreenEvent
 import com.vishal2376.snaptick.presentation.home_screen.HomeScreenEvent
+import com.vishal2376.snaptick.ui.theme.AppTheme
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -36,11 +37,15 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 
 	var taskList = repository.getAllTasks()
 
-	// Home Screen Events
+	// Main App Events
 	fun onEvent(event: MainEvent) {
 		when (event) {
-			is MainEvent.ChangeTheme -> {
-				appState = appState.copy(theme = event.theme)
+			is MainEvent.AmoledTheme -> {
+				appState = if (event.isEnabled) {
+					appState.copy(theme = AppTheme.Amoled)
+				} else {
+					appState.copy(theme = AppTheme.Dark)
+				}
 			}
 		}
 	}

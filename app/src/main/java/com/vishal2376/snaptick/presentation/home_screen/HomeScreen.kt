@@ -16,15 +16,20 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,9 +46,9 @@ import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.home_screen.components.EmptyTaskComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.InfoComponent
+import com.vishal2376.snaptick.presentation.home_screen.components.NavigationDrawerComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.TaskComponent
 import com.vishal2376.snaptick.presentation.main.MainEvent
-import com.vishal2376.snaptick.ui.theme.AppTheme
 import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.ui.theme.Green
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
@@ -74,117 +79,128 @@ fun HomeScreen(
 	val totalTasks = tasks.size
 	val totalCompletedTasks = completedTasks.size
 
-	Scaffold(topBar = {
-		TopAppBar(modifier = Modifier.padding(end = 16.dp),
-			colors = TopAppBarDefaults.topAppBarColors(
-				containerColor = MaterialTheme.colorScheme.background
-			),
-			title = {
-				Text(
-					text = stringResource(id = R.string.app_name),
-					style = h1TextStyle
-				)
-			},
-			actions = {
-				Text(
-					text = "10",
-					fontSize = 18.sp,
-					fontFamily = fontRoboto,
-					fontWeight = FontWeight.Bold
-				)
-				Spacer(modifier = Modifier.width(4.dp))
-				Icon(
-					painter = painterResource(id = R.drawable.ic_fire),
-					contentDescription = null,
-					tint = Yellow,
-					modifier = Modifier.size(22.dp)
-				)
-			})
-	},
-		floatingActionButton = {
-			FloatingActionButton(
-				onClick = {
-					onAddTask()
+	val scope = rememberCoroutineScope()
+	val drawerState = rememberDrawerState(initialValue = DrawerValue.Open)
+
+	ModalNavigationDrawer(
+		drawerState = drawerState,
+		drawerContent = {
+			ModalDrawerSheet(drawerContainerColor = MaterialTheme.colorScheme.primary) {
+				NavigationDrawerComponent(onMainEvent)
+			}
+		}) {
+		Scaffold(topBar = {
+			TopAppBar(modifier = Modifier.padding(end = 16.dp),
+				colors = TopAppBarDefaults.topAppBarColors(
+					containerColor = MaterialTheme.colorScheme.background
+				),
+				title = {
+					Text(
+						text = stringResource(id = R.string.app_name),
+						style = h1TextStyle
+					)
 				},
-				containerColor = Blue,
-				contentColor = MaterialTheme.colorScheme.secondary
-			) {
-				Icon(
-					imageVector = Icons.Default.Add,
-					contentDescription = null
-				)
-			}
-		}) { innerPadding ->
+				actions = {
+					Text(
+						text = "10",
+						fontSize = 18.sp,
+						fontFamily = fontRoboto,
+						fontWeight = FontWeight.Bold
+					)
+					Spacer(modifier = Modifier.width(4.dp))
+					Icon(
+						painter = painterResource(id = R.drawable.ic_fire),
+						contentDescription = null,
+						tint = Yellow,
+						modifier = Modifier.size(22.dp)
+					)
+				})
+		},
+			floatingActionButton = {
+				FloatingActionButton(
+					onClick = {
+						onAddTask()
+					},
+					containerColor = Blue,
+					contentColor = MaterialTheme.colorScheme.secondary
+				) {
+					Icon(
+						imageVector = Icons.Default.Add,
+						contentDescription = null
+					)
+				}
+			}) { innerPadding ->
 
-		Column(modifier = Modifier.padding(innerPadding)) {
-			Row(
-				modifier = Modifier
-					.fillMaxWidth()
-					.padding(
-						16.dp,
-						8.dp
-					),
-				horizontalArrangement = Arrangement.spacedBy(16.dp),
-				verticalAlignment = Alignment.CenterVertically
-			) {
-
-				InfoComponent(
-					title = "Completed",
-					desc = "$totalCompletedTasks/$totalTasks Tasks",
-					icon = R.drawable.ic_task_list,
-					backgroundColor = Green,
-					modifier = Modifier.weight(1f),
-					onClick = { onClickCompletedInfo() }
-				)
-
-				InfoComponent(
-					title = "Free Time",
-					desc = "8 hours",
-					icon = R.drawable.ic_clock,
-					backgroundColor = Blue,
-					modifier = Modifier.weight(1f),
-					onClick = { onMainEvent(MainEvent.ChangeTheme(AppTheme.Amoled)) }
-				)
-
-			}
-
-			if (inCompletedTasks.isEmpty()) {
-				EmptyTaskComponent()
-			} else {
-				Text(
-					text = stringResource(R.string.today_tasks),
-					style = h2TextStyle,
-					color = Color.White,
-					modifier = Modifier.padding(16.dp)
-				)
-
-				LazyColumn(
+			Column(modifier = Modifier.padding(innerPadding)) {
+				Row(
 					modifier = Modifier
-						.fillMaxSize()
+						.fillMaxWidth()
 						.padding(
 							16.dp,
-							0.dp
-						)
+							8.dp
+						),
+					horizontalArrangement = Arrangement.spacedBy(16.dp),
+					verticalAlignment = Alignment.CenterVertically
 				) {
-					items(items = inCompletedTasks,
-						key = { it.id }) { task ->
-						Box(modifier = Modifier.animateItemPlacement()) {
-							TaskComponent(
-								task = task,
-								onUpdate = onEditTask,
-								onComplete = {
-									onEvent(
-										HomeScreenEvent.OnCompleted(
-											it,
-											true
-										)
-									)
-								},
-								onPomodoro = onPomodoroTask
 
+					InfoComponent(
+						title = "Completed",
+						desc = "$totalCompletedTasks/$totalTasks Tasks",
+						icon = R.drawable.ic_task_list,
+						backgroundColor = Green,
+						modifier = Modifier.weight(1f),
+						onClick = { onClickCompletedInfo() }
+					)
+
+					InfoComponent(
+						title = "Free Time",
+						desc = "8 hours",
+						icon = R.drawable.ic_clock,
+						backgroundColor = Blue,
+						modifier = Modifier.weight(1f),
+						onClick = {}
+					)
+
+				}
+
+				if (inCompletedTasks.isEmpty()) {
+					EmptyTaskComponent()
+				} else {
+					Text(
+						text = stringResource(R.string.today_tasks),
+						style = h2TextStyle,
+						color = Color.White,
+						modifier = Modifier.padding(16.dp)
+					)
+
+					LazyColumn(
+						modifier = Modifier
+							.fillMaxSize()
+							.padding(
+								16.dp,
+								0.dp
 							)
+					) {
+						items(items = inCompletedTasks,
+							key = { it.id }) { task ->
+							Box(modifier = Modifier.animateItemPlacement()) {
+								TaskComponent(
+									task = task,
+									onUpdate = onEditTask,
+									onComplete = {
+										onEvent(
+											HomeScreenEvent.OnCompleted(
+												it,
+												true
+											)
+										)
+									},
+									onPomodoro = onPomodoroTask
+
+								)
+							}
+							Spacer(modifier = Modifier.height(10.dp))
 						}
-						Spacer(modifier = Modifier.height(10.dp))
 					}
 				}
 			}
