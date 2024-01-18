@@ -16,10 +16,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
@@ -53,6 +55,7 @@ import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.ui.theme.Green
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.ui.theme.Yellow
+import kotlinx.coroutines.launch
 import java.time.LocalTime
 
 @OptIn(
@@ -80,7 +83,7 @@ fun HomeScreen(
 	val totalCompletedTasks = completedTasks.size
 
 	val scope = rememberCoroutineScope()
-	val drawerState = rememberDrawerState(initialValue = DrawerValue.Open)
+	val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
 	ModalNavigationDrawer(
 		drawerState = drawerState,
@@ -99,6 +102,20 @@ fun HomeScreen(
 						text = stringResource(id = R.string.app_name),
 						style = h1TextStyle
 					)
+				},
+				navigationIcon = {
+					IconButton(onClick = {
+						scope.launch {
+							drawerState.apply {
+								if (isClosed) open() else close()
+							}
+						}
+					}) {
+						Icon(
+							imageVector = Icons.Default.Menu,
+							contentDescription = null
+						)
+					}
 				},
 				actions = {
 					Text(
