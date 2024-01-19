@@ -81,6 +81,18 @@ fun PomodoroScreen(
 		mutableStateOf(false)
 	}
 
+	// empty progress bar animation
+	val progressBarAnim = remember {
+		Animatable(100f)
+	}
+
+	LaunchedEffect(key1 = Unit) {
+		progressBarAnim.animateTo(
+			1f,
+			tween(1000)
+		)
+	}
+
 	//flicker animation
 	val alphaValue = remember {
 		Animatable(1f)
@@ -177,7 +189,7 @@ fun PomodoroScreen(
 					color = Color.White
 				)
 				val calcProgress = 100f - ((timeLeft.toFloat() / totalTime.toFloat()) * 100f)
-				CustomCircularProgressBar(progress = calcProgress)
+				CustomCircularProgressBar(progress = if (progressBarAnim.value <= 1f) calcProgress else progressBarAnim.value)
 			}
 
 			Spacer(modifier = Modifier.height(64.dp))
