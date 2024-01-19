@@ -1,5 +1,6 @@
 package com.vishal2376.snaptick.presentation.completed_task_screen
 
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -83,7 +84,13 @@ fun CompletedTaskScreen(
 				) {
 					items(items = completedTasks,
 						key = { it.id }) { task ->
-						Box(modifier = Modifier.animateItemPlacement()) {
+						Box(
+							modifier = Modifier.animateItemPlacement(
+								tween(
+									500
+								)
+							)
+						) {
 							TaskComponent(
 								task = task,
 								onUpdate = {},
