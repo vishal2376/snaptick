@@ -1,5 +1,6 @@
 package com.vishal2376.snaptick.presentation.home_screen
 
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -32,10 +33,13 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -83,6 +87,27 @@ fun HomeScreen(
 	val totalTasks = tasks.size
 	val totalCompletedTasks = completedTasks.size
 
+	// animation
+	val translateX = 600f
+	val leftTranslate = remember { Animatable(-translateX) }
+	val rightTranslate = remember { Animatable(translateX) }
+
+	LaunchedEffect(key1 = Unit) {
+		launch {
+			leftTranslate.animateTo(
+				0f,
+				tween(1000)
+			)
+		}
+		launch {
+			rightTranslate.animateTo(
+				0f,
+				tween(1000)
+			)
+		}
+	}
+
+	// navigation drawer
 	val scope = rememberCoroutineScope()
 	val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
@@ -166,7 +191,11 @@ fun HomeScreen(
 						desc = "$totalCompletedTasks/$totalTasks Tasks",
 						icon = R.drawable.ic_task_list,
 						backgroundColor = Green,
-						modifier = Modifier.weight(1f),
+						modifier = Modifier
+							.weight(1f)
+							.graphicsLayer {
+								translationX = leftTranslate.value
+							},
 						onClick = { onClickCompletedInfo() }
 					)
 
@@ -175,7 +204,11 @@ fun HomeScreen(
 						desc = "8 hours",
 						icon = R.drawable.ic_clock,
 						backgroundColor = Blue,
-						modifier = Modifier.weight(1f),
+						modifier = Modifier
+							.weight(1f)
+							.graphicsLayer {
+								translationX = rightTranslate.value
+							},
 						onClick = {}
 					)
 
