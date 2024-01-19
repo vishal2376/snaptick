@@ -131,7 +131,7 @@ fun TaskComponent(
 						Text(
 							modifier = Modifier
 								.fillMaxWidth()
-								.basicMarquee(delayMillis = 1000,),
+								.basicMarquee(delayMillis = 1000),
 							text = task.title,
 							style = taskTextStyle,
 							color = Color.White

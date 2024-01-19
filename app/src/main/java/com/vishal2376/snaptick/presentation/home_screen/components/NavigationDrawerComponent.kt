@@ -35,7 +35,9 @@ fun NavigationDrawerComponent(onMainEvent: (MainEvent) -> Unit) {
 	Column(
 		horizontalAlignment = Alignment.CenterHorizontally,
 		verticalArrangement = Arrangement.Center,
-		modifier = Modifier.fillMaxWidth(0.8f).fillMaxHeight()
+		modifier = Modifier
+			.fillMaxWidth(0.8f)
+			.fillMaxHeight()
 	) {
 
 		Text(
@@ -72,7 +74,7 @@ fun NavigationDrawerComponent(onMainEvent: (MainEvent) -> Unit) {
 
 }
 
-@Preview(widthDp = 300)
+@Preview(widthDp = 350)
 @Composable
 fun NavigationDrawerComponentPreview() {
 	NavigationDrawerComponent({})
