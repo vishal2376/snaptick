@@ -19,6 +19,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Sort
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -217,13 +218,31 @@ fun HomeScreen(
 				if (inCompletedTasks.isEmpty()) {
 					EmptyTaskComponent()
 				} else {
-					Text(
-						text = stringResource(R.string.today_tasks),
-						style = h2TextStyle,
-						color = Color.White,
-						modifier = Modifier.padding(16.dp)
-					)
 
+					Row(
+						modifier = Modifier
+							.fillMaxWidth()
+							.padding(horizontal = 8.dp),
+						horizontalArrangement = Arrangement.SpaceBetween,
+						verticalAlignment = Alignment.CenterVertically
+					) {
+
+						Text(
+							text = stringResource(R.string.today_tasks),
+							style = h2TextStyle,
+							color = Color.White,
+							modifier = Modifier.padding(16.dp)
+						)
+
+						IconButton(onClick = { /*TODO*/ }) {
+							Icon(
+								imageVector = Icons.Default.Sort,
+								contentDescription = null,
+								tint = Color.White
+							)
+						}
+
+					}
 					LazyColumn(
 						modifier = Modifier
 							.fillMaxSize()
