@@ -35,8 +35,11 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -55,12 +58,14 @@ import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.home_screen.components.EmptyTaskComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.InfoComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.NavigationDrawerComponent
+import com.vishal2376.snaptick.presentation.home_screen.components.SortTaskDialogComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.TaskComponent
 import com.vishal2376.snaptick.presentation.main.MainEvent
 import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.ui.theme.Green
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.ui.theme.Yellow
+import com.vishal2376.snaptick.util.SortTask
 import kotlinx.coroutines.launch
 import java.time.LocalTime
 
@@ -106,6 +111,11 @@ fun HomeScreen(
 				tween(1000)
 			)
 		}
+	}
+
+	//sort dialog
+	var showSortDialog by remember {
+		mutableStateOf(false)
 	}
 
 	// navigation drawer
@@ -175,6 +185,17 @@ fun HomeScreen(
 				}
 			}) { innerPadding ->
 
+			// sort dialog
+			if (showSortDialog)
+				SortTaskDialogComponent(
+					defaultSortTask = SortTask.BY_CREATE_TIME_ASCENDING,
+					onClose = { showSortDialog = false },
+					onSelect = {
+						// todo: store sortTask value in viewModel
+						showSortDialog = false
+					}
+				)
+
 			Column(modifier = Modifier.padding(innerPadding)) {
 				Row(
 					modifier = Modifier
@@ -234,7 +255,7 @@ fun HomeScreen(
 							modifier = Modifier.padding(16.dp)
 						)
 
-						IconButton(onClick = { /*TODO*/ }) {
+						IconButton(onClick = { showSortDialog = true }) {
 							Icon(
 								imageVector = Icons.Default.Sort,
 								contentDescription = null,

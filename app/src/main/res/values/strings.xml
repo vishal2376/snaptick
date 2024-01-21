@@ -5,4 +5,5 @@
     <string name="edit_task">Edit Task</string>
     <string name="add_task">Add Task</string>
     <string name="update_task">Update Task</string>
+    <string name="select">Select</string>
 </resources>
