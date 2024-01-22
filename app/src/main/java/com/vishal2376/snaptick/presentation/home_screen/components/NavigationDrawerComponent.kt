@@ -60,7 +60,7 @@ fun NavigationDrawerComponent(onMainEvent: (MainEvent) -> Unit) {
 				checked = isAmoledTheme,
 				onCheckedChange = {
 					isAmoledTheme = it
-					onMainEvent(MainEvent.AmoledTheme(it))
+					onMainEvent(MainEvent.ToggleAmoledTheme(it))
 				},
 				colors = SwitchDefaults.colors(
 					checkedThumbColor = Blue,
