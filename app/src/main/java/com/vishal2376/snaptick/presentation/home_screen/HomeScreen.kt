@@ -61,6 +61,7 @@ import com.vishal2376.snaptick.presentation.home_screen.components.NavigationDra
 import com.vishal2376.snaptick.presentation.home_screen.components.SortTaskDialogComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.TaskComponent
 import com.vishal2376.snaptick.presentation.main.MainEvent
+import com.vishal2376.snaptick.presentation.main.MainState
 import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.ui.theme.Green
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
@@ -69,6 +70,7 @@ import com.vishal2376.snaptick.util.SortTask
 import kotlinx.coroutines.launch
 import java.time.LocalTime
 
+
 @OptIn(
 	ExperimentalMaterial3Api::class,
 	ExperimentalFoundationApi::class
@@ -76,6 +78,7 @@ import java.time.LocalTime
 @Composable
 fun HomeScreen(
 	tasks: List<Task>,
+	appState: MainState,
 	onMainEvent: (MainEvent) -> Unit,
 	onEvent: (HomeScreenEvent) -> Unit,
 	onEditTask: (id: Int) -> Unit,
@@ -84,12 +87,14 @@ fun HomeScreen(
 	onPomodoroTask: (id: Int) -> Unit,
 ) {
 
+
 	val completedTasks = mutableListOf<Task>()
 	val inCompletedTasks = mutableListOf<Task>()
 
 	tasks.filterTo(completedTasks) { it.isCompleted }
 	tasks.filterTo(inCompletedTasks) { !it.isCompleted }
 
+	var sortedTask: List<Task> = inCompletedTasks
 	val totalTasks = tasks.size
 	val totalCompletedTasks = completedTasks.size
 
@@ -111,6 +116,36 @@ fun HomeScreen(
 				tween(1000)
 			)
 		}
+	}
+
+	LaunchedEffect(key1 = appState.sortBy) {
+		sortedTask = inCompletedTasks.sortedWith(compareBy<Task> {
+			when (appState.sortBy) {
+				SortTask.BY_TITLE_ASCENDING -> {
+					it.title
+				}
+
+				SortTask.BY_TITLE_DESCENDING -> {
+					it.title
+				}
+
+				SortTask.BY_CREATE_TIME_ASCENDING -> {
+					it.id
+				}
+
+				SortTask.BY_CREATE_TIME_DESCENDING -> {
+					-it.id
+				}
+
+				SortTask.BY_PRIORITY_ASCENDING -> {
+					it.priority
+				}
+
+				SortTask.BY_PRIORITY_DESCENDING -> {
+					-it.priority
+				}
+			}
+		})
 	}
 
 	//sort dialog
@@ -191,7 +226,7 @@ fun HomeScreen(
 					defaultSortTask = SortTask.BY_CREATE_TIME_ASCENDING,
 					onClose = { showSortDialog = false },
 					onSelect = {
-						// todo: store sortTask value in viewModel
+						onMainEvent(MainEvent.UpdateSortByTask(it))
 						showSortDialog = false
 					}
 				)
@@ -272,14 +307,11 @@ fun HomeScreen(
 								0.dp
 							)
 					) {
-						items(items = inCompletedTasks,
+
+						items(items = sortedTask,
 							key = { it.id }) { task ->
 							Box(
-								modifier = Modifier.animateItemPlacement(
-									tween(
-										500
-									)
-								)
+								modifier = Modifier.animateItemPlacement(tween(500))
 							) {
 								TaskComponent(
 									task = task,
@@ -336,6 +368,7 @@ fun HomeScreenPreview() {
 		)
 		HomeScreen(
 			tasks = tasks,
+			MainState(),
 			{},
 			{},
 			{},

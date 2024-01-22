@@ -29,6 +29,7 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 
 			HomeScreen(
 				tasks = tasks,
+				appState = taskViewModel.appState,
 				onMainEvent = taskViewModel::onEvent,
 				onEvent = taskViewModel::onEvent,
 				onEditTask = { id ->

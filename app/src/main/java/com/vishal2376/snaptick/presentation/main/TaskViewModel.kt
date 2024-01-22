@@ -40,12 +40,16 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 	// Main App Events
 	fun onEvent(event: MainEvent) {
 		when (event) {
-			is MainEvent.AmoledTheme -> {
+			is MainEvent.ToggleAmoledTheme -> {
 				appState = if (event.isEnabled) {
 					appState.copy(theme = AppTheme.Amoled)
 				} else {
 					appState.copy(theme = AppTheme.Dark)
 				}
+			}
+
+			is MainEvent.UpdateSortByTask -> {
+				appState.copy(sortBy = event.sortTask)
 			}
 		}
 	}
