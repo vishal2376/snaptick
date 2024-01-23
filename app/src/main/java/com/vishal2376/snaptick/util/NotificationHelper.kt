@@ -17,9 +17,7 @@ class NotificationHelper(private val context: Context) {
 	private val notificationManager =
 		context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
-
 	fun createNotification(task: Task) {
-
 		val notificationBuilder = NotificationCompat.Builder(context, CHANNEL_ID)
 			.setContentTitle(task.title)
 			.setSmallIcon(R.drawable.ic_clock)
