@@ -223,7 +223,7 @@ fun HomeScreen(
 			// sort dialog
 			if (showSortDialog)
 				SortTaskDialogComponent(
-					defaultSortTask = SortTask.BY_CREATE_TIME_ASCENDING,
+					defaultSortTask = appState.sortBy,
 					onClose = { showSortDialog = false },
 					onSelect = {
 						onMainEvent(MainEvent.UpdateSortByTask(it))
