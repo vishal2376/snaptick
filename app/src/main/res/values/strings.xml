@@ -6,4 +6,5 @@
     <string name="add_task">Add Task</string>
     <string name="update_task">Update Task</string>
     <string name="select">Select</string>
+    <string name="completed">Completed</string>
 </resources>

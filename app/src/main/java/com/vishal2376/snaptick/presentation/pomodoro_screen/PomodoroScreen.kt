@@ -1,5 +1,6 @@
 package com.vishal2376.snaptick.presentation.pomodoro_screen
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -43,8 +44,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.presentation.common.timerTextStyle
@@ -52,6 +56,7 @@ import com.vishal2376.snaptick.presentation.home_screen.HomeScreenEvent
 import com.vishal2376.snaptick.presentation.pomodoro_screen.components.CustomCircularProgressBar
 import com.vishal2376.snaptick.ui.theme.LightGray
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
+import com.vishal2376.snaptick.util.vibrateDevice
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.LocalTime
@@ -63,6 +68,10 @@ fun PomodoroScreen(
 	onEvent: (HomeScreenEvent) -> Unit,
 	onBack: () -> Unit
 ) {
+
+	var isTimerCompleted by remember {
+		mutableStateOf(false)
+	}
 
 	var totalTime by remember {
 		mutableLongStateOf(0L)
@@ -98,6 +107,8 @@ fun PomodoroScreen(
 		Animatable(1f)
 	}
 
+	val context = LocalContext.current
+
 	LaunchedEffect(
 		key1 = timeLeft,
 		key2 = isPaused
@@ -105,6 +116,14 @@ fun PomodoroScreen(
 		while (timeLeft > 0 && !isPaused) {
 			delay(1000L)
 			timeLeft--
+		}
+
+		if (isTimerCompleted) {
+			vibrateDevice(context)
+		}
+
+		if (isTimerCompleted) {
+
 		}
 
 		//flicker animation
@@ -184,42 +203,53 @@ fun PomodoroScreen(
 			Box(contentAlignment = Alignment.Center) {
 				Text(
 					modifier = Modifier.alpha(alphaValue.value),
-					text = task.getFormattedDuration(timeLeft),
+					text = if (isTimerCompleted) {
+						stringResource(R.string.completed)
+					} else {
+						task.getFormattedDuration(timeLeft)
+					},
 					style = timerTextStyle,
 					color = Color.White
 				)
 				val calcProgress = 100f - ((timeLeft.toFloat() / totalTime.toFloat()) * 100f)
-				CustomCircularProgressBar(progress = if (progressBarAnim.value <= 1f) calcProgress else progressBarAnim.value)
+				if (calcProgress >= 99) {
+					isTimerCompleted = true
+				}
+				if (!isTimerCompleted) {
+					CustomCircularProgressBar(progress = if (progressBarAnim.value <= 1f) calcProgress else progressBarAnim.value)
+				}
 			}
 
 			Spacer(modifier = Modifier.height(64.dp))
 
-			Row(horizontalArrangement = Arrangement.spacedBy(24.dp)) {
-				FloatingActionButton(
-					onClick = { isPaused = !isPaused },
-					shape = CircleShape,
-					containerColor = MaterialTheme.colorScheme.secondary,
-					contentColor = LightGray
-				) {
-					Icon(
-						imageVector = if (isPaused) Icons.Default.PlayArrow else Icons.Default.Pause,
-						contentDescription = null
-					)
-				}
+			AnimatedVisibility (!isTimerCompleted) {
+				Row(horizontalArrangement = Arrangement.spacedBy(24.dp)) {
+					FloatingActionButton(
+						onClick = { isPaused = !isPaused },
+						shape = CircleShape,
+						containerColor = MaterialTheme.colorScheme.secondary,
+						contentColor = LightGray
+					) {
+						Icon(
+							imageVector = if (isPaused) Icons.Default.PlayArrow else Icons.Default.Pause,
+							contentDescription = null
+						)
+					}
 
-				FloatingActionButton(
-					onClick = {
-						isPaused = true
-						timeLeft = totalTime
-					},
-					shape = CircleShape,
-					containerColor = MaterialTheme.colorScheme.secondary,
-					contentColor = LightGray
-				) {
-					Icon(
-						imageVector = Icons.Default.Refresh,
-						contentDescription = null
-					)
+					FloatingActionButton(
+						onClick = {
+							isPaused = true
+							timeLeft = totalTime
+						},
+						shape = CircleShape,
+						containerColor = MaterialTheme.colorScheme.secondary,
+						contentColor = LightGray
+					) {
+						Icon(
+							imageVector = Icons.Default.Refresh,
+							contentDescription = null
+						)
+					}
 				}
 			}
 			Spacer(modifier = Modifier.height(innerPadding.calculateTopPadding()))
