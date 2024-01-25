@@ -1,5 +1,6 @@
 package com.vishal2376.snaptick.presentation.pomodoro_screen
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
@@ -81,9 +82,17 @@ fun PomodoroScreen(
 		mutableLongStateOf(0L)
 	}
 
+	val isTestingMode = true // todo: remove in production
+
 	if (task.title.isNotEmpty() && totalTime == 0L) {
-		totalTime = task.getDuration()
-		timeLeft = task.getDuration()
+		if (!isTestingMode) {
+			timeLeft = task.getDuration()
+			totalTime = task.getDuration()
+		} else {
+			Toast.makeText(LocalContext.current, "Testing Mode On", Toast.LENGTH_SHORT).show()
+			totalTime = 5
+			timeLeft = 5
+		}
 	}
 
 	var isPaused by remember {
@@ -222,7 +231,7 @@ fun PomodoroScreen(
 
 			Spacer(modifier = Modifier.height(64.dp))
 
-			AnimatedVisibility (!isTimerCompleted) {
+			AnimatedVisibility(!isTimerCompleted) {
 				Row(horizontalArrangement = Arrangement.spacedBy(24.dp)) {
 					FloatingActionButton(
 						onClick = { isPaused = !isPaused },
