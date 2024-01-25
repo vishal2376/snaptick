@@ -94,7 +94,6 @@ fun HomeScreen(
 	tasks.filterTo(completedTasks) { it.isCompleted }
 	tasks.filterTo(inCompletedTasks) { !it.isCompleted }
 
-	var sortedTask: List<Task> = inCompletedTasks
 	val totalTasks = tasks.size
 	val totalCompletedTasks = completedTasks.size
 
@@ -116,36 +115,6 @@ fun HomeScreen(
 				tween(1000)
 			)
 		}
-	}
-
-	LaunchedEffect(key1 = appState.sortBy) {
-		sortedTask = inCompletedTasks.sortedWith(compareBy<Task> {
-			when (appState.sortBy) {
-				SortTask.BY_TITLE_ASCENDING -> {
-					it.title
-				}
-
-				SortTask.BY_TITLE_DESCENDING -> {
-					it.title
-				}
-
-				SortTask.BY_CREATE_TIME_ASCENDING -> {
-					it.id
-				}
-
-				SortTask.BY_CREATE_TIME_DESCENDING -> {
-					-it.id
-				}
-
-				SortTask.BY_PRIORITY_ASCENDING -> {
-					it.priority
-				}
-
-				SortTask.BY_PRIORITY_DESCENDING -> {
-					-it.priority
-				}
-			}
-		})
 	}
 
 	//sort dialog
@@ -308,7 +277,34 @@ fun HomeScreen(
 							)
 					) {
 
-						items(items = sortedTask,
+						val sortedTasks: List<Task> = inCompletedTasks.sortedWith(compareBy<Task> {
+							when (appState.sortBy) {
+								SortTask.BY_TITLE_ASCENDING -> {
+									it.title
+								}
+
+								SortTask.BY_TITLE_DESCENDING -> {
+									it.title
+								}
+
+								SortTask.BY_CREATE_TIME_ASCENDING -> {
+									it.id
+								}
+
+								SortTask.BY_CREATE_TIME_DESCENDING -> {
+									-it.id
+								}
+
+								SortTask.BY_PRIORITY_ASCENDING -> {
+									it.priority
+								}
+
+								SortTask.BY_PRIORITY_DESCENDING -> {
+									-it.priority
+								}
+							}
+						})
+						items(items = sortedTasks,
 							key = { it.id }) { task ->
 							Box(
 								modifier = Modifier.animateItemPlacement(tween(500))
