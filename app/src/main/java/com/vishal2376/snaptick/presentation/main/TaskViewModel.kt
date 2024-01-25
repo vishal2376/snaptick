@@ -49,7 +49,7 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 			}
 
 			is MainEvent.UpdateSortByTask -> {
-				appState.copy(sortBy = event.sortTask)
+				appState = appState.copy(sortBy = event.sortTask)
 			}
 		}
 	}
