@@ -40,7 +40,7 @@ import java.time.LocalTime
 fun CompletedTaskScreen(
 	tasks: List<Task>,
 	onEvent: (HomeScreenEvent) -> Unit,
-	onClose: () -> Unit
+	onBack: () -> Unit
 ) {
 
 	val completedTasks = mutableListOf<Task>()
@@ -59,7 +59,7 @@ fun CompletedTaskScreen(
 				)
 			},
 			navigationIcon = {
-				IconButton(onClick = { onClose() }) {
+				IconButton(onClick = { onBack() }) {
 					Icon(
 						imageVector = Icons.Rounded.ArrowBack,
 						contentDescription = null

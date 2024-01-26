@@ -67,7 +67,7 @@ import java.time.LocalTime
 @Composable
 fun AddTaskScreen(
 	onEvent: (AddEditScreenEvent) -> Unit,
-	onClose: () -> Unit
+	onBack: () -> Unit
 ) {
 
 	var taskTitle by remember { mutableStateOf("") }
@@ -93,7 +93,7 @@ fun AddTaskScreen(
 				)
 			},
 			navigationIcon = {
-				IconButton(onClick = { onClose() }) {
+				IconButton(onClick = { onBack() }) {
 					Icon(
 						imageVector = Icons.Rounded.ArrowBack,
 						contentDescription = null
@@ -272,7 +272,7 @@ fun AddTaskScreen(
 								taskPriority
 							)
 							onEvent(AddEditScreenEvent.OnAddTaskClick(task))
-							onClose()
+							onBack()
 						} else if (taskStartTime >= taskEndTime) {
 							Toast.makeText(
 								context,

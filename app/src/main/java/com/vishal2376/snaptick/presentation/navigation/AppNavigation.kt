@@ -52,7 +52,7 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 			CompletedTaskScreen(
 				tasks = tasks,
 				onEvent = taskViewModel::onEvent,
-				onClose = { navController.popBackStack() })
+				onBack = { navController.popBackStack() })
 		}
 
 		composable(route = Routes.FreeTimeScreen.name) {
@@ -65,7 +65,7 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 		composable(route = Routes.AddTaskScreen.name) {
 			AddTaskScreen(
 				onEvent = taskViewModel::onEvent,
-				onClose = { navController.popBackStack() })
+				onBack = { navController.popBackStack() })
 		}
 
 		composable(
