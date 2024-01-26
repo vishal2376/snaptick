@@ -1,10 +1,14 @@
 package com.vishal2376.snaptick.presentation.free_time_screen.components
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -19,7 +23,7 @@ fun CustomPieChart(
 	arcWidth: Dp = 30.dp,
 	startAngle: Float = -90f,
 	pieChartSize: Dp = 200.dp,
-	animDuration: Long = 1000
+	animDuration: Int = 1000
 ) {
 	// calculate each arc value
 	val totalSum = data.sum()
@@ -29,8 +33,15 @@ fun CustomPieChart(
 		arcValues.add(index, arc)
 	}
 
-	// draw pie chart
 	var newStartAngle = startAngle
+
+	// animations
+	val animationProgress = remember { Animatable(0f) }
+	LaunchedEffect(Unit) {
+		animationProgress.animateTo(1f, animationSpec = tween(animDuration))
+	}
+
+	// draw pie chart
 	val totalColors = pieChartColors.size
 
 	Column(
@@ -44,8 +55,8 @@ fun CustomPieChart(
 					color = pieChartColors[index % totalColors],
 					startAngle = newStartAngle,
 					useCenter = false,
-					sweepAngle = arcValue,
-					style = Stroke(width = arcWidth.toPx()),
+					sweepAngle = arcValue * animationProgress.value,
+					style = Stroke(width = arcWidth.toPx())
 				)
 				newStartAngle += arcValue
 			}
