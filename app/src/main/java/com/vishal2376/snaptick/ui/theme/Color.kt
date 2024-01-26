@@ -21,3 +21,22 @@ val LightGray = Color(0xFFCCD2D8)
 
 val Black500 = Color(0xFF000000)
 val Black200 = Color(0xFF252526)
+
+// pie chart colors
+val pieChartColors = listOf(
+	Color(0xFFFFA502),
+	Color(0xFF70A1FF),
+	Color(0xFFFF4757),
+	Color(0xFF2ED573),
+	Color(0xFFFF7F50),
+	Color(0xFFA4B0BE),
+	Color(0xFFFF6B81),
+	Color(0xFF747D8C),
+	Color(0xFFECCC68),
+	Color(0xFF1E90FF),
+	Color(0xFFCED6E0),
+	Color(0xFF7BED9F),
+	Color(0xFF2F3542),
+	Color(0xFFFF6348),
+	Color(0xFFDCDDDF),
+)

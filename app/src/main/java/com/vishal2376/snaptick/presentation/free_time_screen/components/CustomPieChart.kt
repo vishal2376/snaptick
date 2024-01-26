@@ -7,11 +7,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.vishal2376.snaptick.ui.theme.pieChartColors
 
 @Composable
 fun CustomPieChart(
@@ -29,30 +29,12 @@ fun CustomPieChart(
 		arcValues.add(index, arc)
 	}
 
-	// pie chart colors
-	val pieChartColors = listOf(
-		Color(0xFFFFA502),
-		Color(0xFF70A1FF),
-		Color(0xFFFF4757),
-		Color(0xFF2ED573),
-		Color(0xFFFF7F50),
-		Color(0xFFA4B0BE),
-		Color(0xFFFF6B81),
-		Color(0xFF747D8C),
-		Color(0xFFECCC68),
-		Color(0xFF1E90FF),
-		Color(0xFFCED6E0),
-		Color(0xFF7BED9F),
-		Color(0xFF2F3542),
-		Color(0xFFFF6348),
-		Color(0xFFDCDDDF),
-	)
-	val totalColors = pieChartColors.size
-
 	// draw pie chart
 	var newStartAngle = startAngle
+	val totalColors = pieChartColors.size
+
 	Column(
-		modifier = Modifier.size(pieChartSize * 2f),
+		modifier = Modifier.size(pieChartSize * 1.5f),
 		horizontalAlignment = Alignment.CenterHorizontally,
 		verticalArrangement = Arrangement.Center
 	) {
