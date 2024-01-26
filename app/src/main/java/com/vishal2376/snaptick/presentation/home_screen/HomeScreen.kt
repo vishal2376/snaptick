@@ -15,7 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
@@ -66,6 +66,7 @@ import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.ui.theme.Green
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.ui.theme.Yellow
+import com.vishal2376.snaptick.util.Constants
 import com.vishal2376.snaptick.util.SortTask
 import kotlinx.coroutines.launch
 import java.time.LocalTime
@@ -305,8 +306,10 @@ fun HomeScreen(
 								}
 							}
 						})
-						items(items = sortedTasks,
-							key = { it.id }) { task ->
+						itemsIndexed(items = sortedTasks,
+							key = { index, task ->
+								task.id
+							}) { index, task ->
 							Box(
 								modifier = Modifier.animateItemPlacement(tween(500))
 							) {
@@ -321,8 +324,8 @@ fun HomeScreen(
 											)
 										)
 									},
-									onPomodoro = onPomodoroTask
-
+									onPomodoro = onPomodoroTask,
+									animDelay = index * Constants.LIST_ANIMATION_DELAY
 								)
 							}
 							Spacer(modifier = Modifier.height(10.dp))

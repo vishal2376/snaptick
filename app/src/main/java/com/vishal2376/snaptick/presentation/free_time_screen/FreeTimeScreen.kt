@@ -36,6 +36,7 @@ import com.vishal2376.snaptick.presentation.free_time_screen.components.CustomPi
 import com.vishal2376.snaptick.presentation.free_time_screen.components.PieChartItemComponent
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.ui.theme.pieChartColors
+import com.vishal2376.snaptick.util.Constants
 import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -119,7 +120,7 @@ fun FreeTimeScreen(
 					PieChartItemComponent(
 						task = item,
 						itemColor = pieChartColors[index % totalColors],
-						animDelay = 100 * index
+						animDelay = index * Constants.LIST_ANIMATION_DELAY
 					)
 					Spacer(modifier = Modifier.height(10.dp))
 				}

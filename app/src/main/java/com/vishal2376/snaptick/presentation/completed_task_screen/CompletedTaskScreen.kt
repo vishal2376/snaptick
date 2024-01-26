@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -30,6 +30,7 @@ import com.vishal2376.snaptick.presentation.home_screen.HomeScreenEvent
 import com.vishal2376.snaptick.presentation.home_screen.components.EmptyTaskComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.TaskComponent
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
+import com.vishal2376.snaptick.util.Constants
 import java.time.LocalTime
 
 @OptIn(
@@ -82,14 +83,12 @@ fun CompletedTaskScreen(
 							0.dp
 						)
 				) {
-					items(items = completedTasks,
-						key = { it.id }) { task ->
+					itemsIndexed(items = completedTasks,
+						key = { index, task ->
+							task.id
+						}) { index, task ->
 						Box(
-							modifier = Modifier.animateItemPlacement(
-								tween(
-									500
-								)
-							)
+							modifier = Modifier.animateItemPlacement(tween(500))
 						) {
 							TaskComponent(
 								task = task,
@@ -102,7 +101,8 @@ fun CompletedTaskScreen(
 										)
 									)
 								},
-								onPomodoro = {}
+								onPomodoro = {},
+								animDelay = index * Constants.LIST_ANIMATION_DELAY
 							)
 						}
 						Spacer(modifier = Modifier.height(10.dp))
