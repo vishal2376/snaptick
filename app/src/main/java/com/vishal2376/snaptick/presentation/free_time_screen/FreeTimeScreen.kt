@@ -108,7 +108,7 @@ fun FreeTimeScreen(
 				}
 			}
 
-			Spacer(modifier = Modifier.height(24.dp))
+			Spacer(modifier = Modifier.height(16.dp))
 
 			LazyColumn(
 				modifier = Modifier
@@ -120,7 +120,7 @@ fun FreeTimeScreen(
 						task = item,
 						itemColor = pieChartColors[index % totalColors]
 					)
-					Spacer(modifier = Modifier.height(16.dp))
+					Spacer(modifier = Modifier.height(10.dp))
 				}
 			}
 		}

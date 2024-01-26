@@ -1,6 +1,8 @@
 package com.vishal2376.snaptick.presentation.free_time_screen.components
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -24,6 +26,7 @@ import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.ui.theme.Blue
 import java.time.LocalTime
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PieChartItemComponent(task: Task, itemColor: Color) {
 
@@ -52,14 +55,15 @@ fun PieChartItemComponent(task: Task, itemColor: Color) {
 
 			Text(
 				text = task.title,
-				modifier = Modifier.weight(1f),
+				modifier = Modifier
+					.basicMarquee(delayMillis = 1000)
+					.weight(1f),
 				style = taskTextStyle,
-				color = Color.White
+				color = Color.White,
 			)
 
 			Text(
 				text = task.getFormattedDuration(duration, trimSeconds = true),
-				modifier = Modifier,
 				style = taskTextStyle,
 				color = Color.White
 			)
