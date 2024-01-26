@@ -17,15 +17,14 @@ import androidx.compose.ui.unit.dp
 fun CustomPieChart(
 	data: List<Long>,
 	arcWidth: Dp = 30.dp,
-	startAngle: Float = -120f,
+	startAngle: Float = -90f,
 	pieChartSize: Dp = 200.dp,
 	animDuration: Long = 1000
 ) {
 	// calculate each arc value
-	val sortedData = data.sortedDescending()
-	val totalSum = sortedData.sum()
+	val totalSum = data.sum()
 	val arcValues = mutableListOf<Float>()
-	sortedData.forEachIndexed { index, value ->
+	data.forEachIndexed { index, value ->
 		val arc = value.toFloat() / totalSum.toFloat() * 360f
 		arcValues.add(index, arc)
 	}
