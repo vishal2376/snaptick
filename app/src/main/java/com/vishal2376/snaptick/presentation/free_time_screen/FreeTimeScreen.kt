@@ -25,10 +25,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
+import com.vishal2376.snaptick.presentation.common.h2TextStyle
+import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.presentation.free_time_screen.components.CustomPieChart
 import com.vishal2376.snaptick.presentation.free_time_screen.components.PieChartItemComponent
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
@@ -37,7 +40,10 @@ import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FreeTimeScreen(tasks: List<Task>) {
+fun FreeTimeScreen(
+	tasks: List<Task>,
+	onBack: () -> Unit
+) {
 
 	val inCompletedTasks = tasks.filter { !it.isCompleted }
 	val sortedTasks = inCompletedTasks.sortedBy { -it.getDuration() }
@@ -51,12 +57,12 @@ fun FreeTimeScreen(tasks: List<Task>) {
 			),
 			title = {
 				Text(
-					text = "Free Time",
+					text = "Analysis",
 					style = h1TextStyle
 				)
 			},
 			navigationIcon = {
-				IconButton(onClick = { /*onClose()*/ }) {
+				IconButton(onClick = { onBack() }) {
 					Icon(
 						imageVector = Icons.Rounded.ArrowBack,
 						contentDescription = null
@@ -85,7 +91,21 @@ fun FreeTimeScreen(tasks: List<Task>) {
 				contentAlignment = Alignment.Center
 			) {
 				val data = sortedTasks.map { it.getDuration() }
-				CustomPieChart(data = data, pieChartSize = 150.dp)
+				CustomPieChart(data = data, pieChartSize = 180.dp)
+
+				Column(horizontalAlignment = Alignment.CenterHorizontally) {
+					Text(
+						text = "Free Time",
+						color = Color.White,
+						style = h2TextStyle
+					)
+
+					Text(
+						text = "8 hours",
+						color = Color.White,
+						style = taskTextStyle
+					)
+				}
 			}
 
 			Spacer(modifier = Modifier.height(24.dp))
@@ -96,7 +116,10 @@ fun FreeTimeScreen(tasks: List<Task>) {
 					.padding(horizontal = 16.dp)
 			) {
 				itemsIndexed(items = sortedTasks) { index, item ->
-					PieChartItemComponent(task = item, itemColor = pieChartColors[index % totalColors])
+					PieChartItemComponent(
+						task = item,
+						itemColor = pieChartColors[index % totalColors]
+					)
 					Spacer(modifier = Modifier.height(16.dp))
 				}
 			}
@@ -130,6 +153,6 @@ fun FreeTimeScreenPreview() {
 		)
 	)
 	SnaptickTheme {
-		FreeTimeScreen(tasks = tasks)
+		FreeTimeScreen(tasks = tasks, {})
 	}
 }
