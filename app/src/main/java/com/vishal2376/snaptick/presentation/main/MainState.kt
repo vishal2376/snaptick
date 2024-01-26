@@ -5,5 +5,6 @@ import com.vishal2376.snaptick.util.SortTask
 
 data class MainState(
 	val theme: AppTheme = AppTheme.Dark, // todo: load theme using data store
-	val sortBy: SortTask = SortTask.BY_CREATE_TIME_ASCENDING
+	val sortBy: SortTask = SortTask.BY_CREATE_TIME_ASCENDING,
+	val freeTime: Long? = null
 )

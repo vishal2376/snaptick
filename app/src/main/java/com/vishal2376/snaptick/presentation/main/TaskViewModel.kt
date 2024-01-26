@@ -51,6 +51,10 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 			is MainEvent.UpdateSortByTask -> {
 				appState = appState.copy(sortBy = event.sortTask)
 			}
+
+			is MainEvent.UpdateFreeTime -> {
+				appState = appState.copy(freeTime = event.freeTime)
+			}
 		}
 	}
 

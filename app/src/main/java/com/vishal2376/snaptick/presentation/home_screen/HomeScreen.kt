@@ -96,6 +96,15 @@ fun HomeScreen(
 	tasks.filterTo(completedTasks) { it.isCompleted }
 	tasks.filterTo(inCompletedTasks) { !it.isCompleted }
 
+	var freeTimeText = ""
+
+	if (appState.freeTime == null) {
+		val totalTaskTime = inCompletedTasks.sumOf { it.getDuration() }
+		val freeTime = ((24 * 60 * 60).toLong() - totalTaskTime) / 3600L
+		freeTimeText = "$freeTime hours"
+		//		onMainEvent(MainEvent.UpdateFreeTime(freeTime))
+	}
+
 	val totalTasks = tasks.size
 	val totalCompletedTasks = completedTasks.size
 
@@ -229,7 +238,7 @@ fun HomeScreen(
 
 					InfoComponent(
 						title = "Free Time",
-						desc = "8 hours",
+						desc = freeTimeText,
 						icon = R.drawable.ic_clock,
 						backgroundColor = Blue,
 						modifier = Modifier
