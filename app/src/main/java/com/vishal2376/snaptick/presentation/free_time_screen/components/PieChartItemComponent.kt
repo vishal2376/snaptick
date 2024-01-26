@@ -1,5 +1,7 @@
 package com.vishal2376.snaptick.presentation.free_time_screen.components
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
@@ -16,24 +18,37 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.ui.theme.Blue
+import kotlinx.coroutines.delay
 import java.time.LocalTime
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun PieChartItemComponent(task: Task, itemColor: Color) {
+fun PieChartItemComponent(task: Task, itemColor: Color, animDelay: Int = 100) {
 
 	val duration = task.getDuration()
+	val alphaAnimation = remember { Animatable(initialValue = 0f) }
+
+	LaunchedEffect(animDelay) {
+		delay(animDelay.toLong())
+		alphaAnimation.animateTo(targetValue = 1f, animationSpec = tween(1000))
+	}
 
 	Box(
 		modifier = Modifier
+			.graphicsLayer {
+				alpha = alphaAnimation.value
+			}
 			.fillMaxWidth()
 			.background(MaterialTheme.colorScheme.secondary, RoundedCornerShape(8.dp))
 			.padding(16.dp, 20.dp)

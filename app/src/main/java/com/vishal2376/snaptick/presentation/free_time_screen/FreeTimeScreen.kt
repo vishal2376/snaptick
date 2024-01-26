@@ -118,7 +118,8 @@ fun FreeTimeScreen(
 				itemsIndexed(items = sortedTasks) { index, item ->
 					PieChartItemComponent(
 						task = item,
-						itemColor = pieChartColors[index % totalColors]
+						itemColor = pieChartColors[index % totalColors],
+						animDelay = 100 * index
 					)
 					Spacer(modifier = Modifier.height(10.dp))
 				}
