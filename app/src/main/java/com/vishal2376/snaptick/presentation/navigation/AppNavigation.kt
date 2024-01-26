@@ -42,6 +42,9 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 				onClickCompletedInfo = {
 					navController.navigate(route = Routes.CompletedTaskScreen.name)
 				},
+				onClickFreeTimeInfo = {
+					navController.navigate(route = Routes.FreeTimeScreen.name)
+				},
 				onPomodoroTask = { id ->
 					navController.navigate(route = "${Routes.PomodoroScreen.name}/$id")
 				})

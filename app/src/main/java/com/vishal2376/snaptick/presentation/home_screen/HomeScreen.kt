@@ -84,6 +84,7 @@ fun HomeScreen(
 	onEditTask: (id: Int) -> Unit,
 	onAddTask: () -> Unit,
 	onClickCompletedInfo: () -> Unit,
+	onClickFreeTimeInfo: () -> Unit,
 	onPomodoroTask: (id: Int) -> Unit,
 ) {
 
@@ -235,7 +236,7 @@ fun HomeScreen(
 							.graphicsLayer {
 								translationX = rightTranslate.value
 							},
-						onClick = {}
+						onClick = { onClickFreeTimeInfo() }
 					)
 
 				}
@@ -362,15 +363,6 @@ fun HomeScreenPreview() {
 				priority = 1
 			)
 		)
-		HomeScreen(
-			tasks = tasks,
-			MainState(),
-			{},
-			{},
-			{},
-			{},
-			{},
-			{}
-		)
+		HomeScreen(tasks = tasks, MainState(), {}, {}, {}, {}, {}, {}, {})
 	}
 }
