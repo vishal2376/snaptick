@@ -42,7 +42,6 @@ import com.vishal2376.snaptick.ui.theme.Green
 import com.vishal2376.snaptick.ui.theme.LightGray
 import com.vishal2376.snaptick.ui.theme.Red
 import com.vishal2376.snaptick.ui.theme.Yellow
-import kotlinx.coroutines.delay
 import java.time.LocalTime
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -64,8 +63,7 @@ fun TaskComponent(
 	val alphaAnimation = remember { Animatable(initialValue = 0f) }
 
 	LaunchedEffect(animDelay) {
-		delay(animDelay.toLong())
-		alphaAnimation.animateTo(targetValue = 1f, animationSpec = tween(1000))
+		alphaAnimation.animateTo(targetValue = 1f, animationSpec = tween(1000, animDelay))
 	}
 
 	Box(
