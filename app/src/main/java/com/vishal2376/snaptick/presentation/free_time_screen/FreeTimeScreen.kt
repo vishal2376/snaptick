@@ -37,6 +37,7 @@ import com.vishal2376.snaptick.presentation.free_time_screen.components.PieChart
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.ui.theme.pieChartColors
 import com.vishal2376.snaptick.util.Constants
+import com.vishal2376.snaptick.util.getFormattedFreeTime
 import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -49,6 +50,10 @@ fun FreeTimeScreen(
 	val inCompletedTasks = tasks.filter { !it.isCompleted }
 	val sortedTasks = inCompletedTasks.sortedBy { -it.getDuration() }
 	val totalColors = pieChartColors.size
+
+	// todo :save free time in app state
+	val totalTaskTime = inCompletedTasks.sumOf { it.getDuration() }
+	val freeTimeText = getFormattedFreeTime(totalTaskTime)
 
 	Scaffold(topBar = {
 		TopAppBar(
@@ -102,7 +107,7 @@ fun FreeTimeScreen(
 					)
 
 					Text(
-						text = "8 hours",
+						text = freeTimeText,
 						color = Color.White,
 						style = taskTextStyle
 					)

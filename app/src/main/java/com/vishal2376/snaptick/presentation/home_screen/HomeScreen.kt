@@ -68,6 +68,7 @@ import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.ui.theme.Yellow
 import com.vishal2376.snaptick.util.Constants
 import com.vishal2376.snaptick.util.SortTask
+import com.vishal2376.snaptick.util.getFormattedFreeTime
 import kotlinx.coroutines.launch
 import java.time.LocalTime
 
@@ -96,14 +97,9 @@ fun HomeScreen(
 	tasks.filterTo(completedTasks) { it.isCompleted }
 	tasks.filterTo(inCompletedTasks) { !it.isCompleted }
 
-	var freeTimeText = ""
-
-	if (appState.freeTime == null) {
-		val totalTaskTime = inCompletedTasks.sumOf { it.getDuration() }
-		val freeTime = ((24 * 60 * 60).toLong() - totalTaskTime) / 3600L
-		freeTimeText = "$freeTime hours"
-		//		onMainEvent(MainEvent.UpdateFreeTime(freeTime))
-	}
+	// todo :save free time in app state
+	val totalTaskTime = inCompletedTasks.sumOf { it.getDuration() }
+	val freeTimeText = getFormattedFreeTime(totalTaskTime)
 
 	val totalTasks = tasks.size
 	val totalCompletedTasks = completedTasks.size
