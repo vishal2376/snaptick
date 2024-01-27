@@ -11,6 +11,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -21,7 +22,7 @@ import com.vishal2376.snaptick.ui.theme.pieChartColors
 fun CustomPieChart(
 	data: List<Long>,
 	arcWidth: Dp = 30.dp,
-	startAngle: Float = -90f,
+	startAngle: Float = -180f,
 	pieChartSize: Dp = 200.dp,
 	animDuration: Int = 1000
 ) {
@@ -49,7 +50,11 @@ fun CustomPieChart(
 		horizontalAlignment = Alignment.CenterHorizontally,
 		verticalArrangement = Arrangement.Center
 	) {
-		Canvas(modifier = Modifier.size(pieChartSize)) {
+		Canvas(
+			modifier = Modifier
+				.size(pieChartSize)
+				.rotate(90f * animationProgress.value)
+		) {
 			arcValues.forEachIndexed { index, arcValue ->
 				drawArc(
 					color = pieChartColors[index % totalColors],
