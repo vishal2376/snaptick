@@ -30,7 +30,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -56,10 +55,9 @@ import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.ui.theme.Green
-import com.vishal2376.snaptick.ui.theme.LightGray
 import com.vishal2376.snaptick.ui.theme.Red
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
-import com.vishal2376.snaptick.ui.theme.Yellow
+import com.vishal2376.snaptick.util.Priority
 import kotlinx.coroutines.job
 import java.time.LocalTime
 
@@ -75,7 +73,7 @@ fun AddTaskScreen(
 	var taskEndTime by remember { mutableStateOf(LocalTime.now()) }
 	var isTaskReminderOn by remember { mutableStateOf(true) }
 	var taskCategory by remember { mutableStateOf("") }
-	var taskPriority by remember { mutableIntStateOf(0) }
+	var taskPriority by remember { mutableStateOf(Priority.LOW) }
 
 	val context = LocalContext.current
 	val focusRequester = FocusRequester()
@@ -218,36 +216,8 @@ fun AddTaskScreen(
 					)
 				}
 
-				Row(
-					modifier = Modifier
-						.fillMaxWidth()
-						.padding(
-							24.dp,
-							0.dp
-						),
-					horizontalArrangement = Arrangement.spacedBy(10.dp)
-				) {
-
-					PriorityComponent(
-						title = "Low",
-						backgroundColor = LightGray,
-						modifier = Modifier.weight(0.3f),
-						onClick = { taskPriority = 0 }
-					)
-
-					PriorityComponent(
-						title = "Medium",
-						backgroundColor = Yellow,
-						modifier = Modifier.weight(0.4f),
-						onClick = { taskPriority = 1 }
-					)
-
-					PriorityComponent(
-						title = "High",
-						backgroundColor = Red,
-						modifier = Modifier.weight(0.3f),
-						onClick = { taskPriority = 2 }
-					)
+				PriorityComponent() {
+					taskPriority = it
 				}
 			}
 
@@ -269,7 +239,7 @@ fun AddTaskScreen(
 								taskEndTime,
 								isTaskReminderOn,
 								taskCategory,
-								taskPriority
+								taskPriority.ordinal
 							)
 							onEvent(AddEditScreenEvent.OnAddTaskClick(task))
 							onBack()

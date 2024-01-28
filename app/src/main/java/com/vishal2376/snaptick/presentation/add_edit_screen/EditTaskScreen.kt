@@ -54,10 +54,8 @@ import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.ui.theme.Green
-import com.vishal2376.snaptick.ui.theme.LightGray
 import com.vishal2376.snaptick.ui.theme.Red
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
-import com.vishal2376.snaptick.ui.theme.Yellow
 import com.vishal2376.snaptick.util.Priority
 import java.time.LocalTime
 
@@ -232,37 +230,11 @@ fun EditTaskScreen(
 						)
 					)
 				}
-				Row(
-					modifier = Modifier
-						.fillMaxWidth()
-						.padding(
-							24.dp,
-							0.dp
-						),
-					horizontalArrangement = Arrangement.spacedBy(10.dp)
-				) {
 
-					PriorityComponent(
-						title = "Low",
-						backgroundColor = LightGray,
-						modifier = Modifier.weight(0.3f),
-						onClick = { onEvent(AddEditScreenEvent.OnUpdatePriority(Priority.LOW)) }
-					)
-
-					PriorityComponent(
-						title = "Medium",
-						backgroundColor = Yellow,
-						modifier = Modifier.weight(0.4f),
-						onClick = { onEvent(AddEditScreenEvent.OnUpdatePriority(Priority.MEDIUM)) }
-					)
-
-					PriorityComponent(
-						title = "High",
-						backgroundColor = Red,
-						modifier = Modifier.weight(0.3f),
-						onClick = { onEvent(AddEditScreenEvent.OnUpdatePriority(Priority.HIGH)) }
-					)
+				PriorityComponent(defaultSortTask = Priority.entries[task.priority]) {
+					onEvent(AddEditScreenEvent.OnUpdatePriority(it))
 				}
+
 			}
 
 			//bottom action buttons
