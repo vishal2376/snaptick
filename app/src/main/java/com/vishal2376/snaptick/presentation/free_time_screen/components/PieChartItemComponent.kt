@@ -78,7 +78,7 @@ fun PieChartItemComponent(task: Task, itemColor: Color, animDelay: Int = 100) {
 			)
 
 			Text(
-				text = task.getFormattedDuration(duration, trimSeconds = true),
+				text = task.getFormattedDurationTimeStamp(duration, trimSeconds = true),
 				style = taskTextStyle,
 				color = Color.White
 			)

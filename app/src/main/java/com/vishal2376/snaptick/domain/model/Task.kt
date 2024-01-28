@@ -36,7 +36,7 @@ data class Task(
 		return (endTime.toSecondOfDay() - startTime.toSecondOfDay()).toLong()
 	}
 
-	fun getFormattedDuration(duration: Long, trimSeconds: Boolean = false): String {
+	fun getFormattedDurationTimeStamp(duration: Long, trimSeconds: Boolean = false): String {
 		val hours = duration / 3600
 		val minutes = (duration % 3600) / 60
 		val seconds = duration % 60

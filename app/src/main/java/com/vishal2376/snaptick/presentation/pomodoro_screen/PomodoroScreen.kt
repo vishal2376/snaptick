@@ -206,7 +206,7 @@ fun PomodoroScreen(
 					text = if (isTimerCompleted) {
 						stringResource(R.string.completed)
 					} else {
-						task.getFormattedDuration(timeLeft)
+						task.getFormattedDurationTimeStamp(timeLeft)
 					},
 					style = timerTextStyle,
 					color = Color.White
