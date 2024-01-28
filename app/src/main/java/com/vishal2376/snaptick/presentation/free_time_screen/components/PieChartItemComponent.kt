@@ -37,7 +37,7 @@ import java.time.LocalTime
 fun PieChartItemComponent(task: Task, itemColor: Color, animDelay: Int = 100) {
 
 	val duration = task.getDuration()
-	val alphaAnimation = remember { Animatable(initialValue = 0f) }
+	val alphaAnimation = remember { Animatable(initialValue = 1f) }
 
 	LaunchedEffect(animDelay) {
 		delay(animDelay.toLong())
@@ -78,7 +78,7 @@ fun PieChartItemComponent(task: Task, itemColor: Color, animDelay: Int = 100) {
 			)
 
 			Text(
-				text = task.getFormattedDurationTimeStamp(duration, trimSeconds = true),
+				text = task.getFormattedDuration(),
 				style = taskTextStyle,
 				color = Color.White
 			)
