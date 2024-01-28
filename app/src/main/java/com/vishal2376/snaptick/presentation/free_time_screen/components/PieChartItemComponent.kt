@@ -36,8 +36,7 @@ import java.time.LocalTime
 @Composable
 fun PieChartItemComponent(task: Task, itemColor: Color, animDelay: Int = 100) {
 
-	val duration = task.getDuration()
-	val alphaAnimation = remember { Animatable(initialValue = 1f) }
+	val alphaAnimation = remember { Animatable(initialValue = 0f) }
 
 	LaunchedEffect(animDelay) {
 		delay(animDelay.toLong())
