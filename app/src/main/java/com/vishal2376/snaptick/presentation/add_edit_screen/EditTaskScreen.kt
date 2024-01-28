@@ -231,8 +231,10 @@ fun EditTaskScreen(
 					)
 				}
 
-				PriorityComponent(defaultSortTask = Priority.entries[task.priority]) {
-					onEvent(AddEditScreenEvent.OnUpdatePriority(it))
+				if (task.title.isNotEmpty()) {
+					PriorityComponent(defaultSortTask = Priority.entries[task.priority]) {
+						onEvent(AddEditScreenEvent.OnUpdatePriority(it))
+					}
 				}
 
 			}
