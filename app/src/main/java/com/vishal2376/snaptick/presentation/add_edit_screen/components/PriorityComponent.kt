@@ -1,5 +1,7 @@
 package com.vishal2376.snaptick.presentation.add_edit_screen.components
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,7 +41,9 @@ fun PriorityComponent(
 	}
 
 	Row(
-		modifier = Modifier.fillMaxWidth(),
+		modifier = Modifier
+			.fillMaxWidth()
+			.padding(horizontal = 32.dp),
 		horizontalArrangement = Arrangement.spacedBy(8.dp)
 	) {
 		Priority.entries.forEach {
@@ -48,8 +53,8 @@ fun PriorityComponent(
 				isSelected = selectedOption == it,
 				modifier = Modifier.weight(1f)
 			) {
-				selectedOption = it
 				onSelect(it)
+				selectedOption = it
 			}
 		}
 	}
@@ -85,9 +90,16 @@ fun PriorityItemComponent(
 		}
 
 		if (isSelected) {
+
+			val animValue = remember { Animatable(initialValue = 0f) }
+
+			LaunchedEffect(Unit) {
+				animValue.animateTo(1f, tween(300))
+			}
+
 			Box(
 				modifier = Modifier
-					.width(50.dp)
+					.width(40.dp * animValue.value)
 					.height(4.dp)
 					.background(backgroundColor, RoundedCornerShape(8.dp))
 			)
