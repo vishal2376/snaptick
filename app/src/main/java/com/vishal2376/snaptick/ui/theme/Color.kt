@@ -22,6 +22,13 @@ val LightGray = Color(0xFFCCD2D8)
 val Black500 = Color(0xFF000000)
 val Black200 = Color(0xFF252526)
 
+// priority colors
+val priorityColors = listOf(
+	LightGray,
+	Yellow,
+	Red
+)
+
 // pie chart colors
 val pieChartColors = listOf(
 	Color(0xFFFFA502),
