@@ -22,14 +22,13 @@ import com.vishal2376.snaptick.presentation.pomodoro_screen.PomodoroScreen
 @Composable
 fun AppNavigation(taskViewModel: TaskViewModel) {
 	val navController = rememberNavController()
+	val tasks by taskViewModel.taskList.collectAsStateWithLifecycle(initialValue = emptyList())
 
 	NavHost(
 		navController = navController,
 		startDestination = Routes.HomeScreen.name
 	) {
 		composable(route = Routes.HomeScreen.name) {
-			val tasks by taskViewModel.taskList.collectAsStateWithLifecycle(initialValue = emptyList())
-
 			HomeScreen(
 				tasks = tasks,
 				appState = taskViewModel.appState,
@@ -53,7 +52,6 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 		}
 
 		composable(route = Routes.CompletedTaskScreen.name) {
-			val tasks by taskViewModel.taskList.collectAsStateWithLifecycle(initialValue = emptyList())
 			CompletedTaskScreen(
 				tasks = tasks,
 				onEvent = taskViewModel::onEvent,
@@ -65,7 +63,6 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 		}
 
 		composable(route = Routes.FreeTimeScreen.name) {
-			val tasks by taskViewModel.taskList.collectAsStateWithLifecycle(initialValue = emptyList())
 			FreeTimeScreen(
 				tasks = tasks,
 				onBack = {
