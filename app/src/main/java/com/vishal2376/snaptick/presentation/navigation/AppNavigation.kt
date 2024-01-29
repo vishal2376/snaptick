@@ -3,7 +3,9 @@ package com.vishal2376.snaptick.presentation.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -55,26 +57,39 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 			CompletedTaskScreen(
 				tasks = tasks,
 				onEvent = taskViewModel::onEvent,
-				onBack = { navController.popBackStack() })
+				onBack = {
+					if (navController.isValidBackStack) {
+						navController.popBackStack()
+					}
+				})
 		}
 
 		composable(route = Routes.FreeTimeScreen.name) {
 			val tasks by taskViewModel.taskList.collectAsStateWithLifecycle(initialValue = emptyList())
 			FreeTimeScreen(
 				tasks = tasks,
-				onBack = { navController.popBackStack() })
+				onBack = {
+					if (navController.isValidBackStack) {
+						navController.popBackStack()
+					}
+				})
 		}
 
 		composable(route = Routes.AddTaskScreen.name) {
 			AddTaskScreen(
 				onEvent = taskViewModel::onEvent,
-				onBack = { navController.popBackStack() })
+				onBack = {
+					if (navController.isValidBackStack) {
+						navController.popBackStack()
+					}
+				})
 		}
 
 		composable(
 			route = "${Routes.EditTaskScreen.name}/{id}",
 			arguments = listOf(navArgument("id") {
 				type = NavType.IntType
+				defaultValue = -1
 			})
 		) { navBackStackEntry ->
 			navBackStackEntry.arguments?.getInt("id").let { id ->
@@ -85,7 +100,11 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 				}
 				EditTaskScreen(task = taskViewModel.task,
 					onEvent = taskViewModel::onEvent,
-					onBack = { navController.popBackStack() })
+					onBack = {
+						if (navController.isValidBackStack) {
+							navController.popBackStack()
+						}
+					})
 			}
 		}
 
@@ -93,6 +112,7 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 			route = "${Routes.PomodoroScreen.name}/{id}",
 			arguments = listOf(navArgument("id") {
 				type = NavType.IntType
+				defaultValue = -1
 			})
 		) { navBackStackEntry ->
 			navBackStackEntry.arguments?.getInt("id").let { id ->
@@ -103,8 +123,16 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 				}
 				PomodoroScreen(task = taskViewModel.task,
 					onEvent = taskViewModel::onEvent,
-					onBack = { navController.popBackStack() })
+					onBack = {
+						if (navController.isValidBackStack) {
+							navController.popBackStack()
+						}
+					})
 			}
 		}
 	}
 }
+
+val NavHostController.isValidBackStack
+	get() = this.currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED
+
