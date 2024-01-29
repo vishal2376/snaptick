@@ -19,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
@@ -28,6 +29,8 @@ import com.vishal2376.snaptick.ui.theme.Blue
 
 @Composable
 fun NavigationDrawerComponent(onMainEvent: (MainEvent) -> Unit) {
+
+	val context = LocalContext.current
 
 	var isAmoledTheme by remember {
 		mutableStateOf(false)
@@ -60,7 +63,7 @@ fun NavigationDrawerComponent(onMainEvent: (MainEvent) -> Unit) {
 				checked = isAmoledTheme,
 				onCheckedChange = {
 					isAmoledTheme = it
-					onMainEvent(MainEvent.ToggleAmoledTheme(it))
+					onMainEvent(MainEvent.ToggleAmoledTheme(it, context))
 				},
 				colors = SwitchDefaults.colors(
 					checkedThumbColor = Blue,

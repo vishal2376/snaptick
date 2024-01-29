@@ -1,5 +1,6 @@
 package com.vishal2376.snaptick.presentation.main
 
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -10,6 +11,9 @@ import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.add_edit_screen.AddEditScreenEvent
 import com.vishal2376.snaptick.presentation.home_screen.HomeScreenEvent
 import com.vishal2376.snaptick.ui.theme.AppTheme
+import com.vishal2376.snaptick.util.Constants
+import com.vishal2376.snaptick.util.PreferenceManager
+import com.vishal2376.snaptick.util.SortTask
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -41,15 +45,30 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 	fun onEvent(event: MainEvent) {
 		when (event) {
 			is MainEvent.ToggleAmoledTheme -> {
-				appState = if (event.isEnabled) {
-					appState.copy(theme = AppTheme.Amoled)
-				} else {
-					appState.copy(theme = AppTheme.Dark)
+				viewModelScope.launch {
+					appState = if (event.isEnabled) {
+						appState.copy(theme = AppTheme.Amoled)
+					} else {
+						appState.copy(theme = AppTheme.Dark)
+					}
+
+					PreferenceManager.savePreferences(
+						event.context,
+						Constants.SORT_TASK_KEY,
+						appState.theme.ordinal
+					)
 				}
 			}
 
 			is MainEvent.UpdateSortByTask -> {
-				appState = appState.copy(sortBy = event.sortTask)
+				viewModelScope.launch {
+					PreferenceManager.savePreferences(
+						event.context,
+						Constants.SORT_TASK_KEY,
+						event.sortTask.ordinal
+					)
+					appState = appState.copy(sortBy = event.sortTask)
+				}
 			}
 
 			is MainEvent.UpdateFreeTime -> {
@@ -121,5 +140,17 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 		}
 	}
 
+	fun loadAppState(context: Context) {
+		viewModelScope.launch {
+			PreferenceManager.loadPreference(context, Constants.THEME_KEY, defaultValue = 1)
+				.collect {
+					appState = appState.copy(theme = AppTheme.entries[it])
+				}
+
+			PreferenceManager.loadPreference(context, Constants.SORT_TASK_KEY).collect {
+				appState = appState.copy(sortBy = SortTask.entries[it])
+			}
+		}
+	}
 
 }

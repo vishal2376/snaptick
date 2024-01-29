@@ -9,21 +9,19 @@ import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class PreferenceManager(val context: Context) {
+object PreferenceManager {
 
 	private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = Constants.SETTINGS_KEY)
-	private val dataStore = context.dataStore
 
-	fun loadPreference(key: String, defaultValue: Int = 0): Flow<Int> {
-		val themeKey = intPreferencesKey(key)
-		return dataStore.data
+	fun loadPreference(context: Context, key: String, defaultValue: Int = 0): Flow<Int> {
+		return context.dataStore.data
 			.map { preferences ->
-				preferences[themeKey] ?: defaultValue
+				preferences[intPreferencesKey(key)] ?: defaultValue
 			}
 	}
 
-	suspend fun savePreferences(key: String, value: Int) {
-		dataStore.edit { preferences ->
+	suspend fun savePreferences(context: Context, key: String, value: Int) {
+		context.dataStore.edit { preferences ->
 			preferences[intPreferencesKey(key)] = value
 		}
 	}
