@@ -3,7 +3,6 @@ package com.vishal2376.snaptick.presentation.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -24,7 +23,6 @@ import com.vishal2376.snaptick.presentation.pomodoro_screen.PomodoroScreen
 fun AppNavigation(taskViewModel: TaskViewModel) {
 	val navController = rememberNavController()
 	val tasks by taskViewModel.taskList.collectAsStateWithLifecycle(initialValue = emptyList())
-	taskViewModel.loadAppState(LocalContext.current)
 
 	NavHost(
 		navController = navController,
