@@ -23,6 +23,9 @@ class MainActivity : ComponentActivity() {
 		notificationHelper = NotificationHelper(applicationContext)
 		notificationHelper.createNotificationChannel()
 
+		// load app state
+		taskViewModel.loadAppState(applicationContext)
+
 		setContent {
 			SnaptickTheme(theme = taskViewModel.appState.theme) {
 				AppNavigation(taskViewModel = taskViewModel)

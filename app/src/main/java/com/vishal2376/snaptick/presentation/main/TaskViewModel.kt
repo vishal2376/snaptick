@@ -1,6 +1,7 @@
 package com.vishal2376.snaptick.presentation.main
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -19,6 +20,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalTime
 import javax.inject.Inject
+
+const val TAG = "@@@"
 
 @HiltViewModel
 class TaskViewModel @Inject constructor(private val repository: TaskRepository) : ViewModel() {
@@ -54,7 +57,7 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 
 					PreferenceManager.savePreferences(
 						event.context,
-						Constants.SORT_TASK_KEY,
+						Constants.THEME_KEY,
 						appState.theme.ordinal
 					)
 				}
@@ -145,10 +148,14 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 			PreferenceManager.loadPreference(context, Constants.THEME_KEY, defaultValue = 1)
 				.collect {
 					appState = appState.copy(theme = AppTheme.entries[it])
+					Log.e(TAG, "loadAppState: appTheme entry : $it")
 				}
-
+		}
+		
+		viewModelScope.launch {
 			PreferenceManager.loadPreference(context, Constants.SORT_TASK_KEY).collect {
 				appState = appState.copy(sortBy = SortTask.entries[it])
+				Log.e(TAG, "loadAppState: sortTask entry : $it")
 			}
 		}
 	}
