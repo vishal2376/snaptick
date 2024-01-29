@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Context.VIBRATOR_SERVICE
 import android.os.VibrationEffect
 import android.os.Vibrator
-import android.widget.Toast
 import java.time.LocalTime
 
 fun vibrateDevice(
@@ -17,8 +16,6 @@ fun vibrateDevice(
 	if (vibrator?.hasVibrator() == true) {
 		vibrator.vibrate(VibrationEffect.createOneShot(duration, vibrationEffect))
 	}
-
-	Toast.makeText(context, "Vibrate Device : 500ms", Toast.LENGTH_SHORT).show()
 }
 
 fun getFormattedFreeTime(totalDuration: Long): String {
