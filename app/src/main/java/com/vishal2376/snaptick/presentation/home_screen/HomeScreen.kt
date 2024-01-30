@@ -204,7 +204,7 @@ fun HomeScreen(
 					defaultSortTask = appState.sortBy,
 					onClose = { showSortDialog = false },
 					onSelect = {
-						onMainEvent(MainEvent.UpdateSortByTask(it, context = context ))
+						onMainEvent(MainEvent.UpdateSortByTask(it, context = context))
 						showSortDialog = false
 					}
 				)
@@ -277,16 +277,10 @@ fun HomeScreen(
 						}
 
 					}
-					LazyColumn(
-						modifier = Modifier
-							.fillMaxSize()
-							.padding(
-								16.dp,
-								0.dp
-							)
-					) {
 
-						val sortedTasks: List<Task> = inCompletedTasks.sortedWith(compareBy<Task> {
+					// sort task list
+					val sortedTasks: List<Task> = remember(inCompletedTasks, appState.sortBy) {
+						inCompletedTasks.sortedWith(compareBy {
 							when (appState.sortBy) {
 								SortTask.BY_TITLE_ASCENDING -> {
 									it.title
@@ -313,6 +307,17 @@ fun HomeScreen(
 								}
 							}
 						})
+					}
+
+					LazyColumn(
+						modifier = Modifier
+							.fillMaxSize()
+							.padding(
+								16.dp,
+								0.dp
+							)
+					) {
+
 						itemsIndexed(items = sortedTasks,
 							key = { index, task ->
 								task.id
