@@ -12,10 +12,6 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,16 +21,14 @@ import androidx.compose.ui.unit.dp
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.presentation.main.MainEvent
+import com.vishal2376.snaptick.ui.theme.AppTheme
 import com.vishal2376.snaptick.ui.theme.Blue
 
 @Composable
-fun NavigationDrawerComponent(onMainEvent: (MainEvent) -> Unit) {
+fun NavigationDrawerComponent(appTheme: AppTheme, onMainEvent: (MainEvent) -> Unit) {
 
 	val context = LocalContext.current
 
-	var isAmoledTheme by remember {
-		mutableStateOf(false)
-	}
 	Column(
 		horizontalAlignment = Alignment.CenterHorizontally,
 		verticalArrangement = Arrangement.Center,
@@ -60,9 +54,8 @@ fun NavigationDrawerComponent(onMainEvent: (MainEvent) -> Unit) {
 				color = Color.White
 			)
 			Switch(
-				checked = isAmoledTheme,
+				checked = appTheme == AppTheme.Amoled,
 				onCheckedChange = {
-					isAmoledTheme = it
 					onMainEvent(MainEvent.ToggleAmoledTheme(it, context))
 				},
 				colors = SwitchDefaults.colors(
@@ -80,5 +73,5 @@ fun NavigationDrawerComponent(onMainEvent: (MainEvent) -> Unit) {
 @Preview(widthDp = 350)
 @Composable
 fun NavigationDrawerComponentPreview() {
-	NavigationDrawerComponent({})
+	NavigationDrawerComponent(AppTheme.Amoled, {})
 }
