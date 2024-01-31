@@ -1,7 +1,6 @@
 package com.vishal2376.snaptick.presentation.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -108,11 +107,6 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 			})
 		) { navBackStackEntry ->
 			navBackStackEntry.arguments?.getInt("id").let { id ->
-				LaunchedEffect(
-					key1 = true
-				) {
-					taskViewModel.getTaskById(id!!)
-				}
 				PomodoroScreen(task = taskViewModel.task,
 					onEvent = taskViewModel::onEvent,
 					onBack = {

@@ -92,7 +92,7 @@ fun CompletedTaskScreen(
 						) {
 							TaskComponent(
 								task = task,
-								onUpdate = {},
+								onEdit = {},
 								onComplete = {
 									onEvent(
 										HomeScreenEvent.OnCompleted(

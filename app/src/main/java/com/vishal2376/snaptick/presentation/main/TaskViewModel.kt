@@ -92,9 +92,11 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 			}
 
 			is HomeScreenEvent.OnEditTask -> {
-				viewModelScope.launch(Dispatchers.IO) {
-					task = repository.getTaskById(event.taskId)
-				}
+				getTaskById(event.taskId)
+			}
+
+			is HomeScreenEvent.OnPomodoro -> {
+				getTaskById(event.taskId)
 			}
 		}
 	}
@@ -143,7 +145,7 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 		}
 	}
 
-	fun getTaskById(id: Int) {
+	private fun getTaskById(id: Int) {
 		viewModelScope.launch(Dispatchers.IO) {
 			task = repository.getTaskById(id)
 		}
