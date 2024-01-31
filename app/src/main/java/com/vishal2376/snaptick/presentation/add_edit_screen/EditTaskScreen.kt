@@ -66,15 +66,9 @@ fun EditTaskScreen(
 	onEvent: (AddEditScreenEvent) -> Unit,
 	onBack: () -> Unit
 ) {
-
-	val taskStartTime = task.startTime
-	val taskEndTime = task.endTime
-
 	val context = LocalContext.current
 
-	var showDialog by remember {
-		mutableStateOf(false)
-	}
+	var showDialog by remember { mutableStateOf(false) }
 
 	Scaffold(topBar = {
 		TopAppBar(modifier = Modifier.padding(8.dp),
@@ -96,7 +90,6 @@ fun EditTaskScreen(
 				}
 			},
 			actions = {
-
 				IconButton(onClick = { showDialog = true }) {
 					Icon(
 						imageVector = Icons.Default.Delete,
@@ -173,14 +166,12 @@ fun EditTaskScreen(
 							color = Green
 						)
 						Spacer(modifier = Modifier.height(8.dp))
-						if (task.title.isNotEmpty()) {
-							WheelTimePicker(
-								timeFormat = TimeFormat.AM_PM,
-								startTime = task.startTime,
-								textColor = Color.White
-							) { snappedTime ->
-								onEvent(AddEditScreenEvent.OnUpdateStartTime(snappedTime))
-							}
+						WheelTimePicker(
+							timeFormat = TimeFormat.AM_PM,
+							startTime = task.startTime,
+							textColor = Color.White
+						) { snappedTime ->
+							onEvent(AddEditScreenEvent.OnUpdateStartTime(snappedTime))
 						}
 					}
 					Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -190,18 +181,15 @@ fun EditTaskScreen(
 							color = Red
 						)
 						Spacer(modifier = Modifier.height(8.dp))
-						if (task.title.isNotEmpty()) {
-							WheelTimePicker(
-								timeFormat = TimeFormat.AM_PM,
-								textColor = Color.White,
-								startTime = task.endTime
-							) { snappedTime ->
-								onEvent(AddEditScreenEvent.OnUpdateEndTime(snappedTime))
-							}
+						WheelTimePicker(
+							timeFormat = TimeFormat.AM_PM,
+							textColor = Color.White,
+							startTime = task.endTime
+						) { snappedTime ->
+							onEvent(AddEditScreenEvent.OnUpdateEndTime(snappedTime))
 						}
 					}
 				}
-
 				Row(
 					modifier = Modifier
 						.fillMaxWidth()
@@ -231,12 +219,9 @@ fun EditTaskScreen(
 					)
 				}
 
-				if (task.title.isNotEmpty()) {
-					PriorityComponent(defaultSortTask = Priority.entries[task.priority]) {
-						onEvent(AddEditScreenEvent.OnUpdatePriority(it))
-					}
+				PriorityComponent(defaultSortTask = Priority.entries[task.priority]) {
+					onEvent(AddEditScreenEvent.OnUpdatePriority(it))
 				}
-
 			}
 
 			//bottom action buttons
@@ -251,12 +236,6 @@ fun EditTaskScreen(
 						if (task.title.isNotBlank()) {
 							onEvent(AddEditScreenEvent.OnUpdateTask())
 							onBack()
-						} else if (taskStartTime >= taskEndTime) {
-							Toast.makeText(
-								context,
-								"Invalid Time",
-								Toast.LENGTH_SHORT
-							).show()
 						} else {
 							Toast.makeText(
 								context,
@@ -301,8 +280,6 @@ fun EditTaskScreenPreview() {
 			category = "",
 			priority = 0
 		)
-		EditTaskScreen(task,
-			{},
-			{})
+		EditTaskScreen(task, {}, {})
 	}
 }
