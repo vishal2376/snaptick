@@ -327,14 +327,12 @@ fun HomeScreen(
 							) {
 								TaskComponent(
 									task = task,
-									onUpdate = onEditTask,
+									onUpdate = {
+										onEvent(HomeScreenEvent.OnEditTask(task.id))
+										onEditTask(task.id)
+									},
 									onComplete = {
-										onEvent(
-											HomeScreenEvent.OnCompleted(
-												it,
-												true
-											)
-										)
+										onEvent(HomeScreenEvent.OnCompleted(it, true))
 									},
 									onPomodoro = onPomodoroTask,
 									animDelay = index * Constants.LIST_ANIMATION_DELAY

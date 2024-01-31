@@ -90,6 +90,12 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 					repository.updateTask(task)
 				}
 			}
+
+			is HomeScreenEvent.OnEditTask -> {
+				viewModelScope.launch(Dispatchers.IO) {
+					task = repository.getTaskById(event.taskId)
+				}
+			}
 		}
 	}
 
@@ -151,7 +157,7 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 					Log.e(TAG, "loadAppState: appTheme entry : $it")
 				}
 		}
-		
+
 		viewModelScope.launch {
 			PreferenceManager.loadPreference(context, Constants.SORT_TASK_KEY).collect {
 				appState = appState.copy(sortBy = SortTask.entries[it])

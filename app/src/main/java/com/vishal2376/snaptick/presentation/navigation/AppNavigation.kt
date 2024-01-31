@@ -90,11 +90,6 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 			})
 		) { navBackStackEntry ->
 			navBackStackEntry.arguments?.getInt("id").let { id ->
-				LaunchedEffect(
-					key1 = true
-				) {
-					taskViewModel.getTaskById(id!!)
-				}
 				EditTaskScreen(task = taskViewModel.task,
 					onEvent = taskViewModel::onEvent,
 					onBack = {

@@ -48,7 +48,7 @@ import java.time.LocalTime
 @Composable
 fun TaskComponent(
 	task: Task,
-	onUpdate: (Int) -> Unit,
+	onUpdate: (Task) -> Unit,
 	onComplete: (Int) -> Unit,
 	onPomodoro: (Int) -> Unit,
 	animDelay: Int = 100
@@ -83,7 +83,7 @@ fun TaskComponent(
 			)
 			.padding(start = 10.dp)
 			.clickable {
-				onUpdate(task.id)
+				onUpdate(task)
 			}
 	) {
 		Box(
