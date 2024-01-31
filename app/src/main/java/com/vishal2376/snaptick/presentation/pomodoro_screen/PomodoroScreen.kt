@@ -69,31 +69,18 @@ fun PomodoroScreen(
 	onBack: () -> Unit
 ) {
 
-	var isTimerCompleted by remember {
-		mutableStateOf(false)
-	}
+	var isTimerCompleted by remember { mutableStateOf(false) }
+	var totalTime by remember { mutableLongStateOf(0L) }
+	var timeLeft by remember { mutableLongStateOf(0L) }
+	var isPaused by remember { mutableStateOf(false) }
 
-	var totalTime by remember {
-		mutableLongStateOf(0L)
-	}
-
-	var timeLeft by remember {
-		mutableLongStateOf(0L)
-	}
-
-	if (task.title.isNotEmpty() && totalTime == 0L) {
+	if (totalTime == 0L) {
 		totalTime = task.getDuration()
 		timeLeft = totalTime
 	}
 
-	var isPaused by remember {
-		mutableStateOf(false)
-	}
-
 	// empty progress bar animation
-	val progressBarAnim = remember {
-		Animatable(100f)
-	}
+	val progressBarAnim = remember { Animatable(100f) }
 
 	LaunchedEffect(key1 = Unit) {
 		progressBarAnim.animateTo(
@@ -103,9 +90,7 @@ fun PomodoroScreen(
 	}
 
 	//flicker animation
-	val alphaValue = remember {
-		Animatable(1f)
-	}
+	val alphaValue = remember { Animatable(1f) }
 
 	val context = LocalContext.current
 
@@ -120,10 +105,6 @@ fun PomodoroScreen(
 
 		if (isTimerCompleted) {
 			vibrateDevice(context)
-		}
-
-		if (isTimerCompleted) {
-
 		}
 
 		//flicker animation
@@ -260,10 +241,7 @@ fun PomodoroScreen(
 @Preview
 @Composable
 fun PomodoroScreenPreview() {
-	SnaptickTheme(
-		darkTheme = true,
-		dynamicColor = false
-	) {
+	SnaptickTheme(darkTheme = true, dynamicColor = false) {
 		val task = Task(
 			id = 1,
 			title = "Learn Kotlin",
@@ -280,8 +258,6 @@ fun PomodoroScreenPreview() {
 			category = "",
 			priority = 0
 		)
-		PomodoroScreen(task,
-			{},
-			{})
+		PomodoroScreen(task, {}, {})
 	}
 }
