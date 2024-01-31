@@ -58,7 +58,6 @@ import com.vishal2376.snaptick.ui.theme.LightGray
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.vibrateDevice
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -69,19 +68,15 @@ fun PomodoroScreen(
 	onBack: () -> Unit
 ) {
 
+
+	val context = LocalContext.current
 	var isTimerCompleted by remember { mutableStateOf(false) }
 	var totalTime by remember { mutableLongStateOf(0L) }
 	var timeLeft by remember { mutableLongStateOf(0L) }
 	var isPaused by remember { mutableStateOf(false) }
 
-	if (totalTime == 0L) {
-		totalTime = task.getDuration()
-		timeLeft = totalTime
-	}
-
 	// empty progress bar animation
 	val progressBarAnim = remember { Animatable(100f) }
-
 	LaunchedEffect(key1 = Unit) {
 		progressBarAnim.animateTo(
 			1f,
@@ -91,8 +86,28 @@ fun PomodoroScreen(
 
 	//flicker animation
 	val alphaValue = remember { Animatable(1f) }
+	LaunchedEffect(isPaused) {
+		if (isPaused && (timeLeft != totalTime)) {
+			alphaValue.animateTo(
+				targetValue = 0.2f,
+				animationSpec = infiniteRepeatable(
+					tween(
+						1000,
+						easing = LinearEasing
+					),
+					repeatMode = RepeatMode.Reverse
+				)
+			)
+		} else {
+			alphaValue.snapTo(1f)
+		}
+	}
 
-	val context = LocalContext.current
+	// timer logic
+	if (totalTime == 0L) {
+		totalTime = task.getDuration()
+		timeLeft = totalTime
+	}
 
 	LaunchedEffect(
 		key1 = timeLeft,
@@ -106,24 +121,9 @@ fun PomodoroScreen(
 		if (isTimerCompleted) {
 			vibrateDevice(context)
 		}
-
-		//flicker animation
-		launch {
-			if (isPaused) {
-				alphaValue.animateTo(
-					targetValue = 0.2f,
-					animationSpec = infiniteRepeatable(
-						tween(
-							1000,
-							easing = LinearEasing
-						),
-						repeatMode = RepeatMode.Reverse
-					)
-				)
-			}
-		}
 	}
 
+	// reset timer onDestroy Screen
 	DisposableEffect(Unit) {
 		onDispose {
 			totalTime = 0L
