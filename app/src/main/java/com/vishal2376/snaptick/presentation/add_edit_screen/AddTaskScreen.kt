@@ -72,7 +72,7 @@ fun AddTaskScreen(
 	var taskStartTime by remember { mutableStateOf(LocalTime.now()) }
 	var taskEndTime by remember { mutableStateOf(LocalTime.now()) }
 	var isTaskReminderOn by remember { mutableStateOf(true) }
-	var taskCategory by remember { mutableStateOf("") }
+	val taskCategory by remember { mutableStateOf("") }
 	var taskPriority by remember { mutableStateOf(Priority.LOW) }
 
 	val context = LocalContext.current
@@ -243,12 +243,6 @@ fun AddTaskScreen(
 							)
 							onEvent(AddEditScreenEvent.OnAddTaskClick(task))
 							onBack()
-						} else if (taskStartTime >= taskEndTime) {
-							Toast.makeText(
-								context,
-								"Invalid Time",
-								Toast.LENGTH_SHORT
-							).show()
 						} else {
 							Toast.makeText(
 								context,
@@ -279,11 +273,7 @@ fun AddTaskScreen(
 @Preview
 @Composable
 fun AddTaskScreenPreview() {
-	SnaptickTheme(
-		darkTheme = true,
-		dynamicColor = false
-	) {
-		AddTaskScreen(onEvent = {},
-			{})
+	SnaptickTheme(darkTheme = true, dynamicColor = false) {
+		AddTaskScreen(onEvent = {}, {})
 	}
 }
