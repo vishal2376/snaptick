@@ -93,6 +93,10 @@ dependencies {
 	//material icons extended
 	implementation("androidx.compose.material:material-icons-extended:1.5.4")
 
+	//acra - crash reports
+	implementation("ch.acra:acra-mail:5.11.3")
+	implementation("ch.acra:acra-dialog:5.11.3")
+
 	//data store
 	implementation("androidx.datastore:datastore-preferences:1.0.0")
 
