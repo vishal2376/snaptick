@@ -7,6 +7,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
@@ -23,6 +26,7 @@ import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.presentation.main.MainEvent
 import com.vishal2376.snaptick.ui.theme.AppTheme
 import com.vishal2376.snaptick.ui.theme.Blue
+import com.vishal2376.snaptick.ui.theme.Red
 
 @Composable
 fun NavigationDrawerComponent(appTheme: AppTheme, onMainEvent: (MainEvent) -> Unit) {
@@ -64,6 +68,16 @@ fun NavigationDrawerComponent(appTheme: AppTheme, onMainEvent: (MainEvent) -> Un
 					uncheckedTrackColor = MaterialTheme.colorScheme.secondary
 				)
 			)
+		}
+
+		Spacer(modifier = Modifier.height(8.dp))
+
+		Button(
+			onClick = { throw IndexOutOfBoundsException() },
+			colors = ButtonDefaults.buttonColors(containerColor = Red),
+			shape = RoundedCornerShape(8.dp),
+		) {
+			Text(text = "Crash Testing")
 		}
 
 	}
