@@ -73,7 +73,7 @@ fun NavigationDrawerComponent(appTheme: AppTheme, onMainEvent: (MainEvent) -> Un
 		Spacer(modifier = Modifier.height(8.dp))
 
 		Button(
-			onClick = { throw IndexOutOfBoundsException() },
+			onClick = { throw RuntimeException("Crash Testing") },
 			colors = ButtonDefaults.buttonColors(containerColor = Red),
 			shape = RoundedCornerShape(8.dp),
 		) {
