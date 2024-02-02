@@ -145,7 +145,7 @@ fun HomeScreen(
 		Scaffold(topBar = {
 			TopAppBar(modifier = Modifier.padding(end = 16.dp),
 				colors = TopAppBarDefaults.topAppBarColors(
-					containerColor = MaterialTheme.colorScheme.primary
+					containerColor = Color.Transparent
 				),
 				title = {
 					Text(
