@@ -73,6 +73,7 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 
 		composable(route = Routes.AddTaskScreen.name) {
 			AddTaskScreen(
+				appState = taskViewModel.appState,
 				onEvent = taskViewModel::onEvent,
 				onBack = {
 					if (navController.isValidBackStack) {
@@ -90,6 +91,7 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 		) { navBackStackEntry ->
 			navBackStackEntry.arguments?.getInt("id").let { id ->
 				EditTaskScreen(task = taskViewModel.task,
+					appState = taskViewModel.appState,
 					onEvent = taskViewModel::onEvent,
 					onBack = {
 						if (navController.isValidBackStack) {

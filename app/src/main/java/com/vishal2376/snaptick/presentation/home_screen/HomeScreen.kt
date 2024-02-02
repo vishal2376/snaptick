@@ -102,6 +102,10 @@ fun HomeScreen(
 	val totalTaskTime = inCompletedTasks.sumOf { it.getDuration() }
 	val freeTimeText = getFreeTime(totalTaskTime)
 
+	LaunchedEffect(inCompletedTasks) {
+		appState.totalTaskDuration = totalTaskTime
+	}
+
 	val totalTasks = tasks.size
 	val totalCompletedTasks = completedTasks.size
 	val context = LocalContext.current
@@ -319,7 +323,7 @@ fun HomeScreen(
 					) {
 
 						itemsIndexed(items = sortedTasks,
-							key = { index, task ->
+							key = { _, task ->
 								task.id
 							}) { index, task ->
 							Box(

@@ -53,6 +53,7 @@ import com.vishal2376.snaptick.presentation.add_edit_screen.components.PriorityC
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
+import com.vishal2376.snaptick.presentation.main.MainState
 import com.vishal2376.snaptick.ui.theme.Green
 import com.vishal2376.snaptick.ui.theme.Red
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
@@ -64,6 +65,7 @@ import java.time.LocalTime
 @Composable
 fun EditTaskScreen(
 	task: Task,
+	appState: MainState,
 	onEvent: (AddEditScreenEvent) -> Unit,
 	onBack: () -> Unit
 ) {
@@ -234,7 +236,11 @@ fun EditTaskScreen(
 			) {
 				Button(
 					onClick = {
-						val (isValid, errorMessage) = checkValidTask(task, isOptional = true)
+						val (isValid, errorMessage) = checkValidTask(
+							task = task,
+							totalTasksDuration = appState.totalTaskDuration,
+							isOptional = true
+						)
 
 						if (isValid) {
 							onEvent(AddEditScreenEvent.OnUpdateTask())
@@ -283,6 +289,6 @@ fun EditTaskScreenPreview() {
 			category = "",
 			priority = 0
 		)
-		EditTaskScreen(task, {}, {})
+		EditTaskScreen(task, MainState(), {}, {})
 	}
 }

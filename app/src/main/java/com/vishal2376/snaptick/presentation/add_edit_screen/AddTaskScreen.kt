@@ -54,6 +54,7 @@ import com.vishal2376.snaptick.presentation.add_edit_screen.components.PriorityC
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
+import com.vishal2376.snaptick.presentation.main.MainState
 import com.vishal2376.snaptick.ui.theme.Green
 import com.vishal2376.snaptick.ui.theme.Red
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
@@ -65,6 +66,7 @@ import java.time.LocalTime
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddTaskScreen(
+	appState: MainState,
 	onEvent: (AddEditScreenEvent) -> Unit,
 	onBack: () -> Unit
 ) {
@@ -241,7 +243,10 @@ fun AddTaskScreen(
 							taskCategory,
 							taskPriority.ordinal
 						)
-						val (isValid, errorMessage) = checkValidTask(task)
+						val (isValid, errorMessage) = checkValidTask(
+							task = task,
+							totalTasksDuration = appState.totalTaskDuration
+						)
 
 						if (isValid) {
 							onEvent(AddEditScreenEvent.OnAddTaskClick(task))
@@ -277,6 +282,6 @@ fun AddTaskScreen(
 @Composable
 fun AddTaskScreenPreview() {
 	SnaptickTheme(darkTheme = true, dynamicColor = false) {
-		AddTaskScreen(onEvent = {}, {})
+		AddTaskScreen(MainState(), onEvent = {}, {})
 	}
 }
