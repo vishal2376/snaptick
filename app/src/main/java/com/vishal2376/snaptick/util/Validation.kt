@@ -3,14 +3,17 @@ package com.vishal2376.snaptick.util
 import com.vishal2376.snaptick.domain.model.Task
 import java.time.LocalTime
 
-fun checkValidTask(task: Task, totalTasksDuration: Long = 0): Pair<Boolean, String> {
+fun checkValidTask(
+	task: Task,
+	totalTasksDuration: Long = 0,
+	isOptional: Boolean = false
+): Pair<Boolean, String> {
 	val maxTime = LocalTime.MAX.toSecondOfDay()
 	val currentTime = LocalTime.now().toSecondOfDay()
 	val freeTime = maxTime - currentTime - totalTasksDuration
 	val formattedFreeTime = getFreeTime(totalTasksDuration)
 
 	val currentStartTime = task.startTime.toSecondOfDay()
-	val currentEndTime = task.endTime.toSecondOfDay()
 	val currentDuration = task.getDuration()
 
 	if (task.title.isEmpty()) {
@@ -21,7 +24,7 @@ fun checkValidTask(task: Task, totalTasksDuration: Long = 0): Pair<Boolean, Stri
 		return Pair(false, "Invalid Duration! You have only $formattedFreeTime remaining.")
 	}
 
-	if (currentStartTime <= currentTime) {
+	if (currentStartTime <= currentTime && !isOptional) {
 		return Pair(false, "Start time cannot be in the past.")
 	}
 

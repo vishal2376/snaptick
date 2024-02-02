@@ -57,6 +57,7 @@ import com.vishal2376.snaptick.ui.theme.Green
 import com.vishal2376.snaptick.ui.theme.Red
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.Priority
+import com.vishal2376.snaptick.util.checkValidTask
 import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -233,13 +234,15 @@ fun EditTaskScreen(
 			) {
 				Button(
 					onClick = {
-						if (task.title.isNotBlank()) {
+						val (isValid, errorMessage) = checkValidTask(task, isOptional = true)
+
+						if (isValid) {
 							onEvent(AddEditScreenEvent.OnUpdateTask())
 							onBack()
 						} else {
 							Toast.makeText(
 								context,
-								"Title can't be empty",
+								errorMessage,
 								Toast.LENGTH_SHORT
 							).show()
 						}
