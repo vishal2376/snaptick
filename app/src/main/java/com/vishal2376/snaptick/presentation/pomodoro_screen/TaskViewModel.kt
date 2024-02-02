@@ -194,7 +194,11 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 		}
 
 		viewModelScope.launch {
-			PreferenceManager.loadPreference(context, Constants.SORT_TASK_KEY).collect {
+			PreferenceManager.loadPreference(
+				context,
+				Constants.SORT_TASK_KEY,
+				defaultValue = appState.sortBy.ordinal
+			).collect {
 				appState = appState.copy(sortBy = SortTask.entries[it])
 				Log.e(TAG, "loadAppState: sortTask entry : $it")
 			}

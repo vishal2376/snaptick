@@ -282,14 +282,6 @@ fun HomeScreen(
 					val sortedTasks: List<Task> = remember(inCompletedTasks, appState.sortBy) {
 						inCompletedTasks.sortedWith(compareBy {
 							when (appState.sortBy) {
-								SortTask.BY_TITLE_ASCENDING -> {
-									it.title
-								}
-
-								SortTask.BY_TITLE_DESCENDING -> {
-									it.title
-								}
-
 								SortTask.BY_CREATE_TIME_ASCENDING -> {
 									it.id
 								}
@@ -304,6 +296,14 @@ fun HomeScreen(
 
 								SortTask.BY_PRIORITY_DESCENDING -> {
 									-it.priority
+								}
+
+								SortTask.BY_START_TIME_ASCENDING -> {
+									it.startTime.toSecondOfDay()
+								}
+
+								SortTask.BY_START_TIME_DESCENDING -> {
+									-it.startTime.toSecondOfDay()
 								}
 							}
 						})
