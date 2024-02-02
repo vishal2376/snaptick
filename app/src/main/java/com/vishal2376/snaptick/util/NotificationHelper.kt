@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
 import androidx.core.app.NotificationCompat
 import com.vishal2376.snaptick.R
-import com.vishal2376.snaptick.domain.model.Task
 
 const val NOTIFICATION = "Notification"
 const val CHANNEL_ID = "snaptick-notification"
@@ -17,13 +16,13 @@ class NotificationHelper(private val context: Context) {
 	private val notificationManager =
 		context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
-	fun showNotification(task: Task) {
+	fun showNotification(taskId: Int, taskTitle: String, taskTime: String) {
 		val notificationBuilder = NotificationCompat.Builder(context, CHANNEL_ID)
-			.setContentTitle(task.title)
+			.setContentTitle(taskTitle)
 			.setSmallIcon(R.drawable.ic_clock)
-			.setStyle(NotificationCompat.BigTextStyle().bigText(task.getFormattedTime()))
+			.setStyle(NotificationCompat.BigTextStyle().bigText(taskTime))
 
-		notificationManager.notify(task.id, notificationBuilder.build())
+		notificationManager.notify(taskId, notificationBuilder.build())
 	}
 
 	fun createNotificationChannel() {
