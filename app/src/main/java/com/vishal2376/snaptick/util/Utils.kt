@@ -19,7 +19,10 @@ fun vibrateDevice(
 }
 
 fun getFreeTime(totalDuration: Long): String {
-	val totalFreeDuration = LocalTime.MAX.toSecondOfDay().toLong() - totalDuration
+	val maxTime = LocalTime.MAX.toSecondOfDay()
+	val currentTime = LocalTime.now().toSecondOfDay()
+
+	val totalFreeDuration = maxTime - currentTime - totalDuration
 
 	val hours = totalFreeDuration / 3600
 	val minutes = (totalFreeDuration % 3600) / 60
