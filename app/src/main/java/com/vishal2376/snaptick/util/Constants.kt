@@ -3,6 +3,7 @@ package com.vishal2376.snaptick.util
 object Constants {
 	const val EMAIL = "vishalsingh2376@gmail.com"
 	const val LIST_ANIMATION_DELAY = 100
+	const val MIN_ALLOWED_DURATION = 5L // 5 min
 
 	// DATA STORE KEYS
 	const val SETTINGS_KEY = "settings_key"

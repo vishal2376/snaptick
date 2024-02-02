@@ -58,6 +58,7 @@ import com.vishal2376.snaptick.ui.theme.Green
 import com.vishal2376.snaptick.ui.theme.Red
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.Priority
+import com.vishal2376.snaptick.util.checkValidTask
 import kotlinx.coroutines.job
 import java.time.LocalTime
 
@@ -230,23 +231,25 @@ fun AddTaskScreen(
 			) {
 				Button(
 					onClick = {
-						if (taskTitle.isNotBlank()) {
-							val task = Task(
-								0,
-								taskTitle,
-								false,
-								taskStartTime,
-								taskEndTime,
-								isTaskReminderOn,
-								taskCategory,
-								taskPriority.ordinal
-							)
+						val task = Task(
+							0,
+							taskTitle,
+							false,
+							taskStartTime,
+							taskEndTime,
+							isTaskReminderOn,
+							taskCategory,
+							taskPriority.ordinal
+						)
+						val (isValid, errorMessage) = checkValidTask(task)
+
+						if (isValid) {
 							onEvent(AddEditScreenEvent.OnAddTaskClick(task))
 							onBack()
 						} else {
 							Toast.makeText(
 								context,
-								"Title can't be empty",
+								errorMessage,
 								Toast.LENGTH_SHORT
 							).show()
 						}
