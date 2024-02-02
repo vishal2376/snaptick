@@ -18,15 +18,23 @@ fun vibrateDevice(
 	}
 }
 
-fun getFormattedFreeTime(totalDuration: Long): String {
+fun getFreeTime(totalDuration: Long): String {
 	val totalFreeDuration = LocalTime.MAX.toSecondOfDay().toLong() - totalDuration
 
 	val hours = totalFreeDuration / 3600
 	val minutes = (totalFreeDuration % 3600) / 60
-	val freeTime = hours + (minutes / 60f)
-	val freeTimeText = String.format("%.1f hours", freeTime)
-	if (freeTimeText.endsWith(".0")) {
-		freeTimeText.substring(0, freeTimeText.length - 2)
+
+	if (hours > 0) {
+		//show in hours
+		if (minutes > 0) {
+			val timeDuration = hours + (minutes / 60f)
+			return String.format("%.1f hrs", timeDuration)
+		} else {
+			if (hours == 1L) return "1 hour"
+			return "$hours hours"
+		}
+	} else {
+		//show in minutes
+		return "$minutes min"
 	}
-	return freeTimeText
 }
