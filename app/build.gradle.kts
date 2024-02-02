@@ -97,6 +97,9 @@ dependencies {
 	implementation("ch.acra:acra-mail:5.11.3")
 	implementation("ch.acra:acra-dialog:5.11.3")
 
+	//work manager
+	implementation("androidx.work:work-runtime-ktx:2.9.0")
+
 	//data store
 	implementation("androidx.datastore:datastore-preferences:1.0.0")
 
