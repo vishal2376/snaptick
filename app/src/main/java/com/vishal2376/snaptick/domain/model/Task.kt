@@ -22,31 +22,22 @@ data class Task(
 	val priority: Int = 0,
 ) {
 	fun getFormattedTime(): String {
-		val startTimeFormat = formatTime(startTime)
-		val endTimeFormat = formatTime(endTime)
-		return "$startTimeFormat - $endTimeFormat"
-	}
-
-	private fun formatTime(time: LocalTime): String {
 		val dtf = DateTimeFormatter.ofPattern("hh:mm a")
-		return time.format(dtf)
+		val startTimeFormat = startTime.format(dtf)
+		val endTimeFormat = endTime.format(dtf)
+		return "$startTimeFormat - $endTimeFormat"
 	}
 
 	fun getDuration(): Long {
 		return (endTime.toSecondOfDay() - startTime.toSecondOfDay()).toLong()
 	}
 
-	fun getFormattedDurationTimeStamp(duration: Long, trimSeconds: Boolean = false): String {
+	fun getDurationTimeStamp(duration: Long): String {
 		val hours = duration / 3600
 		val minutes = (duration % 3600) / 60
 		val seconds = duration % 60
-		val formattedTime = if (trimSeconds) {
-			String.format(
-				"%02d:%02d",
-				hours,
-				minutes
-			)
-		} else if (hours == 0L) {
+
+		return if (hours == 0L) {
 			String.format(
 				"%02d:%02d",
 				minutes,
@@ -60,7 +51,6 @@ data class Task(
 				seconds
 			)
 		}
-		return formattedTime
 	}
 
 	fun getFormattedDuration(): String {
