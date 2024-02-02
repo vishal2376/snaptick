@@ -7,6 +7,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.Data
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import com.vishal2376.snaptick.data.repositories.TaskRepository
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.add_edit_screen.AddEditScreenEvent
@@ -17,10 +20,12 @@ import com.vishal2376.snaptick.ui.theme.AppTheme
 import com.vishal2376.snaptick.util.Constants
 import com.vishal2376.snaptick.util.PreferenceManager
 import com.vishal2376.snaptick.util.SortTask
+import com.vishal2376.snaptick.worker.NotificationWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalTime
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 const val TAG = "@@@"
@@ -110,6 +115,9 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 				viewModelScope.launch(Dispatchers.IO) {
 					repository.insertTask(event.task)
 				}
+				if (event.task.reminder) {
+					scheduleNotification(event.task)
+				}
 			}
 
 			is AddEditScreenEvent.OnDeleteTaskClick -> {
@@ -150,6 +158,29 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 	private fun getTaskById(id: Int) {
 		viewModelScope.launch(Dispatchers.IO) {
 			task = repository.getTaskById(id)
+		}
+	}
+
+	private fun scheduleNotification(task: Task) {
+		val data = Data.Builder().putInt(Constants.TASK_ID, task.id)
+			.putString(Constants.TASK_TITLE, task.title)
+			.putString(Constants.TASK_TIME, task.getFormattedTime())
+			.build()
+
+		val startTimeSec = task.startTime.toSecondOfDay()
+		val currentTimeSec = LocalTime.now().toSecondOfDay()
+		val delaySec = startTimeSec - currentTimeSec
+
+		if (delaySec > 0) {
+
+			val workRequest = OneTimeWorkRequest.Builder(NotificationWorker::class.java)
+				.setInputData(data)
+				.setInitialDelay(delaySec.toLong(), TimeUnit.SECONDS)
+				.build()
+
+			// Enqueue the work request with WorkManager
+			WorkManager.getInstance().enqueue(workRequest)
+			Log.e(TAG, "scheduleNotification: ${task.title}")
 		}
 	}
 
