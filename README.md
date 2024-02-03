@@ -1,10 +1,11 @@
 
 <div align="center">
 
+<img src="https://github.com/vishal2376/snaptick/assets/38159691/099fd345-4a63-4916-845c-065b31b6e381" width="100px"/>
 
 # **Snaptick**
 
-Snaptick is a free daily task planner app designed to help users to increase productivity. With an easy-to-use interface and features like pomodoro timer, users can easily organize and achieve their daily plans.
+Snaptick is a free daily task planner app designed to help users increase productivity. With an easy-to-use interface and features like a pomodoro timer, users can easily organize and achieve their daily plans
 
 <br/>
 
@@ -62,3 +63,6 @@ We welcome contributions from anyone interested in helping to improve Snaptick! 
 ## License
 
 This project is licensed under the GPL v3.0 License - see the [LICENSE](LICENSE) file for details.
+
+## Credits
+App Icon created by <a href="https://www.flaticon.com/free-icons/task" title="task icons"> icon_small - Flaticon</a>
