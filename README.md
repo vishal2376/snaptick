@@ -24,7 +24,7 @@ Snaptick is a free daily task planner app designed to help users to increase pro
 - Create and Edit tasks
 - Manage task priority
 - Pomodoro Timer
-- Sort tasks (based on priority,name,created)
+- Sort tasks (based on priority,start time,creation time)
 - Task Analysis
 - Reminder Notification
 - Incomplete Tasks Widget `Not implemented yet`
