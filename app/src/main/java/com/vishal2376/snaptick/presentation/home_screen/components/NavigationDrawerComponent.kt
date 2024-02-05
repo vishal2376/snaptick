@@ -66,7 +66,7 @@ fun NavigationDrawerComponent(appTheme: AppTheme, onMainEvent: (MainEvent) -> Un
 				contentDescription = null,
 				modifier = Modifier.size(64.dp),
 			)
-			Spacer(modifier = Modifier.height(8.dp))
+			Spacer(modifier = Modifier.height(16.dp))
 			Text(
 				text = stringResource(R.string.app_name),
 				style = h2TextStyle,
