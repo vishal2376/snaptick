@@ -37,6 +37,7 @@ import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.presentation.main.MainEvent
 import com.vishal2376.snaptick.ui.theme.AppTheme
 import com.vishal2376.snaptick.ui.theme.Blue
+import com.vishal2376.snaptick.ui.theme.LightGray
 import com.vishal2376.snaptick.util.NavDrawerItem
 
 @Composable
@@ -132,9 +133,9 @@ fun NavDrawerItemUI(icon: ImageVector, label: String, onClick: () -> Unit) {
 			modifier = Modifier.size(32.dp),
 			imageVector = icon,
 			contentDescription = null,
-			tint = Color.White
+			tint = LightGray
 		)
-		Text(text = label, style = taskTextStyle, color = Color.White)
+		Text(text = label, style = taskTextStyle, color = LightGray)
 	}
 }
 
