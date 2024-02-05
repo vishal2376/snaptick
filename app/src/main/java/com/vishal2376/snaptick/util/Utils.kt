@@ -49,7 +49,7 @@ fun shareApp(context: Context) {
 	val shareIntent = Intent(Intent.ACTION_SEND)
 	shareIntent.type = "text/plain"
 	var shareMessage = context.getString(R.string.tag_line)
-	shareMessage += "https://play.google.com/store/apps/details?id=" + context.packageName + "\n\n"
+	shareMessage += Constants.PLAY_STORE_BASE_URL + context.packageName + "\n\n"
 	shareIntent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.app_name))
 	shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage)
 	context.startActivity(Intent.createChooser(shareIntent, "Share This App"))
@@ -69,7 +69,7 @@ fun openMail(context: Context, title: String) {
 fun openUrl(context: Context, urlString: String) {
 	val intent = Intent(
 		Intent.ACTION_VIEW,
-		Uri.parse("http://play.google.com/store/apps/details?id=" + context.applicationContext.packageName)
+		Uri.parse(urlString)
 	)
 	context.startActivity(intent)
 }
