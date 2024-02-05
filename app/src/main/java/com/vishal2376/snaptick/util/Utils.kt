@@ -67,9 +67,6 @@ fun openMail(context: Context, title: String) {
 }
 
 fun openUrl(context: Context, urlString: String) {
-	val intent = Intent(
-		Intent.ACTION_VIEW,
-		Uri.parse(urlString)
-	)
+	val intent = Intent(Intent.ACTION_VIEW, Uri.parse(urlString))
 	context.startActivity(intent)
 }
