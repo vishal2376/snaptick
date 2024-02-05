@@ -229,6 +229,11 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 				Log.e(TAG, "loadAppState: sortTask entry : $it")
 			}
 		}
+
+		//load build version
+		val buildVersionCode =
+			context.packageManager.getPackageInfo(context.packageName, 0).versionName
+		appState = appState.copy(buildVersion = buildVersionCode)
 	}
 
 }

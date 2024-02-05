@@ -143,7 +143,7 @@ fun HomeScreen(
 		drawerState = drawerState,
 		drawerContent = {
 			ModalDrawerSheet(drawerContainerColor = MaterialTheme.colorScheme.primary) {
-				NavigationDrawerComponent(appState.theme, onMainEvent)
+				NavigationDrawerComponent(appState.theme, appState.buildVersion, onMainEvent)
 			}
 		}) {
 		Scaffold(topBar = {

@@ -40,7 +40,11 @@ import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.util.NavDrawerItem
 
 @Composable
-fun NavigationDrawerComponent(appTheme: AppTheme, onMainEvent: (MainEvent) -> Unit) {
+fun NavigationDrawerComponent(
+	appTheme: AppTheme,
+	buildVersionCode: String,
+	onMainEvent: (MainEvent) -> Unit
+) {
 
 	val context = LocalContext.current
 
@@ -69,7 +73,7 @@ fun NavigationDrawerComponent(appTheme: AppTheme, onMainEvent: (MainEvent) -> Un
 				color = Color.White
 			)
 			Text(
-				text = "v0.1",
+				text = stringResource(R.string.buildVersion, buildVersionCode),
 				fontFamily = fontRobotoMono,
 				fontSize = 15.sp,
 				fontWeight = FontWeight.Bold,
@@ -137,5 +141,5 @@ fun NavDrawerItemUI(icon: ImageVector, label: String, onClick: () -> Unit) {
 @Preview(widthDp = 350)
 @Composable
 fun NavigationDrawerComponentPreview() {
-	NavigationDrawerComponent(AppTheme.Amoled, {})
+	NavigationDrawerComponent(AppTheme.Amoled, "0.1", {})
 }
