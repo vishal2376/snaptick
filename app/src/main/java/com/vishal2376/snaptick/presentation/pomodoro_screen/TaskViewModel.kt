@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
+import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.data.repositories.TaskRepository
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.add_edit_screen.AddEditScreenEvent
@@ -18,8 +19,12 @@ import com.vishal2376.snaptick.presentation.main.MainEvent
 import com.vishal2376.snaptick.presentation.main.MainState
 import com.vishal2376.snaptick.ui.theme.AppTheme
 import com.vishal2376.snaptick.util.Constants
+import com.vishal2376.snaptick.util.NavDrawerItem
 import com.vishal2376.snaptick.util.PreferenceManager
 import com.vishal2376.snaptick.util.SortTask
+import com.vishal2376.snaptick.util.openMail
+import com.vishal2376.snaptick.util.openUrl
+import com.vishal2376.snaptick.util.shareApp
 import com.vishal2376.snaptick.worker.NotificationWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -83,6 +88,27 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 
 			is MainEvent.UpdateFreeTime -> {
 				appState = appState.copy(freeTime = event.freeTime)
+			}
+
+			is MainEvent.OnClickNavDrawerItem -> {
+				when (event.item) {
+					NavDrawerItem.REPORT_BUGS -> {
+						openMail(event.context, event.context.getString(R.string.report_bug))
+					}
+
+					NavDrawerItem.SUGGESTIONS -> {
+						openMail(event.context, event.context.getString(R.string.suggestions))
+					}
+
+					NavDrawerItem.RATE_US -> {
+						val appUrl = Constants.PLAY_STORE_BASE_URL + event.context.packageName
+						openUrl(event.context, appUrl)
+					}
+
+					NavDrawerItem.SHARE_APP -> {
+						shareApp(event.context)
+					}
+				}
 			}
 		}
 	}

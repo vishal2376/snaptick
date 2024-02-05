@@ -11,11 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.BugReport
-import androidx.compose.material.icons.filled.Chat
-import androidx.compose.material.icons.filled.Share
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -42,6 +37,7 @@ import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.presentation.main.MainEvent
 import com.vishal2376.snaptick.ui.theme.AppTheme
 import com.vishal2376.snaptick.ui.theme.Blue
+import com.vishal2376.snaptick.util.NavDrawerItem
 
 @Composable
 fun NavigationDrawerComponent(appTheme: AppTheme, onMainEvent: (MainEvent) -> Unit) {
@@ -108,10 +104,11 @@ fun NavigationDrawerComponent(appTheme: AppTheme, onMainEvent: (MainEvent) -> Un
 			modifier = Modifier.padding(start = 32.dp),
 			verticalArrangement = Arrangement.spacedBy(32.dp)
 		) {
-			NavDrawerItem(icon = Icons.Default.BugReport, label = "Bug Report") {}
-			NavDrawerItem(icon = Icons.Default.Chat, label = "Suggestions") {}
-			NavDrawerItem(icon = Icons.Default.Star, label = "Rate Us") {}
-			NavDrawerItem(icon = Icons.Default.Share, label = "Share App") {}
+			NavDrawerItem.entries.forEach {
+				NavDrawerItemUI(icon = it.icon, label = it.display) {
+					onMainEvent(MainEvent.OnClickNavDrawerItem(context, it))
+				}
+			}
 		}
 
 	}
@@ -119,7 +116,7 @@ fun NavigationDrawerComponent(appTheme: AppTheme, onMainEvent: (MainEvent) -> Un
 }
 
 @Composable
-fun NavDrawerItem(icon: ImageVector, label: String, onClick: () -> Unit) {
+fun NavDrawerItemUI(icon: ImageVector, label: String, onClick: () -> Unit) {
 	Row(
 		modifier = Modifier
 			.fillMaxWidth()
