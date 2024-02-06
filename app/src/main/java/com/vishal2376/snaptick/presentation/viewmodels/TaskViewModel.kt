@@ -1,4 +1,4 @@
-package com.vishal2376.snaptick.presentation.pomodoro_screen
+package com.vishal2376.snaptick.presentation.viewmodels
 
 import android.content.Context
 import android.util.Log

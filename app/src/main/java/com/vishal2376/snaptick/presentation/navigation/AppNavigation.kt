@@ -16,7 +16,7 @@ import com.vishal2376.snaptick.presentation.completed_task_screen.CompletedTaskS
 import com.vishal2376.snaptick.presentation.free_time_screen.FreeTimeScreen
 import com.vishal2376.snaptick.presentation.home_screen.HomeScreen
 import com.vishal2376.snaptick.presentation.pomodoro_screen.PomodoroScreen
-import com.vishal2376.snaptick.presentation.pomodoro_screen.TaskViewModel
+import com.vishal2376.snaptick.presentation.viewmodels.TaskViewModel
 
 @Composable
 fun AppNavigation(taskViewModel: TaskViewModel) {

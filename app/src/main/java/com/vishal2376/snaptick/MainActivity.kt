@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import com.vishal2376.snaptick.presentation.navigation.AppNavigation
-import com.vishal2376.snaptick.presentation.pomodoro_screen.TaskViewModel
+import com.vishal2376.snaptick.presentation.viewmodels.TaskViewModel
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.NotificationHelper
 import dagger.hilt.android.AndroidEntryPoint
