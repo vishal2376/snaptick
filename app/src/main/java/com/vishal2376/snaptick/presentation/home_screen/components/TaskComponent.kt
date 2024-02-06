@@ -207,7 +207,6 @@ fun TaskComponentPreview() {
 		startTime = LocalTime.now(),
 		endTime = LocalTime.now(),
 		reminder = true,
-		"Others"
 	)
 	TaskComponent(task = task,
 		{},

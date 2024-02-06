@@ -48,7 +48,6 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 			startTime = LocalTime.now(),
 			endTime = LocalTime.now(),
 			reminder = false,
-			category = "",
 			priority = 0
 		)
 	)

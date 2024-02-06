@@ -14,7 +14,7 @@ fun checkValidTask(
 	val formattedFreeTime = getFreeTime(totalTasksDuration)
 
 	val currentStartTime = task.startTime.toSecondOfDay()
-	val currentDuration = task.getDuration()
+	val currentDuration = task.getDuration(checkPastTask = true)
 
 	if (task.title.isEmpty()) {
 		return Pair(false, "Title can't be empty")

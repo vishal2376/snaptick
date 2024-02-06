@@ -3,13 +3,16 @@ package com.vishal2376.snaptick.domain.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
+import com.vishal2376.snaptick.domain.converters.LocalDateConverter
 import com.vishal2376.snaptick.domain.converters.LocalTimeConverter
+import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 @Entity(tableName = "task_table")
 @TypeConverters(
-	LocalTimeConverter::class
+	LocalTimeConverter::class,
+	LocalDateConverter::class
 )
 data class Task(
 	@PrimaryKey(autoGenerate = true) val id: Int = 0,
@@ -18,7 +21,7 @@ data class Task(
 	val startTime: LocalTime,
 	val endTime: LocalTime,
 	val reminder: Boolean,
-	val category: String,
+	val date: LocalDate = LocalDate.now(),
 	val priority: Int = 0,
 ) {
 	fun getFormattedTime(): String {

@@ -255,7 +255,6 @@ fun PomodoroScreenPreview() {
 				0
 			),
 			reminder = true,
-			category = "",
 			priority = 0
 		)
 		PomodoroScreen(task, {}, {})

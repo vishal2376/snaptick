@@ -95,7 +95,6 @@ fun PieChartItemComponentPreview() {
 		startTime = LocalTime.of(10, 0),
 		endTime = LocalTime.of(11, 0),
 		reminder = false,
-		category = "",
 		priority = 1
 	)
 

@@ -145,7 +145,6 @@ fun FreeTimeScreenPreview() {
 			startTime = LocalTime.of(9, 0),
 			endTime = LocalTime.of(10, 0),
 			reminder = true,
-			category = "",
 			priority = 0
 		),
 		Task(
@@ -155,7 +154,6 @@ fun FreeTimeScreenPreview() {
 			startTime = LocalTime.of(9, 0),
 			endTime = LocalTime.of(11, 0),
 			reminder = false,
-			category = "",
 			priority = 1
 		)
 	)

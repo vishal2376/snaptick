@@ -61,6 +61,7 @@ import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.Priority
 import com.vishal2376.snaptick.util.checkValidTask
 import kotlinx.coroutines.job
+import java.time.LocalDate
 import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -240,7 +241,7 @@ fun AddTaskScreen(
 							taskStartTime,
 							taskEndTime,
 							isTaskReminderOn,
-							taskCategory,
+							LocalDate.now(),
 							taskPriority.ordinal
 						)
 						val (isValid, errorMessage) = checkValidTask(

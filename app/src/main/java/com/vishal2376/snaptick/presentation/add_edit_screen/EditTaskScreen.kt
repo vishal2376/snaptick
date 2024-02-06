@@ -59,6 +59,7 @@ import com.vishal2376.snaptick.ui.theme.Red
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.Priority
 import com.vishal2376.snaptick.util.checkValidTask
+import java.time.LocalDate
 import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -286,7 +287,7 @@ fun EditTaskScreenPreview() {
 			startTime = LocalTime.now(),
 			endTime = LocalTime.now(),
 			reminder = true,
-			category = "",
+			date = LocalDate.now(),
 			priority = 0
 		)
 		EditTaskScreen(task, MainState(), {}, {})

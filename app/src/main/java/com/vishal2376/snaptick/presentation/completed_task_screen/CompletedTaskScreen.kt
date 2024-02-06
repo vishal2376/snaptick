@@ -128,7 +128,6 @@ fun CompletedTaskScreenPreview() {
 				startTime = LocalTime.now(),
 				endTime = LocalTime.now(),
 				reminder = true,
-				category = "",
 				priority = 0
 			),
 			Task(
@@ -138,7 +137,6 @@ fun CompletedTaskScreenPreview() {
 				startTime = LocalTime.now(),
 				endTime = LocalTime.now(),
 				reminder = false,
-				category = "",
 				priority = 1
 			)
 		)
