@@ -29,6 +29,7 @@ import com.vishal2376.snaptick.worker.NotificationWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import java.time.LocalTime
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -53,7 +54,8 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 	)
 		private set
 
-	var taskList = repository.getAllTasks()
+	//	var taskList = repository.getAllTasks()
+	var todayTaskList = repository.getTasksByDate(LocalDate.now())
 
 	// Main App Events
 	fun onEvent(event: MainEvent) {

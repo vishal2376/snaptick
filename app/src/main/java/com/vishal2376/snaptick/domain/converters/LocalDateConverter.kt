@@ -5,17 +5,17 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 object LocalDateConverter {
-	private val formatter = DateTimeFormatter.ISO_LOCAL_DATE
 
 	@TypeConverter
 	@JvmStatic
-	fun fromLocalDate(value: LocalDate?): String? {
-		return value?.format(formatter)
+	fun fromString(value: String?): LocalDate? {
+		return value?.let { LocalDate.parse(it) }
 	}
 
 	@TypeConverter
 	@JvmStatic
-	fun toLocalDate(value: String?): LocalDate? {
-		return value?.let { LocalDate.parse(it, formatter) }
+	fun toString(value: LocalDate?): String? {
+		val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+		return value?.format(formatter)
 	}
 }

@@ -27,7 +27,7 @@ class TaskRepository(private val dao: TaskDao) {
 	}
 
 	fun getTasksByDate(selectedDate: LocalDate): Flow<List<Task>> {
-		return dao.getTasksByDate(selectedDate)
+		return dao.getTasksByDate(selectedDate.toString())
 	}
 
 	fun getAllTasks(): Flow<List<Task>> {

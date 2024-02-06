@@ -21,7 +21,7 @@ import com.vishal2376.snaptick.presentation.viewmodels.TaskViewModel
 @Composable
 fun AppNavigation(taskViewModel: TaskViewModel) {
 	val navController = rememberNavController()
-	val tasks by taskViewModel.taskList.collectAsStateWithLifecycle(initialValue = emptyList())
+	val todayTasks by taskViewModel.todayTaskList.collectAsStateWithLifecycle(initialValue = emptyList())
 
 	NavHost(
 		navController = navController,
@@ -29,7 +29,7 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 	) {
 		composable(route = Routes.HomeScreen.name) {
 			HomeScreen(
-				tasks = tasks,
+				tasks = todayTasks,
 				appState = taskViewModel.appState,
 				onMainEvent = taskViewModel::onEvent,
 				onEvent = taskViewModel::onEvent,
@@ -52,7 +52,7 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 
 		composable(route = Routes.CompletedTaskScreen.name) {
 			CompletedTaskScreen(
-				tasks = tasks,
+				tasks = todayTasks,
 				onEvent = taskViewModel::onEvent,
 				onBack = {
 					if (navController.isValidBackStack) {
@@ -63,7 +63,7 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 
 		composable(route = Routes.FreeTimeScreen.name) {
 			FreeTimeScreen(
-				tasks = tasks,
+				tasks = todayTasks,
 				onBack = {
 					if (navController.isValidBackStack) {
 						navController.popBackStack()
