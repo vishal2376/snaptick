@@ -8,6 +8,7 @@ import androidx.room.Query
 import androidx.room.Update
 import com.vishal2376.snaptick.domain.model.Task
 import kotlinx.coroutines.flow.Flow
+import java.time.LocalDate
 
 @Dao
 interface TaskDao {
@@ -25,6 +26,9 @@ interface TaskDao {
 
 	@Query("SELECT * FROM task_table")
 	fun getAllTasks(): Flow<List<Task>>
+
+	@Query("SELECT * FROM task_table WHERE date = :selectedDate")
+	fun getTasksByDate(selectedDate: LocalDate): Flow<List<Task>>
 
 	@Query("DELETE FROM task_table")
 	suspend fun deleteAllTasks()

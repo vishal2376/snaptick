@@ -3,6 +3,7 @@ package com.vishal2376.snaptick.data.repositories
 import com.vishal2376.snaptick.data.local.TaskDao
 import com.vishal2376.snaptick.domain.model.Task
 import kotlinx.coroutines.flow.Flow
+import java.time.LocalDate
 
 class TaskRepository(private val dao: TaskDao) {
 	suspend fun insertTask(task: Task) {
@@ -23,6 +24,10 @@ class TaskRepository(private val dao: TaskDao) {
 
 	suspend fun deleteAllTasks() {
 		dao.deleteAllTasks()
+	}
+
+	fun getTasksByDate(selectedDate: LocalDate): Flow<List<Task>> {
+		return dao.getTasksByDate(selectedDate)
 	}
 
 	fun getAllTasks(): Flow<List<Task>> {
