@@ -28,8 +28,23 @@ data class Task(
 		return "$startTimeFormat - $endTimeFormat"
 	}
 
-	fun getDuration(): Long {
-		return (endTime.toSecondOfDay() - startTime.toSecondOfDay()).toLong()
+	fun getDuration(checkPastTask: Boolean = false): Long {
+		val startTimeSec = startTime.toSecondOfDay()
+		val endTimeSec = endTime.toSecondOfDay()
+		val currentTimeSec = LocalTime.now().toSecondOfDay()
+
+		return when {
+			checkPastTask -> {
+				when {
+					endTimeSec < currentTimeSec -> 0
+					startTimeSec < currentTimeSec -> (currentTimeSec - startTimeSec).toLong()
+					else -> 0
+				}
+			}
+
+			else -> (endTimeSec - startTimeSec).coerceAtLeast(0).toLong()
+		}
+
 	}
 
 	fun getDurationTimeStamp(duration: Long): String {

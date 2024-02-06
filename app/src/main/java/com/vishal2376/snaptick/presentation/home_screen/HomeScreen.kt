@@ -99,7 +99,7 @@ fun HomeScreen(
 	tasks.filterTo(inCompletedTasks) { !it.isCompleted }
 
 	// calc free time
-	val totalTaskTime = inCompletedTasks.sumOf { it.getDuration() }
+	val totalTaskTime = inCompletedTasks.sumOf { it.getDuration(checkPastTask = true) }
 	val freeTimeText = getFreeTime(totalTaskTime)
 
 	LaunchedEffect(inCompletedTasks) {
