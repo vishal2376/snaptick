@@ -41,7 +41,7 @@ data class Task(
 				when {
 					endTimeSec < currentTimeSec -> 0
 					startTimeSec < currentTimeSec -> (currentTimeSec - startTimeSec).toLong()
-					else -> 0
+					else -> (endTimeSec - startTimeSec).coerceAtLeast(0).toLong()
 				}
 			}
 
