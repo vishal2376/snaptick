@@ -209,7 +209,7 @@ fun EditTaskScreen(
 					)
 
 					Text(
-						text = "1 hour",
+						text = task.getFormattedDuration(),
 						style = taskTextStyle,
 						color = Color.White
 					)
