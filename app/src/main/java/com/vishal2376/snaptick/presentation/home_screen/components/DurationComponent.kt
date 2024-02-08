@@ -30,7 +30,7 @@ import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 fun DurationComponent(
 	modifier: Modifier = Modifier,
 	durationList: List<Long>,
-	onSelect: (Int) -> Unit
+	onSelect: (Long) -> Unit
 ) {
 	Row(
 		modifier = modifier,
@@ -64,7 +64,7 @@ fun DurationComponent(
 				isSelected = selectedOption == index,
 				shape = shape
 			) {
-				onSelect(index)
+				onSelect(it)
 				selectedOption = index
 			}
 		}
