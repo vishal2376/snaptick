@@ -212,11 +212,11 @@ fun AddTaskScreen(
 						color = Color.White
 					)
 				}
-				val durationList = listOf<Long>(30, 60, 90, 0)
+
 				DurationComponent(
 					modifier = Modifier
 						.padding(horizontal = 24.dp),
-					durationList = durationList
+					durationList = appState.durationList
 				) {
 					//todo : calculate and change endTime
 				}
