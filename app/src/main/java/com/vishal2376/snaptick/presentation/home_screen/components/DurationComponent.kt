@@ -28,10 +28,12 @@ import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 
 @Composable
 fun DurationComponent(
+	modifier: Modifier = Modifier,
 	durationList: List<Long>,
 	onSelect: (Int) -> Unit
 ) {
 	Row(
+		modifier = modifier,
 		horizontalArrangement = Arrangement.Center,
 		verticalAlignment = Alignment.CenterVertically,
 	) {
@@ -87,7 +89,7 @@ fun DurationItemComponent(
 			.fillMaxWidth()
 			.background(bgColor, shape)
 			.border(2.dp, MaterialTheme.colorScheme.secondary, shape)
-			.padding(16.dp, 12.dp)
+			.padding(vertical = 16.dp)
 			.clickable { onClick() },
 		contentAlignment = Alignment.Center
 	) {
@@ -99,7 +101,7 @@ fun DurationItemComponent(
 @Composable
 fun DurationComponentPreview() {
 	SnaptickTheme {
-		DurationComponent(durationList = listOf(30, 60, 90, 0), {})
+		DurationComponent(durationList = listOf(30, 60, 90, 0), onSelect = {})
 	}
 }
 

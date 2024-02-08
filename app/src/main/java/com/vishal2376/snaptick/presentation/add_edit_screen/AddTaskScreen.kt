@@ -54,6 +54,7 @@ import com.vishal2376.snaptick.presentation.add_edit_screen.components.PriorityC
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
+import com.vishal2376.snaptick.presentation.home_screen.components.DurationComponent
 import com.vishal2376.snaptick.presentation.main.MainState
 import com.vishal2376.snaptick.ui.theme.Green
 import com.vishal2376.snaptick.ui.theme.Red
@@ -76,7 +77,6 @@ fun AddTaskScreen(
 	var taskStartTime by remember { mutableStateOf(LocalTime.now()) }
 	var taskEndTime by remember { mutableStateOf(LocalTime.now()) }
 	var isTaskReminderOn by remember { mutableStateOf(true) }
-	val taskCategory by remember { mutableStateOf("") }
 	var taskPriority by remember { mutableStateOf(Priority.LOW) }
 
 	val context = LocalContext.current
@@ -158,7 +158,7 @@ fun AddTaskScreen(
 					horizontalArrangement = Arrangement.SpaceBetween,
 					modifier = Modifier
 						.fillMaxWidth(.8f)
-						.padding(top = 32.dp)
+						.padding(top = 24.dp)
 				) {
 					Column(horizontalAlignment = Alignment.CenterHorizontally) {
 						Text(
@@ -196,10 +196,35 @@ fun AddTaskScreen(
 				Row(
 					modifier = Modifier
 						.fillMaxWidth()
-						.padding(
-							32.dp,
-							24.dp
-						),
+						.padding(start = 32.dp, end = 32.dp, top = 8.dp),
+					verticalAlignment = Alignment.CenterVertically,
+					horizontalArrangement = Arrangement.SpaceBetween
+				) {
+					Text(
+						text = "Duration",
+						style = h2TextStyle,
+						color = Color.White
+					)
+
+					Text(
+						text = "1 hour",
+						style = taskTextStyle,
+						color = Color.White
+					)
+				}
+				val durationList = listOf<Long>(30, 60, 90, 0)
+				DurationComponent(
+					modifier = Modifier
+						.padding(horizontal = 24.dp),
+					durationList = durationList
+				) {
+					//todo : calculate and change endTime
+				}
+
+				Row(
+					modifier = Modifier
+						.fillMaxWidth()
+						.padding(32.dp, 0.dp),
 					horizontalArrangement = Arrangement.SpaceBetween,
 					verticalAlignment = Alignment.CenterVertically
 				) {
