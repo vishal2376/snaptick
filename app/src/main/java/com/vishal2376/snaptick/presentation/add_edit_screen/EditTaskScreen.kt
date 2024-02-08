@@ -218,8 +218,8 @@ fun EditTaskScreen(
 					modifier = Modifier
 						.padding(horizontal = 24.dp),
 					durationList = appState.durationList
-				) {
-					//todo : calculate and change endTime
+				) { duration ->
+					onEvent(AddEditScreenEvent.OnUpdateEndTime(task.startTime.plusMinutes(duration)))
 				}
 
 

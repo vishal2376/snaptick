@@ -30,6 +30,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -75,9 +76,10 @@ fun AddTaskScreen(
 
 	var taskTitle by remember { mutableStateOf("") }
 	var taskStartTime by remember { mutableStateOf(LocalTime.now()) }
-	var taskEndTime by remember { mutableStateOf(LocalTime.now()) }
+	var taskEndTime by remember { mutableStateOf(LocalTime.now().plusMinutes(1).plusHours(1)) }
 	var isTaskReminderOn by remember { mutableStateOf(true) }
 	var taskPriority by remember { mutableStateOf(Priority.LOW) }
+	var taskDuration by remember { mutableLongStateOf(0) }
 
 	val context = LocalContext.current
 	val focusRequester = FocusRequester()
@@ -185,7 +187,7 @@ fun AddTaskScreen(
 						WheelTimePicker(
 							timeFormat = TimeFormat.AM_PM,
 							textColor = Color.White,
-							startTime = LocalTime.now().plusMinutes(1).plusHours(1)
+							startTime = taskEndTime
 						) { snappedTime ->
 							taskEndTime = snappedTime
 						}
@@ -217,8 +219,8 @@ fun AddTaskScreen(
 					modifier = Modifier
 						.padding(horizontal = 24.dp),
 					durationList = appState.durationList
-				) {
-					//todo : calculate and change endTime
+				) { duration ->
+					taskEndTime = taskStartTime.plusMinutes(duration)
 				}
 
 				Row(
