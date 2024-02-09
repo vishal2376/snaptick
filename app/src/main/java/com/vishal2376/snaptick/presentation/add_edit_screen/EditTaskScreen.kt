@@ -177,8 +177,7 @@ fun EditTaskScreen(
 						)
 						Spacer(modifier = Modifier.height(8.dp))
 						ShowTimePicker(
-							time = taskStartTime,
-							isTimeUpdated = isTimeUpdated
+							time = taskStartTime
 						) { snappedTime ->
 							onEvent(AddEditScreenEvent.OnUpdateStartTime(snappedTime))
 						}
