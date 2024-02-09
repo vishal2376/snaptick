@@ -44,12 +44,11 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.commandiron.wheel_picker_compose.WheelTimePicker
-import com.commandiron.wheel_picker_compose.core.TimeFormat
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.ConfirmDeleteDialog
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.PriorityComponent
+import com.vishal2376.snaptick.presentation.common.ShowTimePicker
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
@@ -72,6 +71,10 @@ fun EditTaskScreen(
 	onBack: () -> Unit
 ) {
 	val context = LocalContext.current
+
+	var taskStartTime by remember { mutableStateOf(task.startTime) }
+	var taskEndTime by remember { mutableStateOf(task.endTime) }
+	var isTimeUpdated by remember { mutableStateOf(false) }
 
 	var showDialog by remember { mutableStateOf(false) }
 
@@ -171,10 +174,9 @@ fun EditTaskScreen(
 							color = Green
 						)
 						Spacer(modifier = Modifier.height(8.dp))
-						WheelTimePicker(
-							timeFormat = TimeFormat.AM_PM,
-							startTime = task.startTime,
-							textColor = Color.White
+						ShowTimePicker(
+							time = taskStartTime,
+							isTimeUpdated = isTimeUpdated
 						) { snappedTime ->
 							onEvent(AddEditScreenEvent.OnUpdateStartTime(snappedTime))
 						}
@@ -186,10 +188,9 @@ fun EditTaskScreen(
 							color = Red
 						)
 						Spacer(modifier = Modifier.height(8.dp))
-						WheelTimePicker(
-							timeFormat = TimeFormat.AM_PM,
-							textColor = Color.White,
-							startTime = task.endTime
+						ShowTimePicker(
+							time = taskEndTime,
+							isTimeUpdated = isTimeUpdated
 						) { snappedTime ->
 							onEvent(AddEditScreenEvent.OnUpdateEndTime(snappedTime))
 						}
@@ -220,9 +221,9 @@ fun EditTaskScreen(
 					durationList = appState.durationList
 				) { duration ->
 					onEvent(AddEditScreenEvent.OnUpdateEndTime(task.startTime.plusMinutes(duration)))
+					taskEndTime = taskStartTime.plusMinutes(duration)
+					isTimeUpdated = !isTimeUpdated
 				}
-
-
 				Row(
 					modifier = Modifier
 						.fillMaxWidth()
@@ -311,7 +312,7 @@ fun EditTaskScreenPreview() {
 			title = "Learn Kotlin",
 			isCompleted = false,
 			startTime = LocalTime.now(),
-			endTime = LocalTime.now(),
+			endTime = LocalTime.now().plusHours(1),
 			reminder = true,
 			date = LocalDate.now(),
 			priority = 0
