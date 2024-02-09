@@ -47,11 +47,10 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.commandiron.wheel_picker_compose.WheelTimePicker
-import com.commandiron.wheel_picker_compose.core.TimeFormat
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.PriorityComponent
+import com.vishal2376.snaptick.presentation.common.ShowTimePicker
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
@@ -75,11 +74,12 @@ fun AddTaskScreen(
 ) {
 
 	var taskTitle by remember { mutableStateOf("") }
-	var taskStartTime by remember { mutableStateOf(LocalTime.now()) }
+	var taskStartTime by remember { mutableStateOf(LocalTime.now().plusMinutes(1)) }
 	var taskEndTime by remember { mutableStateOf(LocalTime.now().plusMinutes(1).plusHours(1)) }
 	var isTaskReminderOn by remember { mutableStateOf(true) }
 	var taskPriority by remember { mutableStateOf(Priority.LOW) }
 	var taskDuration by remember { mutableLongStateOf(0) }
+	var isTimeUpdated by remember { mutableStateOf(false) }
 
 	val context = LocalContext.current
 	val focusRequester = FocusRequester()
@@ -169,10 +169,9 @@ fun AddTaskScreen(
 							color = Green
 						)
 						Spacer(modifier = Modifier.height(8.dp))
-						WheelTimePicker(
-							timeFormat = TimeFormat.AM_PM,
-							startTime = LocalTime.now().plusMinutes(1),
-							textColor = Color.White
+						ShowTimePicker(
+							time = taskStartTime,
+							isTimeUpdated = isTimeUpdated
 						) { snappedTime ->
 							taskStartTime = snappedTime
 						}
@@ -184,14 +183,12 @@ fun AddTaskScreen(
 							color = Red
 						)
 						Spacer(modifier = Modifier.height(8.dp))
-						WheelTimePicker(
-							timeFormat = TimeFormat.AM_PM,
-							textColor = Color.White,
-							startTime = taskEndTime
+						ShowTimePicker(
+							time = taskEndTime,
+							isTimeUpdated = isTimeUpdated
 						) { snappedTime ->
 							taskEndTime = snappedTime
 						}
-
 					}
 				}
 
@@ -221,6 +218,7 @@ fun AddTaskScreen(
 					durationList = appState.durationList
 				) { duration ->
 					taskEndTime = taskStartTime.plusMinutes(duration)
+					isTimeUpdated = !isTimeUpdated
 				}
 
 				Row(
