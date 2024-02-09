@@ -52,7 +52,7 @@ fun FreeTimeScreen(
 	val totalColors = pieChartColors.size
 
 	// todo :save free time in app state
-	val totalTaskTime = inCompletedTasks.sumOf { it.getDuration() }
+	val totalTaskTime = inCompletedTasks.sumOf { it.getDuration(checkPastTask = true) }
 	val freeTimeText = getFreeTime(totalTaskTime)
 
 	Scaffold(topBar = {
