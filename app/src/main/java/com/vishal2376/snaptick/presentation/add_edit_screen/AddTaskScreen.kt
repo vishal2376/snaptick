@@ -61,6 +61,7 @@ import com.vishal2376.snaptick.ui.theme.Red
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.Priority
 import com.vishal2376.snaptick.util.checkValidTask
+import com.vishal2376.snaptick.util.getFormattedDuration
 import kotlinx.coroutines.job
 import java.time.LocalDate
 import java.time.LocalTime
@@ -78,7 +79,7 @@ fun AddTaskScreen(
 	var taskEndTime by remember { mutableStateOf(LocalTime.now().plusMinutes(1).plusHours(1)) }
 	var isTaskReminderOn by remember { mutableStateOf(true) }
 	var taskPriority by remember { mutableStateOf(Priority.LOW) }
-	var taskDuration by remember { mutableLongStateOf(0) }
+	val taskDuration by remember { mutableLongStateOf(60) }
 	var isTimeUpdated by remember { mutableStateOf(false) }
 
 	val context = LocalContext.current
@@ -206,7 +207,7 @@ fun AddTaskScreen(
 					)
 
 					Text(
-						text = "1 hour",
+						text = getFormattedDuration(taskStartTime, taskEndTime),
 						style = taskTextStyle,
 						color = Color.White
 					)
@@ -215,7 +216,8 @@ fun AddTaskScreen(
 				DurationComponent(
 					modifier = Modifier
 						.padding(horizontal = 24.dp),
-					durationList = appState.durationList
+					durationList = appState.durationList,
+					defaultDuration = taskDuration
 				) { duration ->
 					taskEndTime = taskStartTime.plusMinutes(duration)
 					isTimeUpdated = !isTimeUpdated

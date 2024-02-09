@@ -30,6 +30,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -75,6 +76,7 @@ fun EditTaskScreen(
 	var taskStartTime by remember { mutableStateOf(task.startTime) }
 	var taskEndTime by remember { mutableStateOf(task.endTime) }
 	var isTimeUpdated by remember { mutableStateOf(false) }
+	val taskDuration by remember { mutableLongStateOf((task.getDuration() % 3600) / 60) }
 
 	var showDialog by remember { mutableStateOf(false) }
 
@@ -218,7 +220,8 @@ fun EditTaskScreen(
 				DurationComponent(
 					modifier = Modifier
 						.padding(horizontal = 24.dp),
-					durationList = appState.durationList
+					durationList = appState.durationList,
+					defaultDuration = taskDuration
 				) { duration ->
 					onEvent(AddEditScreenEvent.OnUpdateEndTime(task.startTime.plusMinutes(duration)))
 					taskEndTime = taskStartTime.plusMinutes(duration)

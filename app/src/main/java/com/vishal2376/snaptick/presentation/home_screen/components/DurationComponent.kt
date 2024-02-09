@@ -30,6 +30,7 @@ import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 fun DurationComponent(
 	modifier: Modifier = Modifier,
 	durationList: List<Long>,
+	defaultDuration: Long = 60,
 	onSelect: (Long) -> Unit
 ) {
 	Row(
@@ -37,9 +38,13 @@ fun DurationComponent(
 		horizontalArrangement = Arrangement.Center,
 		verticalAlignment = Alignment.CenterVertically,
 	) {
-		var selectedOption by remember { mutableIntStateOf(1) }
-
 		val lastIndex = durationList.lastIndex
+
+		var defaultDurationIndex = durationList.indexOf(defaultDuration)
+		if (defaultDurationIndex == -1) defaultDurationIndex = lastIndex
+
+		var selectedOption by remember { mutableIntStateOf(defaultDurationIndex) }
+
 		durationList.forEachIndexed { index, it ->
 			var durationText = "$it min"
 
