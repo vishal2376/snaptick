@@ -179,7 +179,7 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 			is AddEditScreenEvent.OnUpdateTask -> {
 				viewModelScope.launch(Dispatchers.IO) {
 					repository.updateTask(task)
-					if (task.reminder) {
+					if (task.reminder && !task.isCompleted) {
 						scheduleNotification(task)
 					} else {
 						cancelNotification(task.uuid)
