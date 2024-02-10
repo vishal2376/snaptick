@@ -9,5 +9,6 @@ data class MainState(
 	val sortBy: SortTask = SortTask.BY_START_TIME_ASCENDING,
 	val freeTime: Long? = null,
 	var totalTaskDuration: Long = 0,
-	val durationList: List<Long> = listOf(30, 60, 90, 0)
+	val durationList: List<Long> = listOf(30, 60, 90, 0),
+	val streak: Int = 0
 )

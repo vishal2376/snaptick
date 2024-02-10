@@ -231,7 +231,13 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 			PreferenceManager.loadPreference(context, Constants.THEME_KEY, defaultValue = 1)
 				.collect {
 					appState = appState.copy(theme = AppTheme.entries[it])
-					Log.e(TAG, "loadAppState: appTheme entry : $it")
+				}
+		}
+
+		viewModelScope.launch {
+			PreferenceManager.loadPreference(context, Constants.LAST_OPENED_KEY, defaultValue = 0)
+				.collect {
+					appState = appState.copy(streak = it)
 				}
 		}
 
@@ -242,7 +248,6 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 				defaultValue = appState.sortBy.ordinal
 			).collect {
 				appState = appState.copy(sortBy = SortTask.entries[it])
-				Log.e(TAG, "loadAppState: sortTask entry : $it")
 			}
 		}
 

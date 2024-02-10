@@ -53,7 +53,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
-import com.vishal2376.snaptick.presentation.common.fontRoboto
+import com.vishal2376.snaptick.presentation.common.fontRobotoMono
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.home_screen.components.EmptyTaskComponent
@@ -173,9 +173,9 @@ fun HomeScreen(
 				},
 				actions = {
 					Text(
-						text = "10",
+						text = appState.streak.toString(),
 						fontSize = 18.sp,
-						fontFamily = fontRoboto,
+						fontFamily = fontRobotoMono,
 						fontWeight = FontWeight.Bold
 					)
 					Spacer(modifier = Modifier.width(4.dp))

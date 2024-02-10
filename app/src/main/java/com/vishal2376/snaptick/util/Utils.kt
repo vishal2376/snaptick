@@ -7,7 +7,9 @@ import android.net.Uri
 import android.os.VibrationEffect
 import android.os.Vibrator
 import com.vishal2376.snaptick.R
+import java.time.LocalDate
 import java.time.LocalTime
+import java.time.temporal.ChronoUnit
 
 fun vibrateDevice(
 	context: Context,
@@ -69,6 +71,13 @@ fun getFreeTime(totalDuration: Long): String {
 		//show in minutes
 		return "$minutes min"
 	}
+}
+
+fun getDateDifference(date: String): Long {
+	val lastOpened = LocalDate.parse(date)
+	val today = LocalDate.now()
+
+	return ChronoUnit.DAYS.between(lastOpened, today)
 }
 
 fun shareApp(context: Context) {

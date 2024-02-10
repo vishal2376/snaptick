@@ -11,6 +11,8 @@ object Constants {
 	const val SETTINGS_KEY = "settings_key"
 	const val THEME_KEY = "theme_key"
 	const val SORT_TASK_KEY = "sort_task_key"
+	const val LAST_OPENED_KEY = "last_opened_key"
+	const val STREAK_KEY = "streak_key"
 
 	// WORK MANAGER DATA KEYS
 	const val TASK_UUID = "task_id"
