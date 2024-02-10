@@ -15,6 +15,7 @@ object DummyTasks {
 		for (i in 1..count) {
 			val task = Task(
 				id = i,
+				uuid = "$i",
 				title = "Task $i",
 				isCompleted = Random.nextBoolean(),
 				startTime = LocalTime.now(),

@@ -2,16 +2,22 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "36de11b3f8f57f9045781a76d2131eb5",
+    "identityHash": "78e337ce0cb9093181635a2a81a8f6bb",
     "entities": [
       {
         "tableName": "task_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `isCompleted` INTEGER NOT NULL, `startTime` TEXT NOT NULL, `endTime` TEXT NOT NULL, `reminder` INTEGER NOT NULL, `date` TEXT NOT NULL, `priority` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `uuid` TEXT NOT NULL, `title` TEXT NOT NULL, `isCompleted` INTEGER NOT NULL, `startTime` TEXT NOT NULL, `endTime` TEXT NOT NULL, `reminder` INTEGER NOT NULL, `isRepeated` INTEGER NOT NULL, `date` TEXT NOT NULL, `priority` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "uuid",
+            "columnName": "uuid",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -45,6 +51,12 @@
             "notNull": true
           },
           {
+            "fieldPath": "isRepeated",
+            "columnName": "isRepeated",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
             "fieldPath": "date",
             "columnName": "date",
             "affinity": "TEXT",
@@ -70,7 +82,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '36de11b3f8f57f9045781a76d2131eb5')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '78e337ce0cb9093181635a2a81a8f6bb')"
     ]
   }
 }

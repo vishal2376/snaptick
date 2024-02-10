@@ -42,7 +42,7 @@ import com.vishal2376.snaptick.ui.theme.Green
 import com.vishal2376.snaptick.ui.theme.LightGray
 import com.vishal2376.snaptick.ui.theme.Red
 import com.vishal2376.snaptick.ui.theme.Yellow
-import java.time.LocalTime
+import com.vishal2376.snaptick.util.DummyTasks
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -200,14 +200,7 @@ fun TaskComponent(
 @Preview
 @Composable
 fun TaskComponentPreview() {
-	val task = Task(
-		id = 0,
-		title = "Drink Water",
-		isCompleted = false,
-		startTime = LocalTime.now(),
-		endTime = LocalTime.now(),
-		reminder = true,
-	)
+	val task = DummyTasks.tasks[0]
 	TaskComponent(task = task,
 		{},
 		{},

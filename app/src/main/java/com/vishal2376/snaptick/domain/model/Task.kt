@@ -16,6 +16,7 @@ import java.time.format.DateTimeFormatter
 )
 data class Task(
 	@PrimaryKey(autoGenerate = true) val id: Int = 0,
+	val uuid: String,
 	val title: String,
 	val isCompleted: Boolean,
 	val startTime: LocalTime,

@@ -29,8 +29,8 @@ import androidx.compose.ui.unit.dp
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.ui.theme.Blue
+import com.vishal2376.snaptick.util.DummyTasks
 import kotlinx.coroutines.delay
-import java.time.LocalTime
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -88,15 +88,6 @@ fun PieChartItemComponent(task: Task, itemColor: Color, animDelay: Int = 100) {
 @Preview
 @Composable
 fun PieChartItemComponentPreview() {
-	val task = Task(
-		id = 2,
-		title = "Drink Water",
-		isCompleted = true,
-		startTime = LocalTime.of(10, 0),
-		endTime = LocalTime.of(11, 0),
-		reminder = false,
-		priority = 1
-	)
-
+	val task = DummyTasks.tasks[0]
 	PieChartItemComponent(task, Blue)
 }

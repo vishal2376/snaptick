@@ -13,12 +13,12 @@ class NotificationWorker(val context: Context, params: WorkerParameters) :
 
 	override fun doWork(): Result {
 		//get required data
-		val taskId = inputData.getInt(Constants.TASK_ID, -1)
+		val taskUUID = inputData.getString(Constants.TASK_UUID)
 		val taskTitle = inputData.getString(Constants.TASK_TITLE)
 		val taskTime = inputData.getString(Constants.TASK_TIME)
 
-		if (taskId != -1 || taskTitle != null || taskTime != null) {
-			notificationHelper.showNotification(taskId, taskTitle!!, taskTime!!)
+		if (taskUUID != null || taskTitle != null || taskTime != null) {
+			notificationHelper.showNotification(taskUUID.hashCode(), taskTitle!!, taskTime!!)
 			return Result.success()
 		}
 		return Result.failure()

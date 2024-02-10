@@ -65,6 +65,7 @@ import com.vishal2376.snaptick.util.getFormattedDuration
 import kotlinx.coroutines.job
 import java.time.LocalDate
 import java.time.LocalTime
+import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -262,6 +263,7 @@ fun AddTaskScreen(
 					onClick = {
 						val task = Task(
 							id = 0,
+							uuid = UUID.randomUUID().toString(),
 							title = taskTitle,
 							isCompleted = false,
 							startTime = taskStartTime,

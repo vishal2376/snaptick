@@ -44,6 +44,7 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 	var task: Task by mutableStateOf(
 		Task(
 			id = 0,
+			uuid = "",
 			title = "",
 			isCompleted = false,
 			startTime = LocalTime.now(),
@@ -191,7 +192,7 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 	}
 
 	private fun scheduleNotification(task: Task) {
-		val data = Data.Builder().putInt(Constants.TASK_ID, task.id)
+		val data = Data.Builder().putString(Constants.TASK_UUID, task.uuid)
 			.putString(Constants.TASK_TITLE, task.title)
 			.putString(Constants.TASK_TIME, task.getFormattedTime())
 			.build()
