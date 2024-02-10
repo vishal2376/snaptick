@@ -1,5 +1,6 @@
 package com.vishal2376.snaptick.presentation.add_edit_screen.components
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -41,7 +42,7 @@ fun CustomDurationDialogComponent(
 		Card(
 			modifier = Modifier
 				.fillMaxWidth()
-				.padding(16.dp),
+				.border(4.dp, MaterialTheme.colorScheme.secondary, RoundedCornerShape(16.dp)),
 			shape = RoundedCornerShape(16.dp),
 			colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary)
 		) {
@@ -53,7 +54,7 @@ fun CustomDurationDialogComponent(
 						16.dp
 					),
 				horizontalAlignment = Alignment.CenterHorizontally,
-				verticalArrangement = Arrangement.spacedBy(16.dp)
+				verticalArrangement = Arrangement.spacedBy(24.dp)
 			) {
 				Text(
 					text = "Custom Duration",
@@ -67,6 +68,7 @@ fun CustomDurationDialogComponent(
 				)
 				Text(
 					modifier = Modifier
+						.padding(8.dp)
 						.clickable {
 							onSelect(customDuration)
 							onClose()
