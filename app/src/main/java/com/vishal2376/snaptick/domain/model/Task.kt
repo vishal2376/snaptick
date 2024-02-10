@@ -21,6 +21,7 @@ data class Task(
 	val startTime: LocalTime,
 	val endTime: LocalTime,
 	val reminder: Boolean,
+	val isRepeated: Boolean = false,
 	val date: LocalDate = LocalDate.now(),
 	val priority: Int = 0,
 ) {

@@ -261,15 +261,17 @@ fun AddTaskScreen(
 				Button(
 					onClick = {
 						val task = Task(
-							0,
-							taskTitle,
-							false,
-							taskStartTime,
-							taskEndTime,
-							isTaskReminderOn,
-							LocalDate.now(),
-							taskPriority.ordinal
+							id = 0,
+							title = taskTitle,
+							isCompleted = false,
+							startTime = taskStartTime,
+							endTime = taskEndTime,
+							reminder = isTaskReminderOn,
+							isRepeated = false,
+							date = LocalDate.now(),
+							priority = taskPriority.ordinal
 						)
+
 						val (isValid, errorMessage) = checkValidTask(
 							task = task,
 							totalTasksDuration = appState.totalTaskDuration
