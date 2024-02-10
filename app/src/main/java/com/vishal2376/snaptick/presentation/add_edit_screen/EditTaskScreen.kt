@@ -76,7 +76,7 @@ fun EditTaskScreen(
 	val taskStartTime by remember { mutableStateOf(task.startTime) }
 	var taskEndTime by remember { mutableStateOf(task.endTime) }
 	var isTimeUpdated by remember { mutableStateOf(false) }
-	val taskDuration by remember { mutableLongStateOf((task.getDuration() % 3600) / 60) }
+	val taskDuration by remember { mutableLongStateOf(task.getDuration() / 60) }
 
 	var showDialogConfirmDelete by remember { mutableStateOf(false) }
 	var showDialogCustomDuration by remember { mutableStateOf(false) }
