@@ -40,7 +40,6 @@ const val TAG = "@@@"
 class TaskViewModel @Inject constructor(private val repository: TaskRepository) : ViewModel() {
 
 	var appState by mutableStateOf(MainState())
-
 	var task: Task by mutableStateOf(
 		Task(
 			id = 0,
@@ -152,7 +151,8 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 
 			is AddEditScreenEvent.OnDeleteTaskClick -> {
 				viewModelScope.launch(Dispatchers.IO) {
-					repository.deleteTask(task)
+					cancelNotification(event.task.uuid)
+					repository.deleteTask(event.task)
 				}
 			}
 
@@ -179,6 +179,11 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 			is AddEditScreenEvent.OnUpdateTask -> {
 				viewModelScope.launch(Dispatchers.IO) {
 					repository.updateTask(task)
+					if (task.reminder) {
+						scheduleNotification(task)
+					} else {
+						cancelNotification(task.uuid)
+					}
 				}
 			}
 
@@ -203,15 +208,22 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 
 		if (delaySec > 0) {
 
+			cancelNotification(task.uuid)
+
 			val workRequest = OneTimeWorkRequest.Builder(NotificationWorker::class.java)
 				.setInputData(data)
 				.setInitialDelay(delaySec.toLong(), TimeUnit.SECONDS)
+				.addTag(task.uuid)
 				.build()
 
 			// Enqueue the work request with WorkManager
 			WorkManager.getInstance().enqueue(workRequest)
 			Log.e(TAG, "scheduleNotification: ${task.title}")
 		}
+	}
+
+	private fun cancelNotification(taskUUID: String) {
+		WorkManager.getInstance().cancelAllWorkByTag(taskUUID)
 	}
 
 	fun loadAppState(context: Context) {
