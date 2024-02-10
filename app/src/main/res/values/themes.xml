@@ -3,8 +3,7 @@
 
     <style name="Theme.Snaptick" parent="android:Theme.Material.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="android:background">#161A30</item>
-        <item name="android:statusBarColor">#161A30</item>
+        <item name="android:statusBarColor">#000</item>
         <!-- Customize your theme here. -->
     </style>
 </resources>
