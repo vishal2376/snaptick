@@ -31,7 +31,7 @@ import com.vishal2376.snaptick.presentation.home_screen.components.EmptyTaskComp
 import com.vishal2376.snaptick.presentation.home_screen.components.TaskComponent
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.Constants
-import java.time.LocalTime
+import com.vishal2376.snaptick.util.DummyTasks
 
 @OptIn(
 	ExperimentalMaterial3Api::class,
@@ -120,26 +120,7 @@ fun CompletedTaskScreenPreview() {
 		darkTheme = true,
 		dynamicColor = false
 	) {
-		val tasks = listOf(
-			Task(
-				id = 1,
-				title = "Learn Kotlin",
-				isCompleted = true,
-				startTime = LocalTime.now(),
-				endTime = LocalTime.now(),
-				reminder = true,
-				priority = 0
-			),
-			Task(
-				id = 2,
-				title = "Drink Water",
-				isCompleted = true,
-				startTime = LocalTime.now(),
-				endTime = LocalTime.now(),
-				reminder = false,
-				priority = 1
-			)
-		)
+		val tasks = DummyTasks.tasks
 		CompletedTaskScreen(
 			tasks = tasks,
 			{},

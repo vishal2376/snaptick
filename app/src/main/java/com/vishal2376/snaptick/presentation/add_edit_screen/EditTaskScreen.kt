@@ -58,10 +58,9 @@ import com.vishal2376.snaptick.presentation.main.MainState
 import com.vishal2376.snaptick.ui.theme.Green
 import com.vishal2376.snaptick.ui.theme.Red
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
+import com.vishal2376.snaptick.util.DummyTasks
 import com.vishal2376.snaptick.util.Priority
 import com.vishal2376.snaptick.util.checkValidTask
-import java.time.LocalDate
-import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -309,16 +308,7 @@ fun EditTaskScreenPreview() {
 		darkTheme = true,
 		dynamicColor = false
 	) {
-		val task = Task(
-			id = 1,
-			title = "Learn Kotlin",
-			isCompleted = false,
-			startTime = LocalTime.now(),
-			endTime = LocalTime.now().plusHours(1),
-			reminder = true,
-			date = LocalDate.now(),
-			priority = 0
-		)
+		val task = DummyTasks.tasks[0]
 		EditTaskScreen(task, MainState(), {}, {})
 	}
 }

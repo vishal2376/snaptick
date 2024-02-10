@@ -56,9 +56,9 @@ import com.vishal2376.snaptick.presentation.home_screen.HomeScreenEvent
 import com.vishal2376.snaptick.presentation.pomodoro_screen.components.CustomCircularProgressBar
 import com.vishal2376.snaptick.ui.theme.LightGray
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
+import com.vishal2376.snaptick.util.DummyTasks
 import com.vishal2376.snaptick.util.vibrateDevice
 import kotlinx.coroutines.delay
-import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -242,21 +242,7 @@ fun PomodoroScreen(
 @Composable
 fun PomodoroScreenPreview() {
 	SnaptickTheme(darkTheme = true, dynamicColor = false) {
-		val task = Task(
-			id = 1,
-			title = "Learn Kotlin",
-			isCompleted = false,
-			startTime = LocalTime.of(
-				10,
-				0
-			),
-			endTime = LocalTime.of(
-				11,
-				0
-			),
-			reminder = true,
-			priority = 0
-		)
+		val task = DummyTasks.tasks[0]
 		PomodoroScreen(task, {}, {})
 	}
 }

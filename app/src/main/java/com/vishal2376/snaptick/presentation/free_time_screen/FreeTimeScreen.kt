@@ -37,8 +37,8 @@ import com.vishal2376.snaptick.presentation.free_time_screen.components.PieChart
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.ui.theme.pieChartColors
 import com.vishal2376.snaptick.util.Constants
+import com.vishal2376.snaptick.util.DummyTasks
 import com.vishal2376.snaptick.util.getFreeTime
-import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -137,26 +137,7 @@ fun FreeTimeScreen(
 @Preview
 @Composable
 fun FreeTimeScreenPreview() {
-	val tasks = listOf(
-		Task(
-			id = 1,
-			title = "Learn Kotlin",
-			isCompleted = false,
-			startTime = LocalTime.of(9, 0),
-			endTime = LocalTime.of(10, 0),
-			reminder = true,
-			priority = 0
-		),
-		Task(
-			id = 2,
-			title = "Drink Water",
-			isCompleted = false,
-			startTime = LocalTime.of(9, 0),
-			endTime = LocalTime.of(11, 0),
-			reminder = false,
-			priority = 1
-		)
-	)
+	val tasks = DummyTasks.tasks
 	SnaptickTheme {
 		FreeTimeScreen(tasks = tasks, {})
 	}

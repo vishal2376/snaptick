@@ -68,10 +68,10 @@ import com.vishal2376.snaptick.ui.theme.Green
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.ui.theme.Yellow
 import com.vishal2376.snaptick.util.Constants
+import com.vishal2376.snaptick.util.DummyTasks
 import com.vishal2376.snaptick.util.SortTask
 import com.vishal2376.snaptick.util.getFreeTime
 import kotlinx.coroutines.launch
-import java.time.LocalTime
 
 
 @OptIn(
@@ -361,26 +361,7 @@ fun HomeScreenPreview() {
 		darkTheme = true,
 		dynamicColor = false
 	) {
-		val tasks = listOf(
-			Task(
-				id = 1,
-				title = "Learn Kotlin",
-				isCompleted = false,
-				startTime = LocalTime.now(),
-				endTime = LocalTime.now(),
-				reminder = true,
-				priority = 0
-			),
-			Task(
-				id = 2,
-				title = "Drink Water",
-				isCompleted = true,
-				startTime = LocalTime.now(),
-				endTime = LocalTime.now(),
-				reminder = false,
-				priority = 1
-			)
-		)
+		val tasks = DummyTasks.tasks
 		HomeScreen(tasks = tasks, MainState(), {}, {}, {}, {}, {}, {}, {})
 	}
 }
