@@ -49,12 +49,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
+import com.vishal2376.snaptick.presentation.add_edit_screen.components.CustomDurationDialogComponent
+import com.vishal2376.snaptick.presentation.add_edit_screen.components.DurationComponent
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.PriorityComponent
 import com.vishal2376.snaptick.presentation.common.ShowTimePicker
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
-import com.vishal2376.snaptick.presentation.add_edit_screen.components.DurationComponent
 import com.vishal2376.snaptick.presentation.main.MainState
 import com.vishal2376.snaptick.ui.theme.Green
 import com.vishal2376.snaptick.ui.theme.Red
@@ -86,6 +87,8 @@ fun AddTaskScreen(
 	val context = LocalContext.current
 	val focusRequester = FocusRequester()
 
+	var showDialogCustomDuration by remember { mutableStateOf(false) }
+
 	Scaffold(topBar = {
 		TopAppBar(
 			modifier = Modifier.padding(8.dp),
@@ -115,6 +118,19 @@ fun AddTaskScreen(
 					focusRequester.requestFocus()
 				}
 			})
+
+
+		// confirm delete dialog
+		if (showDialogCustomDuration) {
+			CustomDurationDialogComponent(
+				onClose = { showDialogCustomDuration = false },
+				onSelect = { time ->
+					val duration = time.toSecondOfDay() / 60L
+					taskEndTime = taskStartTime.plusMinutes(duration)
+					isTimeUpdated = !isTimeUpdated
+				}
+			)
+		}
 
 		Column(
 			modifier = Modifier
@@ -219,8 +235,12 @@ fun AddTaskScreen(
 					durationList = appState.durationList,
 					defaultDuration = taskDuration
 				) { duration ->
-					taskEndTime = taskStartTime.plusMinutes(duration)
-					isTimeUpdated = !isTimeUpdated
+					if (duration == 0L) {
+						showDialogCustomDuration = true
+					} else {
+						taskEndTime = taskStartTime.plusMinutes(duration)
+						isTimeUpdated = !isTimeUpdated
+					}
 				}
 
 				Row(

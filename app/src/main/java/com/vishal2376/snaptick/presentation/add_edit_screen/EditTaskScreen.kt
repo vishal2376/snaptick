@@ -48,12 +48,13 @@ import androidx.compose.ui.unit.sp
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.ConfirmDeleteDialog
+import com.vishal2376.snaptick.presentation.add_edit_screen.components.CustomDurationDialogComponent
+import com.vishal2376.snaptick.presentation.add_edit_screen.components.DurationComponent
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.PriorityComponent
 import com.vishal2376.snaptick.presentation.common.ShowTimePicker
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
-import com.vishal2376.snaptick.presentation.add_edit_screen.components.DurationComponent
 import com.vishal2376.snaptick.presentation.main.MainState
 import com.vishal2376.snaptick.ui.theme.Green
 import com.vishal2376.snaptick.ui.theme.Red
@@ -77,7 +78,8 @@ fun EditTaskScreen(
 	var isTimeUpdated by remember { mutableStateOf(false) }
 	val taskDuration by remember { mutableLongStateOf((task.getDuration() % 3600) / 60) }
 
-	var showDialog by remember { mutableStateOf(false) }
+	var showDialogConfirmDelete by remember { mutableStateOf(false) }
+	var showDialogCustomDuration by remember { mutableStateOf(false) }
 
 	Scaffold(topBar = {
 		TopAppBar(modifier = Modifier.padding(8.dp),
@@ -99,7 +101,7 @@ fun EditTaskScreen(
 				}
 			},
 			actions = {
-				IconButton(onClick = { showDialog = true }) {
+				IconButton(onClick = { showDialogConfirmDelete = true }) {
 					Icon(
 						imageVector = Icons.Default.Delete,
 						contentDescription = null
@@ -110,13 +112,26 @@ fun EditTaskScreen(
 
 
 		// confirm delete dialog
-		if (showDialog) {
+		if (showDialogConfirmDelete) {
 			ConfirmDeleteDialog(
-				onClose = { showDialog = false },
+				onClose = { showDialogConfirmDelete = false },
 				onDelete = {
 					onEvent(AddEditScreenEvent.OnDeleteTaskClick(task))
-					showDialog = false
+					showDialogConfirmDelete = false
 					onBack()
+				}
+			)
+		}
+
+		// confirm delete dialog
+		if (showDialogCustomDuration) {
+			CustomDurationDialogComponent(
+				onClose = { showDialogCustomDuration = false },
+				onSelect = { time ->
+					val duration = time.toSecondOfDay() / 60L
+					onEvent(AddEditScreenEvent.OnUpdateEndTime(task.startTime.plusMinutes(duration)))
+					taskEndTime = taskStartTime.plusMinutes(duration)
+					isTimeUpdated = !isTimeUpdated
 				}
 			)
 		}
@@ -221,9 +236,20 @@ fun EditTaskScreen(
 					durationList = appState.durationList,
 					defaultDuration = taskDuration
 				) { duration ->
-					onEvent(AddEditScreenEvent.OnUpdateEndTime(task.startTime.plusMinutes(duration)))
-					taskEndTime = taskStartTime.plusMinutes(duration)
-					isTimeUpdated = !isTimeUpdated
+					if (duration == 0L) {
+						showDialogCustomDuration = true
+					} else {
+
+						onEvent(
+							AddEditScreenEvent.OnUpdateEndTime(
+								task.startTime.plusMinutes(
+									duration
+								)
+							)
+						)
+						taskEndTime = taskStartTime.plusMinutes(duration)
+						isTimeUpdated = !isTimeUpdated
+					}
 				}
 				Row(
 					modifier = Modifier

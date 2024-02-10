@@ -23,7 +23,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.vishal2376.snaptick.presentation.common.taskTextStyle
+import com.vishal2376.snaptick.presentation.common.fontRobotoMono
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 
 @Composable
@@ -98,7 +98,7 @@ fun DurationItemComponent(
 			.clickable { onClick() },
 		contentAlignment = Alignment.Center
 	) {
-		Text(text = text, color = Color.White, style = taskTextStyle)
+		Text(text = text, color = Color.White, fontFamily = fontRobotoMono)
 	}
 }
 

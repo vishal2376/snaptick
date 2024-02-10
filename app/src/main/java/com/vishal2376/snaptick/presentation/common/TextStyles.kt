@@ -13,6 +13,11 @@ val fontRobotoMono = FontFamily(Font(R.font.roboto_mono))
 val fontRobotoMonoThin = FontFamily(Font(R.font.roboto_mono_thin))
 val fontMontserrat = FontFamily(Font(R.font.montserrat))
 
+val durationTextStyle = TextStyle(
+	fontSize = 20.sp,
+	fontFamily = fontRobotoMono
+)
+
 var h1TextStyle = TextStyle(
 	fontSize = 24.sp,
 	fontFamily = fontMontserrat,
