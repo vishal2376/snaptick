@@ -1,4 +1,4 @@
-package com.vishal2376.snaptick.presentation.home_screen.components
+package com.vishal2376.snaptick.presentation.add_edit_screen.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
