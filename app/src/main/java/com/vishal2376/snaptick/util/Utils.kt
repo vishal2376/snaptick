@@ -73,11 +73,11 @@ fun getFreeTime(totalDuration: Long): String {
 	}
 }
 
-fun getDateDifference(date: String): Long {
+fun getDateDifference(date: String): Int {
 	val lastOpened = LocalDate.parse(date)
 	val today = LocalDate.now()
 
-	return ChronoUnit.DAYS.between(lastOpened, today)
+	return ChronoUnit.DAYS.between(lastOpened, today).toInt()
 }
 
 fun shareApp(context: Context) {

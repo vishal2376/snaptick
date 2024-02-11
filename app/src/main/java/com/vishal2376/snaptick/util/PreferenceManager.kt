@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -20,9 +21,26 @@ object PreferenceManager {
 			}
 	}
 
+	fun loadStringPreference(
+		context: Context,
+		key: String,
+		defaultValue: String = ""
+	): Flow<String> {
+		return context.dataStore.data
+			.map { preferences ->
+				preferences[stringPreferencesKey(key)] ?: defaultValue
+			}
+	}
+
 	suspend fun savePreferences(context: Context, key: String, value: Int) {
 		context.dataStore.edit { preferences ->
 			preferences[intPreferencesKey(key)] = value
+		}
+	}
+
+	suspend fun saveStringPreferences(context: Context, key: String, value: String) {
+		context.dataStore.edit { preferences ->
+			preferences[stringPreferencesKey(key)] = value
 		}
 	}
 

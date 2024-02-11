@@ -22,6 +22,7 @@ import com.vishal2376.snaptick.util.Constants
 import com.vishal2376.snaptick.util.NavDrawerItem
 import com.vishal2376.snaptick.util.PreferenceManager
 import com.vishal2376.snaptick.util.SortTask
+import com.vishal2376.snaptick.util.getDateDifference
 import com.vishal2376.snaptick.util.openMail
 import com.vishal2376.snaptick.util.openUrl
 import com.vishal2376.snaptick.util.shareApp
@@ -235,10 +236,39 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 		}
 
 		viewModelScope.launch {
-			PreferenceManager.loadPreference(context, Constants.LAST_OPENED_KEY, defaultValue = 0)
+			PreferenceManager.loadPreference(context, Constants.STREAK_KEY, defaultValue = 0)
 				.collect {
 					appState = appState.copy(streak = it)
 				}
+		}
+
+		viewModelScope.launch {
+			PreferenceManager.loadStringPreference(
+				context,
+				Constants.LAST_OPENED_KEY,
+				defaultValue = LocalDate.now().toString()
+			).collect { lastDate ->
+				val day = getDateDifference(lastDate)
+				val lastStreak = appState.streak
+
+				appState = if (day == 1) {
+					appState.copy(streak = lastStreak + 1)
+				} else {
+					appState.copy(streak = 0)
+				}
+				PreferenceManager.savePreferences(
+					context,
+					Constants.STREAK_KEY,
+					appState.streak
+				)
+				PreferenceManager.saveStringPreferences(
+					context,
+					Constants.LAST_OPENED_KEY,
+					LocalDate.now().minusDays(1).toString()
+				)
+
+				Log.e(TAG, "loadAppState: ${appState.streak} && $lastDate")
+			}
 		}
 
 		viewModelScope.launch {
