@@ -73,7 +73,7 @@ fun EditTaskScreen(
 ) {
 	val context = LocalContext.current
 
-	val taskStartTime by remember { mutableStateOf(task.startTime) }
+	var taskStartTime by remember { mutableStateOf(task.startTime) }
 	var taskEndTime by remember { mutableStateOf(task.endTime) }
 	var isTimeUpdated by remember { mutableStateOf(false) }
 	val taskDuration by remember { mutableLongStateOf(task.getDuration() / 60) }
@@ -194,6 +194,7 @@ fun EditTaskScreen(
 							time = taskStartTime
 						) { snappedTime ->
 							onEvent(AddEditScreenEvent.OnUpdateStartTime(snappedTime))
+							taskStartTime = snappedTime
 						}
 					}
 					Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -207,7 +208,7 @@ fun EditTaskScreen(
 							time = taskEndTime,
 							isTimeUpdated = isTimeUpdated
 						) { snappedTime ->
-							onEvent(AddEditScreenEvent.OnUpdateEndTime(snappedTime))
+							taskEndTime = snappedTime
 						}
 					}
 				}
