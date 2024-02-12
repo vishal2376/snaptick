@@ -34,8 +34,6 @@ import java.time.LocalTime
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-const val TAG = "@@@"
-
 @HiltViewModel
 class TaskViewModel @Inject constructor(private val repository: TaskRepository) : ViewModel() {
 
