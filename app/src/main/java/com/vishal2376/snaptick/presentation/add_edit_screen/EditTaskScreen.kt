@@ -1,6 +1,5 @@
 package com.vishal2376.snaptick.presentation.add_edit_screen
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -62,6 +61,7 @@ import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.DummyTasks
 import com.vishal2376.snaptick.util.Priority
 import com.vishal2376.snaptick.util.checkValidTask
+import com.vishal2376.snaptick.util.showToast
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -295,18 +295,16 @@ fun EditTaskScreen(
 					onClick = {
 						val (isValid, errorMessage) = checkValidTask(
 							task = task,
-							totalTasksDuration = appState.totalTaskDuration - task.getDuration(checkPastTask = true)
+							totalTasksDuration = appState.totalTaskDuration - task.getDuration(
+								checkPastTask = true
+							)
 						)
 
 						if (isValid) {
 							onEvent(AddEditScreenEvent.OnUpdateTask())
 							onBack()
 						} else {
-							Toast.makeText(
-								context,
-								errorMessage,
-								Toast.LENGTH_SHORT
-							).show()
+							showToast(context, errorMessage)
 						}
 					},
 					colors = ButtonDefaults.buttonColors(

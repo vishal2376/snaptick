@@ -13,6 +13,7 @@ fun checkValidTask(
 	val formattedFreeTime = getFreeTime(totalTasksDuration)
 
 	val currentDuration = task.getDuration(checkPastTask = true)
+	val startTimeSec = task.startTime.toSecondOfDay()
 
 	if (task.title.isEmpty()) {
 		return Pair(false, "Title can't be empty")
@@ -26,5 +27,10 @@ fun checkValidTask(
 		return Pair(false, "Task should be at least ${Constants.MIN_ALLOWED_DURATION} minutes.")
 	}
 
+	if (task.reminder) {
+		if (startTimeSec < currentTime) {
+			return Pair(false, "Cannot set a reminder for past time")
+		}
+	}
 	return Pair(true, "Valid Task")
 }
