@@ -295,8 +295,7 @@ fun EditTaskScreen(
 					onClick = {
 						val (isValid, errorMessage) = checkValidTask(
 							task = task,
-							totalTasksDuration = appState.totalTaskDuration,
-							isOptional = true
+							totalTasksDuration = appState.totalTaskDuration - task.getDuration(checkPastTask = true)
 						)
 
 						if (isValid) {
