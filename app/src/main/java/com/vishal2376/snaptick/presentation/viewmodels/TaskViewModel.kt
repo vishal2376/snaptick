@@ -248,26 +248,23 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 				Constants.LAST_OPENED_KEY,
 				defaultValue = LocalDate.now().toString()
 			).collect { lastDate ->
-				val day = getDateDifference(lastDate)
-				val lastStreak = appState.streak
 
-				appState = if (day == 1) {
-					appState.copy(streak = lastStreak + 1)
-				} else {
-					appState.copy(streak = 0)
+				if (lastDate != LocalDate.now().toString()) {
+					val day = getDateDifference(lastDate)
+					var newStreak = 0
+
+					if (day == 1) newStreak = appState.streak + 1
+					PreferenceManager.savePreferences(context, Constants.STREAK_KEY, newStreak)
+
+					PreferenceManager.saveStringPreferences(
+						context,
+						Constants.LAST_OPENED_KEY,
+						LocalDate.now().toString()
+					)
+
+					Log.e(TAG, "loadAppState: ${appState.streak} && $lastDate")
 				}
-				PreferenceManager.savePreferences(
-					context,
-					Constants.STREAK_KEY,
-					appState.streak
-				)
-				PreferenceManager.saveStringPreferences(
-					context,
-					Constants.LAST_OPENED_KEY,
-					LocalDate.now().minusDays(1).toString()
-				)
 
-				Log.e(TAG, "loadAppState: ${appState.streak} && $lastDate")
 			}
 		}
 
