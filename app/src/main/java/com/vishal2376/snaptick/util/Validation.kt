@@ -24,9 +24,9 @@ fun checkValidTask(
 		return Pair(false, "Invalid Duration! You have only $formattedFreeTime remaining.")
 	}
 
-	if (currentStartTime <= currentTime && !isOptional) {
-		return Pair(false, "Start time cannot be in the past.")
-	}
+//	if (currentStartTime <= currentTime && !isOptional) {
+//		return Pair(false, "Start time cannot be in the past.")
+//	}
 
 	if (task.getDuration() < Constants.MIN_ALLOWED_DURATION * 60) {
 		return Pair(false, "Task should be at least ${Constants.MIN_ALLOWED_DURATION} minutes.")
