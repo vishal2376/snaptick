@@ -208,6 +208,7 @@ fun EditTaskScreen(
 							time = taskEndTime,
 							isTimeUpdated = isTimeUpdated
 						) { snappedTime ->
+							onEvent(AddEditScreenEvent.OnUpdateEndTime(snappedTime))
 							taskEndTime = snappedTime
 						}
 					}

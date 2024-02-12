@@ -41,15 +41,14 @@ data class Task(
 		return when {
 			checkPastTask -> {
 				when {
-					endTimeSec < currentTimeSec -> 0
-					startTimeSec < currentTimeSec -> (currentTimeSec - startTimeSec).toLong()
+					currentTimeSec > endTimeSec -> 0
+					currentTimeSec in (startTimeSec + 1)..<endTimeSec -> (endTimeSec - currentTimeSec).toLong()
 					else -> (endTimeSec - startTimeSec).coerceAtLeast(0).toLong()
 				}
 			}
 
 			else -> (endTimeSec - startTimeSec).coerceAtLeast(0).toLong()
 		}
-
 	}
 
 	fun getDurationTimeStamp(duration: Long): String {
