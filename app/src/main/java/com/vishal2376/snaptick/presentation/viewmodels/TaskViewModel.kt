@@ -1,7 +1,6 @@
 package com.vishal2376.snaptick.presentation.viewmodels
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -219,7 +218,6 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 
 			// Enqueue the work request with WorkManager
 			WorkManager.getInstance().enqueue(workRequest)
-			Log.e(TAG, "scheduleNotification: ${task.title}")
 		}
 	}
 
@@ -261,8 +259,6 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 						Constants.LAST_OPENED_KEY,
 						LocalDate.now().toString()
 					)
-
-					Log.e(TAG, "loadAppState: ${appState.streak} && $lastDate")
 				}
 
 			}
