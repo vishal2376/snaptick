@@ -43,7 +43,7 @@ fun PriorityComponent(
 	Row(
 		modifier = Modifier
 			.fillMaxWidth()
-			.padding(horizontal = 32.dp),
+			.padding(horizontal = 24.dp),
 		horizontalArrangement = Arrangement.spacedBy(8.dp)
 	) {
 		Priority.entries.forEach {
@@ -85,7 +85,7 @@ fun PriorityItemComponent(
 			Text(
 				text = title,
 				style = h3TextStyle,
-				modifier = Modifier.padding(16.dp, 24.dp)
+				modifier = Modifier.padding(4.dp, 24.dp)
 			)
 		}
 
