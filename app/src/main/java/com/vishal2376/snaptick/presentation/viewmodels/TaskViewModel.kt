@@ -122,6 +122,7 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 					task = repository.getTaskById(event.taskId)
 					task = task.copy(isCompleted = event.isCompleted)
 					repository.updateTask(task)
+					cancelNotification(task.uuid)
 				}
 			}
 
