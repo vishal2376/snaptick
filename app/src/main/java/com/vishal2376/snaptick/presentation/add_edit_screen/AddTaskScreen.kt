@@ -77,8 +77,8 @@ fun AddTaskScreen(
 ) {
 
 	var taskTitle by remember { mutableStateOf("") }
-	var taskStartTime by remember { mutableStateOf(LocalTime.now().plusMinutes(1)) }
-	var taskEndTime by remember { mutableStateOf(LocalTime.now().plusMinutes(1).plusHours(1)) }
+	var taskStartTime by remember { mutableStateOf(LocalTime.now().plusMinutes(5)) }
+	var taskEndTime by remember { mutableStateOf(LocalTime.now().plusMinutes(5).plusHours(1)) }
 	var isTaskReminderOn by remember { mutableStateOf(true) }
 	var taskPriority by remember { mutableStateOf(Priority.LOW) }
 	val taskDuration by remember { mutableLongStateOf(60) }
