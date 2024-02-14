@@ -71,6 +71,7 @@ import com.vishal2376.snaptick.util.Constants
 import com.vishal2376.snaptick.util.DummyTasks
 import com.vishal2376.snaptick.util.SortTask
 import com.vishal2376.snaptick.util.getFreeTime
+import com.vishal2376.snaptick.util.showToast
 import kotlinx.coroutines.launch
 
 
@@ -248,7 +249,13 @@ fun HomeScreen(
 							.graphicsLayer {
 								translationX = rightTranslate.value
 							},
-						onClick = { onClickFreeTimeInfo() }
+						onClick = {
+							if (inCompletedTasks.isEmpty()) {
+								showToast(context,"Add Tasks to Analyze")
+							}else{
+								onClickFreeTimeInfo()
+							}
+						}
 					)
 
 				}
