@@ -122,7 +122,13 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 					task = repository.getTaskById(event.taskId)
 					task = task.copy(isCompleted = event.isCompleted)
 					repository.updateTask(task)
-					cancelNotification(task.uuid)
+					if (event.isCompleted) {
+						cancelNotification(task.uuid)
+					} else {
+						if (task.reminder && (task.startTime > LocalTime.now())) {
+							scheduleNotification(task)
+						}
+					}
 				}
 			}
 
