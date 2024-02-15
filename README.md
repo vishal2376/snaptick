@@ -9,30 +9,34 @@ Snaptick is a free daily task planner app designed to help users increase produc
 
 <br/>
 
+<a href="https://twitter.com/vishal2376"><img src="https://img.shields.io/badge/twitter-%231DA1F2.svg?&style=for-the-badge&logo=twitter&logoColor=white" /></a>
+
+
 <img src="https://img.shields.io/github/stars/vishal2376/snaptick?style=for-the-badge&logo=powerpages&color=cba6f7&logoColor=D9E0EE&labelColor=302D41"/>
 <img src="https://img.shields.io/github/last-commit/vishal2376/snaptick?style=for-the-badge&logo=github&color=a6da95&logoColor=D9E0EE&labelColor=302D41"/>
 <img src="https://img.shields.io/github/repo-size/vishal2376/snaptick?style=for-the-badge&logo=dropbox&color=7dc4e4&logoColor=D9E0EE&labelColor=302D41"/>
 
 <br/>
-
-<h2>
- ⚠️ Currently in Development, Follow Progress on <a href="https://twitter.com/vishal2376"><img src="https://img.shields.io/badge/twitter-%231DA1F2.svg?&style=for-the-badge&logo=twitter&logoColor=white" /></a>
-</h2>
-
 </div>
 
 ## Features
-- Create and Edit tasks
-- Manage task priority
+- Create and Edit Tasks
 - Pomodoro Timer
-- Sort tasks (based on priority,start time,creation time)
+- Manage Task Priority
+- Sort Tasks
+- Show Free Time
 - Task Analysis
-- Reminder Notification
-- Incomplete Tasks Widget `Not implemented yet`
+- Reminder Notifications
+- Ad-Free Task Management
+- Create Widgets `Coming Soon`
+- Repetable Tasks `Coming Soon`
+- Import/Export Your Data `Coming Soon`
+
 
 ## Screenshots
 
-### [App Screen Designs](https://www.figma.com/file/fO6pafK7iAJMZDAtjOy1Mt/Snaptick-App-UI?type=design&node-id=0%3A1&mode=design&t=v0ReZE8yLzfXV7Ze-1)
+| <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" width="200px"> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.png" width="200px"> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/3.png" width="200px"> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/4.png" width="200px"> |
+|---|---|---|---|
 
 
 ## Getting Started
