@@ -80,6 +80,7 @@ fun AddTaskScreen(
 	var taskStartTime by remember { mutableStateOf(LocalTime.now().plusMinutes(5)) }
 	var taskEndTime by remember { mutableStateOf(LocalTime.now().plusMinutes(5).plusHours(1)) }
 	var isTaskReminderOn by remember { mutableStateOf(true) }
+	var isTaskRepeated by remember { mutableStateOf(false) }
 	var taskPriority by remember { mutableStateOf(Priority.LOW) }
 	val taskDuration by remember { mutableLongStateOf(60) }
 	var isTimeUpdated by remember { mutableStateOf(false) }
@@ -243,30 +244,54 @@ fun AddTaskScreen(
 					}
 				}
 
-				Row(
-					modifier = Modifier
-						.fillMaxWidth()
-						.padding(32.dp, 0.dp),
-					horizontalArrangement = Arrangement.SpaceBetween,
-					verticalAlignment = Alignment.CenterVertically
-				) {
-					Text(
-						text = "Reminder",
-						style = h2TextStyle,
-						color = Color.White
-					)
-
-					Switch(
-						checked = isTaskReminderOn,
-						onCheckedChange = { isTaskReminderOn = it },
-						colors = SwitchDefaults.colors(
-							checkedThumbColor = Green,
-							checkedTrackColor = MaterialTheme.colorScheme.secondary,
-							uncheckedTrackColor = MaterialTheme.colorScheme.secondary
+				Column {
+					Row(
+						modifier = Modifier
+							.fillMaxWidth()
+							.padding(32.dp, 0.dp),
+						horizontalArrangement = Arrangement.SpaceBetween,
+						verticalAlignment = Alignment.CenterVertically
+					) {
+						Text(
+							text = "Repeat",
+							style = h2TextStyle,
+							color = Color.White
 						)
-					)
-				}
 
+						Switch(
+							checked = isTaskRepeated,
+							onCheckedChange = { isTaskRepeated = it },
+							colors = SwitchDefaults.colors(
+								checkedThumbColor = Green,
+								checkedTrackColor = MaterialTheme.colorScheme.secondary,
+								uncheckedTrackColor = MaterialTheme.colorScheme.secondary
+							)
+						)
+					}
+					Row(
+						modifier = Modifier
+							.fillMaxWidth()
+							.padding(32.dp, 0.dp),
+						horizontalArrangement = Arrangement.SpaceBetween,
+						verticalAlignment = Alignment.CenterVertically
+					) {
+						Text(
+							text = "Reminder",
+							style = h2TextStyle,
+							color = Color.White
+						)
+
+						Switch(
+							checked = isTaskReminderOn,
+							onCheckedChange = { isTaskReminderOn = it },
+							colors = SwitchDefaults.colors(
+								checkedThumbColor = Green,
+								checkedTrackColor = MaterialTheme.colorScheme.secondary,
+								uncheckedTrackColor = MaterialTheme.colorScheme.secondary
+							)
+						)
+					}
+				}
 				PriorityComponent() {
 					taskPriority = it
 				}
@@ -289,7 +314,7 @@ fun AddTaskScreen(
 							startTime = taskStartTime,
 							endTime = taskEndTime,
 							reminder = isTaskReminderOn,
-							isRepeated = false,
+							isRepeated = isTaskRepeated,
 							date = LocalDate.now(),
 							priority = taskPriority.ordinal
 						)
