@@ -139,6 +139,12 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 			is HomeScreenEvent.OnPomodoro -> {
 				getTaskById(event.taskId)
 			}
+
+			is HomeScreenEvent.OnSwipeTask -> {
+				viewModelScope.launch {
+					repository.deleteTask(event.task)
+				}
+			}
 		}
 	}
 
