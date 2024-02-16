@@ -141,9 +141,7 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 			}
 
 			is HomeScreenEvent.OnSwipeTask -> {
-				viewModelScope.launch {
-					repository.deleteTask(event.task)
-				}
+				deleteTask(event.task)
 			}
 		}
 	}
@@ -161,10 +159,7 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 			}
 
 			is AddEditScreenEvent.OnDeleteTaskClick -> {
-				viewModelScope.launch(Dispatchers.IO) {
-					cancelNotification(event.task.uuid)
-					repository.deleteTask(event.task)
-				}
+				deleteTask(event.task)
 			}
 
 			is AddEditScreenEvent.OnUpdateTitle -> {
@@ -204,6 +199,13 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 	private fun getTaskById(id: Int) {
 		viewModelScope.launch(Dispatchers.IO) {
 			task = repository.getTaskById(id)
+		}
+	}
+
+	private fun deleteTask(task: Task) {
+		viewModelScope.launch(Dispatchers.IO) {
+			cancelNotification(task.uuid)
+			repository.deleteTask(task)
 		}
 	}
 
