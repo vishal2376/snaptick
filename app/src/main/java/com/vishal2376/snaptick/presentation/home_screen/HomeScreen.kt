@@ -53,6 +53,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
+import com.vishal2376.snaptick.presentation.common.SwipeActionBox
 import com.vishal2376.snaptick.presentation.common.fontRobotoMono
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
@@ -251,8 +252,8 @@ fun HomeScreen(
 							},
 						onClick = {
 							if (inCompletedTasks.isEmpty()) {
-								showToast(context,"Add Tasks to Analyze")
-							}else{
+								showToast(context, "Add Tasks to Analyze")
+							} else {
 								onClickFreeTimeInfo()
 							}
 						}
@@ -336,21 +337,26 @@ fun HomeScreen(
 							Box(
 								modifier = Modifier.animateItemPlacement(tween(500))
 							) {
-								TaskComponent(
-									task = task,
-									onEdit = {
-										onEvent(HomeScreenEvent.OnEditTask(it))
-										onEditTask(it)
-									},
-									onComplete = {
-										onEvent(HomeScreenEvent.OnCompleted(it, true))
-									},
-									onPomodoro = {
-										onEvent(HomeScreenEvent.OnPomodoro(it))
-										onPomodoroTask(it)
-									},
-									animDelay = index * Constants.LIST_ANIMATION_DELAY
-								)
+								SwipeActionBox(item = task, onAction = {
+									onEvent(HomeScreenEvent.OnSwipeTask(it))
+								})
+								{
+									TaskComponent(
+										task = task,
+										onEdit = {
+											onEvent(HomeScreenEvent.OnEditTask(it))
+											onEditTask(it)
+										},
+										onComplete = {
+											onEvent(HomeScreenEvent.OnCompleted(it, true))
+										},
+										onPomodoro = {
+											onEvent(HomeScreenEvent.OnPomodoro(it))
+											onPomodoroTask(it)
+										},
+										animDelay = index * Constants.LIST_ANIMATION_DELAY
+									)
+								}
 							}
 							Spacer(modifier = Modifier.height(10.dp))
 						}
