@@ -2,7 +2,7 @@ package com.vishal2376.snaptick.util
 
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequest
-import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import com.google.gson.Gson
 import com.vishal2376.snaptick.domain.model.Task
@@ -47,13 +47,12 @@ object WorkManagerHelper {
 		val currentTimeSec = LocalTime.now().toSecondOfDay()
 		val delaySec = midNightSec - currentTimeSec
 
-		val workRequest = PeriodicWorkRequestBuilder<RepeatTaskWorker>(
-			repeatInterval = 1,
-			repeatIntervalTimeUnit = TimeUnit.DAYS
-		).setInitialDelay(delaySec.toLong(), TimeUnit.SECONDS)
-			.setInputData(data)
-			.addTag(tag)
-			.build()
+		val workRequest =
+			PeriodicWorkRequest.Builder(RepeatTaskWorker::class.java, 1, TimeUnit.DAYS)
+				.setInitialDelay(delaySec.toLong(), TimeUnit.SECONDS)
+				.setInputData(data)
+				.addTag(tag)
+				.build()
 
 		// Enqueue the work request with WorkManager
 		WorkManager.getInstance().enqueue(workRequest)
