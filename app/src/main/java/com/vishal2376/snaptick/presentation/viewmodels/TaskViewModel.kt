@@ -190,6 +190,9 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 					} else {
 						WorkManagerHelper.cancelNotification(task.uuid)
 					}
+					if (task.isRepeated) WorkManagerHelper.scheduleRepeatTask(task)
+					else WorkManagerHelper.cancelRepeatTask(task.uuid)
+
 				}
 			}
 
