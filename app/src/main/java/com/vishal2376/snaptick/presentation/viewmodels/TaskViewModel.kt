@@ -153,9 +153,6 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 				if (event.task.reminder) {
 					scheduleNotification(event.task)
 				}
-				if (event.task.isRepeated) {
-					WorkManagerHelper.scheduleRepeatTask(event.task)
-				}
 			}
 
 			is AddEditScreenEvent.OnDeleteTaskClick -> {
@@ -190,9 +187,6 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 					} else {
 						WorkManagerHelper.cancelNotification(task.uuid)
 					}
-					if (task.isRepeated) WorkManagerHelper.scheduleRepeatTask(task)
-					else WorkManagerHelper.cancelRepeatTask(task.uuid)
-
 				}
 			}
 
@@ -208,7 +202,6 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 	private fun deleteTask(task: Task) {
 		viewModelScope.launch(Dispatchers.IO) {
 			WorkManagerHelper.cancelNotification(task.uuid)
-			WorkManagerHelper.cancelRepeatTask(task.uuid)
 			repository.deleteTask(task)
 		}
 	}
