@@ -32,8 +32,8 @@ Snaptick is a free daily task planner app designed to help users increase produc
 - Task Analysis
 - Reminder Notifications
 - Ad-Free Task Management
+- Repetable Tasks
 - Create Widgets `Coming Soon`
-- Repetable Tasks `Coming Soon`
 - Import/Export Your Data `Coming Soon`
 
 
