@@ -253,30 +253,60 @@ fun EditTaskScreen(
 						isTimeUpdated = !isTimeUpdated
 					}
 				}
-				Row(
-					modifier = Modifier
-						.fillMaxWidth()
-						.padding(32.dp, 0.dp),
-					horizontalArrangement = Arrangement.SpaceBetween,
-					verticalAlignment = Alignment.CenterVertically
-				) {
-					Text(
-						text = "Reminder",
-						style = h2TextStyle,
-						color = Color.White
-					)
 
-					Switch(
-						checked = task.reminder,
-						onCheckedChange = {
-							onEvent(AddEditScreenEvent.OnUpdateReminder(it))
-						},
-						colors = SwitchDefaults.colors(
-							checkedThumbColor = Green,
-							checkedTrackColor = MaterialTheme.colorScheme.secondary,
-							uncheckedTrackColor = MaterialTheme.colorScheme.secondary
+				Column {
+
+					Row(
+						modifier = Modifier
+							.fillMaxWidth()
+							.padding(32.dp, 0.dp),
+						horizontalArrangement = Arrangement.SpaceBetween,
+						verticalAlignment = Alignment.CenterVertically
+					) {
+						Text(
+							text = "Reminder",
+							style = h2TextStyle,
+							color = Color.White
 						)
-					)
+
+						Switch(
+							checked = task.reminder,
+							onCheckedChange = {
+								onEvent(AddEditScreenEvent.OnUpdateReminder(it))
+							},
+							colors = SwitchDefaults.colors(
+								checkedThumbColor = Green,
+								checkedTrackColor = MaterialTheme.colorScheme.secondary,
+								uncheckedTrackColor = MaterialTheme.colorScheme.secondary
+							)
+						)
+					}
+
+					Row(
+						modifier = Modifier
+							.fillMaxWidth()
+							.padding(32.dp, 0.dp),
+						horizontalArrangement = Arrangement.SpaceBetween,
+						verticalAlignment = Alignment.CenterVertically
+					) {
+						Text(
+							text = "Repeat Daily",
+							style = h2TextStyle,
+							color = Color.White
+						)
+
+						Switch(
+							checked = task.isRepeated,
+							onCheckedChange = {
+								onEvent(AddEditScreenEvent.OnUpdateIsRepeated(it))
+							},
+							colors = SwitchDefaults.colors(
+								checkedThumbColor = Green,
+								checkedTrackColor = MaterialTheme.colorScheme.secondary,
+								uncheckedTrackColor = MaterialTheme.colorScheme.secondary
+							)
+						)
+					}
 				}
 
 				PriorityComponent(defaultSortTask = Priority.entries[task.priority]) {
@@ -301,7 +331,7 @@ fun EditTaskScreen(
 						)
 
 						if (isValid) {
-							onEvent(AddEditScreenEvent.OnUpdateTask())
+							onEvent(AddEditScreenEvent.OnUpdateTask)
 							onBack()
 						} else {
 							showToast(context, errorMessage)

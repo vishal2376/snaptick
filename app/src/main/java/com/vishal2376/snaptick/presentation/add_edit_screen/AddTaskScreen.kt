@@ -253,29 +253,6 @@ fun AddTaskScreen(
 						verticalAlignment = Alignment.CenterVertically
 					) {
 						Text(
-							text = "Repeat",
-							style = h2TextStyle,
-							color = Color.White
-						)
-
-						Switch(
-							checked = isTaskRepeated,
-							onCheckedChange = { isTaskRepeated = it },
-							colors = SwitchDefaults.colors(
-								checkedThumbColor = Green,
-								checkedTrackColor = MaterialTheme.colorScheme.secondary,
-								uncheckedTrackColor = MaterialTheme.colorScheme.secondary
-							)
-						)
-					}
-					Row(
-						modifier = Modifier
-							.fillMaxWidth()
-							.padding(32.dp, 0.dp),
-						horizontalArrangement = Arrangement.SpaceBetween,
-						verticalAlignment = Alignment.CenterVertically
-					) {
-						Text(
 							text = "Reminder",
 							style = h2TextStyle,
 							color = Color.White
@@ -291,6 +268,30 @@ fun AddTaskScreen(
 							)
 						)
 					}
+					Row(
+						modifier = Modifier
+							.fillMaxWidth()
+							.padding(32.dp, 0.dp),
+						horizontalArrangement = Arrangement.SpaceBetween,
+						verticalAlignment = Alignment.CenterVertically
+					) {
+						Text(
+							text = "Repeat Daily",
+							style = h2TextStyle,
+							color = Color.White
+						)
+
+						Switch(
+							checked = isTaskRepeated,
+							onCheckedChange = { isTaskRepeated = it },
+							colors = SwitchDefaults.colors(
+								checkedThumbColor = Green,
+								checkedTrackColor = MaterialTheme.colorScheme.secondary,
+								uncheckedTrackColor = MaterialTheme.colorScheme.secondary
+							)
+						)
+					}
+
 				}
 				PriorityComponent() {
 					taskPriority = it
