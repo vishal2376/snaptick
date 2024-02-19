@@ -179,6 +179,10 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 				task = task.copy(reminder = event.reminder)
 			}
 
+			is AddEditScreenEvent.OnUpdateIsRepeated -> {
+				task = task.copy(isRepeated = event.isRepeated)
+			}
+
 			is AddEditScreenEvent.OnUpdateTask -> {
 				viewModelScope.launch(Dispatchers.IO) {
 					repository.updateTask(task)
