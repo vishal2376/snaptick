@@ -21,6 +21,8 @@ Snaptick is a free daily task planner app designed to help users increase produc
 
 <a href='https://play.google.com/store/apps/details?id=com.vishal2376.snaptick'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' style="width:200px"></a>
 
+<a href='https://apt.izzysoft.de/fdroid/index/apk/com.vishal2376.snaptick'><img alt='Get it on IzzyOnDroid' src='https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png' style="width:200px"></a>
+
 </div>
 
 ## Features
