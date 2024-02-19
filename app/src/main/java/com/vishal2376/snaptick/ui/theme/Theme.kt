@@ -10,13 +10,13 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
-private val DarkColorScheme = darkColorScheme(
+val DarkColorScheme = darkColorScheme(
 	primary = Blue500,
 	secondary = Blue200,
 	background = Blue500,
 )
 
-private val AmoledDarkColorScheme = darkColorScheme(
+val AmoledDarkColorScheme = darkColorScheme(
 	primary = Black500,
 	secondary = Black200,
 	background = Black500,
