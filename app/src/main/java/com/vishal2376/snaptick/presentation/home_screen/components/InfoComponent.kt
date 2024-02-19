@@ -46,7 +46,7 @@ fun InfoComponent(
 			modifier = Modifier
 				.fillMaxWidth()
 				.padding(
-					24.dp,
+					8.dp,
 					16.dp
 				),
 			horizontalAlignment = Alignment.CenterHorizontally,
