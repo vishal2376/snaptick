@@ -52,7 +52,7 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 		private set
 
 	//	var taskList = repository.getAllTasks()
-	var todayTaskList = repository.getTasksByDate(LocalDate.now())
+	var todayTaskList = repository.getTodayTasks()
 
 	// Main App Events
 	fun onEvent(event: MainEvent) {
