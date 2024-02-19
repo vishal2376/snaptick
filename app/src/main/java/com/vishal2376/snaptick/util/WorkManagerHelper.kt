@@ -7,7 +7,9 @@ import androidx.work.WorkManager
 import com.google.gson.Gson
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.worker.NotificationWorker
+import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.temporal.ChronoUnit
 import java.util.concurrent.TimeUnit
 
 object WorkManagerHelper {
@@ -18,35 +20,32 @@ object WorkManagerHelper {
 
 		val startTimeSec = task.startTime.toSecondOfDay()
 		val currentTimeSec = LocalTime.now().toSecondOfDay()
-		var delaySec = startTimeSec - currentTimeSec
+		val delaySec = startTimeSec - currentTimeSec
 
+		cancelNotification(task.uuid)
 
 		if (task.isRepeated) {
-			if (delaySec < 0) {
-				delaySec += LocalTime.MAX.toSecondOfDay()
+			val nextDelaySec = if (delaySec < 0) {
+				val today = LocalDateTime.now()
+				val nextDay = today.plusDays(1)
+				val tomorrowTimeSec = today.until(nextDay, ChronoUnit.SECONDS)
+				(tomorrowTimeSec - currentTimeSec)
+			} else {
+				(startTimeSec - currentTimeSec)
 			}
-
 			val workRequest =
-//				PeriodicWorkRequest.Builder(NotificationWorker::class.java, 1, TimeUnit.DAYS)
-				PeriodicWorkRequest.Builder(NotificationWorker::class.java, 20, TimeUnit.MINUTES)
-					.setInitialDelay(delaySec.toLong(), TimeUnit.SECONDS)
+				PeriodicWorkRequest.Builder(NotificationWorker::class.java, 1, TimeUnit.DAYS)
+					.setInitialDelay(nextDelaySec.toLong(), TimeUnit.SECONDS)
 					.setInputData(data)
 					.addTag(task.uuid)
 					.build()
-
-			// Enqueue the work request with WorkManager
 			WorkManager.getInstance().enqueue(workRequest)
-
 		} else {
-			cancelNotification(task.uuid)
-
 			val workRequest = OneTimeWorkRequest.Builder(NotificationWorker::class.java)
-				.setInputData(data)
 				.setInitialDelay(delaySec.toLong(), TimeUnit.SECONDS)
+				.setInputData(data)
 				.addTag(task.uuid)
 				.build()
-
-			// Enqueue the work request with WorkManager
 			WorkManager.getInstance().enqueue(workRequest)
 		}
 	}
