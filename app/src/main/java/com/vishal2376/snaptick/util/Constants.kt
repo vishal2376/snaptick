@@ -16,7 +16,4 @@ object Constants {
 
 	// WORK MANAGER DATA KEYS
 	const val TASK = "task"
-	const val TASK_UUID = "task_id"
-	const val TASK_TITLE = "task_title"
-	const val TASK_TIME = "task_time"
 }
