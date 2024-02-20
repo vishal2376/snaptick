@@ -358,7 +358,7 @@ fun AddTaskScreen(
 	}
 }
 
-@Preview(heightDp = 700)
+@Preview()
 @Composable
 fun AddTaskScreenPreview() {
 	SnaptickTheme(darkTheme = true, dynamicColor = false) {
