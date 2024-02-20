@@ -14,8 +14,8 @@ android {
 		applicationId = "com.vishal2376.snaptick"
 		minSdk = 26
 		targetSdk = 34
-		versionCode = 2
-		versionName = "1.0"
+		versionCode = 4
+		versionName = "1.1.1"
 
 		testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 		vectorDrawables {
@@ -105,6 +105,9 @@ dependencies {
 
 	//splash screen
 	implementation("androidx.core:core-splashscreen:1.0.1")
+
+	//gson
+	implementation("com.google.code.gson:gson:2.10.1")
 
 	//widget
 	implementation("androidx.glance:glance-appwidget:1.0.0")

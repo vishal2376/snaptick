@@ -28,7 +28,7 @@ fun checkValidTask(
 	}
 
 	if (task.reminder) {
-		if (startTimeSec < currentTime) {
+		if (startTimeSec < currentTime && !task.isRepeated) {
 			return Pair(false, "Cannot set a reminder for past time")
 		}
 	}

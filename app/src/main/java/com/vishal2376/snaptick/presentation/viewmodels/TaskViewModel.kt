@@ -6,9 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.work.Data
-import androidx.work.OneTimeWorkRequest
-import androidx.work.WorkManager
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.data.repositories.TaskRepository
 import com.vishal2376.snaptick.domain.model.Task
@@ -21,17 +18,17 @@ import com.vishal2376.snaptick.util.Constants
 import com.vishal2376.snaptick.util.NavDrawerItem
 import com.vishal2376.snaptick.util.PreferenceManager
 import com.vishal2376.snaptick.util.SortTask
+import com.vishal2376.snaptick.util.WorkManagerHelper
+import com.vishal2376.snaptick.util.WorkManagerHelper.scheduleNotification
 import com.vishal2376.snaptick.util.getDateDifference
 import com.vishal2376.snaptick.util.openMail
 import com.vishal2376.snaptick.util.openUrl
 import com.vishal2376.snaptick.util.shareApp
-import com.vishal2376.snaptick.worker.NotificationWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalTime
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltViewModel
@@ -55,7 +52,7 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 		private set
 
 	//	var taskList = repository.getAllTasks()
-	var todayTaskList = repository.getTasksByDate(LocalDate.now())
+	var todayTaskList = repository.getTodayTasks()
 
 	// Main App Events
 	fun onEvent(event: MainEvent) {
@@ -123,10 +120,10 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 					task = task.copy(isCompleted = event.isCompleted)
 					repository.updateTask(task)
 					if (event.isCompleted) {
-						cancelNotification(task.uuid)
+						WorkManagerHelper.cancelNotification(task.uuid)
 					} else {
 						if (task.reminder && (task.startTime > LocalTime.now())) {
-							scheduleNotification(task)
+							WorkManagerHelper.scheduleNotification(task)
 						}
 					}
 				}
@@ -182,13 +179,17 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 				task = task.copy(reminder = event.reminder)
 			}
 
+			is AddEditScreenEvent.OnUpdateIsRepeated -> {
+				task = task.copy(isRepeated = event.isRepeated)
+			}
+
 			is AddEditScreenEvent.OnUpdateTask -> {
 				viewModelScope.launch(Dispatchers.IO) {
 					repository.updateTask(task)
 					if (task.reminder && !task.isCompleted) {
-						scheduleNotification(task)
+						WorkManagerHelper.scheduleNotification(task)
 					} else {
-						cancelNotification(task.uuid)
+						WorkManagerHelper.cancelNotification(task.uuid)
 					}
 				}
 			}
@@ -204,38 +205,9 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 
 	private fun deleteTask(task: Task) {
 		viewModelScope.launch(Dispatchers.IO) {
-			cancelNotification(task.uuid)
+			WorkManagerHelper.cancelNotification(task.uuid)
 			repository.deleteTask(task)
 		}
-	}
-
-	private fun scheduleNotification(task: Task) {
-		val data = Data.Builder().putString(Constants.TASK_UUID, task.uuid)
-			.putString(Constants.TASK_TITLE, task.title)
-			.putString(Constants.TASK_TIME, task.getFormattedTime())
-			.build()
-
-		val startTimeSec = task.startTime.toSecondOfDay()
-		val currentTimeSec = LocalTime.now().toSecondOfDay()
-		val delaySec = startTimeSec - currentTimeSec
-
-		if (delaySec > 0) {
-
-			cancelNotification(task.uuid)
-
-			val workRequest = OneTimeWorkRequest.Builder(NotificationWorker::class.java)
-				.setInputData(data)
-				.setInitialDelay(delaySec.toLong(), TimeUnit.SECONDS)
-				.addTag(task.uuid)
-				.build()
-
-			// Enqueue the work request with WorkManager
-			WorkManager.getInstance().enqueue(workRequest)
-		}
-	}
-
-	private fun cancelNotification(taskUUID: String) {
-		WorkManager.getInstance().cancelAllWorkByTag(taskUUID)
 	}
 
 	fun loadAppState(context: Context) {

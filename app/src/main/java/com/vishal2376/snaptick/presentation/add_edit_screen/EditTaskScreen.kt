@@ -8,8 +8,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.rounded.ArrowBack
@@ -139,7 +141,8 @@ fun EditTaskScreen(
 		Column(
 			modifier = Modifier
 				.fillMaxSize()
-				.padding(innerPadding),
+				.padding(innerPadding)
+				.verticalScroll(rememberScrollState()),
 			horizontalAlignment = Alignment.CenterHorizontally,
 			verticalArrangement = Arrangement.SpaceBetween
 		) {
@@ -253,30 +256,60 @@ fun EditTaskScreen(
 						isTimeUpdated = !isTimeUpdated
 					}
 				}
-				Row(
-					modifier = Modifier
-						.fillMaxWidth()
-						.padding(32.dp, 0.dp),
-					horizontalArrangement = Arrangement.SpaceBetween,
-					verticalAlignment = Alignment.CenterVertically
-				) {
-					Text(
-						text = "Reminder",
-						style = h2TextStyle,
-						color = Color.White
-					)
 
-					Switch(
-						checked = task.reminder,
-						onCheckedChange = {
-							onEvent(AddEditScreenEvent.OnUpdateReminder(it))
-						},
-						colors = SwitchDefaults.colors(
-							checkedThumbColor = Green,
-							checkedTrackColor = MaterialTheme.colorScheme.secondary,
-							uncheckedTrackColor = MaterialTheme.colorScheme.secondary
+				Column {
+
+					Row(
+						modifier = Modifier
+							.fillMaxWidth()
+							.padding(32.dp, 0.dp),
+						horizontalArrangement = Arrangement.SpaceBetween,
+						verticalAlignment = Alignment.CenterVertically
+					) {
+						Text(
+							text = "Reminder",
+							style = h2TextStyle,
+							color = Color.White
 						)
-					)
+
+						Switch(
+							checked = task.reminder,
+							onCheckedChange = {
+								onEvent(AddEditScreenEvent.OnUpdateReminder(it))
+							},
+							colors = SwitchDefaults.colors(
+								checkedThumbColor = Green,
+								checkedTrackColor = MaterialTheme.colorScheme.secondary,
+								uncheckedTrackColor = MaterialTheme.colorScheme.secondary
+							)
+						)
+					}
+
+					Row(
+						modifier = Modifier
+							.fillMaxWidth()
+							.padding(32.dp, 0.dp),
+						horizontalArrangement = Arrangement.SpaceBetween,
+						verticalAlignment = Alignment.CenterVertically
+					) {
+						Text(
+							text = "Repeat Daily",
+							style = h2TextStyle,
+							color = Color.White
+						)
+
+						Switch(
+							checked = task.isRepeated,
+							onCheckedChange = {
+								onEvent(AddEditScreenEvent.OnUpdateIsRepeated(it))
+							},
+							colors = SwitchDefaults.colors(
+								checkedThumbColor = Green,
+								checkedTrackColor = MaterialTheme.colorScheme.secondary,
+								uncheckedTrackColor = MaterialTheme.colorScheme.secondary
+							)
+						)
+					}
 				}
 
 				PriorityComponent(defaultSortTask = Priority.entries[task.priority]) {
@@ -301,7 +334,7 @@ fun EditTaskScreen(
 						)
 
 						if (isValid) {
-							onEvent(AddEditScreenEvent.OnUpdateTask())
+							onEvent(AddEditScreenEvent.OnUpdateTask)
 							onBack()
 						} else {
 							showToast(context, errorMessage)

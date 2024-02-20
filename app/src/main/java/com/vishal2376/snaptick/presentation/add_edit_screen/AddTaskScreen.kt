@@ -9,8 +9,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material3.Button
@@ -80,6 +82,7 @@ fun AddTaskScreen(
 	var taskStartTime by remember { mutableStateOf(LocalTime.now().plusMinutes(5)) }
 	var taskEndTime by remember { mutableStateOf(LocalTime.now().plusMinutes(5).plusHours(1)) }
 	var isTaskReminderOn by remember { mutableStateOf(true) }
+	var isTaskRepeated by remember { mutableStateOf(false) }
 	var taskPriority by remember { mutableStateOf(Priority.LOW) }
 	val taskDuration by remember { mutableLongStateOf(60) }
 	var isTimeUpdated by remember { mutableStateOf(false) }
@@ -135,7 +138,8 @@ fun AddTaskScreen(
 		Column(
 			modifier = Modifier
 				.fillMaxSize()
-				.padding(innerPadding),
+				.padding(innerPadding)
+				.verticalScroll(rememberScrollState()),
 			horizontalAlignment = Alignment.CenterHorizontally,
 			verticalArrangement = Arrangement.SpaceBetween
 		) {
@@ -243,30 +247,55 @@ fun AddTaskScreen(
 					}
 				}
 
-				Row(
-					modifier = Modifier
-						.fillMaxWidth()
-						.padding(32.dp, 0.dp),
-					horizontalArrangement = Arrangement.SpaceBetween,
-					verticalAlignment = Alignment.CenterVertically
-				) {
-					Text(
-						text = "Reminder",
-						style = h2TextStyle,
-						color = Color.White
-					)
-
-					Switch(
-						checked = isTaskReminderOn,
-						onCheckedChange = { isTaskReminderOn = it },
-						colors = SwitchDefaults.colors(
-							checkedThumbColor = Green,
-							checkedTrackColor = MaterialTheme.colorScheme.secondary,
-							uncheckedTrackColor = MaterialTheme.colorScheme.secondary
+				Column {
+					Row(
+						modifier = Modifier
+							.fillMaxWidth()
+							.padding(32.dp, 0.dp),
+						horizontalArrangement = Arrangement.SpaceBetween,
+						verticalAlignment = Alignment.CenterVertically
+					) {
+						Text(
+							text = "Reminder",
+							style = h2TextStyle,
+							color = Color.White
 						)
-					)
-				}
 
+						Switch(
+							checked = isTaskReminderOn,
+							onCheckedChange = { isTaskReminderOn = it },
+							colors = SwitchDefaults.colors(
+								checkedThumbColor = Green,
+								checkedTrackColor = MaterialTheme.colorScheme.secondary,
+								uncheckedTrackColor = MaterialTheme.colorScheme.secondary
+							)
+						)
+					}
+					Row(
+						modifier = Modifier
+							.fillMaxWidth()
+							.padding(32.dp, 0.dp),
+						horizontalArrangement = Arrangement.SpaceBetween,
+						verticalAlignment = Alignment.CenterVertically
+					) {
+						Text(
+							text = "Repeat Daily",
+							style = h2TextStyle,
+							color = Color.White
+						)
+
+						Switch(
+							checked = isTaskRepeated,
+							onCheckedChange = { isTaskRepeated = it },
+							colors = SwitchDefaults.colors(
+								checkedThumbColor = Green,
+								checkedTrackColor = MaterialTheme.colorScheme.secondary,
+								uncheckedTrackColor = MaterialTheme.colorScheme.secondary
+							)
+						)
+					}
+
+				}
 				PriorityComponent() {
 					taskPriority = it
 				}
@@ -289,7 +318,7 @@ fun AddTaskScreen(
 							startTime = taskStartTime,
 							endTime = taskEndTime,
 							reminder = isTaskReminderOn,
-							isRepeated = false,
+							isRepeated = isTaskRepeated,
 							date = LocalDate.now(),
 							priority = taskPriority.ordinal
 						)
@@ -329,7 +358,7 @@ fun AddTaskScreen(
 	}
 }
 
-@Preview
+@Preview()
 @Composable
 fun AddTaskScreenPreview() {
 	SnaptickTheme(darkTheme = true, dynamicColor = false) {
