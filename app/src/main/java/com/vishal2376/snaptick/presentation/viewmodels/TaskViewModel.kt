@@ -20,7 +20,6 @@ import com.vishal2376.snaptick.util.PreferenceManager
 import com.vishal2376.snaptick.util.SortTask
 import com.vishal2376.snaptick.util.WorkManagerHelper
 import com.vishal2376.snaptick.util.WorkManagerHelper.scheduleNotification
-import com.vishal2376.snaptick.util.getDateDifference
 import com.vishal2376.snaptick.util.openMail
 import com.vishal2376.snaptick.util.openUrl
 import com.vishal2376.snaptick.util.shareApp
@@ -210,6 +209,23 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 		}
 	}
 
+	private fun initRepeatTasks() {
+		viewModelScope.launch {
+			todayTaskList.collect() { taskList ->
+				taskList.forEach { task ->
+					if (task.isRepeated && task.date != LocalDate.now()) {
+						repository.updateTask(
+							task.copy(
+								isCompleted = false,
+								date = LocalDate.now()
+							)
+						)
+					}
+				}
+			}
+		}
+	}
+
 	fun loadAppState(context: Context) {
 		viewModelScope.launch {
 			PreferenceManager.loadPreference(context, Constants.THEME_KEY, defaultValue = 1)
@@ -225,37 +241,47 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 				}
 		}
 
+		val currentDate = LocalDate.now().toString()
 		viewModelScope.launch {
 			PreferenceManager.loadStringPreference(
 				context,
-				Constants.LAST_OPENED_KEY,
-				defaultValue = LocalDate.now().toString()
-			).collect { lastDate ->
-
-				if (lastDate != LocalDate.now().toString()) {
-					val day = getDateDifference(lastDate)
-					var newStreak = 0
-
-					if (day == 1) newStreak = appState.streak + 1
-					PreferenceManager.savePreferences(context, Constants.STREAK_KEY, newStreak)
-
+				Constants.LAST_OPENED_KEY
+			).collect { lastDateString ->
+				if (lastDateString == "") {
 					PreferenceManager.saveStringPreferences(
 						context,
 						Constants.LAST_OPENED_KEY,
 						LocalDate.now().toString()
 					)
+				} else {
+					val lastDate = LocalDate.parse(lastDateString)
+					val isToday = lastDate.isEqual(LocalDate.now())
+					val isYesterday = lastDate.isEqual(LocalDate.now().minusDays(1))
+
+					if (!isToday) {
+						initRepeatTasks()
+
+						val newStreak = if (isYesterday) appState.streak + 1 else 0
+						PreferenceManager.savePreferences(context, Constants.STREAK_KEY, newStreak)
+
+						PreferenceManager.saveStringPreferences(
+							context,
+							Constants.LAST_OPENED_KEY,
+							LocalDate.now().toString()
+						)
+					}
+
 				}
-
 			}
-		}
 
-		viewModelScope.launch {
-			PreferenceManager.loadPreference(
-				context,
-				Constants.SORT_TASK_KEY,
-				defaultValue = appState.sortBy.ordinal
-			).collect {
-				appState = appState.copy(sortBy = SortTask.entries[it])
+			viewModelScope.launch {
+				PreferenceManager.loadPreference(
+					context,
+					Constants.SORT_TASK_KEY,
+					defaultValue = appState.sortBy.ordinal
+				).collect {
+					appState = appState.copy(sortBy = SortTask.entries[it])
+				}
 			}
 		}
 
