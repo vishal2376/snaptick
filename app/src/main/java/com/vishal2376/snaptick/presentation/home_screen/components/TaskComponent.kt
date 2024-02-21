@@ -40,8 +40,7 @@ import com.vishal2376.snaptick.presentation.common.taskDescTextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.ui.theme.Green
 import com.vishal2376.snaptick.ui.theme.LightGray
-import com.vishal2376.snaptick.ui.theme.Red
-import com.vishal2376.snaptick.ui.theme.Yellow
+import com.vishal2376.snaptick.ui.theme.priorityColors
 import com.vishal2376.snaptick.util.DummyTasks
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -53,12 +52,6 @@ fun TaskComponent(
 	onPomodoro: (Int) -> Unit,
 	animDelay: Int = 100
 ) {
-
-	val priorityColors = listOf(
-		LightGray,
-		Yellow,
-		Red
-	)
 
 	val alphaAnimation = remember { Animatable(initialValue = 0f) }
 
