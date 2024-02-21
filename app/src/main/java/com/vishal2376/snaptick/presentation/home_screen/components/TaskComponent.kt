@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -163,6 +164,14 @@ fun TaskComponent(
 							if (task.reminder) {
 								Icon(
 									imageVector = Icons.Default.Notifications,
+									contentDescription = null,
+									modifier = Modifier.size(15.dp),
+									tint = LightGray
+								)
+							}
+							if (task.isRepeated) {
+								Icon(
+									imageVector = Icons.Default.Refresh,
 									contentDescription = null,
 									modifier = Modifier.size(15.dp),
 									tint = LightGray
