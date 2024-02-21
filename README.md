@@ -39,7 +39,7 @@ Snaptick is a free daily task planner app designed to help users increase produc
 - Import/Export Your Data `Coming Soon`
 
 
-## Screenshots
+## Screenshots ([All Designs](https://www.figma.com/file/fO6pafK7iAJMZDAtjOy1Mt/Snaptick-App-UI?type=design&node-id=0%3A1&mode=design&t=071Ijr8Yg44PVvmz-1))
 
 | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" width="200px"> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.png" width="200px"> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/3.png" width="200px"> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/4.png" width="200px"> |
 |---|---|---|---|
