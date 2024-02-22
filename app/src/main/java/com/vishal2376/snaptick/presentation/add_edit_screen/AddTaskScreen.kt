@@ -1,6 +1,7 @@
 package com.vishal2376.snaptick.presentation.add_edit_screen
 
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -54,6 +55,7 @@ import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.CustomDurationDialogComponent
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.DurationComponent
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.PriorityComponent
+import com.vishal2376.snaptick.presentation.add_edit_screen.components.WeekDaysComponent
 import com.vishal2376.snaptick.presentation.common.ShowTimePicker
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
@@ -294,6 +296,11 @@ fun AddTaskScreen(
 							)
 						)
 					}
+
+					AnimatedVisibility(visible = isTaskRepeated) {
+						WeekDaysComponent()
+					}
+
 
 				}
 				PriorityComponent() {
