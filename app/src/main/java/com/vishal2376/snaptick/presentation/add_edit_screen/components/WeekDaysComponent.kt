@@ -23,13 +23,17 @@ import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 
 @Composable
 fun WeekDaysComponent() {
-	val repeatedDays = listOf(0, 1, 0, 1, 0, 0, 1)
+	val defaultRepeatedDays = mutableListOf(0, 1, 0, 1, 0, 0, 1)
 	val weekDays = listOf("M", "T", "W", "T", "F", "S", "S")
 
-	Row(modifier = Modifier
-		.fillMaxWidth()
-		.padding(32.dp,8.dp),
-		horizontalArrangement = Arrangement.SpaceBetween) {
+	val repeatedDays = defaultRepeatedDays
+
+	Row(
+		modifier = Modifier
+			.fillMaxWidth()
+			.padding(32.dp, 8.dp),
+		horizontalArrangement = Arrangement.SpaceBetween
+	) {
 		weekDays.forEachIndexed { index, day ->
 			WeekDaysItemComponent(title = day, isSelected = (repeatedDays[index] == 1))
 		}
@@ -37,7 +41,7 @@ fun WeekDaysComponent() {
 }
 
 @Composable
-fun WeekDaysItemComponent(modifier: Modifier = Modifier, title: String, isSelected: Boolean) {
+fun WeekDaysItemComponent(title: String, isSelected: Boolean) {
 
 	var bgColor = MaterialTheme.colorScheme.primary
 	var textColor = Color.White
@@ -50,7 +54,7 @@ fun WeekDaysItemComponent(modifier: Modifier = Modifier, title: String, isSelect
 	}
 
 	Box(
-		modifier = modifier
+		modifier = Modifier
 			.background(bgColor, CircleShape)
 			.border(borderWidth, MaterialTheme.colorScheme.secondary, CircleShape)
 			.size(32.dp),
