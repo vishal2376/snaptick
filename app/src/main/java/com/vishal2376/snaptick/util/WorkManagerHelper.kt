@@ -24,7 +24,7 @@ object WorkManagerHelper {
 
 		cancelNotification(task.uuid)
 
-		if (task.isRepeated) {
+		if (task.isRepeat) {
 			val nextDelaySec = if (delaySec < 0) {
 				val today = LocalDateTime.now()
 				val nextDay = today.plusDays(1)

@@ -169,7 +169,7 @@ fun TaskComponent(
 									tint = LightGray
 								)
 							}
-							if (task.isRepeated) {
+							if (task.isRepeat) {
 								Icon(
 									imageVector = Icons.Default.Refresh,
 									contentDescription = null,

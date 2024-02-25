@@ -325,7 +325,9 @@ fun AddTaskScreen(
 							startTime = taskStartTime,
 							endTime = taskEndTime,
 							reminder = isTaskReminderOn,
-							isRepeated = isTaskRepeated,
+							isRepeat = isTaskRepeated,
+							repeatWeekdays = emptyList(),
+							pomodoroTimer = 0L,
 							date = LocalDate.now(),
 							priority = taskPriority.ordinal
 						)

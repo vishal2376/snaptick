@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "78e337ce0cb9093181635a2a81a8f6bb",
+    "identityHash": "64d60288e03170f0936cb69fb4bcd21c",
     "entities": [
       {
         "tableName": "task_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `uuid` TEXT NOT NULL, `title` TEXT NOT NULL, `isCompleted` INTEGER NOT NULL, `startTime` TEXT NOT NULL, `endTime` TEXT NOT NULL, `reminder` INTEGER NOT NULL, `isRepeated` INTEGER NOT NULL, `date` TEXT NOT NULL, `priority` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `uuid` TEXT NOT NULL, `title` TEXT NOT NULL, `isCompleted` INTEGER NOT NULL, `startTime` TEXT NOT NULL, `endTime` TEXT NOT NULL, `reminder` INTEGER NOT NULL, `isRepeat` INTEGER NOT NULL, `repeatWeekdays` TEXT NOT NULL, `pomodoroTimer` INTEGER NOT NULL, `date` TEXT NOT NULL, `priority` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -51,8 +51,20 @@
             "notNull": true
           },
           {
-            "fieldPath": "isRepeated",
-            "columnName": "isRepeated",
+            "fieldPath": "isRepeat",
+            "columnName": "isRepeat",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "repeatWeekdays",
+            "columnName": "repeatWeekdays",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pomodoroTimer",
+            "columnName": "pomodoroTimer",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -82,7 +94,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '78e337ce0cb9093181635a2a81a8f6bb')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '64d60288e03170f0936cb69fb4bcd21c')"
     ]
   }
 }

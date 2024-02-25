@@ -299,7 +299,7 @@ fun EditTaskScreen(
 						)
 
 						Switch(
-							checked = task.isRepeated,
+							checked = task.isRepeat,
 							onCheckedChange = {
 								onEvent(AddEditScreenEvent.OnUpdateIsRepeated(it))
 							},
