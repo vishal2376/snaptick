@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 import com.vishal2376.snaptick.domain.converters.LocalDateConverter
 import com.vishal2376.snaptick.domain.converters.LocalTimeConverter
 import com.vishal2376.snaptick.domain.converters.WeekdayConverter
-import com.vishal2376.snaptick.util.Weekday
+import com.vishal2376.snaptick.presentation.common.Weekday
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter

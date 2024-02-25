@@ -1,7 +1,7 @@
 package com.vishal2376.snaptick.presentation.main
 
+import com.vishal2376.snaptick.presentation.common.SortTask
 import com.vishal2376.snaptick.ui.theme.AppTheme
-import com.vishal2376.snaptick.util.SortTask
 
 data class MainState(
 	val buildVersion: String = "0.0",

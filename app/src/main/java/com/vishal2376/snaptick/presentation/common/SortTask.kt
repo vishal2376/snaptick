@@ -1,4 +1,4 @@
-package com.vishal2376.snaptick.util
+package com.vishal2376.snaptick.presentation.common
 
 enum class SortTask(val displayText: String) {
 	BY_PRIORITY_ASCENDING("Priority (Low to High)"),

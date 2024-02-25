@@ -1,7 +1,7 @@
 package com.vishal2376.snaptick.presentation.add_edit_screen
 
 import com.vishal2376.snaptick.domain.model.Task
-import com.vishal2376.snaptick.util.Priority
+import com.vishal2376.snaptick.presentation.common.Priority
 import java.time.LocalTime
 
 sealed class AddEditScreenEvent {
