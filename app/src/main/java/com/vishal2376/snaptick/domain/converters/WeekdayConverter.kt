@@ -3,7 +3,7 @@ package com.vishal2376.snaptick.domain.converters
 import androidx.room.TypeConverter
 import com.vishal2376.snaptick.presentation.common.Weekday
 
-class WeekdayConverter {
+object WeekdayConverter {
 	@TypeConverter
 	fun fromWeekdays(weekdays: List<Weekday>): String {
 		return weekdays.joinToString(",")
