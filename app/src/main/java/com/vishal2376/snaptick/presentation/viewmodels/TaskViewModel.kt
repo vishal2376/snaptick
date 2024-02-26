@@ -45,7 +45,7 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 			reminder = false,
 			isRepeated = false,
 			repeatWeekdays = "",
-			pomodoroTimer = 0L,
+			pomodoroTimer = -1,
 			date = LocalDate.now(),
 			priority = 0
 		)

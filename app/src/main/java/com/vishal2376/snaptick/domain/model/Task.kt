@@ -24,7 +24,7 @@ data class Task(
 	val reminder: Boolean = false,
 	val isRepeated: Boolean = false,
 	val repeatWeekdays: String = "",
-	val pomodoroTimer: Long = 0L,
+	val pomodoroTimer: Int = -1,
 	val date: LocalDate = LocalDate.now(),
 	val priority: Int = 0,
 ) {

@@ -23,7 +23,7 @@ object DummyTasks {
 				reminder = Random.nextBoolean(),
 				isRepeated = Random.nextBoolean(),
 				repeatWeekdays = "",
-				pomodoroTimer = 0L,
+				pomodoroTimer = -1,
 				priority = Random.nextInt(3),
 				date = LocalDate.now()
 			)
