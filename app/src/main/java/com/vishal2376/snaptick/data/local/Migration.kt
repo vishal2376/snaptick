@@ -5,11 +5,11 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 
 val MIGRATION_1_2 = object : Migration(1, 2) {
 	override fun migrate(db: SupportSQLiteDatabase) {
-		// Add new columns to the 'tasks' table
+		// Add new columns
 		db.execSQL("ALTER TABLE task_table ADD COLUMN repeatWeekdays TEXT NOT NULL DEFAULT ''")
 		db.execSQL("ALTER TABLE task_table ADD COLUMN pomodoroTimer INTEGER NOT NULL DEFAULT 0")
 
-		// Convert existing data for the new columns (you may need to customize this based on your data)
+		// Convert existing data for the new columns
 		db.execSQL("UPDATE task_table SET repeatWeekdays = ''")
 		db.execSQL("UPDATE task_table SET pomodoroTimer = 0")
 	}
