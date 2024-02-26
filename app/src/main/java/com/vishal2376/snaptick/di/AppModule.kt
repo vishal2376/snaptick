@@ -2,6 +2,7 @@ package com.vishal2376.snaptick.di
 
 import android.content.Context
 import androidx.room.Room
+import com.vishal2376.snaptick.data.local.RoomMigration
 import com.vishal2376.snaptick.data.local.TaskDao
 import com.vishal2376.snaptick.data.local.TaskDatabase
 import com.vishal2376.snaptick.data.repositories.TaskRepository
@@ -19,11 +20,9 @@ object AppModule {
 	@Provides
 	@Singleton
 	fun providesLocalDatabase(@ApplicationContext context: Context): TaskDatabase {
-		return Room.databaseBuilder(
-			context,
-			TaskDatabase::class.java,
-			"local_db"
-		).build()
+		return Room.databaseBuilder(context, TaskDatabase::class.java, "local_db")
+			.addMigrations(RoomMigration)
+			.build()
 	}
 
 	@Provides
