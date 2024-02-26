@@ -2,7 +2,7 @@ package com.vishal2376.snaptick.di
 
 import android.content.Context
 import androidx.room.Room
-import com.vishal2376.snaptick.data.local.RoomMigration
+import com.vishal2376.snaptick.data.local.MIGRATION_1_2
 import com.vishal2376.snaptick.data.local.TaskDao
 import com.vishal2376.snaptick.data.local.TaskDatabase
 import com.vishal2376.snaptick.data.repositories.TaskRepository
@@ -21,7 +21,8 @@ object AppModule {
 	@Singleton
 	fun providesLocalDatabase(@ApplicationContext context: Context): TaskDatabase {
 		return Room.databaseBuilder(context, TaskDatabase::class.java, "local_db")
-			.addMigrations(RoomMigration)
+			.fallbackToDestructiveMigration()
+			.addMigrations(MIGRATION_1_2)
 			.build()
 	}
 

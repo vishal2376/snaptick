@@ -43,8 +43,8 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 			startTime = LocalTime.now(),
 			endTime = LocalTime.now(),
 			reminder = false,
-			isRepeat = false,
-			repeatWeekdays = emptyList(),
+			isRepeated = false,
+			repeatWeekdays = "",
 			pomodoroTimer = 0L,
 			date = LocalDate.now(),
 			priority = 0
@@ -181,7 +181,7 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 			}
 
 			is AddEditScreenEvent.OnUpdateIsRepeated -> {
-				task = task.copy(isRepeat = event.isRepeated)
+				task = task.copy(isRepeated = event.isRepeated)
 			}
 
 			is AddEditScreenEvent.OnUpdateTask -> {
@@ -215,7 +215,7 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 		viewModelScope.launch {
 			todayTaskList.collect() { taskList ->
 				taskList.forEach { task ->
-					if (task.isRepeat && task.date != LocalDate.now()) {
+					if (task.isRepeated && task.date != LocalDate.now()) {
 						repository.updateTask(
 							task.copy(
 								isCompleted = false,

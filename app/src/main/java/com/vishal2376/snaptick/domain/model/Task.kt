@@ -5,8 +5,6 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.vishal2376.snaptick.domain.converters.LocalDateConverter
 import com.vishal2376.snaptick.domain.converters.LocalTimeConverter
-import com.vishal2376.snaptick.domain.converters.WeekdayConverter
-import com.vishal2376.snaptick.presentation.common.Weekday
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -14,8 +12,7 @@ import java.time.format.DateTimeFormatter
 @Entity(tableName = "task_table")
 @TypeConverters(
 	LocalTimeConverter::class,
-	LocalDateConverter::class,
-	WeekdayConverter::class
+	LocalDateConverter::class
 )
 data class Task(
 	@PrimaryKey(autoGenerate = true) val id: Int = 0,
@@ -25,8 +22,8 @@ data class Task(
 	val startTime: LocalTime = LocalTime.now(),
 	val endTime: LocalTime = LocalTime.now(),
 	val reminder: Boolean = false,
-	val isRepeat: Boolean = false,
-	val repeatWeekdays: List<Weekday>,
+	val isRepeated: Boolean = false,
+	val repeatWeekdays: String = "",
 	val pomodoroTimer: Long = 0L,
 	val date: LocalDate = LocalDate.now(),
 	val priority: Int = 0,

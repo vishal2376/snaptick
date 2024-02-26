@@ -21,8 +21,8 @@ object DummyTasks {
 				startTime = LocalTime.now(),
 				endTime = LocalTime.now().plusHours(Random.nextLong(1, 4)),
 				reminder = Random.nextBoolean(),
-				isRepeat = Random.nextBoolean(),
-				repeatWeekdays = emptyList(),
+				isRepeated = Random.nextBoolean(),
+				repeatWeekdays = "",
 				pomodoroTimer = 0L,
 				priority = Random.nextInt(3),
 				date = LocalDate.now()

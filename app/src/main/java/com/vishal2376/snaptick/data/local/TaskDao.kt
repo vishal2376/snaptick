@@ -29,7 +29,7 @@ interface TaskDao {
 	@Query("SELECT * FROM task_table WHERE date = :selectedDate")
 	fun getTasksByDate(selectedDate: String): Flow<List<Task>>
 
-	@Query("SELECT * FROM task_table WHERE date = :selectedDate OR isRepeat = 1")
+	@Query("SELECT * FROM task_table WHERE date = :selectedDate OR isRepeated = 1")
 	fun getTodayTasks(selectedDate: String): Flow<List<Task>>
 
 	@Query("DELETE FROM task_table")
