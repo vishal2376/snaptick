@@ -1,5 +1,6 @@
 package com.vishal2376.snaptick.presentation.add_edit_screen
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -52,6 +53,7 @@ import com.vishal2376.snaptick.presentation.add_edit_screen.components.ConfirmDe
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.CustomDurationDialogComponent
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.DurationComponent
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.PriorityComponent
+import com.vishal2376.snaptick.presentation.add_edit_screen.components.WeekDaysComponent
 import com.vishal2376.snaptick.presentation.common.Priority
 import com.vishal2376.snaptick.presentation.common.ShowTimePicker
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
@@ -293,7 +295,7 @@ fun EditTaskScreen(
 						verticalAlignment = Alignment.CenterVertically
 					) {
 						Text(
-							text = "Repeat Daily",
+							text = "Repeat",
 							style = h2TextStyle,
 							color = Color.White
 						)
@@ -308,6 +310,13 @@ fun EditTaskScreen(
 								checkedTrackColor = MaterialTheme.colorScheme.secondary,
 								uncheckedTrackColor = MaterialTheme.colorScheme.secondary
 							)
+						)
+					}
+
+					AnimatedVisibility(visible = task.isRepeated) {
+						WeekDaysComponent(
+							defaultRepeatedDays = task.getRepeatWeekList(),
+							onChange = { onEvent(AddEditScreenEvent.OnUpdateRepeatWeekDays(it)) }
 						)
 					}
 				}

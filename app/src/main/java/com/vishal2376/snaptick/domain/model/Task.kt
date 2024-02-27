@@ -28,7 +28,7 @@ data class Task(
 	val date: LocalDate = LocalDate.now(),
 	val priority: Int = 0,
 ) {
-	fun toRepeatWeekList(): List<Int> {
+	fun getRepeatWeekList(): List<Int> {
 		return repeatWeekdays.split(",").map { it.toInt() }
 	}
 

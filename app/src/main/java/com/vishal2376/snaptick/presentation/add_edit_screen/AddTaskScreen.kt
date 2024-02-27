@@ -282,7 +282,7 @@ fun AddTaskScreen(
 						verticalAlignment = Alignment.CenterVertically
 					) {
 						Text(
-							text = "Repeat Daily",
+							text = "Repeat",
 							style = h2TextStyle,
 							color = Color.White
 						)
@@ -300,7 +300,6 @@ fun AddTaskScreen(
 
 					AnimatedVisibility(visible = isTaskRepeated) {
 						WeekDaysComponent(
-							defaultRepeatedDays = listOf(),
 							onChange = { repeatedWeekDays = it }
 						)
 					}

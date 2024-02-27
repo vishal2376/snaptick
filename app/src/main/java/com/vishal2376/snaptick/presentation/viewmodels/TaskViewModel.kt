@@ -184,6 +184,10 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 				task = task.copy(isRepeated = event.isRepeated)
 			}
 
+			is AddEditScreenEvent.OnUpdateRepeatWeekDays -> {
+				task = task.copy(repeatWeekdays = event.weekDays)
+			}
+
 			is AddEditScreenEvent.OnUpdateTask -> {
 				viewModelScope.launch(Dispatchers.IO) {
 					repository.updateTask(task)

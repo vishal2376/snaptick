@@ -12,6 +12,7 @@ sealed class AddEditScreenEvent {
 	data class OnUpdateEndTime(val time: LocalTime) : AddEditScreenEvent()
 	data class OnUpdateReminder(val reminder: Boolean) : AddEditScreenEvent()
 	data class OnUpdateIsRepeated(val isRepeated: Boolean) : AddEditScreenEvent()
+	data class OnUpdateRepeatWeekDays(val weekDays: String) : AddEditScreenEvent()
 	data class OnUpdatePriority(val priority: Priority) : AddEditScreenEvent()
 	data object OnUpdateTask : AddEditScreenEvent()
 
