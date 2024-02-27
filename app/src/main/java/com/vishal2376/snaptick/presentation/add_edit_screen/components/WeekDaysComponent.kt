@@ -29,7 +29,7 @@ import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 
 @Composable
 fun WeekDaysComponent(
-	defaultRepeatedDays: List<Int>,
+	defaultRepeatedDays: List<Int> = listOf(0),
 	onChange: (String) -> Unit
 ) {
 	val weekDays = listOf("M", "T", "W", "T", "F", "S", "S")
@@ -49,7 +49,11 @@ fun WeekDaysComponent(
 				selectedDays = if (isChecked) {
 					selectedDays + index
 				} else {
-					selectedDays - index
+					if (selectedDays.size > 1) {
+						selectedDays - index
+					} else {
+						selectedDays
+					}
 				}
 				onChange(selectedDays.joinToString(separator = ","))
 			}
@@ -89,6 +93,6 @@ fun WeekDaysItemComponent(title: String, isSelected: Boolean, onChange: (Boolean
 @Composable
 fun WeekDaysComponentPreview() {
 	SnaptickTheme {
-		WeekDaysComponent(listOf(2,3), {})
+		WeekDaysComponent(listOf(2, 3), {})
 	}
 }
