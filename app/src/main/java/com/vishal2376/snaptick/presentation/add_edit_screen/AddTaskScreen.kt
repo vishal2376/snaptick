@@ -62,6 +62,7 @@ import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.presentation.main.MainState
+import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.ui.theme.Green
 import com.vishal2376.snaptick.ui.theme.Red
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
@@ -268,7 +269,7 @@ fun AddTaskScreen(
 							checked = isTaskReminderOn,
 							onCheckedChange = { isTaskReminderOn = it },
 							colors = SwitchDefaults.colors(
-								checkedThumbColor = Green,
+								checkedThumbColor = Blue,
 								checkedTrackColor = MaterialTheme.colorScheme.secondary,
 								uncheckedTrackColor = MaterialTheme.colorScheme.secondary
 							)
@@ -291,7 +292,7 @@ fun AddTaskScreen(
 							checked = isTaskRepeated,
 							onCheckedChange = { isTaskRepeated = it },
 							colors = SwitchDefaults.colors(
-								checkedThumbColor = Green,
+								checkedThumbColor = Blue,
 								checkedTrackColor = MaterialTheme.colorScheme.secondary,
 								uncheckedTrackColor = MaterialTheme.colorScheme.secondary
 							)
@@ -352,7 +353,7 @@ fun AddTaskScreen(
 						}
 					},
 					colors = ButtonDefaults.buttonColors(
-						containerColor = Green,
+						containerColor = Blue,
 						contentColor = Color.Black
 					),
 					shape = RoundedCornerShape(16.dp),
