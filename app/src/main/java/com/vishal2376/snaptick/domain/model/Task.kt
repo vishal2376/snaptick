@@ -28,6 +28,10 @@ data class Task(
 	val date: LocalDate = LocalDate.now(),
 	val priority: Int = 0,
 ) {
+	fun toRepeatWeekList(): List<Int> {
+		return repeatWeekdays.split(",").map { it.toInt() }
+	}
+
 	fun getFormattedTime(): String {
 		val dtf = DateTimeFormatter.ofPattern("hh:mm a")
 		val startTimeFormat = startTime.format(dtf)
