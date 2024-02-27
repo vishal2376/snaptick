@@ -30,7 +30,7 @@ import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 @Composable
 fun WeekDaysComponent(
 	defaultRepeatedDays: List<Int>,
-	onChange: (List<Int>) -> Unit
+	onChange: (String) -> Unit
 ) {
 	val weekDays = listOf("M", "T", "W", "T", "F", "S", "S")
 	var selectedDays by remember { mutableStateOf(defaultRepeatedDays) }
@@ -51,6 +51,7 @@ fun WeekDaysComponent(
 				} else {
 					selectedDays - index
 				}
+				onChange(selectedDays.joinToString(separator = ","))
 			}
 		}
 	}
