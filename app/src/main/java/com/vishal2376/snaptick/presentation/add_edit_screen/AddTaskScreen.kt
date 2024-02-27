@@ -85,6 +85,7 @@ fun AddTaskScreen(
 	var taskEndTime by remember { mutableStateOf(LocalTime.now().plusMinutes(5).plusHours(1)) }
 	var isTaskReminderOn by remember { mutableStateOf(true) }
 	var isTaskRepeated by remember { mutableStateOf(false) }
+	var repeatedWeekDays by remember { mutableStateOf("") }
 	var taskPriority by remember { mutableStateOf(Priority.LOW) }
 	val taskDuration by remember { mutableLongStateOf(60) }
 	var isTimeUpdated by remember { mutableStateOf(false) }
@@ -298,7 +299,10 @@ fun AddTaskScreen(
 					}
 
 					AnimatedVisibility(visible = isTaskRepeated) {
-						WeekDaysComponent()
+						WeekDaysComponent(
+							defaultRepeatedDays = listOf(),
+							onChange = { repeatedWeekDays = it }
+						)
 					}
 
 
@@ -326,7 +330,7 @@ fun AddTaskScreen(
 							endTime = taskEndTime,
 							reminder = isTaskReminderOn,
 							isRepeated = isTaskRepeated,
-							repeatWeekdays = "",
+							repeatWeekdays = repeatedWeekDays,
 							pomodoroTimer = -1,
 							date = LocalDate.now(),
 							priority = taskPriority.ordinal
