@@ -6,7 +6,7 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import com.vishal2376.snaptick.util.Constants
-import com.vishal2376.snaptick.worker.NotificationWorker
+import com.vishal2376.snaptick.worker.RepeatTaskWorker
 import dagger.hilt.android.HiltAndroidApp
 import org.acra.ACRA
 import org.acra.BuildConfig
@@ -60,7 +60,7 @@ class SnaptickApplication : Application() {
 		if (delay > 0) {
 			// repeat task request
 			val workRequest =
-				PeriodicWorkRequest.Builder(NotificationWorker::class.java, 1, TimeUnit.DAYS)
+				PeriodicWorkRequest.Builder(RepeatTaskWorker::class.java, 1, TimeUnit.DAYS)
 					.setInitialDelay(delay.toLong(), TimeUnit.SECONDS)
 					.build()
 
