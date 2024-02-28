@@ -15,5 +15,5 @@ object Constants {
 	const val STREAK_KEY = "streak_key"
 
 	// WORK MANAGER DATA KEYS
-	const val TASK = "task"
+	const val TASK_ID = "task_id"
 }

@@ -30,9 +30,12 @@ class TaskRepository(private val dao: TaskDao) {
 		return dao.getTasksByDate(selectedDate.toString())
 	}
 
-	//get today with old repeated tasks
 	fun getTodayTasks(): Flow<List<Task>> {
-		return dao.getTodayTasks(LocalDate.now().toString())
+		return dao.getTasksByDate(LocalDate.now().toString())
+	}
+
+	fun getRepeatedTasks(): Flow<List<Task>> {
+		return dao.getRepeatedTasks()
 	}
 
 	fun getAllTasks(): Flow<List<Task>> {
