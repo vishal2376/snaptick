@@ -2,7 +2,11 @@ package com.vishal2376.snaptick
 
 import android.app.Application
 import android.content.Context
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkManager
 import com.vishal2376.snaptick.util.Constants
+import com.vishal2376.snaptick.worker.NotificationWorker
 import dagger.hilt.android.HiltAndroidApp
 import org.acra.ACRA
 import org.acra.BuildConfig
@@ -10,6 +14,8 @@ import org.acra.config.CoreConfigurationBuilder
 import org.acra.config.DialogConfigurationBuilder
 import org.acra.config.MailSenderConfigurationBuilder
 import org.acra.data.StringFormat
+import java.time.LocalTime
+import java.util.concurrent.TimeUnit
 
 @HiltAndroidApp
 class SnaptickApplication : Application() {
@@ -37,5 +43,33 @@ class SnaptickApplication : Application() {
 						.build()
 				)
 		)
+	}
+
+	override fun onCreate() {
+		super.onCreate()
+
+		schedulePeriodicWork()
+	}
+
+	private fun schedulePeriodicWork() {
+		val maxTimeSec = LocalTime.MAX.toSecondOfDay()
+		val currentTimeSec = LocalTime.now().toSecondOfDay()
+
+		val delay = maxTimeSec - currentTimeSec
+
+		if (delay > 0) {
+			// repeat task request
+			val workRequest =
+				PeriodicWorkRequest.Builder(NotificationWorker::class.java, 1, TimeUnit.DAYS)
+					.setInitialDelay(delay.toLong(), TimeUnit.SECONDS)
+					.build()
+
+			WorkManager.getInstance(applicationContext)
+				.enqueueUniquePeriodicWork(
+					"Repeat-Tasks",
+					ExistingPeriodicWorkPolicy.KEEP,
+					workRequest
+				)
+		}
 	}
 }

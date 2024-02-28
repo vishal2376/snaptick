@@ -4,6 +4,8 @@ import android.content.Context
 import android.util.Log
 import androidx.room.Room
 import androidx.work.CoroutineWorker
+import androidx.work.Data
+import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
@@ -30,29 +32,45 @@ class RepeatTaskWorker(val context: Context, params: WorkerParameters) :
 				).build()
 
 				val repository = TaskRepository(db.taskDao())
-				
+
 				val repeatedTaskList = repository.getRepeatedTasks()
 				repeatedTaskList.collect { taskList ->
 					taskList.forEach { task ->
 						//repeat days of week
 						val repeatWeekDays = task.getRepeatWeekList()
 						if (task.reminder && repeatWeekDays.contains(dayOfWeek)) {
+							//insert task into database
+							val newTask = task.copy(
+								id = 0,
+								isCompleted = false,
+								date = LocalDate.now(),
+								pomodoroTimer = -1
+							)
+							repository.insertTask(newTask)
+
 							//calculate delay
 							val startTimeSec = task.startTime.toSecondOfDay()
 							val currentTimeSec = LocalTime.now().toSecondOfDay()
 							val delaySec = startTimeSec - currentTimeSec
 
 							if (delaySec > 0) {
-								// cancel old notification
-								WorkManager.getInstance(applicationContext)
-									.cancelAllWorkByTag(task.uuid)
+								val data = Data.Builder().putString(Constants.TASK_UUID, task.uuid)
+									.putString(Constants.TASK_TITLE, task.title)
+									.putString(Constants.TASK_TIME, task.getFormattedTime())
+									.build()
 
 								// new notification request
 								val workRequest = OneTimeWorkRequestBuilder<NotificationWorker>()
 									.setInitialDelay(delaySec.toLong(), TimeUnit.SECONDS)
+									.setInputData(data)
 									.addTag(task.uuid)
 									.build()
-								WorkManager.getInstance(applicationContext).enqueue(workRequest)
+								WorkManager.getInstance(context)
+									.enqueueUniqueWork(
+										task.uuid,
+										ExistingWorkPolicy.REPLACE,
+										workRequest
+									)
 							}
 						}
 					}
