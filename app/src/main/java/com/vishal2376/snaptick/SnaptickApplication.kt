@@ -48,28 +48,32 @@ class SnaptickApplication : Application() {
 	override fun onCreate() {
 		super.onCreate()
 
-		schedulePeriodicWork()
+		initWorker()
 	}
 
-	private fun schedulePeriodicWork() {
+	private fun initWorker() {
 		val maxTimeSec = LocalTime.MAX.toSecondOfDay()
 		val currentTimeSec = LocalTime.now().toSecondOfDay()
 
-		val delay = maxTimeSec - currentTimeSec
+		val delay = (maxTimeSec - currentTimeSec) + 30 // to execute after 12:00:30 AM
 
 		if (delay > 0) {
-			// repeat task request
-			val workRequest =
-				PeriodicWorkRequest.Builder(RepeatTaskWorker::class.java, 1, TimeUnit.DAYS)
-					.setInitialDelay(delay.toLong(), TimeUnit.SECONDS)
-					.build()
-
-			WorkManager.getInstance(applicationContext)
-				.enqueueUniquePeriodicWork(
-					"Repeat-Tasks",
-					ExistingPeriodicWorkPolicy.KEEP,
-					workRequest
-				)
+			startRepeatWorker(delay)
 		}
+	}
+
+	private fun startRepeatWorker(delay: Int) {
+		// repeat task request
+		val workRequest =
+			PeriodicWorkRequest.Builder(RepeatTaskWorker::class.java, 1, TimeUnit.DAYS)
+				.setInitialDelay(delay.toLong(), TimeUnit.SECONDS)
+				.build()
+
+		WorkManager.getInstance(applicationContext)
+			.enqueueUniquePeriodicWork(
+				"Repeat-Tasks",
+				ExistingPeriodicWorkPolicy.KEEP,
+				workRequest
+			)
 	}
 }
