@@ -21,64 +21,59 @@ class RepeatTaskWorker(val context: Context, params: WorkerParameters) :
 
 	override suspend fun doWork(): Result {
 		try {
-			val taskId = inputData.getInt(Constants.TASK_ID, -1)
 			val dayOfWeek = LocalDate.now().dayOfWeek.value - 1 // because mon-1,sun-7
 
-			if (taskId != -1) {
-				val db = Room.databaseBuilder(
-					applicationContext,
-					TaskDatabase::class.java,
-					"local_db"
-				).build()
+			val db = Room.databaseBuilder(
+				applicationContext,
+				TaskDatabase::class.java,
+				"local_db"
+			).build()
 
-				val repository = TaskRepository(db.taskDao())
+			val repository = TaskRepository(db.taskDao())
+			val taskList = repository.getLatestRepeatedTasks()
 
-				val repeatedTaskList = repository.getRepeatedTasks()
-				repeatedTaskList.collect { taskList ->
-					taskList.forEach { task ->
-						//repeat days of week
-						val repeatWeekDays = task.getRepeatWeekList()
-						if (task.reminder && repeatWeekDays.contains(dayOfWeek)) {
-							//insert task into database
-							val newTask = task.copy(
-								id = 0,
-								isCompleted = false,
-								date = LocalDate.now(),
-								pomodoroTimer = -1
+			taskList.forEach { task ->
+				//repeat days of week
+				val repeatWeekDays = task.getRepeatWeekList()
+				if (task.reminder && repeatWeekDays.contains(dayOfWeek)) {
+					//insert task into database
+					val newTask = task.copy(
+						id = 0,
+						isCompleted = false,
+						date = LocalDate.now(),
+						pomodoroTimer = -1
+					)
+					repository.insertTask(newTask)
+
+					//calculate delay
+					val startTimeSec = task.startTime.toSecondOfDay()
+					val currentTimeSec = LocalTime.now().toSecondOfDay()
+					val delaySec = startTimeSec - currentTimeSec
+
+					if (delaySec > 0) {
+						val data = Data.Builder().putString(Constants.TASK_UUID, task.uuid)
+							.putString(Constants.TASK_TITLE, task.title)
+							.putString(Constants.TASK_TIME, task.getFormattedTime())
+							.build()
+
+						// new notification request
+						val workRequest = OneTimeWorkRequestBuilder<NotificationWorker>()
+							.setInitialDelay(delaySec.toLong(), TimeUnit.SECONDS)
+							.setInputData(data)
+							.addTag(task.uuid)
+							.build()
+						WorkManager.getInstance(context)
+							.enqueueUniqueWork(
+								task.uuid,
+								ExistingWorkPolicy.REPLACE,
+								workRequest
 							)
-							repository.insertTask(newTask)
-
-							//calculate delay
-							val startTimeSec = task.startTime.toSecondOfDay()
-							val currentTimeSec = LocalTime.now().toSecondOfDay()
-							val delaySec = startTimeSec - currentTimeSec
-
-							if (delaySec > 0) {
-								val data = Data.Builder().putString(Constants.TASK_UUID, task.uuid)
-									.putString(Constants.TASK_TITLE, task.title)
-									.putString(Constants.TASK_TIME, task.getFormattedTime())
-									.build()
-
-								// new notification request
-								val workRequest = OneTimeWorkRequestBuilder<NotificationWorker>()
-									.setInitialDelay(delaySec.toLong(), TimeUnit.SECONDS)
-									.setInputData(data)
-									.addTag(task.uuid)
-									.build()
-								WorkManager.getInstance(context)
-									.enqueueUniqueWork(
-										task.uuid,
-										ExistingWorkPolicy.REPLACE,
-										workRequest
-									)
-							}
-						}
 					}
 				}
-
-				db.close()
-				return Result.success()
 			}
+
+			db.close()
+			return Result.success()
 		} catch (e: Exception) {
 			Log.e("@@@", "doWork: Error : ${e.message}")
 		}
