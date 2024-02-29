@@ -219,6 +219,9 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 	private fun scheduleNotification(task: Task) {
 		if (task.reminder && !task.isCompleted) {
 			
+			// cancel older notification
+			cancelNotification(task.uuid)
+
 			//calculate delay
 			val startTimeSec = task.startTime.toSecondOfDay()
 			val currentTimeSec = LocalTime.now().toSecondOfDay()
