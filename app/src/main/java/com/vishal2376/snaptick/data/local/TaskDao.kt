@@ -29,8 +29,8 @@ interface TaskDao {
 	@Query("SELECT * FROM task_table WHERE date = :selectedDate")
 	fun getTasksByDate(selectedDate: String): Flow<List<Task>>
 
-	@Query("SELECT * FROM task_table WHERE isRepeated = 1")
-	fun getRepeatedTasks(): Flow<List<Task>>
+	@Query("SELECT * FROM task_table WHERE isRepeated = 1 AND (uuid, date) IN (SELECT uuid, MAX(date) FROM task_table WHERE isRepeated = 1 AND date < :today GROUP BY uuid)")
+	fun getLatestRepeatedTasks(today: String): List<Task>
 
 	@Query("DELETE FROM task_table")
 	suspend fun deleteAllTasks()
