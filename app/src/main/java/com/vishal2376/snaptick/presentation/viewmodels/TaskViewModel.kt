@@ -6,29 +6,32 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.Data
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.data.repositories.TaskRepository
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.add_edit_screen.AddEditScreenEvent
+import com.vishal2376.snaptick.presentation.common.NavDrawerItem
+import com.vishal2376.snaptick.presentation.common.SortTask
 import com.vishal2376.snaptick.presentation.home_screen.HomeScreenEvent
 import com.vishal2376.snaptick.presentation.main.MainEvent
 import com.vishal2376.snaptick.presentation.main.MainState
 import com.vishal2376.snaptick.ui.theme.AppTheme
 import com.vishal2376.snaptick.util.Constants
-import com.vishal2376.snaptick.util.NavDrawerItem
 import com.vishal2376.snaptick.util.PreferenceManager
-import com.vishal2376.snaptick.util.SortTask
-import com.vishal2376.snaptick.util.WorkManagerHelper
-import com.vishal2376.snaptick.util.WorkManagerHelper.scheduleNotification
-import com.vishal2376.snaptick.util.getDateDifference
 import com.vishal2376.snaptick.util.openMail
 import com.vishal2376.snaptick.util.openUrl
 import com.vishal2376.snaptick.util.shareApp
+import com.vishal2376.snaptick.worker.NotificationWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalTime
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltViewModel
@@ -45,6 +48,8 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 			endTime = LocalTime.now(),
 			reminder = false,
 			isRepeated = false,
+			repeatWeekdays = "",
+			pomodoroTimer = -1,
 			date = LocalDate.now(),
 			priority = 0
 		)
@@ -120,11 +125,9 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 					task = task.copy(isCompleted = event.isCompleted)
 					repository.updateTask(task)
 					if (event.isCompleted) {
-						WorkManagerHelper.cancelNotification(task.uuid)
+						cancelNotification(task.uuid)
 					} else {
-						if (task.reminder && (task.startTime > LocalTime.now())) {
-							WorkManagerHelper.scheduleNotification(task)
-						}
+						scheduleNotification(task)
 					}
 				}
 			}
@@ -149,8 +152,6 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 			is AddEditScreenEvent.OnAddTaskClick -> {
 				viewModelScope.launch(Dispatchers.IO) {
 					repository.insertTask(event.task)
-				}
-				if (event.task.reminder) {
 					scheduleNotification(event.task)
 				}
 			}
@@ -183,19 +184,24 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 				task = task.copy(isRepeated = event.isRepeated)
 			}
 
+			is AddEditScreenEvent.OnUpdateRepeatWeekDays -> {
+				task = task.copy(repeatWeekdays = event.weekDays)
+			}
+
 			is AddEditScreenEvent.OnUpdateTask -> {
 				viewModelScope.launch(Dispatchers.IO) {
 					repository.updateTask(task)
 					if (task.reminder && !task.isCompleted) {
-						WorkManagerHelper.scheduleNotification(task)
+						scheduleNotification(task)
 					} else {
-						WorkManagerHelper.cancelNotification(task.uuid)
+						cancelNotification(task.uuid)
 					}
 				}
 			}
 
 		}
 	}
+
 
 	private fun getTaskById(id: Int) {
 		viewModelScope.launch(Dispatchers.IO) {
@@ -205,9 +211,46 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 
 	private fun deleteTask(task: Task) {
 		viewModelScope.launch(Dispatchers.IO) {
-			WorkManagerHelper.cancelNotification(task.uuid)
+			cancelNotification(task.uuid)
 			repository.deleteTask(task)
 		}
+	}
+
+	private fun scheduleNotification(task: Task) {
+		if (task.reminder && !task.isCompleted) {
+			
+			// cancel older notification
+			cancelNotification(task.uuid)
+
+			//calculate delay
+			val startTimeSec = task.startTime.toSecondOfDay()
+			val currentTimeSec = LocalTime.now().toSecondOfDay()
+			val delaySec = startTimeSec - currentTimeSec
+
+			if (delaySec > 0) {
+				val data = Data.Builder().putString(Constants.TASK_UUID, task.uuid)
+					.putString(Constants.TASK_TITLE, task.title)
+					.putString(Constants.TASK_TIME, task.getFormattedTime())
+					.build()
+
+				// new notification request
+				val workRequest = OneTimeWorkRequestBuilder<NotificationWorker>()
+					.setInitialDelay(delaySec.toLong(), TimeUnit.SECONDS)
+					.setInputData(data)
+					.addTag(task.uuid)
+					.build()
+				WorkManager.getInstance()
+					.enqueueUniqueWork(
+						task.uuid,
+						ExistingWorkPolicy.REPLACE,
+						workRequest
+					)
+			}
+		}
+	}
+
+	private fun cancelNotification(taskUUID: String) {
+		WorkManager.getInstance().cancelAllWorkByTag(taskUUID)
 	}
 
 	fun loadAppState(context: Context) {
@@ -225,37 +268,45 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 				}
 		}
 
+
 		viewModelScope.launch {
 			PreferenceManager.loadStringPreference(
 				context,
-				Constants.LAST_OPENED_KEY,
-				defaultValue = LocalDate.now().toString()
-			).collect { lastDate ->
-
-				if (lastDate != LocalDate.now().toString()) {
-					val day = getDateDifference(lastDate)
-					var newStreak = 0
-
-					if (day == 1) newStreak = appState.streak + 1
-					PreferenceManager.savePreferences(context, Constants.STREAK_KEY, newStreak)
-
+				Constants.LAST_OPENED_KEY
+			).collect { lastDateString ->
+				if (lastDateString == "") {
 					PreferenceManager.saveStringPreferences(
 						context,
 						Constants.LAST_OPENED_KEY,
 						LocalDate.now().toString()
 					)
+				} else {
+					val lastDate = LocalDate.parse(lastDateString)
+					val isToday = lastDate.isEqual(LocalDate.now())
+					val isYesterday = lastDate.isEqual(LocalDate.now().minusDays(1))
+
+					if (!isToday) {
+						val newStreak = if (isYesterday) appState.streak + 1 else 0
+						PreferenceManager.savePreferences(context, Constants.STREAK_KEY, newStreak)
+
+						PreferenceManager.saveStringPreferences(
+							context,
+							Constants.LAST_OPENED_KEY,
+							LocalDate.now().toString()
+						)
+					}
+
 				}
-
 			}
-		}
 
-		viewModelScope.launch {
-			PreferenceManager.loadPreference(
-				context,
-				Constants.SORT_TASK_KEY,
-				defaultValue = appState.sortBy.ordinal
-			).collect {
-				appState = appState.copy(sortBy = SortTask.entries[it])
+			viewModelScope.launch {
+				PreferenceManager.loadPreference(
+					context,
+					Constants.SORT_TASK_KEY,
+					defaultValue = appState.sortBy.ordinal
+				).collect {
+					appState = appState.copy(sortBy = SortTask.entries[it])
+				}
 			}
 		}
 

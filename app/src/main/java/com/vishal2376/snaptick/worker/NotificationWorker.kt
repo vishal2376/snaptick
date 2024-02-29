@@ -3,8 +3,6 @@ package com.vishal2376.snaptick.worker
 import android.content.Context
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.google.gson.Gson
-import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.util.Constants
 import com.vishal2376.snaptick.util.NotificationHelper
 
@@ -15,14 +13,15 @@ class NotificationWorker(val context: Context, params: WorkerParameters) :
 
 	override fun doWork(): Result {
 		//get required data
-		val taskString = inputData.getString(Constants.TASK)
-		val task = Gson().fromJson(taskString, Task::class.java)
+		val taskUUID = inputData.getString(Constants.TASK_UUID)
+		val taskTitle = inputData.getString(Constants.TASK_TITLE)
+		val taskTime = inputData.getString(Constants.TASK_TIME)
 
-		if (task != null) {
+		if (taskUUID != null && taskTime != null && taskTitle != null) {
 			notificationHelper.showNotification(
-				task.hashCode().hashCode(),
-				task.title,
-				task.getFormattedTime()
+				taskUUID.hashCode(),
+				taskTitle,
+				taskTime
 			)
 			return Result.success()
 		}

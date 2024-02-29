@@ -1,6 +1,7 @@
 package com.vishal2376.snaptick.presentation.add_edit_screen
 
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -54,15 +55,17 @@ import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.CustomDurationDialogComponent
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.DurationComponent
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.PriorityComponent
+import com.vishal2376.snaptick.presentation.add_edit_screen.components.WeekDaysComponent
+import com.vishal2376.snaptick.presentation.common.Priority
 import com.vishal2376.snaptick.presentation.common.ShowTimePicker
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.presentation.main.MainState
+import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.ui.theme.Green
 import com.vishal2376.snaptick.ui.theme.Red
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
-import com.vishal2376.snaptick.util.Priority
 import com.vishal2376.snaptick.util.checkValidTask
 import com.vishal2376.snaptick.util.getFormattedDuration
 import kotlinx.coroutines.job
@@ -83,6 +86,7 @@ fun AddTaskScreen(
 	var taskEndTime by remember { mutableStateOf(LocalTime.now().plusMinutes(5).plusHours(1)) }
 	var isTaskReminderOn by remember { mutableStateOf(true) }
 	var isTaskRepeated by remember { mutableStateOf(false) }
+	var repeatedWeekDays by remember { mutableStateOf("") }
 	var taskPriority by remember { mutableStateOf(Priority.LOW) }
 	val taskDuration by remember { mutableLongStateOf(60) }
 	var isTimeUpdated by remember { mutableStateOf(false) }
@@ -265,7 +269,7 @@ fun AddTaskScreen(
 							checked = isTaskReminderOn,
 							onCheckedChange = { isTaskReminderOn = it },
 							colors = SwitchDefaults.colors(
-								checkedThumbColor = Green,
+								checkedThumbColor = Blue,
 								checkedTrackColor = MaterialTheme.colorScheme.secondary,
 								uncheckedTrackColor = MaterialTheme.colorScheme.secondary
 							)
@@ -279,7 +283,7 @@ fun AddTaskScreen(
 						verticalAlignment = Alignment.CenterVertically
 					) {
 						Text(
-							text = "Repeat Daily",
+							text = "Repeat",
 							style = h2TextStyle,
 							color = Color.White
 						)
@@ -288,12 +292,19 @@ fun AddTaskScreen(
 							checked = isTaskRepeated,
 							onCheckedChange = { isTaskRepeated = it },
 							colors = SwitchDefaults.colors(
-								checkedThumbColor = Green,
+								checkedThumbColor = Blue,
 								checkedTrackColor = MaterialTheme.colorScheme.secondary,
 								uncheckedTrackColor = MaterialTheme.colorScheme.secondary
 							)
 						)
 					}
+
+					AnimatedVisibility(visible = isTaskRepeated) {
+						WeekDaysComponent(
+							onChange = { repeatedWeekDays = it }
+						)
+					}
+
 
 				}
 				PriorityComponent() {
@@ -319,6 +330,8 @@ fun AddTaskScreen(
 							endTime = taskEndTime,
 							reminder = isTaskReminderOn,
 							isRepeated = isTaskRepeated,
+							repeatWeekdays = repeatedWeekDays,
+							pomodoroTimer = -1,
 							date = LocalDate.now(),
 							priority = taskPriority.ordinal
 						)
@@ -340,7 +353,7 @@ fun AddTaskScreen(
 						}
 					},
 					colors = ButtonDefaults.buttonColors(
-						containerColor = Green,
+						containerColor = Blue,
 						contentColor = Color.Black
 					),
 					shape = RoundedCornerShape(16.dp),

@@ -1,12 +1,12 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 1,
-    "identityHash": "64d60288e03170f0936cb69fb4bcd21c",
+    "version": 2,
+    "identityHash": "69357131b76497f78d56422dbaf1b9b4",
     "entities": [
       {
         "tableName": "task_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `uuid` TEXT NOT NULL, `title` TEXT NOT NULL, `isCompleted` INTEGER NOT NULL, `startTime` TEXT NOT NULL, `endTime` TEXT NOT NULL, `reminder` INTEGER NOT NULL, `isRepeat` INTEGER NOT NULL, `repeatWeekdays` TEXT NOT NULL, `pomodoroTimer` INTEGER NOT NULL, `date` TEXT NOT NULL, `priority` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `uuid` TEXT NOT NULL, `title` TEXT NOT NULL, `isCompleted` INTEGER NOT NULL, `startTime` TEXT NOT NULL, `endTime` TEXT NOT NULL, `reminder` INTEGER NOT NULL, `isRepeated` INTEGER NOT NULL, `repeatWeekdays` TEXT NOT NULL, `pomodoroTimer` INTEGER NOT NULL, `date` TEXT NOT NULL, `priority` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -51,8 +51,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "isRepeat",
-            "columnName": "isRepeat",
+            "fieldPath": "isRepeated",
+            "columnName": "isRepeated",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -94,7 +94,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '64d60288e03170f0936cb69fb4bcd21c')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '69357131b76497f78d56422dbaf1b9b4')"
     ]
   }
 }

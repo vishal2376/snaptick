@@ -21,6 +21,7 @@ class NotificationHelper(private val context: Context) {
 			.setContentTitle(taskTitle)
 			.setSmallIcon(R.drawable.ic_clock)
 			.setStyle(NotificationCompat.BigTextStyle().bigText(taskTime))
+			.setDefaults(NotificationCompat.DEFAULT_ALL)
 
 		notificationManager.notify(taskId, notificationBuilder.build())
 	}

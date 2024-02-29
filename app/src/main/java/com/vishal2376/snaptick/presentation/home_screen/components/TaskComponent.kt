@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -40,8 +41,7 @@ import com.vishal2376.snaptick.presentation.common.taskDescTextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.ui.theme.Green
 import com.vishal2376.snaptick.ui.theme.LightGray
-import com.vishal2376.snaptick.ui.theme.Red
-import com.vishal2376.snaptick.ui.theme.Yellow
+import com.vishal2376.snaptick.ui.theme.priorityColors
 import com.vishal2376.snaptick.util.DummyTasks
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -53,12 +53,6 @@ fun TaskComponent(
 	onPomodoro: (Int) -> Unit,
 	animDelay: Int = 100
 ) {
-
-	val priorityColors = listOf(
-		LightGray,
-		Yellow,
-		Red
-	)
 
 	val alphaAnimation = remember { Animatable(initialValue = 0f) }
 
@@ -170,6 +164,14 @@ fun TaskComponent(
 							if (task.reminder) {
 								Icon(
 									imageVector = Icons.Default.Notifications,
+									contentDescription = null,
+									modifier = Modifier.size(15.dp),
+									tint = LightGray
+								)
+							}
+							if (task.isRepeated) {
+								Icon(
+									imageVector = Icons.Default.Refresh,
 									contentDescription = null,
 									modifier = Modifier.size(15.dp),
 									tint = LightGray

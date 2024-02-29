@@ -17,15 +17,21 @@ import java.time.format.DateTimeFormatter
 data class Task(
 	@PrimaryKey(autoGenerate = true) val id: Int = 0,
 	val uuid: String,
-	val title: String,
-	val isCompleted: Boolean,
-	val startTime: LocalTime,
-	val endTime: LocalTime,
-	val reminder: Boolean,
+	val title: String = "",
+	val isCompleted: Boolean = false,
+	val startTime: LocalTime = LocalTime.now(),
+	val endTime: LocalTime = LocalTime.now(),
+	val reminder: Boolean = false,
 	val isRepeated: Boolean = false,
+	val repeatWeekdays: String = "",
+	val pomodoroTimer: Int = -1,
 	val date: LocalDate = LocalDate.now(),
 	val priority: Int = 0,
 ) {
+	fun getRepeatWeekList(): List<Int> {
+		return repeatWeekdays.split(",").map { it.toInt() }
+	}
+
 	fun getFormattedTime(): String {
 		val dtf = DateTimeFormatter.ofPattern("hh:mm a")
 		val startTimeFormat = startTime.format(dtf)

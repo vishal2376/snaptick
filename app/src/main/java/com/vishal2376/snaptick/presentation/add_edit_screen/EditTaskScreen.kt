@@ -1,5 +1,6 @@
 package com.vishal2376.snaptick.presentation.add_edit_screen
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -52,16 +53,18 @@ import com.vishal2376.snaptick.presentation.add_edit_screen.components.ConfirmDe
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.CustomDurationDialogComponent
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.DurationComponent
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.PriorityComponent
+import com.vishal2376.snaptick.presentation.add_edit_screen.components.WeekDaysComponent
+import com.vishal2376.snaptick.presentation.common.Priority
 import com.vishal2376.snaptick.presentation.common.ShowTimePicker
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.presentation.main.MainState
+import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.ui.theme.Green
 import com.vishal2376.snaptick.ui.theme.Red
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.DummyTasks
-import com.vishal2376.snaptick.util.Priority
 import com.vishal2376.snaptick.util.checkValidTask
 import com.vishal2376.snaptick.util.showToast
 
@@ -278,7 +281,7 @@ fun EditTaskScreen(
 								onEvent(AddEditScreenEvent.OnUpdateReminder(it))
 							},
 							colors = SwitchDefaults.colors(
-								checkedThumbColor = Green,
+								checkedThumbColor = Blue,
 								checkedTrackColor = MaterialTheme.colorScheme.secondary,
 								uncheckedTrackColor = MaterialTheme.colorScheme.secondary
 							)
@@ -293,7 +296,7 @@ fun EditTaskScreen(
 						verticalAlignment = Alignment.CenterVertically
 					) {
 						Text(
-							text = "Repeat Daily",
+							text = "Repeat",
 							style = h2TextStyle,
 							color = Color.White
 						)
@@ -304,10 +307,17 @@ fun EditTaskScreen(
 								onEvent(AddEditScreenEvent.OnUpdateIsRepeated(it))
 							},
 							colors = SwitchDefaults.colors(
-								checkedThumbColor = Green,
+								checkedThumbColor = Blue,
 								checkedTrackColor = MaterialTheme.colorScheme.secondary,
 								uncheckedTrackColor = MaterialTheme.colorScheme.secondary
 							)
+						)
+					}
+
+					AnimatedVisibility(visible = task.isRepeated) {
+						WeekDaysComponent(
+							defaultRepeatedDays = task.getRepeatWeekList(),
+							onChange = { onEvent(AddEditScreenEvent.OnUpdateRepeatWeekDays(it)) }
 						)
 					}
 				}
@@ -341,7 +351,7 @@ fun EditTaskScreen(
 						}
 					},
 					colors = ButtonDefaults.buttonColors(
-						containerColor = Green,
+						containerColor = Blue,
 						contentColor = Color.Black
 					),
 					shape = RoundedCornerShape(16.dp),

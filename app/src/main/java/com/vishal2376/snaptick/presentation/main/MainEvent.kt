@@ -1,8 +1,8 @@
 package com.vishal2376.snaptick.presentation.main
 
 import android.content.Context
-import com.vishal2376.snaptick.util.NavDrawerItem
-import com.vishal2376.snaptick.util.SortTask
+import com.vishal2376.snaptick.presentation.common.NavDrawerItem
+import com.vishal2376.snaptick.presentation.common.SortTask
 
 sealed class MainEvent {
 	data class ToggleAmoledTheme(val isEnabled: Boolean, val context: Context) : MainEvent()
