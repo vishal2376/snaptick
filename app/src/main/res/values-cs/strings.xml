@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Připnout</string>
+    <string name="today_tasks">Dnešní úkoly</string>
+    <string name="what_would_you_like_to_do">Co chcete udělat?</string>
+    <string name="edit_task">Upravit úkol</string>
+    <string name="add_task">Přidat úkol</string>
+    <string name="update_task">Aktualizovat úkol</string>
+    <string name="select">Vybrat</string>
+    <string name="completed">Dokončeno</string>
+    <string name="dialog_text">Omlouváme se, došlo k neočekávané chybě.\n\nChcete odeslat zprávu o chybě vývojáři?</string>
+    <string name="dialog_title">Hlášení o selhání</string>
+    <string name="dialog_positive">Poslat</string>
+    <string name="dialog_negative">Zrušit</string>
+    <string name="report_bug">Nahlásit chybu</string>
+    <string name="suggestions">Návrhy</string>
+    <string name="tag_line"></string>
+    <string name="buildVersion">v%1$s</string>
+    <string name="delete_task">Smazat úkol?</string>
+    <string name="cancel">Zrušit</string>
+    <string name="delete">Vymazat</string>
+    <string name="custom_duration">Vlastní doba trvání</string>
+    <string name="done">Hotovo</string>
+    <string name="repeat">Opakovat</string>
+    <string name="start_time">Čas zahájení</string>
+    <string name="end_time">Čas ukončení</string>
+    <string name="duration">Doba trvání</string>
+    <string name="reminder">Připomenutí</string>
+    <string name="custom">Vlastní</string>
+    <string name="completed_tasks">Dokončené úkoly</string>
+    <string name="analysis">Analýza</string>
+    <string name="free_time">Volný čas</string>
+    <string name="no_tasks">Žádné úkoly</string>
+    <string name="amoled_theme">Amoled téma</string>
+    <string name="sort_tasks_by">Seřadit úkoly podle</string>
+</resources>

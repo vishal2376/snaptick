@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Instantané</string>
+    <string name="today_tasks">Tâches d\'aujourd\'hui</string>
+    <string name="what_would_you_like_to_do">Que voulez-vous faire ?</string>
+    <string name="edit_task">Modifier la tâche</string>
+    <string name="add_task">Ajouter une tâche</string>
+    <string name="update_task">Tâche de mise à jour</string>
+    <string name="select">Sélectionner</string>
+    <string name="completed">Terminé</string>
+    <string name="dialog_text">Désolé, une erreur inattendue s\'est produite.\n\nVoulez-vous envoyer un rapport de plantage au développeur ?</string>
+    <string name="dialog_title">Rapport d\'erreur</string>
+    <string name="dialog_positive">Envoyer</string>
+    <string name="dialog_negative">Abandonner</string>
+    <string name="report_bug">Signaler un bug</string>
+    <string name="suggestions">Suggestions</string>
+    <string name="tag_line"></string>
+    <string name="buildVersion">v%1$s</string>
+    <string name="delete_task">Supprimer la tâche ?</string>
+    <string name="cancel">Abandonner</string>
+    <string name="delete">Supprimez</string>
+    <string name="custom_duration">Durée personnalisée</string>
+    <string name="done">Fait</string>
+    <string name="repeat">Répéter</string>
+    <string name="start_time">Heure de début</string>
+    <string name="end_time">Heure de fin</string>
+    <string name="duration">Durée</string>
+    <string name="reminder">Rappel</string>
+    <string name="custom">Personnalisé</string>
+    <string name="completed_tasks">Tâches terminées</string>
+    <string name="analysis">Analyse</string>
+    <string name="free_time">Temps libre</string>
+    <string name="no_tasks">Aucune tâche</string>
+    <string name="amoled_theme">Thème Amoled</string>
+    <string name="sort_tasks_by">Trier les tâches par</string>
+</resources>

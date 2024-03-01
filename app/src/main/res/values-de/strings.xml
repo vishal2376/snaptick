@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Snaptick</string>
+    <string name="today_tasks">Heutige Aufgaben</string>
+    <string name="what_would_you_like_to_do">Was möchten Sie tun ?</string>
+    <string name="edit_task">Aufgabe bearbeiten</string>
+    <string name="add_task">Neue Aufgabe</string>
+    <string name="update_task">Aufgabe aktualisieren</string>
+    <string name="select">Auswählen</string>
+    <string name="completed">Abgeschlossen</string>
+    <string name="dialog_text">Leider ist ein unerwarteter Fehler aufgetreten.\n\nMöchten Sie einen Absturzbericht an den Entwickler senden?</string>
+    <string name="dialog_title">Absturzbericht</string>
+    <string name="dialog_positive">Senden</string>
+    <string name="dialog_negative">Abbrechen</string>
+    <string name="report_bug">Fehler melden</string>
+    <string name="suggestions">Vorschläge</string>
+    <string name="tag_line"></string>
+    <string name="buildVersion">v%1$s</string>
+    <string name="delete_task">Aufgabe löschen?</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="delete">Löschen</string>
+    <string name="custom_duration">Eigene Dauer</string>
+    <string name="done">Fertig</string>
+    <string name="repeat">Wiederholen</string>
+    <string name="start_time">Startzeit</string>
+    <string name="end_time">Endzeit</string>
+    <string name="duration">Dauer</string>
+    <string name="reminder">Erinnerung</string>
+    <string name="custom">Eigene</string>
+    <string name="completed_tasks">Erledigte Aufgaben</string>
+    <string name="analysis">Analyse</string>
+    <string name="free_time">Freizeit</string>
+    <string name="no_tasks">Keine Aufgaben</string>
+    <string name="amoled_theme">Aufgepeitschtes Thema</string>
+    <string name="sort_tasks_by">Aufgaben sortieren nach</string>
+</resources>
