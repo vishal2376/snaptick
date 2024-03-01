@@ -56,7 +56,7 @@ fun SortTaskDialogComponent(
 					top = 24.dp,
 					bottom = 16.dp
 				),
-				text = "Sort Tasks by",
+				text = stringResource(R.string.sort_tasks_by),
 				style = h2TextStyle
 			)
 

@@ -26,8 +26,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
@@ -63,7 +65,7 @@ fun FreeTimeScreen(
 			),
 			title = {
 				Text(
-					text = "Analysis",
+					text = stringResource(R.string.analysis),
 					style = h1TextStyle
 				)
 			},
@@ -101,7 +103,7 @@ fun FreeTimeScreen(
 
 				Column(horizontalAlignment = Alignment.CenterHorizontally) {
 					Text(
-						text = "Free Time",
+						text = stringResource(R.string.free_time),
 						color = Color.White,
 						style = h2TextStyle
 					)

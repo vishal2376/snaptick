@@ -15,4 +15,21 @@
     <string name="suggestions">Suggestions</string>
     <string name="tag_line" />
     <string name="buildVersion">v%1$s</string>
+    <string name="delete_task">Delete Task ?</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="custom_duration">Custom Duration</string>
+    <string name="done">Done</string>
+    <string name="repeat">Repeat</string>
+    <string name="start_time">Start Time</string>
+    <string name="end_time">End Time</string>
+    <string name="duration">Duration</string>
+    <string name="reminder">Reminder</string>
+    <string name="custom">Custom</string>
+    <string name="completed_tasks">Completed Tasks</string>
+    <string name="analysis">Analysis</string>
+    <string name="free_time">Free Time</string>
+    <string name="no_tasks">No Tasks</string>
+    <string name="amoled_theme">Amoled Theme</string>
+    <string name="sort_tasks_by">Sort Tasks by</string>
 </resources>

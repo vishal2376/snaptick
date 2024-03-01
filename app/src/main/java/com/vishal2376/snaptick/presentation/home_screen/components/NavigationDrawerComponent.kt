@@ -86,7 +86,7 @@ fun NavigationDrawerComponent(
 			horizontalArrangement = Arrangement.spacedBy(16.dp)
 		) {
 			Text(
-				text = "Amoled Theme",
+				text = stringResource(R.string.amoled_theme),
 				style = h3TextStyle,
 				color = Color.White
 			)

@@ -191,7 +191,7 @@ fun EditTaskScreen(
 				) {
 					Column(horizontalAlignment = Alignment.CenterHorizontally) {
 						Text(
-							text = "Start Time",
+							text = stringResource(R.string.start_time),
 							style = taskTextStyle,
 							color = Green
 						)
@@ -205,7 +205,7 @@ fun EditTaskScreen(
 					}
 					Column(horizontalAlignment = Alignment.CenterHorizontally) {
 						Text(
-							text = "End Time",
+							text = stringResource(R.string.end_time),
 							style = taskTextStyle,
 							color = Red
 						)
@@ -227,7 +227,7 @@ fun EditTaskScreen(
 					horizontalArrangement = Arrangement.SpaceBetween
 				) {
 					Text(
-						text = "Duration",
+						text = stringResource(R.string.start_time),
 						style = h2TextStyle,
 						color = Color.White
 					)
@@ -270,7 +270,7 @@ fun EditTaskScreen(
 						verticalAlignment = Alignment.CenterVertically
 					) {
 						Text(
-							text = "Reminder",
+							text = stringResource(R.string.reminder),
 							style = h2TextStyle,
 							color = Color.White
 						)
@@ -296,7 +296,7 @@ fun EditTaskScreen(
 						verticalAlignment = Alignment.CenterVertically
 					) {
 						Text(
-							text = "Repeat",
+							text = stringResource(R.string.repeat),
 							style = h2TextStyle,
 							color = Color.White
 						)

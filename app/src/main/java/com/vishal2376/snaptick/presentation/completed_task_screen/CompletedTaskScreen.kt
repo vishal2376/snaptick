@@ -22,8 +22,10 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.home_screen.HomeScreenEvent
@@ -55,7 +57,7 @@ fun CompletedTaskScreen(
 			),
 			title = {
 				Text(
-					text = "Completed Tasks",
+					text = stringResource(R.string.completed_tasks),
 					style = h1TextStyle
 				)
 			},

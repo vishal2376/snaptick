@@ -15,10 +15,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.commandiron.wheel_picker_compose.WheelTimePicker
+import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.presentation.common.durationTextStyle
 import com.vishal2376.snaptick.presentation.common.h3TextStyle
 import com.vishal2376.snaptick.ui.theme.Blue
@@ -57,7 +59,7 @@ fun CustomDurationDialogComponent(
 				verticalArrangement = Arrangement.spacedBy(24.dp)
 			) {
 				Text(
-					text = "Custom Duration",
+					text = stringResource(R.string.custom_duration),
 					color = Color.White,
 					style = durationTextStyle
 				)
@@ -74,7 +76,7 @@ fun CustomDurationDialogComponent(
 							onClose()
 						}
 						.align(Alignment.End),
-					text = "Done",
+					text = stringResource(R.string.done),
 					style = h3TextStyle,
 					color = Blue
 				)
