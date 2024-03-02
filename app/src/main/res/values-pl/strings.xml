@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Snaptick</string>
+    <string name="today_tasks">Dzisiaj Zadania</string>
+    <string name="what_would_you_like_to_do">Co chcesz zrobić?</string>
+    <string name="edit_task">Edytuj zadanie</string>
+    <string name="add_task">Dodaj zadanie</string>
+    <string name="update_task">Aktualizuj zadanie</string>
+    <string name="select">Wybierz</string>
+    <string name="completed">Zakończone</string>
+    <string name="dialog_text">Przepraszamy, wystąpił nieoczekiwany błąd.\n\nCzy chcesz wysłać raport o awarii do dewelopera?</string>
+    <string name="dialog_title">Raport awarii</string>
+    <string name="dialog_positive">Wyślij</string>
+    <string name="dialog_negative">Anuluj</string>
+    <string name="report_bug">Zgłoś błąd</string>
+    <string name="suggestions">Sugestie</string>
+    <string name="tag_line"></string>
+    <string name="buildVersion">v%1$s</string>
+    <string name="delete_task">Usunąć zadanie?</string>
+    <string name="cancel">Anuluj</string>
+    <string name="delete">Usuń</string>
+    <string name="custom_duration">Niestandardowy czas trwania</string>
+    <string name="done">Gotowe</string>
+    <string name="repeat">Powtórz</string>
+    <string name="start_time">Czas rozpoczęcia</string>
+    <string name="end_time">Czas zakończenia</string>
+    <string name="duration">Czas trwania</string>
+    <string name="reminder">Przypomnienie</string>
+    <string name="custom">Własny</string>
+    <string name="completed_tasks">Zakończone zadania</string>
+    <string name="analysis">Analiza</string>
+    <string name="free_time">Wolny czas</string>
+    <string name="no_tasks">Brak zadań</string>
+    <string name="amoled_theme">Szablon Amoled</string>
+    <string name="sort_tasks_by">Sortuj zadania według</string>
+</resources>
