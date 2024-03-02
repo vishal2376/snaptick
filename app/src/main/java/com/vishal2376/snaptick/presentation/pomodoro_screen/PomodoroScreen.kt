@@ -133,7 +133,6 @@ fun PomodoroScreen(
 
 	Scaffold(topBar = {
 		TopAppBar(
-			modifier = Modifier.padding(8.dp),
 			colors = TopAppBarDefaults.topAppBarColors(
 				containerColor = MaterialTheme.colorScheme.background,
 			),

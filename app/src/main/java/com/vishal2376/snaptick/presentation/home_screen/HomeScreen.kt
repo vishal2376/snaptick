@@ -149,7 +149,7 @@ fun HomeScreen(
 			}
 		}) {
 		Scaffold(topBar = {
-			TopAppBar(modifier = Modifier.padding(end = 16.dp),
+			TopAppBar(
 				colors = TopAppBarDefaults.topAppBarColors(
 					containerColor = Color.Transparent
 				),

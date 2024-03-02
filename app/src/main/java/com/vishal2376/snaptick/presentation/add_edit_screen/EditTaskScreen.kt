@@ -87,7 +87,7 @@ fun EditTaskScreen(
 	var showDialogCustomDuration by remember { mutableStateOf(false) }
 
 	Scaffold(topBar = {
-		TopAppBar(modifier = Modifier.padding(8.dp),
+		TopAppBar(
 			colors = TopAppBarDefaults.topAppBarColors(
 				containerColor = MaterialTheme.colorScheme.background,
 			),
