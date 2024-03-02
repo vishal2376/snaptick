@@ -33,4 +33,5 @@
     <string name="no_tasks">Nessuna Attività</string>
     <string name="amoled_theme">Tema Amolato</string>
     <string name="sort_tasks_by">Ordina attività per</string>
+    <string name="settings">Settings</string>
 </resources>
