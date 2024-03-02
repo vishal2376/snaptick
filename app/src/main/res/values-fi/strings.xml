@@ -33,4 +33,5 @@
     <string name="no_tasks">Ei Tehtäviä</string>
     <string name="amoled_theme">Muutettu Teema</string>
     <string name="sort_tasks_by">Järjestä tehtävät</string>
+    <string name="settings">Settings</string>
 </resources>
