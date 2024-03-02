@@ -32,4 +32,5 @@
     <string name="no_tasks">No Tasks</string>
     <string name="amoled_theme">Amoled Theme</string>
     <string name="sort_tasks_by">Sort Tasks by</string>
+    <string name="settings">Settings</string>
 </resources>
