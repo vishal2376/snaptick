@@ -33,4 +33,5 @@
     <string name="no_tasks">Ingen Opgaver</string>
     <string name="amoled_theme">Amoled Tema</string>
     <string name="sort_tasks_by">Sorter opgaver efter</string>
+    <string name="settings">Settings</string>
 </resources>
