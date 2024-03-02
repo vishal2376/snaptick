@@ -33,4 +33,5 @@
     <string name="no_tasks">Brak zadań</string>
     <string name="amoled_theme">Szablon Amoled</string>
     <string name="sort_tasks_by">Sortuj zadania według</string>
+    <string name="settings">Settings</string>
 </resources>
