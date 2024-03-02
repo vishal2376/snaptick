@@ -33,4 +33,5 @@
     <string name="no_tasks">Ingen oppgaver</string>
     <string name="amoled_theme">Skjult tema</string>
     <string name="sort_tasks_by">Sorter oppgaver etter</string>
+    <string name="settings">Settings</string>
 </resources>
