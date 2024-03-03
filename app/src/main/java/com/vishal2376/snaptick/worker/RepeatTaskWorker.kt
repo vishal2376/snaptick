@@ -14,6 +14,7 @@ import com.vishal2376.snaptick.util.Constants
 import java.time.LocalDate
 import java.time.LocalTime
 import java.util.concurrent.TimeUnit
+import kotlin.math.max
 
 class RepeatTaskWorker(val context: Context, params: WorkerParameters) :
 	CoroutineWorker(context, params) {
@@ -44,9 +45,9 @@ class RepeatTaskWorker(val context: Context, params: WorkerParameters) :
 						//calculate delay
 						val startTimeSec = task.startTime.toSecondOfDay()
 						val currentTimeSec = LocalTime.now().toSecondOfDay()
-						val delaySec = startTimeSec - currentTimeSec
-
-						if (delaySec > 0) {
+						val delaySec = max(startTimeSec - currentTimeSec, 0)
+						
+						if (delaySec > 0 || startTimeSec < 60) {
 							val data = Data.Builder().putString(Constants.TASK_UUID, task.uuid)
 								.putString(Constants.TASK_TITLE, task.title)
 								.putString(Constants.TASK_TIME, task.getFormattedTime())
