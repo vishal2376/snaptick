@@ -35,41 +35,44 @@ class RepeatTaskWorker(val context: Context, params: WorkerParameters) :
 			taskList.forEach { task ->
 				//repeat days of week
 				val repeatWeekDays = task.getRepeatWeekList()
-				if (task.reminder && repeatWeekDays.contains(dayOfWeek)) {
-					//insert task into database
-					val newTask = task.copy(
-						id = 0,
-						isCompleted = false,
-						date = LocalDate.now(),
-						pomodoroTimer = -1
-					)
-					repository.insertTask(newTask)
-
+				if (repeatWeekDays.contains(dayOfWeek)) {
 					//calculate delay
-					val startTimeSec = task.startTime.toSecondOfDay()
-					val currentTimeSec = LocalTime.now().toSecondOfDay()
-					val delaySec = startTimeSec - currentTimeSec
+					if (task.reminder) {
 
-					if (delaySec > 0) {
-						val data = Data.Builder().putString(Constants.TASK_UUID, task.uuid)
-							.putString(Constants.TASK_TITLE, task.title)
-							.putString(Constants.TASK_TIME, task.getFormattedTime())
-							.build()
+						val startTimeSec = task.startTime.toSecondOfDay()
+						val currentTimeSec = LocalTime.now().toSecondOfDay()
+						val delaySec = startTimeSec - currentTimeSec
 
-						// new notification request
-						val workRequest = OneTimeWorkRequestBuilder<NotificationWorker>()
-							.setInitialDelay(delaySec.toLong(), TimeUnit.SECONDS)
-							.setInputData(data)
-							.addTag(task.uuid)
-							.build()
-						WorkManager.getInstance(context)
-							.enqueueUniqueWork(
-								task.uuid,
-								ExistingWorkPolicy.REPLACE,
-								workRequest
-							)
+						if (delaySec > 0) {
+							val data = Data.Builder().putString(Constants.TASK_UUID, task.uuid)
+								.putString(Constants.TASK_TITLE, task.title)
+								.putString(Constants.TASK_TIME, task.getFormattedTime())
+								.build()
+
+							// new notification request
+							val workRequest = OneTimeWorkRequestBuilder<NotificationWorker>()
+								.setInitialDelay(delaySec.toLong(), TimeUnit.SECONDS)
+								.setInputData(data)
+								.addTag(task.uuid)
+								.build()
+							WorkManager.getInstance(context)
+								.enqueueUniqueWork(
+									task.uuid,
+									ExistingWorkPolicy.REPLACE,
+									workRequest
+								)
+						}
 					}
 				}
+
+				//insert task into database
+				val newTask = task.copy(
+					id = 0,
+					isCompleted = false,
+					date = LocalDate.now(),
+					pomodoroTimer = -1
+				)
+				repository.insertTask(newTask)
 			}
 
 			db.close()
