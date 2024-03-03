@@ -7,7 +7,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.Data
-import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.vishal2376.snaptick.R
@@ -218,7 +217,7 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 
 	private fun scheduleNotification(task: Task) {
 		if (task.reminder && !task.isCompleted) {
-			
+
 			// cancel older notification
 			cancelNotification(task.uuid)
 
@@ -239,12 +238,7 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 					.setInputData(data)
 					.addTag(task.uuid)
 					.build()
-				WorkManager.getInstance()
-					.enqueueUniqueWork(
-						task.uuid,
-						ExistingWorkPolicy.REPLACE,
-						workRequest
-					)
+				WorkManager.getInstance().enqueue(workRequest)
 			}
 		}
 	}
