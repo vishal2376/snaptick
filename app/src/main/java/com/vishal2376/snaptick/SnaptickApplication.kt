@@ -48,7 +48,8 @@ class SnaptickApplication : Application() {
 	override fun onCreate() {
 		super.onCreate()
 
-		initWorker()
+//		initWorker()
+		startRepeatWorker(10)
 	}
 
 	private fun initWorker() {

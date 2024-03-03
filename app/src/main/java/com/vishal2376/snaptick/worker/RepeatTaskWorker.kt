@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.room.Room
 import androidx.work.CoroutineWorker
 import androidx.work.Data
-import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
@@ -24,7 +23,7 @@ class RepeatTaskWorker(val context: Context, params: WorkerParameters) :
 			val dayOfWeek = LocalDate.now().dayOfWeek.value - 1 // because mon-1,sun-7
 
 			val db = Room.databaseBuilder(
-				applicationContext,
+				context.applicationContext,
 				TaskDatabase::class.java,
 				"local_db"
 			).build()
@@ -36,9 +35,13 @@ class RepeatTaskWorker(val context: Context, params: WorkerParameters) :
 				//repeat days of week
 				val repeatWeekDays = task.getRepeatWeekList()
 				if (repeatWeekDays.contains(dayOfWeek)) {
-					//calculate delay
 					if (task.reminder) {
 
+						//cancel old notification request
+						WorkManager.getInstance(context.applicationContext)
+							.cancelAllWorkByTag(task.uuid)
+
+						//calculate delay
 						val startTimeSec = task.startTime.toSecondOfDay()
 						val currentTimeSec = LocalTime.now().toSecondOfDay()
 						val delaySec = startTimeSec - currentTimeSec
@@ -55,24 +58,19 @@ class RepeatTaskWorker(val context: Context, params: WorkerParameters) :
 								.setInputData(data)
 								.addTag(task.uuid)
 								.build()
-							WorkManager.getInstance(context)
-								.enqueueUniqueWork(
-									task.uuid,
-									ExistingWorkPolicy.REPLACE,
-									workRequest
-								)
+
+							WorkManager.getInstance(context.applicationContext).enqueue(workRequest)
 						}
 					}
-				}
 
-				//insert task into database
-				val newTask = task.copy(
-					id = 0,
-					isCompleted = false,
-					date = LocalDate.now(),
-					pomodoroTimer = -1
-				)
-				repository.insertTask(newTask)
+					//update task
+					val newTask = task.copy(
+						isCompleted = false,
+						date = LocalDate.now(),
+						pomodoroTimer = -1
+					)
+					repository.updateTask(newTask)
+				}
 			}
 
 			db.close()
