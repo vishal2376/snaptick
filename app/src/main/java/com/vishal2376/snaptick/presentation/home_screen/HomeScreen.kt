@@ -149,7 +149,7 @@ fun HomeScreen(
 			}
 		}) {
 		Scaffold(topBar = {
-			TopAppBar(modifier = Modifier.padding(end = 16.dp),
+			TopAppBar(
 				colors = TopAppBarDefaults.topAppBarColors(
 					containerColor = Color.Transparent
 				),
@@ -228,7 +228,7 @@ fun HomeScreen(
 				) {
 
 					InfoComponent(
-						title = "Completed",
+						title = stringResource(R.string.completed),
 						desc = "$totalCompletedTasks/$totalTasks Tasks",
 						icon = R.drawable.ic_task_list,
 						backgroundColor = Green,
@@ -241,7 +241,7 @@ fun HomeScreen(
 					)
 
 					InfoComponent(
-						title = "Free Time",
+						title = stringResource(R.string.free_time),
 						desc = freeTimeText,
 						icon = R.drawable.ic_clock,
 						backgroundColor = Blue,

@@ -52,11 +52,10 @@ class SnaptickApplication : Application() {
 	}
 
 	private fun initWorker() {
-		val maxTimeSec = LocalTime.MAX.toSecondOfDay()
+		val maxTimeSec = LocalTime.MAX.toSecondOfDay() + 1
 		val currentTimeSec = LocalTime.now().toSecondOfDay()
 
-		val delay = (maxTimeSec - currentTimeSec) + 30 // to execute after 12:00:30 AM
-
+		val delay = (maxTimeSec - currentTimeSec)
 		if (delay > 0) {
 			startRepeatWorker(delay)
 		}

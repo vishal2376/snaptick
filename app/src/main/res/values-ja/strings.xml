@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Snaptick</string>
+    <string name="today_tasks">今日のタスク</string>
+    <string name="what_would_you_like_to_do">何をしたいですか？</string>
+    <string name="edit_task">タスクを編集</string>
+    <string name="add_task">タスクを追加</string>
+    <string name="update_task">タスクの更新</string>
+    <string name="select">選択</string>
+    <string name="completed">完了</string>
+    <string name="dialog_text">申し訳ありませんが、予期しないエラーが発生しました。\n\nクラッシュレポートを開発者に送信しますか？</string>
+    <string name="dialog_title">クラッシュレポート</string>
+    <string name="dialog_positive">送信</string>
+    <string name="dialog_negative">キャンセル</string>
+    <string name="report_bug">バグの報告</string>
+    <string name="suggestions">候補</string>
+    <string name="tag_line"></string>
+    <string name="buildVersion">v%1$s</string>
+    <string name="delete_task">タスクを削除？</string>
+    <string name="cancel">キャンセル</string>
+    <string name="delete">削除</string>
+    <string name="custom_duration">カスタム期間</string>
+    <string name="done">完了</string>
+    <string name="repeat">繰り返し</string>
+    <string name="start_time">開始時刻</string>
+    <string name="end_time">終了時刻</string>
+    <string name="duration">期間</string>
+    <string name="reminder">リマインダ</string>
+    <string name="custom">カスタム</string>
+    <string name="completed_tasks">完了したタスク</string>
+    <string name="analysis">分析</string>
+    <string name="free_time">空き時間</string>
+    <string name="no_tasks">タスクなし</string>
+    <string name="amoled_theme">Amoled Theme</string>
+    <string name="sort_tasks_by">タスクを並べ替える</string>
+</resources>

@@ -190,7 +190,7 @@ fun AddTaskScreen(
 				) {
 					Column(horizontalAlignment = Alignment.CenterHorizontally) {
 						Text(
-							text = "Start Time",
+							text = stringResource(R.string.start_time),
 							style = taskTextStyle,
 							color = Green
 						)
@@ -203,7 +203,7 @@ fun AddTaskScreen(
 					}
 					Column(horizontalAlignment = Alignment.CenterHorizontally) {
 						Text(
-							text = "End Time",
+							text = stringResource(R.string.end_time),
 							style = taskTextStyle,
 							color = Red
 						)
@@ -225,7 +225,7 @@ fun AddTaskScreen(
 					horizontalArrangement = Arrangement.SpaceBetween
 				) {
 					Text(
-						text = "Duration",
+						text = stringResource(R.string.duration),
 						style = h2TextStyle,
 						color = Color.White
 					)
@@ -260,7 +260,7 @@ fun AddTaskScreen(
 						verticalAlignment = Alignment.CenterVertically
 					) {
 						Text(
-							text = "Reminder",
+							text = stringResource(R.string.reminder),
 							style = h2TextStyle,
 							color = Color.White
 						)
@@ -283,7 +283,7 @@ fun AddTaskScreen(
 						verticalAlignment = Alignment.CenterVertically
 					) {
 						Text(
-							text = "Repeat",
+							text = stringResource(R.string.repeat),
 							style = h2TextStyle,
 							color = Color.White
 						)

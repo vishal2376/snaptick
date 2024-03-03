@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vishal2376.snaptick.R
@@ -31,7 +32,7 @@ fun EmptyTaskComponent() {
 				modifier = Modifier.size(250.dp)
 			)
 			Text(
-				text = "No Tasks",
+				text = stringResource(R.string.no_tasks),
 				style = h1TextStyle,
 				color = Color.White
 			)

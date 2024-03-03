@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -50,7 +51,7 @@ fun ConfirmDeleteDialog(onClose: () -> Unit, onDelete: () -> Unit) {
 				verticalArrangement = Arrangement.spacedBy(16.dp)
 			) {
 				Text(
-					text = "Delete Task ?",
+					text = stringResource(R.string.delete_task),
 					color = Color.White,
 					style = h2TextStyle
 				)
@@ -74,7 +75,7 @@ fun ConfirmDeleteDialog(onClose: () -> Unit, onDelete: () -> Unit) {
 						)
 					) {
 						Text(
-							text = "Cancel",
+							text = stringResource(R.string.cancel),
 							color = LightGray
 						)
 					}
@@ -84,7 +85,7 @@ fun ConfirmDeleteDialog(onClose: () -> Unit, onDelete: () -> Unit) {
 						shape = RoundedCornerShape(8.dp),
 					) {
 						Text(
-							text = "Delete",
+							text = stringResource(R.string.delete),
 							color = Color.Black
 						)
 					}
