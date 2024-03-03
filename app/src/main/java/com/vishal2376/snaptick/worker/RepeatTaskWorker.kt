@@ -29,7 +29,7 @@ class RepeatTaskWorker(val context: Context, params: WorkerParameters) :
 			).build()
 
 			val repository = TaskRepository(db.taskDao())
-			val taskList = repository.getLatestRepeatedTasks()
+			val taskList = repository.getLastRepeatedTasks()
 
 			taskList.forEach { task ->
 				//repeat days of week
