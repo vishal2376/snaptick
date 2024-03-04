@@ -75,6 +75,7 @@ fun PomodoroScreen(
 	var totalTime by remember { mutableLongStateOf(0L) }
 	var timeLeft by remember { mutableLongStateOf(0L) }
 	var isPaused by remember { mutableStateOf(false) }
+	var isReset by remember { mutableStateOf(false) }
 
 	// keep screen on
 	DisposableEffect(Unit) {
@@ -118,6 +119,14 @@ fun PomodoroScreen(
 	if (totalTime == 0L) {
 		totalTime = task.getDuration()
 		timeLeft = totalTime
+	}
+
+	LaunchedEffect(isReset) {
+		if (isReset) {
+			isPaused = true
+			timeLeft = totalTime
+			alphaValue.snapTo(1f)
+		}
 	}
 
 	LaunchedEffect(
@@ -216,7 +225,10 @@ fun PomodoroScreen(
 			AnimatedVisibility(!isTimerCompleted) {
 				Row(horizontalArrangement = Arrangement.spacedBy(24.dp)) {
 					FloatingActionButton(
-						onClick = { isPaused = !isPaused },
+						onClick = {
+							isPaused = !isPaused
+							isReset = false
+						},
 						shape = CircleShape,
 						containerColor = MaterialTheme.colorScheme.secondary,
 						contentColor = LightGray
@@ -229,8 +241,7 @@ fun PomodoroScreen(
 
 					FloatingActionButton(
 						onClick = {
-							isPaused = true
-							timeLeft = totalTime
+							isReset = true
 						},
 						shape = CircleShape,
 						containerColor = MaterialTheme.colorScheme.secondary,
