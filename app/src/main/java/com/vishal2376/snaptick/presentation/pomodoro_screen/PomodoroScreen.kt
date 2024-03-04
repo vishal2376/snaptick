@@ -45,6 +45,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -67,13 +68,21 @@ fun PomodoroScreen(
 	onEvent: (HomeScreenEvent) -> Unit,
 	onBack: () -> Unit
 ) {
-
-
 	val context = LocalContext.current
+	val currentView = LocalView.current
+
 	var isTimerCompleted by remember { mutableStateOf(false) }
 	var totalTime by remember { mutableLongStateOf(0L) }
 	var timeLeft by remember { mutableLongStateOf(0L) }
 	var isPaused by remember { mutableStateOf(false) }
+
+	// keep screen on
+	DisposableEffect(Unit) {
+		currentView.keepScreenOn = true
+		onDispose {
+			currentView.keepScreenOn = false
+		}
+	}
 
 	// empty progress bar animation
 	val progressBarAnim = remember { Animatable(100f) }
@@ -84,9 +93,11 @@ fun PomodoroScreen(
 		)
 	}
 
-	//flicker animation
+	//flicker animation + toggle keep screen on
 	val alphaValue = remember { Animatable(1f) }
 	LaunchedEffect(isPaused) {
+		currentView.keepScreenOn = !isPaused
+
 		if (isPaused && (timeLeft != totalTime)) {
 			alphaValue.animateTo(
 				targetValue = 0.2f,
