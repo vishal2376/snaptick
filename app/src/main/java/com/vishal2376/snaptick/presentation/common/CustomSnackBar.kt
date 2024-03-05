@@ -1,6 +1,8 @@
 package com.vishal2376.snaptick.presentation.common
 
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
@@ -29,6 +31,7 @@ import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
@@ -81,6 +84,10 @@ fun CustomSnackBar() {
 	val configuration = LocalConfiguration.current
 	val deviceWidthPixels = configuration.screenWidthDp.absoluteValue * LocalDensity.current.density
 
+	// animation
+	val translateY = 250f
+	val verticalTranslate = remember { Animatable(translateY) }
+
 	if (isDismiss) {
 		SnackbarController._msg.value = null
 		offsetX = 0f
@@ -95,11 +102,22 @@ fun CustomSnackBar() {
 				.clickable(indication = null,
 					interactionSource = remember { MutableInteractionSource() }) {
 				}
+				.graphicsLayer {
+					translationY = verticalTranslate.value
+				}
 				.background(Color.Transparent),
 			contentAlignment = BottomCenter,
 		) {
 			LaunchedEffect(Unit) {
+				verticalTranslate.animateTo(
+					0f,
+					tween(500)
+				)
 				delay(delay)
+				verticalTranslate.animateTo(
+					translateY,
+					tween(500)
+				)
 				isDismiss = true
 			}
 			Box(
