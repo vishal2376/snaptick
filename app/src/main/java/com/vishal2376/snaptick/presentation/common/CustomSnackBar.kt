@@ -1,4 +1,4 @@
-package com.vishal2376.snaptick.presentation
+package com.vishal2376.snaptick.presentation.common
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
@@ -14,8 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -32,12 +31,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.vishal2376.snaptick.ui.theme.Red
+import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import kotlinx.coroutines.delay
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
@@ -59,10 +59,10 @@ object SnackbarController {
 		actionText: String? = null,
 		onClickAction: () -> Unit = {}
 	) {
-		this.delay = delay
-		this._msg.value = msg
-		this.actionText = actionText
-		this.onClickAction = onClickAction
+		SnackbarController.delay = delay
+		_msg.value = msg
+		SnackbarController.actionText = actionText
+		SnackbarController.onClickAction = onClickAction
 	}
 
 }
@@ -75,34 +75,32 @@ fun CustomSnackBar() {
 	val actionText = SnackbarController.actionText
 	val onClickAction: () -> Unit = SnackbarController.onClickAction
 
-	var isDissmiss by remember { mutableStateOf(false) }
+	var isDismiss by remember { mutableStateOf(false) }
 	var offsetX by remember { mutableFloatStateOf(0f) }
 	val offsetXState by animateFloatAsState(targetValue = offsetX, label = "")
 	val configuration = LocalConfiguration.current
 	val deviceWidthPixels = configuration.screenWidthDp.absoluteValue * LocalDensity.current.density
 
-	if (isDissmiss) {
+	if (isDismiss) {
 		SnackbarController._msg.value = null
 		offsetX = 0f
-		isDissmiss = false
+		isDismiss = false
 	}
 
-	if (snackBarMessage.isNullOrBlank().not()) {
+	if (!snackBarMessage.isNullOrBlank()) {
 		Box(
 			modifier = Modifier
 				.fillMaxSize()
-				.padding(16.dp)
+				.padding(24.dp)
 				.clickable(indication = null,
 					interactionSource = remember { MutableInteractionSource() }) {
-					//on click
 				}
-
 				.background(Color.Transparent),
 			contentAlignment = BottomCenter,
 		) {
 			LaunchedEffect(Unit) {
 				delay(delay)
-				isDissmiss = true
+				isDismiss = true
 			}
 			Box(
 				modifier = Modifier
@@ -114,52 +112,60 @@ fun CustomSnackBar() {
 							offsetX += delta
 						},
 						onDragStopped = { endPosition ->
-							val width = deviceWidthPixels
-							val threshold = width * 0.3f // Dismiss threshold (30%)
+							val threshold = deviceWidthPixels * 0.3f // Dismiss threshold (30%)
 							if (endPosition > threshold) {
 								offsetX = 11000f
-								isDissmiss = true
+								isDismiss = true
 							} else if (endPosition < -threshold) {
 								offsetX = 11000f
-								isDissmiss = true
+								isDismiss = true
 							} else {
 								offsetX = 0f
 							}
 						}
 					)
-					.background(Color.Red, shape = RoundedCornerShape(16.dp))
-					.padding(8.dp),
+					.background(Red, shape = RoundedCornerShape(8.dp))
+					.padding(bottom = 4.dp),
 				contentAlignment = Center,
 			) {
-				Row(verticalAlignment = Alignment.CenterVertically) {
-					Text(
-						text = snackBarMessage ?: "",
-						modifier = Modifier.weight(1f),
-						style = TextStyle.Default,
-						color = Color.White,
-						fontSize = 16.sp,
-						fontWeight = FontWeight.Bold
-					)
-					if (!actionText.isNullOrBlank())
-						Button(
-							onClick = {
-								isDissmiss = true
-								onClickAction.invoke()
-							},
-							colors = ButtonDefaults.buttonColors(
-								containerColor = Color.White,
-								contentColor = Color.Red
-							),
-							shape = RoundedCornerShape(16.dp),
-						) {
+				Box(
+					modifier = Modifier
+						.fillMaxWidth()
+						.background(
+							MaterialTheme.colorScheme.secondary,
+							RoundedCornerShape(
+								topStart = 8.dp,
+								topEnd = 8.dp
+							)
+						)
+				) {
+					Row(
+						verticalAlignment = Alignment.CenterVertically,
+					) {
+						Text(
+							text = snackBarMessage,
+							modifier = Modifier
+								.weight(1f)
+								.padding(16.dp),
+							style = infoDescTextStyle,
+							color = MaterialTheme.colorScheme.onSecondary,
+							fontSize = 16.sp,
+							fontWeight = FontWeight.Bold
+						)
+						if (!actionText.isNullOrBlank())
 							Text(
 								text = actionText,
 								fontWeight = FontWeight.Bold,
+								style = h3TextStyle,
+								color = Red,
 								fontSize = 16.sp,
-								modifier = Modifier.padding(vertical = 8.dp)
+								modifier = Modifier
+									.padding(16.dp)
+									.clickable {
+										onClickAction.invoke()
+									}
 							)
-						}
-
+					}
 				}
 			}
 		}
@@ -171,5 +177,7 @@ fun CustomSnackBar() {
 @Composable
 fun SnackBarPreview() {
 	SnackbarController.showCustomSnackbar("Hello", actionText = "Ok")
-	CustomSnackBar()
+	SnaptickTheme {
+		CustomSnackBar()
+	}
 }
