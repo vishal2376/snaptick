@@ -29,6 +29,7 @@ private val AmoledDarkColorScheme = darkColorScheme(
 private val LightColorScheme = lightColorScheme(
 	primary = White500,
 	secondary = White200,
+	background = White500,
 	onPrimary = Black500,
 	onSecondary = Black500,
 )
