@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.vishal2376.snaptick.presentation.CustomSnackBar
 import com.vishal2376.snaptick.presentation.navigation.AppNavigation
 import com.vishal2376.snaptick.presentation.viewmodels.TaskViewModel
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
@@ -33,6 +34,7 @@ class MainActivity : ComponentActivity() {
 		setContent {
 			SnaptickTheme(theme = taskViewModel.appState.theme) {
 				AppNavigation(taskViewModel = taskViewModel)
+				CustomSnackBar()
 			}
 		}
 

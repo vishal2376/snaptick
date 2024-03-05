@@ -1,6 +1,5 @@
 package com.vishal2376.snaptick.presentation.add_edit_screen
 
-import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -52,6 +51,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
+import com.vishal2376.snaptick.presentation.SnackbarController.showCustomSnackbar
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.CustomDurationDialogComponent
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.DurationComponent
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.PriorityComponent
@@ -345,11 +345,9 @@ fun AddTaskScreen(
 							onEvent(AddEditScreenEvent.OnAddTaskClick(task))
 							onBack()
 						} else {
-							Toast.makeText(
-								context,
-								errorMessage,
-								Toast.LENGTH_SHORT
-							).show()
+							showCustomSnackbar(errorMessage, actionText = "ok") {
+								//On tap events will be here
+							}
 						}
 					},
 					colors = ButtonDefaults.buttonColors(

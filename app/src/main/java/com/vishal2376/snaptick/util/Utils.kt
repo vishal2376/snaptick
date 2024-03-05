@@ -7,6 +7,8 @@ import android.net.Uri
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.widget.Toast
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import com.vishal2376.snaptick.R
 import java.time.LocalTime
 
@@ -25,6 +27,7 @@ fun vibrateDevice(
 fun showToast(context: Context, message: String, duration: Int = Toast.LENGTH_LONG) {
 	Toast.makeText(context, message, duration).show()
 }
+
 
 fun getFormattedDuration(
 	startTime: LocalTime,

@@ -49,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
+import com.vishal2376.snaptick.presentation.SnackbarController.showCustomSnackbar
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.ConfirmDeleteDialog
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.CustomDurationDialogComponent
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.DurationComponent
@@ -347,7 +348,7 @@ fun EditTaskScreen(
 							onEvent(AddEditScreenEvent.OnUpdateTask)
 							onBack()
 						} else {
-							showToast(context, errorMessage)
+							showCustomSnackbar(errorMessage)
 						}
 					},
 					colors = ButtonDefaults.buttonColors(
