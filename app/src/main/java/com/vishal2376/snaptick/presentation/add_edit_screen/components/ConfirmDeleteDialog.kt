@@ -98,10 +98,7 @@ fun ConfirmDeleteDialog(onClose: () -> Unit, onDelete: () -> Unit) {
 @Preview()
 @Composable
 fun ConfirmDeleteDialogPreview() {
-	SnaptickTheme(
-		darkTheme = true,
-		dynamicColor = false
-	) {
+	SnaptickTheme {
 		ConfirmDeleteDialog(
 			{},
 			{})

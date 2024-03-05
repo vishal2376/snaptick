@@ -68,10 +68,7 @@ fun CustomCircularProgressBar(
 @Preview()
 @Composable
 fun CustomCircularProgressBarPreview() {
-	SnaptickTheme(
-		darkTheme = true,
-		dynamicColor = false
-	) {
+	SnaptickTheme {
 		CustomCircularProgressBar()
 	}
 }

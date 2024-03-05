@@ -108,7 +108,7 @@ fun CustomRadioButton(label: String, isSelected: Boolean, onClick: () -> Unit) {
 @Preview
 @Composable
 fun SortTaskDialogComponentPreview() {
-	SnaptickTheme(darkTheme = true) {
+	SnaptickTheme {
 		SortTaskDialogComponent(
 			SortTask.BY_CREATE_TIME_ASCENDING,
 			{},

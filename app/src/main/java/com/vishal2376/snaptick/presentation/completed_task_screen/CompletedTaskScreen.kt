@@ -117,10 +117,7 @@ fun CompletedTaskScreen(
 @Preview
 @Composable
 fun CompletedTaskScreenPreview() {
-	SnaptickTheme(
-		darkTheme = true,
-		dynamicColor = false
-	) {
+	SnaptickTheme {
 		val tasks = DummyTasks.tasks
 		CompletedTaskScreen(
 			tasks = tasks,

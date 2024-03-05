@@ -370,10 +370,7 @@ fun HomeScreen(
 @Preview
 @Composable
 fun HomeScreenPreview() {
-	SnaptickTheme(
-		darkTheme = true,
-		dynamicColor = false
-	) {
+	SnaptickTheme{
 		val tasks = DummyTasks.tasks
 		HomeScreen(tasks = tasks, MainState(), {}, {}, {}, {}, {}, {}, {})
 	}

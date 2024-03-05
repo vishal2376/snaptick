@@ -110,10 +110,7 @@ fun PriorityItemComponent(
 @Preview()
 @Composable
 fun PriorityComponentPreview() {
-	SnaptickTheme(
-		darkTheme = true,
-		dynamicColor = false
-	) {
+	SnaptickTheme{
 		PriorityComponent(Priority.LOW, {})
 	}
 }
