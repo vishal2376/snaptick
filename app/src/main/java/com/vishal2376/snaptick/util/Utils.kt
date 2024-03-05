@@ -7,6 +7,8 @@ import android.net.Uri
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.widget.Toast
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import com.vishal2376.snaptick.R
 import java.time.LocalTime
 
@@ -24,6 +26,14 @@ fun vibrateDevice(
 
 fun showToast(context: Context, message: String, duration: Int = Toast.LENGTH_LONG) {
 	Toast.makeText(context, message, duration).show()
+}
+
+//Snack-bar Impl
+private val _showCustomSnackbar = mutableStateOf<String?>("")
+val showCustomSnackbar: State<String?> = _showCustomSnackbar
+
+fun showCustomSnackbar(msg: String?) {
+	_showCustomSnackbar.value = msg
 }
 
 fun getFormattedDuration(

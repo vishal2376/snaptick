@@ -72,6 +72,7 @@ import com.vishal2376.snaptick.ui.theme.Yellow
 import com.vishal2376.snaptick.util.Constants
 import com.vishal2376.snaptick.util.DummyTasks
 import com.vishal2376.snaptick.util.getFreeTime
+import com.vishal2376.snaptick.util.showCustomSnackbar
 import com.vishal2376.snaptick.util.showToast
 import kotlinx.coroutines.launch
 
@@ -252,7 +253,7 @@ fun HomeScreen(
 							},
 						onClick = {
 							if (inCompletedTasks.isEmpty()) {
-								showToast(context, "Add Tasks to Analyze")
+								showCustomSnackbar("Add Tasks to Analyze")
 							} else {
 								onClickFreeTimeInfo()
 							}

@@ -66,6 +66,7 @@ import com.vishal2376.snaptick.ui.theme.Red
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.DummyTasks
 import com.vishal2376.snaptick.util.checkValidTask
+import com.vishal2376.snaptick.util.showCustomSnackbar
 import com.vishal2376.snaptick.util.showToast
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -347,7 +348,7 @@ fun EditTaskScreen(
 							onEvent(AddEditScreenEvent.OnUpdateTask)
 							onBack()
 						} else {
-							showToast(context, errorMessage)
+							showCustomSnackbar(errorMessage)
 						}
 					},
 					colors = ButtonDefaults.buttonColors(

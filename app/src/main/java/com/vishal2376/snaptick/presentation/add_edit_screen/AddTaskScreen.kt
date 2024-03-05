@@ -68,6 +68,7 @@ import com.vishal2376.snaptick.ui.theme.Red
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.checkValidTask
 import com.vishal2376.snaptick.util.getFormattedDuration
+import com.vishal2376.snaptick.util.showCustomSnackbar
 import kotlinx.coroutines.job
 import java.time.LocalDate
 import java.time.LocalTime
@@ -345,11 +346,7 @@ fun AddTaskScreen(
 							onEvent(AddEditScreenEvent.OnAddTaskClick(task))
 							onBack()
 						} else {
-							Toast.makeText(
-								context,
-								errorMessage,
-								Toast.LENGTH_SHORT
-							).show()
+							showCustomSnackbar(errorMessage)
 						}
 					},
 					colors = ButtonDefaults.buttonColors(
