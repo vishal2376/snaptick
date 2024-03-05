@@ -15,7 +15,11 @@ val Red = Color(0xFFEB8080)
 val Green = Color(0xFFC7E9A7)
 val Blue = Color(0xFF83BCFF)
 val Yellow = Color(0xFFFF9737)
+
 val LightGray = Color(0xFFCCD2D8)
+val DarkGray = Color(0xFF4E4E4E)
+
+val DarkGreen = Color(0xFF64A625)
 
 // priority colors
 val priorityColors = listOf(

@@ -15,7 +15,7 @@ private val DarkColorScheme = darkColorScheme(
 	secondary = Blue200,
 	background = Blue500,
 	onPrimary = White500,
-	onSecondary = White500,
+	onSecondary = LightGray,
 )
 
 private val AmoledDarkColorScheme = darkColorScheme(
@@ -23,7 +23,7 @@ private val AmoledDarkColorScheme = darkColorScheme(
 	secondary = Black200,
 	background = Black500,
 	onPrimary = White500,
-	onSecondary = White500,
+	onSecondary = LightGray,
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -31,7 +31,7 @@ private val LightColorScheme = lightColorScheme(
 	secondary = White200,
 	background = White500,
 	onPrimary = Black500,
-	onSecondary = Black500,
+	onSecondary = DarkGray,
 )
 
 enum class AppTheme {

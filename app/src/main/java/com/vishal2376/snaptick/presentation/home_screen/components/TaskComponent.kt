@@ -38,8 +38,7 @@ import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.common.taskDescTextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
-import com.vishal2376.snaptick.ui.theme.Green
-import com.vishal2376.snaptick.ui.theme.LightGray
+import com.vishal2376.snaptick.ui.theme.DarkGreen
 import com.vishal2376.snaptick.ui.theme.priorityColors
 import com.vishal2376.snaptick.util.DummyTasks
 
@@ -112,7 +111,7 @@ fun TaskComponent(
 						Icon(
 							painter = painterResource(id = R.drawable.ic_check_circle),
 							contentDescription = null,
-							tint = Green,
+							tint = DarkGreen,
 							modifier = Modifier.size(20.dp)
 						)
 					} else {
@@ -120,7 +119,7 @@ fun TaskComponent(
 							.size(20.dp)
 							.border(
 								width = 2.dp,
-								color = LightGray,
+								color = MaterialTheme.colorScheme.onSecondary,
 								shape = CircleShape
 							),
 							contentAlignment = Alignment.Center,
@@ -153,19 +152,19 @@ fun TaskComponent(
 								painter = painterResource(id = R.drawable.ic_clock),
 								contentDescription = null,
 								modifier = Modifier.size(15.dp),
-								tint = LightGray
+								tint = MaterialTheme.colorScheme.onSecondary
 							)
 							Text(
 								text = task.getFormattedTime(),
 								style = taskDescTextStyle,
-								color = LightGray
+								color = MaterialTheme.colorScheme.onSecondary
 							)
 							if (task.reminder) {
 								Icon(
 									imageVector = Icons.Default.Notifications,
 									contentDescription = null,
 									modifier = Modifier.size(15.dp),
-									tint = LightGray
+									tint = MaterialTheme.colorScheme.onSecondary
 								)
 							}
 							if (task.isRepeated) {
@@ -173,7 +172,7 @@ fun TaskComponent(
 									imageVector = Icons.Default.Refresh,
 									contentDescription = null,
 									modifier = Modifier.size(15.dp),
-									tint = LightGray
+									tint = MaterialTheme.colorScheme.onSecondary
 								)
 							}
 						}
@@ -187,7 +186,7 @@ fun TaskComponent(
 					) {
 						Icon(
 							painter = painterResource(id = R.drawable.ic_timer),
-							tint = LightGray,
+							tint = MaterialTheme.colorScheme.onSecondary,
 							contentDescription = null
 						)
 					}
