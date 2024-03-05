@@ -345,7 +345,9 @@ fun AddTaskScreen(
 							onEvent(AddEditScreenEvent.OnAddTaskClick(task))
 							onBack()
 						} else {
-							showCustomSnackbar(errorMessage, actionText = "Ok")
+							showCustomSnackbar(errorMessage, actionText = "ok") {
+								//On tap events will be here
+							}
 						}
 					},
 					colors = ButtonDefaults.buttonColors(
