@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vishal2376.snaptick.presentation.common.Priority
 import com.vishal2376.snaptick.presentation.common.h3TextStyle
+import com.vishal2376.snaptick.ui.theme.Black500
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.ui.theme.priorityColors
 
@@ -85,6 +86,7 @@ fun PriorityItemComponent(
 			Text(
 				text = title,
 				style = h3TextStyle,
+				color = Black500,
 				modifier = Modifier.padding(4.dp, 24.dp)
 			)
 		}
