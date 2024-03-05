@@ -164,7 +164,7 @@ fun EditTaskScreen(
 						disabledContainerColor = MaterialTheme.colorScheme.secondary,
 						unfocusedIndicatorColor = Color.Transparent,
 						focusedIndicatorColor = Color.Transparent,
-						cursorColor = Color.White
+						cursorColor = MaterialTheme.colorScheme.onPrimary
 					),
 					textStyle = taskTextStyle,
 					onValueChange = {
@@ -229,13 +229,13 @@ fun EditTaskScreen(
 					Text(
 						text = stringResource(R.string.start_time),
 						style = h2TextStyle,
-						color = Color.White
+						color = MaterialTheme.colorScheme.onPrimary
 					)
 
 					Text(
 						text = task.getFormattedDuration(),
 						style = taskTextStyle,
-						color = Color.White
+						color = MaterialTheme.colorScheme.onPrimary
 					)
 				}
 				DurationComponent(
@@ -272,7 +272,7 @@ fun EditTaskScreen(
 						Text(
 							text = stringResource(R.string.reminder),
 							style = h2TextStyle,
-							color = Color.White
+							color = MaterialTheme.colorScheme.onPrimary
 						)
 
 						Switch(
@@ -298,7 +298,7 @@ fun EditTaskScreen(
 						Text(
 							text = stringResource(R.string.repeat),
 							style = h2TextStyle,
-							color = Color.White
+							color = MaterialTheme.colorScheme.onPrimary
 						)
 
 						Switch(

@@ -277,7 +277,7 @@ fun HomeScreen(
 						Text(
 							text = stringResource(R.string.today_tasks),
 							style = h2TextStyle,
-							color = Color.White,
+							color = MaterialTheme.colorScheme.onPrimary,
 							modifier = Modifier.padding(16.dp)
 						)
 
@@ -285,7 +285,7 @@ fun HomeScreen(
 							Icon(
 								imageVector = Icons.Default.Sort,
 								contentDescription = null,
-								tint = Color.White
+								tint = MaterialTheme.colorScheme.onPrimary
 							)
 						}
 

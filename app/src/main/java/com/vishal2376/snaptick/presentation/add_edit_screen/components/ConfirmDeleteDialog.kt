@@ -52,7 +52,7 @@ fun ConfirmDeleteDialog(onClose: () -> Unit, onDelete: () -> Unit) {
 			) {
 				Text(
 					text = stringResource(R.string.delete_task),
-					color = Color.White,
+					color = MaterialTheme.colorScheme.onPrimary,
 					style = h2TextStyle
 				)
 				Image(

@@ -162,7 +162,7 @@ fun AddTaskScreen(
 						disabledContainerColor = MaterialTheme.colorScheme.secondary,
 						unfocusedIndicatorColor = Color.Transparent,
 						focusedIndicatorColor = Color.Transparent,
-						cursorColor = Color.White,
+						cursorColor = MaterialTheme.colorScheme.onPrimary,
 					),
 					textStyle = taskTextStyle,
 					onValueChange = {
@@ -227,13 +227,13 @@ fun AddTaskScreen(
 					Text(
 						text = stringResource(R.string.duration),
 						style = h2TextStyle,
-						color = Color.White
+						color = MaterialTheme.colorScheme.onPrimary
 					)
 
 					Text(
 						text = getFormattedDuration(taskStartTime, taskEndTime),
 						style = taskTextStyle,
-						color = Color.White
+						color = MaterialTheme.colorScheme.onPrimary
 					)
 				}
 
@@ -262,7 +262,7 @@ fun AddTaskScreen(
 						Text(
 							text = stringResource(R.string.reminder),
 							style = h2TextStyle,
-							color = Color.White
+							color = MaterialTheme.colorScheme.onPrimary
 						)
 
 						Switch(
@@ -285,7 +285,7 @@ fun AddTaskScreen(
 						Text(
 							text = stringResource(R.string.repeat),
 							style = h2TextStyle,
-							color = Color.White
+							color = MaterialTheme.colorScheme.onPrimary
 						)
 
 						Switch(

@@ -20,7 +20,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -71,14 +70,14 @@ fun NavigationDrawerComponent(
 			Text(
 				text = stringResource(R.string.app_name),
 				style = h2TextStyle,
-				color = Color.White
+				color = MaterialTheme.colorScheme.onPrimary
 			)
 			Text(
 				text = stringResource(R.string.buildVersion, buildVersionCode),
 				fontFamily = fontRobotoMono,
 				fontSize = 15.sp,
 				fontWeight = FontWeight.Bold,
-				color = Color.White
+				color = MaterialTheme.colorScheme.onPrimary
 			)
 		}
 		Row(
@@ -88,7 +87,7 @@ fun NavigationDrawerComponent(
 			Text(
 				text = stringResource(R.string.amoled_theme),
 				style = h3TextStyle,
-				color = Color.White
+				color = MaterialTheme.colorScheme.onPrimary
 			)
 			Switch(
 				checked = appTheme == AppTheme.Amoled,

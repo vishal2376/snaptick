@@ -30,7 +30,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -143,7 +142,7 @@ fun TaskComponent(
 								.basicMarquee(delayMillis = 1000),
 							text = task.title,
 							style = taskTextStyle,
-							color = Color.White
+							color = MaterialTheme.colorScheme.onPrimary
 						)
 						Spacer(modifier = Modifier.height(4.dp))
 						Row(
