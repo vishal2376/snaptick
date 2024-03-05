@@ -53,6 +53,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
+import com.vishal2376.snaptick.presentation.CustomSnackBar
+import com.vishal2376.snaptick.presentation.SnackbarController.showCustomSnackbar
 import com.vishal2376.snaptick.presentation.common.SortTask
 import com.vishal2376.snaptick.presentation.common.SwipeActionBox
 import com.vishal2376.snaptick.presentation.common.fontRobotoMono
@@ -72,8 +74,6 @@ import com.vishal2376.snaptick.ui.theme.Yellow
 import com.vishal2376.snaptick.util.Constants
 import com.vishal2376.snaptick.util.DummyTasks
 import com.vishal2376.snaptick.util.getFreeTime
-import com.vishal2376.snaptick.util.showCustomSnackbar
-import com.vishal2376.snaptick.util.showToast
 import kotlinx.coroutines.launch
 
 
@@ -253,6 +253,7 @@ fun HomeScreen(
 							},
 						onClick = {
 							if (inCompletedTasks.isEmpty()) {
+//								CustomSnackBar("Add Task to analyze", 1000)
 								showCustomSnackbar("Add Tasks to Analyze")
 							} else {
 								onClickFreeTimeInfo()

@@ -49,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
+import com.vishal2376.snaptick.presentation.SnackbarController.showCustomSnackbar
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.ConfirmDeleteDialog
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.CustomDurationDialogComponent
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.DurationComponent
@@ -66,7 +67,6 @@ import com.vishal2376.snaptick.ui.theme.Red
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.DummyTasks
 import com.vishal2376.snaptick.util.checkValidTask
-import com.vishal2376.snaptick.util.showCustomSnackbar
 import com.vishal2376.snaptick.util.showToast
 
 @OptIn(ExperimentalMaterial3Api::class)

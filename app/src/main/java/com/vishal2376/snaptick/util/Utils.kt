@@ -28,13 +28,6 @@ fun showToast(context: Context, message: String, duration: Int = Toast.LENGTH_LO
 	Toast.makeText(context, message, duration).show()
 }
 
-//Snack-bar Impl
-private val _showCustomSnackbar = mutableStateOf<String?>("")
-val showCustomSnackbar: State<String?> = _showCustomSnackbar
-
-fun showCustomSnackbar(msg: String?) {
-	_showCustomSnackbar.value = msg
-}
 
 fun getFormattedDuration(
 	startTime: LocalTime,
