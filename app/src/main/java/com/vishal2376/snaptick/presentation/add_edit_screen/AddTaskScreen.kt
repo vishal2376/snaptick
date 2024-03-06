@@ -324,7 +324,7 @@ fun AddTaskScreen(
 						val task = Task(
 							id = 0,
 							uuid = UUID.randomUUID().toString(),
-							title = taskTitle,
+							title = taskTitle.trim(),
 							isCompleted = false,
 							startTime = taskStartTime,
 							endTime = taskEndTime,
