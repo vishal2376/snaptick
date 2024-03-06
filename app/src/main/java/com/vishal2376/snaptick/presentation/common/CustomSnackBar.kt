@@ -8,7 +8,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -99,9 +98,6 @@ fun CustomSnackBar() {
 			modifier = Modifier
 				.fillMaxSize()
 				.padding(24.dp)
-				.clickable(indication = null,
-					interactionSource = remember { MutableInteractionSource() }) {
-				}
 				.graphicsLayer {
 					translationY = verticalTranslate.value
 				}
