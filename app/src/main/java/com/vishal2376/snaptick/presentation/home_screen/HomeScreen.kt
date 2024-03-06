@@ -67,7 +67,7 @@ import com.vishal2376.snaptick.presentation.home_screen.components.TaskComponent
 import com.vishal2376.snaptick.presentation.main.MainEvent
 import com.vishal2376.snaptick.presentation.main.MainState
 import com.vishal2376.snaptick.ui.theme.Blue
-import com.vishal2376.snaptick.ui.theme.Green
+import com.vishal2376.snaptick.ui.theme.LightGreen
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.ui.theme.Yellow
 import com.vishal2376.snaptick.util.Constants
@@ -231,7 +231,7 @@ fun HomeScreen(
 						title = stringResource(R.string.completed),
 						desc = "$totalCompletedTasks/$totalTasks Tasks",
 						icon = R.drawable.ic_task_list,
-						backgroundColor = Green,
+						backgroundColor = LightGreen,
 						modifier = Modifier
 							.weight(1f)
 							.graphicsLayer {
@@ -277,7 +277,7 @@ fun HomeScreen(
 						Text(
 							text = stringResource(R.string.today_tasks),
 							style = h2TextStyle,
-							color = Color.White,
+							color = MaterialTheme.colorScheme.onPrimary,
 							modifier = Modifier.padding(16.dp)
 						)
 
@@ -285,7 +285,7 @@ fun HomeScreen(
 							Icon(
 								imageVector = Icons.Default.Sort,
 								contentDescription = null,
-								tint = Color.White
+								tint = MaterialTheme.colorScheme.onPrimary
 							)
 						}
 

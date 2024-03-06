@@ -62,7 +62,7 @@ import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.presentation.main.MainState
 import com.vishal2376.snaptick.ui.theme.Blue
-import com.vishal2376.snaptick.ui.theme.Green
+import com.vishal2376.snaptick.ui.theme.LightGreen
 import com.vishal2376.snaptick.ui.theme.Red
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.DummyTasks
@@ -164,7 +164,7 @@ fun EditTaskScreen(
 						disabledContainerColor = MaterialTheme.colorScheme.secondary,
 						unfocusedIndicatorColor = Color.Transparent,
 						focusedIndicatorColor = Color.Transparent,
-						cursorColor = Color.White
+						cursorColor = MaterialTheme.colorScheme.onPrimary
 					),
 					textStyle = taskTextStyle,
 					onValueChange = {
@@ -193,7 +193,7 @@ fun EditTaskScreen(
 						Text(
 							text = stringResource(R.string.start_time),
 							style = taskTextStyle,
-							color = Green
+							color = LightGreen
 						)
 						Spacer(modifier = Modifier.height(8.dp))
 						ShowTimePicker(
@@ -229,13 +229,13 @@ fun EditTaskScreen(
 					Text(
 						text = stringResource(R.string.start_time),
 						style = h2TextStyle,
-						color = Color.White
+						color = MaterialTheme.colorScheme.onPrimary
 					)
 
 					Text(
 						text = task.getFormattedDuration(),
 						style = taskTextStyle,
-						color = Color.White
+						color = MaterialTheme.colorScheme.onPrimary
 					)
 				}
 				DurationComponent(
@@ -272,7 +272,7 @@ fun EditTaskScreen(
 						Text(
 							text = stringResource(R.string.reminder),
 							style = h2TextStyle,
-							color = Color.White
+							color = MaterialTheme.colorScheme.onPrimary
 						)
 
 						Switch(
@@ -298,7 +298,7 @@ fun EditTaskScreen(
 						Text(
 							text = stringResource(R.string.repeat),
 							style = h2TextStyle,
-							color = Color.White
+							color = MaterialTheme.colorScheme.onPrimary
 						)
 
 						Switch(

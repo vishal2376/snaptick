@@ -20,7 +20,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -38,7 +37,6 @@ import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.presentation.main.MainEvent
 import com.vishal2376.snaptick.ui.theme.AppTheme
 import com.vishal2376.snaptick.ui.theme.Blue
-import com.vishal2376.snaptick.ui.theme.LightGray
 
 @Composable
 fun NavigationDrawerComponent(
@@ -71,14 +69,14 @@ fun NavigationDrawerComponent(
 			Text(
 				text = stringResource(R.string.app_name),
 				style = h2TextStyle,
-				color = Color.White
+				color = MaterialTheme.colorScheme.onPrimary
 			)
 			Text(
 				text = stringResource(R.string.buildVersion, buildVersionCode),
 				fontFamily = fontRobotoMono,
 				fontSize = 15.sp,
 				fontWeight = FontWeight.Bold,
-				color = Color.White
+				color = MaterialTheme.colorScheme.onPrimary
 			)
 		}
 		Row(
@@ -88,7 +86,7 @@ fun NavigationDrawerComponent(
 			Text(
 				text = stringResource(R.string.amoled_theme),
 				style = h3TextStyle,
-				color = Color.White
+				color = MaterialTheme.colorScheme.onPrimary
 			)
 			Switch(
 				checked = appTheme == AppTheme.Amoled,
@@ -133,9 +131,9 @@ fun NavDrawerItemUI(icon: ImageVector, label: String, onClick: () -> Unit) {
 			modifier = Modifier.size(32.dp),
 			imageVector = icon,
 			contentDescription = null,
-			tint = LightGray
+			tint = MaterialTheme.colorScheme.onPrimary
 		)
-		Text(text = label, style = taskTextStyle, color = LightGray)
+		Text(text = label, style = taskTextStyle, color = MaterialTheme.colorScheme.onPrimary)
 	}
 }
 

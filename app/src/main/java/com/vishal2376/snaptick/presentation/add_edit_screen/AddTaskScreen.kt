@@ -63,7 +63,7 @@ import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.presentation.main.MainState
 import com.vishal2376.snaptick.ui.theme.Blue
-import com.vishal2376.snaptick.ui.theme.Green
+import com.vishal2376.snaptick.ui.theme.LightGreen
 import com.vishal2376.snaptick.ui.theme.Red
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.checkValidTask
@@ -162,7 +162,7 @@ fun AddTaskScreen(
 						disabledContainerColor = MaterialTheme.colorScheme.secondary,
 						unfocusedIndicatorColor = Color.Transparent,
 						focusedIndicatorColor = Color.Transparent,
-						cursorColor = Color.White,
+						cursorColor = MaterialTheme.colorScheme.onPrimary,
 					),
 					textStyle = taskTextStyle,
 					onValueChange = {
@@ -192,7 +192,7 @@ fun AddTaskScreen(
 						Text(
 							text = stringResource(R.string.start_time),
 							style = taskTextStyle,
-							color = Green
+							color = LightGreen
 						)
 						Spacer(modifier = Modifier.height(8.dp))
 						ShowTimePicker(
@@ -227,13 +227,13 @@ fun AddTaskScreen(
 					Text(
 						text = stringResource(R.string.duration),
 						style = h2TextStyle,
-						color = Color.White
+						color = MaterialTheme.colorScheme.onPrimary
 					)
 
 					Text(
 						text = getFormattedDuration(taskStartTime, taskEndTime),
 						style = taskTextStyle,
-						color = Color.White
+						color = MaterialTheme.colorScheme.onPrimary
 					)
 				}
 
@@ -262,7 +262,7 @@ fun AddTaskScreen(
 						Text(
 							text = stringResource(R.string.reminder),
 							style = h2TextStyle,
-							color = Color.White
+							color = MaterialTheme.colorScheme.onPrimary
 						)
 
 						Switch(
@@ -285,7 +285,7 @@ fun AddTaskScreen(
 						Text(
 							text = stringResource(R.string.repeat),
 							style = h2TextStyle,
-							color = Color.White
+							color = MaterialTheme.colorScheme.onPrimary
 						)
 
 						Switch(
@@ -345,9 +345,7 @@ fun AddTaskScreen(
 							onEvent(AddEditScreenEvent.OnAddTaskClick(task))
 							onBack()
 						} else {
-							showCustomSnackbar(errorMessage, actionText = "ok") {
-								//On tap events will be here
-							}
+							showCustomSnackbar(errorMessage)
 						}
 					},
 					colors = ButtonDefaults.buttonColors(

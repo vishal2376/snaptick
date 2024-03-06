@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,7 +31,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,8 +39,8 @@ import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.common.taskDescTextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
-import com.vishal2376.snaptick.ui.theme.Green
-import com.vishal2376.snaptick.ui.theme.LightGray
+import com.vishal2376.snaptick.ui.theme.DarkGreen
+import com.vishal2376.snaptick.ui.theme.LightGreen
 import com.vishal2376.snaptick.ui.theme.priorityColors
 import com.vishal2376.snaptick.util.DummyTasks
 
@@ -113,7 +113,7 @@ fun TaskComponent(
 						Icon(
 							painter = painterResource(id = R.drawable.ic_check_circle),
 							contentDescription = null,
-							tint = Green,
+							tint = if (isSystemInDarkTheme()) LightGreen else DarkGreen,
 							modifier = Modifier.size(20.dp)
 						)
 					} else {
@@ -121,7 +121,7 @@ fun TaskComponent(
 							.size(20.dp)
 							.border(
 								width = 2.dp,
-								color = LightGray,
+								color = MaterialTheme.colorScheme.onSecondary,
 								shape = CircleShape
 							),
 							contentAlignment = Alignment.Center,
@@ -143,7 +143,7 @@ fun TaskComponent(
 								.basicMarquee(delayMillis = 1000),
 							text = task.title,
 							style = taskTextStyle,
-							color = Color.White
+							color = MaterialTheme.colorScheme.onPrimary
 						)
 						Spacer(modifier = Modifier.height(4.dp))
 						Row(
@@ -154,19 +154,19 @@ fun TaskComponent(
 								painter = painterResource(id = R.drawable.ic_clock),
 								contentDescription = null,
 								modifier = Modifier.size(15.dp),
-								tint = LightGray
+								tint = MaterialTheme.colorScheme.onSecondary
 							)
 							Text(
 								text = task.getFormattedTime(),
 								style = taskDescTextStyle,
-								color = LightGray
+								color = MaterialTheme.colorScheme.onSecondary
 							)
 							if (task.reminder) {
 								Icon(
 									imageVector = Icons.Default.Notifications,
 									contentDescription = null,
 									modifier = Modifier.size(15.dp),
-									tint = LightGray
+									tint = MaterialTheme.colorScheme.onSecondary
 								)
 							}
 							if (task.isRepeated) {
@@ -174,7 +174,7 @@ fun TaskComponent(
 									imageVector = Icons.Default.Refresh,
 									contentDescription = null,
 									modifier = Modifier.size(15.dp),
-									tint = LightGray
+									tint = MaterialTheme.colorScheme.onSecondary
 								)
 							}
 						}
@@ -188,7 +188,7 @@ fun TaskComponent(
 					) {
 						Icon(
 							painter = painterResource(id = R.drawable.ic_timer),
-							tint = LightGray,
+							tint = MaterialTheme.colorScheme.onSecondary,
 							contentDescription = null
 						)
 					}
