@@ -43,6 +43,7 @@ import com.vishal2376.snaptick.ui.theme.DarkGreen
 import com.vishal2376.snaptick.ui.theme.LightGreen
 import com.vishal2376.snaptick.ui.theme.priorityColors
 import com.vishal2376.snaptick.util.DummyTasks
+import java.time.LocalDate
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -51,7 +52,8 @@ fun TaskComponent(
 	onEdit: (Int) -> Unit,
 	onComplete: (Int) -> Unit,
 	onPomodoro: (Int) -> Unit,
-	animDelay: Int = 100
+	animDelay: Int = 100,
+	upcomingDayOfWeek: String = ""
 ) {
 
 	val alphaAnimation = remember { Animatable(initialValue = 0f) }
@@ -101,33 +103,34 @@ fun TaskComponent(
 				verticalAlignment = Alignment.CenterVertically,
 				horizontalArrangement = Arrangement.spacedBy(8.dp)
 			) {
+				if (task.date.isEqual(LocalDate.now())) {
+					IconButton(
+						onClick = { onComplete(task.id) },
+						modifier = Modifier
+							.size(32.dp)
+							.weight(0.1f)
+					) {
 
-				IconButton(
-					onClick = { onComplete(task.id) },
-					modifier = Modifier
-						.size(32.dp)
-						.weight(0.1f)
-				) {
+						if (task.isCompleted) {
+							Icon(
+								painter = painterResource(id = R.drawable.ic_check_circle),
+								contentDescription = null,
+								tint = if (isSystemInDarkTheme()) LightGreen else DarkGreen,
+								modifier = Modifier.size(20.dp)
+							)
+						} else {
+							Box(modifier = Modifier
+								.size(20.dp)
+								.border(
+									width = 2.dp,
+									color = MaterialTheme.colorScheme.onSecondary,
+									shape = CircleShape
+								),
+								contentAlignment = Alignment.Center,
+								content = {})
+						}
 
-					if (task.isCompleted) {
-						Icon(
-							painter = painterResource(id = R.drawable.ic_check_circle),
-							contentDescription = null,
-							tint = if (isSystemInDarkTheme()) LightGreen else DarkGreen,
-							modifier = Modifier.size(20.dp)
-						)
-					} else {
-						Box(modifier = Modifier
-							.size(20.dp)
-							.border(
-								width = 2.dp,
-								color = MaterialTheme.colorScheme.onSecondary,
-								shape = CircleShape
-							),
-							contentAlignment = Alignment.Center,
-							content = {})
 					}
-
 				}
 
 				Row(
@@ -177,11 +180,18 @@ fun TaskComponent(
 									tint = MaterialTheme.colorScheme.onSecondary
 								)
 							}
+							if (upcomingDayOfWeek.isNotEmpty()) {
+								Text(
+									text = upcomingDayOfWeek,
+									style = taskDescTextStyle,
+									color = MaterialTheme.colorScheme.onSecondary
+								)
+							}
 						}
 					}
 
 				}
-				if (!task.isCompleted) {
+				if (!task.isCompleted && task.date.isEqual(LocalDate.now())) {
 					IconButton(
 						onClick = { onPomodoro(task.id) },
 						modifier = Modifier.weight(0.1f)
@@ -202,9 +212,11 @@ fun TaskComponent(
 @Preview
 @Composable
 fun TaskComponentPreview() {
-	val task = DummyTasks.tasks[0]
+	var task = DummyTasks.tasks[0]
+	task = task.copy(date = LocalDate.now().plusDays(1))
 	TaskComponent(task = task,
 		{},
 		{},
-		{})
+		{}, 100, "Sun"
+	)
 }
