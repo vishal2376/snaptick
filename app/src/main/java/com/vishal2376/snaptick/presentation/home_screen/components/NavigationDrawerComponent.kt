@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -42,7 +44,8 @@ import com.vishal2376.snaptick.ui.theme.Blue
 fun NavigationDrawerComponent(
 	appTheme: AppTheme,
 	buildVersionCode: String,
-	onMainEvent: (MainEvent) -> Unit
+	onMainEvent: (MainEvent) -> Unit,
+	onClickThisWeek: () -> Unit
 ) {
 
 	val context = LocalContext.current
@@ -101,6 +104,13 @@ fun NavigationDrawerComponent(
 			)
 		}
 
+		NavDrawerItemUI(
+			icon = Icons.Default.CalendarMonth,
+			label = "This Week"
+		) {
+			onClickThisWeek()
+		}
+
 		Divider(thickness = 2.dp, color = MaterialTheme.colorScheme.secondary)
 
 		Column(
@@ -140,5 +150,5 @@ fun NavDrawerItemUI(icon: ImageVector, label: String, onClick: () -> Unit) {
 @Preview(widthDp = 350)
 @Composable
 fun NavigationDrawerComponentPreview() {
-	NavigationDrawerComponent(AppTheme.Amoled, "0.1", {})
+	NavigationDrawerComponent(AppTheme.Amoled, "0.1", {}, {})
 }
