@@ -93,13 +93,8 @@ fun HomeScreen(
 	onClickFreeTimeInfo: () -> Unit,
 	onPomodoroTask: (id: Int) -> Unit,
 ) {
-
-
-	val completedTasks = mutableListOf<Task>()
-	val inCompletedTasks = mutableListOf<Task>()
-
-	tasks.filterTo(completedTasks) { it.isCompleted }
-	tasks.filterTo(inCompletedTasks) { !it.isCompleted }
+	val completedTasks = tasks.filter { it.isCompleted }
+	val inCompletedTasks = tasks.filter { !it.isCompleted }
 
 	// calc free time
 	val totalTaskTime = inCompletedTasks.sumOf { it.getDuration(checkPastTask = true) }
