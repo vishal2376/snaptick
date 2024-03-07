@@ -1,4 +1,4 @@
-package com.vishal2376.snaptick.this_week_task_screen
+package com.vishal2376.snaptick.presentation.this_week_task_screen
 
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
