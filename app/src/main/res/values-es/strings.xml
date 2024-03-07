@@ -34,4 +34,5 @@
     <string name="amoled_theme">Tema Amolado</string>
     <string name="sort_tasks_by">Ordenar tareas por</string>
     <string name="settings">Settings</string>
+    <string name="this_week">This Week</string>
 </resources>
