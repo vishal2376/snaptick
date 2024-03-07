@@ -53,8 +53,7 @@ fun TaskComponent(
 	onEdit: (Int) -> Unit,
 	onComplete: (Int) -> Unit,
 	onPomodoro: (Int) -> Unit,
-	animDelay: Int = 100,
-	repeatedWeekdays: String = ""
+	animDelay: Int = 100
 ) {
 
 	val alphaAnimation = remember { Animatable(initialValue = 0f) }
@@ -132,6 +131,16 @@ fun TaskComponent(
 						}
 
 					}
+				} else {
+					Box(modifier = Modifier
+						.size(20.dp)
+						.border(
+							width = 2.dp,
+							color = MaterialTheme.colorScheme.onSecondary,
+							shape = CircleShape
+						),
+						contentAlignment = Alignment.Center,
+						content = {})
 				}
 
 				Row(
@@ -182,8 +191,9 @@ fun TaskComponent(
 								)
 							}
 						}
-						if (repeatedWeekdays.isNotEmpty()) {
-							Row(modifier = Modifier.padding(top = 2.dp),
+						if (task.repeatWeekdays.isNotEmpty()) {
+							Row(
+								modifier = Modifier.padding(top = 2.dp),
 								horizontalArrangement = Arrangement.spacedBy(4.dp),
 								verticalAlignment = Alignment.CenterVertically
 							) {
@@ -194,7 +204,7 @@ fun TaskComponent(
 									tint = MaterialTheme.colorScheme.onSecondary
 								)
 								Text(
-									text = repeatedWeekdays,
+									text = task.getWeekDaysTitle(),
 									style = taskDescTextStyle,
 									color = MaterialTheme.colorScheme.onSecondary
 								)
@@ -230,6 +240,6 @@ fun TaskComponentPreview() {
 		task = task,
 		{},
 		{},
-		{}, 100, "Sun, Mon"
+		{}
 	)
 }

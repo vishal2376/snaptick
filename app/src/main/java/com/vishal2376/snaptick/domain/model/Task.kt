@@ -32,6 +32,14 @@ data class Task(
 		return repeatWeekdays.split(",").map { it.toInt() }
 	}
 
+	fun getWeekDaysTitle(): String {
+		val weekDays = getRepeatWeekList()
+		val weekdaysTitle = arrayOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
+
+		val selectedDays = weekDays.map { weekdaysTitle[it] }
+		return selectedDays.joinToString(", ")
+	}
+
 	fun getFormattedTime(): String {
 		val dtf = DateTimeFormatter.ofPattern("hh:mm a")
 		val startTimeFormat = startTime.format(dtf)
