@@ -55,7 +55,8 @@ fun WeekDaysComponent(
 						selectedDays
 					}
 				}
-				onChange(selectedDays.joinToString(separator = ","))
+				val sortedDaysList = selectedDays.sorted()
+				onChange(sortedDaysList.joinToString(separator = ","))
 			}
 		}
 	}
