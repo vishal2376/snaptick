@@ -34,4 +34,5 @@
     <string name="amoled_theme">Amoled tema</string>
     <string name="sort_tasks_by">Sortera uppgifter efter</string>
     <string name="settings">Settings</string>
+    <string name="this_week">This Week</string>
 </resources>
