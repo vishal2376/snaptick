@@ -16,12 +16,14 @@ import com.vishal2376.snaptick.presentation.completed_task_screen.CompletedTaskS
 import com.vishal2376.snaptick.presentation.free_time_screen.FreeTimeScreen
 import com.vishal2376.snaptick.presentation.home_screen.HomeScreen
 import com.vishal2376.snaptick.presentation.pomodoro_screen.PomodoroScreen
+import com.vishal2376.snaptick.presentation.this_week_task_screen.ThisWeekTaskScreen
 import com.vishal2376.snaptick.presentation.viewmodels.TaskViewModel
 
 @Composable
 fun AppNavigation(taskViewModel: TaskViewModel) {
 	val navController = rememberNavController()
 	val todayTasks by taskViewModel.todayTaskList.collectAsStateWithLifecycle(initialValue = emptyList())
+	val allTasks by taskViewModel.taskList.collectAsStateWithLifecycle(initialValue = emptyList())
 
 	NavHost(
 		navController = navController,
@@ -54,6 +56,16 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 			CompletedTaskScreen(
 				tasks = todayTasks,
 				onEvent = taskViewModel::onEvent,
+				onBack = {
+					if (navController.isValidBackStack) {
+						navController.popBackStack()
+					}
+				})
+		}
+
+		composable(route = Routes.ThisWeekTaskScreen.name) {
+			ThisWeekTaskScreen(
+				tasks = allTasks,
 				onBack = {
 					if (navController.isValidBackStack) {
 						navController.popBackStack()
