@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Icon
@@ -53,7 +54,7 @@ fun TaskComponent(
 	onComplete: (Int) -> Unit,
 	onPomodoro: (Int) -> Unit,
 	animDelay: Int = 100,
-	upcomingDayOfWeek: String = ""
+	repeatedWeekdays: String = ""
 ) {
 
 	val alphaAnimation = remember { Animatable(initialValue = 0f) }
@@ -180,9 +181,20 @@ fun TaskComponent(
 									tint = MaterialTheme.colorScheme.onSecondary
 								)
 							}
-							if (upcomingDayOfWeek.isNotEmpty()) {
+						}
+						if (repeatedWeekdays.isNotEmpty()) {
+							Row(modifier = Modifier.padding(top = 2.dp),
+								horizontalArrangement = Arrangement.spacedBy(4.dp),
+								verticalAlignment = Alignment.CenterVertically
+							) {
+								Icon(
+									imageVector = Icons.Default.CalendarMonth,
+									contentDescription = null,
+									modifier = Modifier.size(15.dp),
+									tint = MaterialTheme.colorScheme.onSecondary
+								)
 								Text(
-									text = upcomingDayOfWeek,
+									text = repeatedWeekdays,
 									style = taskDescTextStyle,
 									color = MaterialTheme.colorScheme.onSecondary
 								)
@@ -214,9 +226,10 @@ fun TaskComponent(
 fun TaskComponentPreview() {
 	var task = DummyTasks.tasks[0]
 	task = task.copy(date = LocalDate.now().plusDays(1))
-	TaskComponent(task = task,
+	TaskComponent(
+		task = task,
 		{},
 		{},
-		{}, 100, "Sun"
+		{}, 100, "Sun, Mon"
 	)
 }
