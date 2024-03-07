@@ -34,7 +34,7 @@ data class Task(
 
 	fun getWeekDaysTitle(): String {
 		val weekDays = getRepeatWeekList()
-		val weekdaysTitle = arrayOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
+		val weekdaysTitle = arrayOf("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
 
 		val selectedDays = weekDays.map { weekdaysTitle[it] }
 		return selectedDays.joinToString(", ")
