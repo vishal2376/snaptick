@@ -103,14 +103,13 @@ fun TaskComponent(
 				verticalAlignment = Alignment.CenterVertically,
 				horizontalArrangement = Arrangement.spacedBy(8.dp)
 			) {
-				if (task.date.isEqual(LocalDate.now())) {
-					IconButton(
-						onClick = { onComplete(task.id) },
-						modifier = Modifier
-							.size(32.dp)
-							.weight(0.1f)
-					) {
-
+				IconButton(
+					onClick = { onComplete(task.id) },
+					modifier = Modifier
+						.size(32.dp)
+						.weight(0.1f)
+				) {
+					if (task.date.isEqual(LocalDate.now())) {
 						if (task.isCompleted) {
 							Icon(
 								painter = painterResource(id = R.drawable.ic_check_circle),
@@ -130,19 +129,18 @@ fun TaskComponent(
 								content = {})
 						}
 
+					} else {
+						Box(modifier = Modifier
+							.size(20.dp)
+							.border(
+								width = 2.dp,
+								color = MaterialTheme.colorScheme.onSecondary,
+								shape = CircleShape
+							),
+							contentAlignment = Alignment.Center,
+							content = {})
 					}
-				} else {
-					Box(modifier = Modifier
-						.size(20.dp)
-						.border(
-							width = 2.dp,
-							color = MaterialTheme.colorScheme.onSecondary,
-							shape = CircleShape
-						),
-						contentAlignment = Alignment.Center,
-						content = {})
 				}
-
 				Row(
 					modifier = Modifier.weight(0.8f),
 					verticalAlignment = Alignment.CenterVertically,
@@ -158,7 +156,7 @@ fun TaskComponent(
 							style = taskTextStyle,
 							color = MaterialTheme.colorScheme.onPrimary
 						)
-						Spacer(modifier = Modifier.height(4.dp))
+						Spacer(modifier = Modifier.height(8.dp))
 						Row(
 							horizontalArrangement = Arrangement.spacedBy(4.dp),
 							verticalAlignment = Alignment.CenterVertically
