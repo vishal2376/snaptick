@@ -104,12 +104,7 @@ fun NavigationDrawerComponent(
 			)
 		}
 
-		NavDrawerItemUI(
-			icon = Icons.Default.CalendarMonth,
-			label = "This Week"
-		) {
-			onClickThisWeek()
-		}
+
 
 		Divider(thickness = 2.dp, color = MaterialTheme.colorScheme.secondary)
 
@@ -117,6 +112,11 @@ fun NavigationDrawerComponent(
 			modifier = Modifier.padding(start = 32.dp),
 			verticalArrangement = Arrangement.spacedBy(32.dp)
 		) {
+			NavDrawerItemUI(
+				icon = Icons.Default.CalendarMonth,
+				label = "This Week"
+			) { onClickThisWeek() }
+
 			NavDrawerItem.entries.forEach {
 				NavDrawerItemUI(icon = it.icon, label = it.display) {
 					onMainEvent(MainEvent.OnClickNavDrawerItem(context, it))
