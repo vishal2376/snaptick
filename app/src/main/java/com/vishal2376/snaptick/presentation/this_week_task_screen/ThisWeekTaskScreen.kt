@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
+import com.vishal2376.snaptick.presentation.home_screen.HomeScreenEvent
 import com.vishal2376.snaptick.presentation.home_screen.components.EmptyTaskComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.TaskComponent
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
@@ -41,6 +42,8 @@ import com.vishal2376.snaptick.util.DummyTasks
 @Composable
 fun ThisWeekTaskScreen(
 	tasks: List<Task>,
+	onEvent: (HomeScreenEvent) -> Unit,
+	onEditTask: (id: Int) -> Unit,
 	onBack: () -> Unit
 ) {
 
@@ -90,7 +93,10 @@ fun ThisWeekTaskScreen(
 						) {
 							TaskComponent(
 								task = task,
-								onEdit = {},
+								onEdit = {
+									onEvent(HomeScreenEvent.OnEditTask(it))
+									onEditTask(it)
+								},
 								onComplete = {},
 								onPomodoro = {},
 								animDelay = index * Constants.LIST_ANIMATION_DELAY
@@ -111,7 +117,7 @@ fun ThisWeekTaskScreenPreview() {
 		val tasks = DummyTasks.tasks
 		ThisWeekTaskScreen(
 			tasks = tasks,
-			{}
+			{}, {}, {}
 		)
 	}
 }
