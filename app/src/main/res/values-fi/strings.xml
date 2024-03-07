@@ -34,4 +34,5 @@
     <string name="amoled_theme">Muutettu Teema</string>
     <string name="sort_tasks_by">Järjestä tehtävät</string>
     <string name="settings">Settings</string>
+    <string name="this_week">This Week</string>
 </resources>
