@@ -150,7 +150,12 @@ fun HomeScreen(
 					appState.theme,
 					appState.buildVersion,
 					onMainEvent,
-					onClickThisWeek
+					onClickThisWeek = {
+						onClickThisWeek.invoke()
+						scope.launch {
+							drawerState.close()
+						}
+					}
 				)
 			}
 		}) {
@@ -258,7 +263,6 @@ fun HomeScreen(
 							},
 						onClick = {
 							if (inCompletedTasks.isEmpty()) {
-//								CustomSnackBar("Add Task to analyze", 1000)
 								showCustomSnackbar("Add Tasks to Analyze")
 							} else {
 								onClickFreeTimeInfo()
