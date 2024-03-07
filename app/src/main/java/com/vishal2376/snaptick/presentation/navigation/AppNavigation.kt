@@ -44,6 +44,9 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 				onClickCompletedInfo = {
 					navController.navigate(route = Routes.CompletedTaskScreen.name)
 				},
+				onClickThisWeek = {
+					navController.navigate(route = Routes.CompletedTaskScreen.name)
+				},
 				onClickFreeTimeInfo = {
 					navController.navigate(route = Routes.FreeTimeScreen.name)
 				},

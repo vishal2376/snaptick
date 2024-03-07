@@ -89,6 +89,7 @@ fun HomeScreen(
 	onEditTask: (id: Int) -> Unit,
 	onAddTask: () -> Unit,
 	onClickCompletedInfo: () -> Unit,
+	onClickThisWeek: () -> Unit,
 	onClickFreeTimeInfo: () -> Unit,
 	onPomodoroTask: (id: Int) -> Unit,
 ) {
@@ -145,7 +146,7 @@ fun HomeScreen(
 		drawerState = drawerState,
 		drawerContent = {
 			ModalDrawerSheet(drawerContainerColor = MaterialTheme.colorScheme.primary) {
-				NavigationDrawerComponent(appState.theme, appState.buildVersion, onMainEvent)
+				NavigationDrawerComponent(appState.theme, appState.buildVersion, onMainEvent,onClickThisWeek())
 			}
 		}) {
 		Scaffold(topBar = {
@@ -373,6 +374,6 @@ fun HomeScreen(
 fun HomeScreenPreview() {
 	SnaptickTheme {
 		val tasks = DummyTasks.tasks
-		HomeScreen(tasks = tasks, MainState(), {}, {}, {}, {}, {}, {}, {})
+		HomeScreen(tasks = tasks, MainState(), {}, {}, {}, {}, {}, {}, {},{})
 	}
 }
