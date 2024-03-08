@@ -111,7 +111,7 @@ fun NavigationDrawerComponent(
 		Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
 			NavDrawerItemUI(
 				icon = Icons.Default.CalendarMonth,
-				label = "This Week"
+				label = stringResource(R.string.this_week)
 			) { onClickThisWeek() }
 
 			NavDrawerItem.entries.forEach {
