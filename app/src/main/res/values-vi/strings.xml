@@ -31,8 +31,8 @@
     <string name="analysis">Phân tích</string>
     <string name="free_time">Thời gian Rảnh</string>
     <string name="no_tasks">Không có Nhiệm vụ</string>
-    <string name="amoled_theme">Chủ đề Amoled</string>
     <string name="sort_tasks_by">Sắp xếp Nhiệm vụ theo</string>
     <string name="settings">Thiết đặt</string>
     <string name="this_week">Tuần này</string>
+    <string name="app_theme">Theme</string>
 </resources>
