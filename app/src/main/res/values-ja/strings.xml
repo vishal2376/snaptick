@@ -31,6 +31,6 @@
     <string name="analysis">分析</string>
     <string name="free_time">空き時間</string>
     <string name="no_tasks">タスクなし</string>
-    <string name="amoled_theme">Amoled Theme</string>
+    <string name="theme">Amoled Theme</string>
     <string name="sort_tasks_by">タスクを並べ替える</string>
 </resources>

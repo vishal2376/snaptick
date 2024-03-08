@@ -31,6 +31,6 @@
     <string name="analysis">Analyse</string>
     <string name="free_time">Ledig Tid</string>
     <string name="no_tasks">Ingen Opgaver</string>
-    <string name="amoled_theme">Amoled Tema</string>
+    <string name="theme">Amoled Tema</string>
     <string name="sort_tasks_by">Sorter opgaver efter</string>
 </resources>

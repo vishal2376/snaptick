@@ -31,6 +31,6 @@
     <string name="analysis">Ανάλυση</string>
     <string name="free_time">Ελεύθερος Χρόνος</string>
     <string name="no_tasks">Καμία Εργασία</string>
-    <string name="amoled_theme">Amoled Θέμα</string>
+    <string name="theme">Amoled Θέμα</string>
     <string name="sort_tasks_by">Ταξινόμηση εργασιών κατά</string>
 </resources>

@@ -16,8 +16,6 @@ import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -38,7 +36,6 @@ import com.vishal2376.snaptick.presentation.common.h3TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.presentation.main.MainEvent
 import com.vishal2376.snaptick.ui.theme.AppTheme
-import com.vishal2376.snaptick.ui.theme.Blue
 
 @Composable
 fun NavigationDrawerComponent(
@@ -87,21 +84,13 @@ fun NavigationDrawerComponent(
 			horizontalArrangement = Arrangement.spacedBy(16.dp)
 		) {
 			Text(
-				text = stringResource(R.string.amoled_theme),
+				text = stringResource(R.string.theme),
 				style = h3TextStyle,
 				color = MaterialTheme.colorScheme.onPrimary
 			)
-			Switch(
-				checked = appTheme == AppTheme.Amoled,
-				onCheckedChange = {
-					onMainEvent(MainEvent.ToggleAmoledTheme(it, context))
-				},
-				colors = SwitchDefaults.colors(
-					checkedThumbColor = Blue,
-					checkedTrackColor = MaterialTheme.colorScheme.secondary,
-					uncheckedTrackColor = MaterialTheme.colorScheme.secondary
-				)
-			)
+			ThemeOptionComponent(defaultTheme = appTheme){
+				onMainEvent(MainEvent.UpdateAppTheme(it,context))
+			}
 		}
 
 

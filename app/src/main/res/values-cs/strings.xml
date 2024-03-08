@@ -31,6 +31,6 @@
     <string name="analysis">Analýza</string>
     <string name="free_time">Volný čas</string>
     <string name="no_tasks">Žádné úkoly</string>
-    <string name="amoled_theme">Amoled téma</string>
+    <string name="theme">Amoled téma</string>
     <string name="sort_tasks_by">Seřadit úkoly podle</string>
 </resources>

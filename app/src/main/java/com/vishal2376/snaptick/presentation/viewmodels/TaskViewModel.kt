@@ -61,7 +61,7 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 	// Main App Events
 	fun onEvent(event: MainEvent) {
 		when (event) {
-			is MainEvent.ToggleAmoledTheme -> {
+			is MainEvent.UpdateAppTheme -> {
 				viewModelScope.launch {
 					appState = if (event.isEnabled) {
 						appState.copy(theme = AppTheme.Amoled)

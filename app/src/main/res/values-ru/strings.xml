@@ -31,6 +31,6 @@
     <string name="analysis">Анализ</string>
     <string name="free_time">Свободное время</string>
     <string name="no_tasks">Нет задач</string>
-    <string name="amoled_theme">Amoled тема</string>
+    <string name="theme">Amoled тема</string>
     <string name="sort_tasks_by">Сортировать задачи по</string>
 </resources>

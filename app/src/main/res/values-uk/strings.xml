@@ -31,6 +31,6 @@
     <string name="analysis">Аналіз</string>
     <string name="free_time">Вільний час</string>
     <string name="no_tasks">Немає завдань</string>
-    <string name="amoled_theme">Сумарна тема</string>
+    <string name="theme">Сумарна тема</string>
     <string name="sort_tasks_by">Сортувати завдання за</string>
 </resources>
