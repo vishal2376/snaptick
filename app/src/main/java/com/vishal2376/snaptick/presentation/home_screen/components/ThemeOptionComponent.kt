@@ -73,7 +73,7 @@ fun ThemeOptionItem(
 		Box(
 			modifier = Modifier
 				.size(24.dp)
-				.border(1.dp, borderColor, CircleShape)
+				.border(2.dp, borderColor, CircleShape)
 				.background(bgColor, CircleShape)
 				.clickable { onClick() }
 		) {}

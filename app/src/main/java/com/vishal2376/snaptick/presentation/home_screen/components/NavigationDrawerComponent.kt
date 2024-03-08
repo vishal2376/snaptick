@@ -35,12 +35,12 @@ import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.h3TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.presentation.main.MainEvent
+import com.vishal2376.snaptick.presentation.main.MainState
 import com.vishal2376.snaptick.ui.theme.AppTheme
 
 @Composable
 fun NavigationDrawerComponent(
-	appTheme: AppTheme,
-	buildVersionCode: String,
+	appState: MainState,
 	onMainEvent: (MainEvent) -> Unit,
 	onClickThisWeek: () -> Unit
 ) {
@@ -61,7 +61,7 @@ fun NavigationDrawerComponent(
 			horizontalAlignment = Alignment.CenterHorizontally
 		) {
 			Image(
-				painter = painterResource(if (appTheme == AppTheme.Amoled) R.drawable.app_logo_amoled else R.drawable.app_logo),
+				painter = painterResource(if (appState.theme == AppTheme.Amoled) R.drawable.app_logo_amoled else R.drawable.app_logo),
 				contentDescription = null,
 				modifier = Modifier.size(64.dp),
 			)
@@ -72,7 +72,7 @@ fun NavigationDrawerComponent(
 				color = MaterialTheme.colorScheme.onPrimary
 			)
 			Text(
-				text = stringResource(R.string.buildVersion, buildVersionCode),
+				text = stringResource(R.string.buildVersion, appState.buildVersion),
 				fontFamily = fontRobotoMono,
 				fontSize = 15.sp,
 				fontWeight = FontWeight.Bold,
@@ -88,7 +88,7 @@ fun NavigationDrawerComponent(
 				style = h3TextStyle,
 				color = MaterialTheme.colorScheme.onPrimary
 			)
-			ThemeOptionComponent(defaultTheme = appTheme) {
+			ThemeOptionComponent(defaultTheme = appState.theme) {
 				onMainEvent(MainEvent.UpdateAppTheme(it, context))
 			}
 		}
@@ -137,5 +137,5 @@ fun NavDrawerItemUI(icon: ImageVector, label: String, onClick: () -> Unit) {
 @Preview(widthDp = 350)
 @Composable
 fun NavigationDrawerComponentPreview() {
-	NavigationDrawerComponent(AppTheme.Amoled, "0.1", {}, {})
+	NavigationDrawerComponent(MainState(), {}, {})
 }

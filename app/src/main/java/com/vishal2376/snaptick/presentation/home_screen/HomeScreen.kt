@@ -146,8 +146,7 @@ fun HomeScreen(
 		drawerContent = {
 			ModalDrawerSheet(drawerContainerColor = MaterialTheme.colorScheme.primary) {
 				NavigationDrawerComponent(
-					appState.theme,
-					appState.buildVersion,
+					appState,
 					onMainEvent,
 					onClickThisWeek = {
 						onClickThisWeek.invoke()
