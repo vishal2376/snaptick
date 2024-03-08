@@ -33,4 +33,5 @@
     <string name="no_tasks">Немає завдань</string>
     <string name="theme">Сумарна тема</string>
     <string name="sort_tasks_by">Сортувати завдання за</string>
+    <string name="app_theme">Theme</string>
 </resources>

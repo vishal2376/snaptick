@@ -33,4 +33,5 @@
     <string name="no_tasks">Inga uppgifter</string>
     <string name="theme">Amoled tema</string>
     <string name="sort_tasks_by">Sortera uppgifter efter</string>
+    <string name="app_theme">Theme</string>
 </resources>

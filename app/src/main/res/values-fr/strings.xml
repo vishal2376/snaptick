@@ -33,4 +33,5 @@
     <string name="no_tasks">Aucune tâche</string>
     <string name="theme">Thème Amoled</string>
     <string name="sort_tasks_by">Trier les tâches par</string>
+    <string name="app_theme">Theme</string>
 </resources>

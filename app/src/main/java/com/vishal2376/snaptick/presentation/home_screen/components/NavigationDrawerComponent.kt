@@ -84,12 +84,12 @@ fun NavigationDrawerComponent(
 			horizontalArrangement = Arrangement.spacedBy(16.dp)
 		) {
 			Text(
-				text = stringResource(R.string.theme),
+				text = stringResource(R.string.app_theme),
 				style = h3TextStyle,
 				color = MaterialTheme.colorScheme.onPrimary
 			)
-			ThemeOptionComponent(defaultTheme = appTheme){
-				onMainEvent(MainEvent.UpdateAppTheme(it,context))
+			ThemeOptionComponent(defaultTheme = appTheme) {
+				onMainEvent(MainEvent.UpdateAppTheme(it, context))
 			}
 		}
 

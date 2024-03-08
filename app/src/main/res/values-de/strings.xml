@@ -33,4 +33,5 @@
     <string name="no_tasks">Keine Aufgaben</string>
     <string name="theme">Aufgepeitschtes Thema</string>
     <string name="sort_tasks_by">Aufgaben sortieren nach</string>
+    <string name="app_theme">Theme</string>
 </resources>

@@ -33,4 +33,5 @@
     <string name="no_tasks">لا توجد مهام</string>
     <string name="theme">قالب موهول</string>
     <string name="sort_tasks_by">ترتيب المهام حسب</string>
+    <string name="app_theme">Theme</string>
 </resources>

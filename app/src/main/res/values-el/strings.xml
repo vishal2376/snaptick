@@ -33,4 +33,5 @@
     <string name="no_tasks">Καμία Εργασία</string>
     <string name="theme">Amoled Θέμα</string>
     <string name="sort_tasks_by">Ταξινόμηση εργασιών κατά</string>
+    <string name="app_theme">Theme</string>
 </resources>

@@ -33,4 +33,5 @@
     <string name="no_tasks">Žádné úkoly</string>
     <string name="theme">Amoled téma</string>
     <string name="sort_tasks_by">Seřadit úkoly podle</string>
+    <string name="app_theme">Theme</string>
 </resources>

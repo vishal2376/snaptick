@@ -31,6 +31,7 @@
     <string name="analysis">Analysis</string>
     <string name="free_time">Free Time</string>
     <string name="no_tasks">No Tasks</string>
-    <string name="theme">Amoled Theme</string>
+    <string name="theme">Theme</string>
     <string name="sort_tasks_by">Sort Tasks by</string>
+    <string name="app_theme">Theme</string>
 </resources>
