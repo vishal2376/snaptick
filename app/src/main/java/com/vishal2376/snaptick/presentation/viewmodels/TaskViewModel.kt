@@ -63,11 +63,7 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 		when (event) {
 			is MainEvent.UpdateAppTheme -> {
 				viewModelScope.launch {
-					appState = if (event.isEnabled) {
-						appState.copy(theme = AppTheme.Amoled)
-					} else {
-						appState.copy(theme = AppTheme.Dark)
-					}
+					appState = appState.copy(theme = event.theme)
 
 					PreferenceManager.savePreferences(
 						event.context,
