@@ -108,10 +108,7 @@ fun NavigationDrawerComponent(
 
 		Divider(thickness = 2.dp, color = MaterialTheme.colorScheme.secondary)
 
-		Column(
-			modifier = Modifier.padding(start = 32.dp),
-			verticalArrangement = Arrangement.spacedBy(32.dp)
-		) {
+		Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
 			NavDrawerItemUI(
 				icon = Icons.Default.CalendarMonth,
 				label = "This Week"
@@ -133,7 +130,8 @@ fun NavDrawerItemUI(icon: ImageVector, label: String, onClick: () -> Unit) {
 	Row(
 		modifier = Modifier
 			.fillMaxWidth()
-			.clickable { onClick() },
+			.clickable { onClick() }
+			.padding(32.dp, 8.dp),
 		horizontalArrangement = Arrangement.spacedBy(10.dp),
 		verticalAlignment = Alignment.CenterVertically
 	) {
