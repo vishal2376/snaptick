@@ -74,7 +74,6 @@ import com.vishal2376.snaptick.util.Constants
 import com.vishal2376.snaptick.util.DummyTasks
 import com.vishal2376.snaptick.util.getFreeTime
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 
 
 @OptIn(
@@ -94,11 +93,8 @@ fun HomeScreen(
 	onClickFreeTimeInfo: () -> Unit,
 	onPomodoroTask: (id: Int) -> Unit,
 ) {
-	val dayOfWeek = LocalDate.now().dayOfWeek.value - 1
-	val todayTasks = tasks.filter { it.getRepeatWeekList().contains(dayOfWeek) }
-
-	val completedTasks = todayTasks.filter { it.isCompleted }
-	val inCompletedTasks = todayTasks.filter { !it.isCompleted }
+	val completedTasks = tasks.filter { it.isCompleted }
+	val inCompletedTasks = tasks.filter { !it.isCompleted }
 
 	// calc free time
 	val totalTaskTime = inCompletedTasks.sumOf { it.getDuration(checkPastTask = true) }
@@ -108,7 +104,7 @@ fun HomeScreen(
 		appState.totalTaskDuration = totalTaskTime
 	}
 
-	val totalTasks = todayTasks.size
+	val totalTasks = tasks.size
 	val totalCompletedTasks = completedTasks.size
 	val context = LocalContext.current
 

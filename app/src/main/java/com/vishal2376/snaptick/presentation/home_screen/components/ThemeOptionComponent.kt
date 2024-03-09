@@ -30,7 +30,6 @@ import com.vishal2376.snaptick.ui.theme.White500
 
 @Composable
 fun ThemeOptionComponent(
-	modifier: Modifier = Modifier,
 	defaultTheme: AppTheme,
 	onSelect: (AppTheme) -> Unit
 ) {
