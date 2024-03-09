@@ -1,9 +1,9 @@
 package com.vishal2376.snaptick.presentation.main
 
 import android.content.Context
+import com.vishal2376.snaptick.presentation.common.AppTheme
 import com.vishal2376.snaptick.presentation.common.NavDrawerItem
 import com.vishal2376.snaptick.presentation.common.SortTask
-import com.vishal2376.snaptick.ui.theme.AppTheme
 
 sealed class MainEvent {
 	data class UpdateAppTheme(val theme: AppTheme, val context: Context) : MainEvent()

@@ -9,6 +9,7 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import com.vishal2376.snaptick.presentation.common.AppTheme
 
 private val DarkColorScheme = darkColorScheme(
 	primary = Blue500,
@@ -34,9 +35,6 @@ private val LightColorScheme = lightColorScheme(
 	onSecondary = DarkGray,
 )
 
-enum class AppTheme {
-	Light, Dark, Amoled
-}
 
 @Composable
 fun SnaptickTheme(

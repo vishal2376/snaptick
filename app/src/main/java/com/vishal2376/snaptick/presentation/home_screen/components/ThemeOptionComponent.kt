@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.vishal2376.snaptick.ui.theme.AppTheme
+import com.vishal2376.snaptick.presentation.common.AppTheme
 import com.vishal2376.snaptick.ui.theme.Black200
 import com.vishal2376.snaptick.ui.theme.Black500
 import com.vishal2376.snaptick.ui.theme.Blue
