@@ -20,7 +20,7 @@ import com.vishal2376.snaptick.presentation.home_screen.HomeScreenEvent
 import com.vishal2376.snaptick.presentation.main.MainEvent
 import com.vishal2376.snaptick.presentation.main.MainState
 import com.vishal2376.snaptick.util.Constants
-import com.vishal2376.snaptick.util.PreferenceManager
+import com.vishal2376.snaptick.util.SettingsStore
 import com.vishal2376.snaptick.util.openMail
 import com.vishal2376.snaptick.util.openUrl
 import com.vishal2376.snaptick.util.shareApp
@@ -64,23 +64,14 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 			is MainEvent.UpdateAppTheme -> {
 				viewModelScope.launch {
 					appState = appState.copy(theme = event.theme)
-
-					PreferenceManager.savePreferences(
-						event.context,
-						Constants.THEME_KEY,
-						appState.theme.ordinal
-					)
+					SettingsStore(event.context).setTheme(event.theme.ordinal)
 				}
 			}
 
 			is MainEvent.UpdateSortByTask -> {
 				viewModelScope.launch {
-					PreferenceManager.savePreferences(
-						event.context,
-						Constants.SORT_TASK_KEY,
-						event.sortTask.ordinal
-					)
 					appState = appState.copy(sortBy = event.sortTask)
+					SettingsStore(event.context).setSortTask(event.sortTask.ordinal)
 				}
 			}
 
@@ -244,32 +235,24 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 	}
 
 	fun loadAppState(context: Context) {
+		val settingsStore = SettingsStore(context)
+
 		viewModelScope.launch {
-			PreferenceManager.loadPreference(context, Constants.THEME_KEY, defaultValue = 1)
-				.collect {
-					appState = appState.copy(theme = AppTheme.entries[it])
-				}
+			settingsStore.themeKey.collect {
+				appState = appState.copy(theme = AppTheme.entries[it])
+			}
 		}
 
 		viewModelScope.launch {
-			PreferenceManager.loadPreference(context, Constants.STREAK_KEY, defaultValue = 0)
-				.collect {
-					appState = appState.copy(streak = it)
-				}
+			settingsStore.streakKey.collect {
+				appState = appState.copy(streak = it)
+			}
 		}
 
-
 		viewModelScope.launch {
-			PreferenceManager.loadStringPreference(
-				context,
-				Constants.LAST_OPENED_KEY
-			).collect { lastDateString ->
+			settingsStore.lastOpenedKey.collect { lastDateString ->
 				if (lastDateString == "") {
-					PreferenceManager.saveStringPreferences(
-						context,
-						Constants.LAST_OPENED_KEY,
-						LocalDate.now().toString()
-					)
+					settingsStore.setLastOpened(LocalDate.now().toString())
 				} else {
 					val lastDate = LocalDate.parse(lastDateString)
 					val isToday = lastDate.isEqual(LocalDate.now())
@@ -277,24 +260,14 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 
 					if (!isToday) {
 						val newStreak = if (isYesterday) appState.streak + 1 else 0
-						PreferenceManager.savePreferences(context, Constants.STREAK_KEY, newStreak)
-
-						PreferenceManager.saveStringPreferences(
-							context,
-							Constants.LAST_OPENED_KEY,
-							LocalDate.now().toString()
-						)
+						settingsStore.setStreak(newStreak)
+						settingsStore.setLastOpened(LocalDate.now().toString())
 					}
-
 				}
 			}
 
 			viewModelScope.launch {
-				PreferenceManager.loadPreference(
-					context,
-					Constants.SORT_TASK_KEY,
-					defaultValue = appState.sortBy.ordinal
-				).collect {
+				settingsStore.sortTaskKey.collect {
 					appState = appState.copy(sortBy = SortTask.entries[it])
 				}
 			}
