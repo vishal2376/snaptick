@@ -88,6 +88,6 @@ fun PieChartItemComponent(task: Task, itemColor: Color, animDelay: Int = 100) {
 @Preview
 @Composable
 fun PieChartItemComponentPreview() {
-	val task = DummyTasks.tasks[0]
+	val task = DummyTasks.dummyTasks[0]
 	PieChartItemComponent(task, Blue)
 }

@@ -267,7 +267,7 @@ fun PomodoroScreen(
 @Composable
 fun PomodoroScreenPreview() {
 	SnaptickTheme {
-		val task = DummyTasks.tasks[0]
+		val task = DummyTasks.dummyTasks[0]
 		PomodoroScreen(task, {}, {})
 	}
 }

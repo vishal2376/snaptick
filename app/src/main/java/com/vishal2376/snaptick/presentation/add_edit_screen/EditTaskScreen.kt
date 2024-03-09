@@ -373,7 +373,7 @@ fun EditTaskScreen(
 @Composable
 fun EditTaskScreenPreview() {
 	SnaptickTheme {
-		val task = DummyTasks.tasks[0]
+		val task = DummyTasks.dummyTasks[0]
 		EditTaskScreen(task, MainState(), {}, {})
 	}
 }

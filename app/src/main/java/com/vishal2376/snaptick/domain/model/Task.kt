@@ -29,7 +29,11 @@ data class Task(
 	val priority: Int = 0,
 ) {
 	fun getRepeatWeekList(): List<Int> {
-		return repeatWeekdays.split(",").map { it.toInt() }
+		return if (repeatWeekdays.isEmpty())
+			emptyList()
+		else
+			repeatWeekdays.split(",")
+				.map { it.toInt() }
 	}
 
 	fun getWeekDaysTitle(): String {

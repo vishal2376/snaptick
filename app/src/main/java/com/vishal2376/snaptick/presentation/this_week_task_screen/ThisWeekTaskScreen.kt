@@ -31,8 +31,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
-import com.vishal2376.snaptick.presentation.common.durationTextStyle
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
+import com.vishal2376.snaptick.presentation.common.infoTextStyle
 import com.vishal2376.snaptick.presentation.home_screen.HomeScreenEvent
 import com.vishal2376.snaptick.presentation.home_screen.components.EmptyTaskComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.TaskComponent
@@ -86,7 +86,7 @@ fun ThisWeekTaskScreen(
 					)
 					Text(
 						text = LocalDate.now().dayOfWeek.name.take(3),
-						style = durationTextStyle,
+						style = infoTextStyle,
 						color = MaterialTheme.colorScheme.onPrimary
 					)
 				}
@@ -137,7 +137,7 @@ fun ThisWeekTaskScreen(
 @Composable
 fun ThisWeekTaskScreenPreview() {
 	SnaptickTheme {
-		val tasks = DummyTasks.tasks
+		val tasks = DummyTasks.dummyTasks
 		ThisWeekTaskScreen(
 			tasks = tasks,
 			{}, {}, {}

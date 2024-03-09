@@ -232,7 +232,7 @@ fun TaskComponent(
 @Preview
 @Composable
 fun TaskComponentPreview() {
-	var task = DummyTasks.tasks[0]
+	var task = DummyTasks.dummyTasks[0]
 	task = task.copy(date = LocalDate.now().plusDays(1))
 	TaskComponent(
 		task = task,
