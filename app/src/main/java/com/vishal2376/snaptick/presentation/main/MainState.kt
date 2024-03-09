@@ -10,5 +10,5 @@ data class MainState(
 	val freeTime: Long? = null,
 	var totalTaskDuration: Long = 0,
 	val durationList: List<Long> = listOf(30, 60, 90, 0),
-	val streak: Int = 0
+	val streak: Int = -1
 )

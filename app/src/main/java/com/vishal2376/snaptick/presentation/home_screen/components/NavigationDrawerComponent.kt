@@ -88,9 +88,10 @@ fun NavigationDrawerComponent(
 				style = h3TextStyle,
 				color = MaterialTheme.colorScheme.onPrimary
 			)
-			ThemeOptionComponent(defaultTheme = appState.theme) {
-				onMainEvent(MainEvent.UpdateAppTheme(it, context))
-			}
+			if (appState.streak != -1)
+				ThemeOptionComponent(defaultTheme = appState.theme) {
+					onMainEvent(MainEvent.UpdateAppTheme(it, context))
+				}
 		}
 
 
