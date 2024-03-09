@@ -27,7 +27,13 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 	val allTasks by taskViewModel.taskList.collectAsStateWithLifecycle(initialValue = emptyList())
 
 	val dayOfWeek = LocalDate.now().dayOfWeek.value - 1
-	val updatedTodayTasks = todayTasks.filter { it.getRepeatWeekList().contains(dayOfWeek) }
+	val updatedTodayTasks = todayTasks.filter { task ->
+		if (task.isRepeated) {
+			task.getRepeatWeekList().contains(dayOfWeek)
+		} else {
+			true
+		}
+	}
 
 	NavHost(
 		navController = navController,
