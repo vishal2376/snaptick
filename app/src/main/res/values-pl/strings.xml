@@ -31,7 +31,6 @@
     <string name="analysis">Analiza</string>
     <string name="free_time">Wolny czas</string>
     <string name="no_tasks">Brak zadań</string>
-    <string name="theme">Szablon Amoled</string>
     <string name="sort_tasks_by">Sortuj zadania według</string>
     <string name="app_theme">Theme</string>
 </resources>
