@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Snaptick</string>
+    <string name="today_tasks">今日事务</string>
+    <string name="what_would_you_like_to_do">今天你有什么打算？</string>
+    <string name="edit_task">编辑事务</string>
+    <string name="add_task">添加事务</string>
+    <string name="update_task">更新事务</string>
+    <string name="select">选择</string>
+    <string name="completed">已完成</string>
+    <string name="dialog_text">发生未知错误\n\n向开发者发送错误日志？</string>
+    <string name="dialog_title">崩溃报告</string>
+    <string name="dialog_positive">发送</string>
+    <string name="dialog_negative">取消</string>
+    <string name="report_bug">报告BUG</string>
+    <string name="suggestions">建议</string>
+    <string name="buildVersion">v%1$s</string>
+    <string name="delete_task">删除事务?</string>
+    <string name="cancel">取消</string>
+    <string name="delete">删除</string>
+    <string name="custom_duration">自定义持续时间</string>
+    <string name="done">完成</string>
+    <string name="repeat">重复</string>
+    <string name="start_time">开始时间</string>
+    <string name="end_time">结束时间</string>
+    <string name="duration">持续时间</string>
+    <string name="reminder">提醒</string>
+    <string name="custom">自定义</string>
+    <string name="completed_tasks">已经完成的事务</string>
+    <string name="analysis">分析</string>
+    <string name="free_time">空闲时间</string>
+    <string name="no_tasks">无事</string>
+    <string name="sort_tasks_by">事务排序</string>
+    <string name="settings">设置</string>
+    <string name="this_week">本周</string>
+    <string name="app_theme">主题</string>
+</resources>
