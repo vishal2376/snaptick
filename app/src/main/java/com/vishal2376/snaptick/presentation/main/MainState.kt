@@ -1,7 +1,7 @@
 package com.vishal2376.snaptick.presentation.main
 
+import com.vishal2376.snaptick.presentation.common.AppTheme
 import com.vishal2376.snaptick.presentation.common.SortTask
-import com.vishal2376.snaptick.ui.theme.AppTheme
 
 data class MainState(
 	val buildVersion: String = "0.0",
@@ -10,5 +10,5 @@ data class MainState(
 	val freeTime: Long? = null,
 	var totalTaskDuration: Long = 0,
 	val durationList: List<Long> = listOf(30, 60, 90, 0),
-	val streak: Int = 0
+	val streak: Int = -1
 )

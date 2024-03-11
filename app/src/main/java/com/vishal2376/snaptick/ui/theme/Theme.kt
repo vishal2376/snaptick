@@ -9,57 +9,47 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import com.vishal2376.snaptick.presentation.common.AppTheme
 
 val DarkColorScheme = darkColorScheme(
 	primary = Blue500,
 	secondary = Blue200,
-	background = Blue500
+	background = Blue500,
+	onPrimary = White500,
+	onSecondary = LightGray,
 )
 
 val AmoledDarkColorScheme = darkColorScheme(
 	primary = Black500,
 	secondary = Black200,
-	background = Black500
+	background = Black500,
+	onPrimary = White500,
+	onSecondary = LightGray,
 )
 
 private val LightColorScheme = lightColorScheme(
-	primary = Purple40,
-	secondary = PurpleGrey40,
-	tertiary = Pink40
-
-	/* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+	primary = White500,
+	secondary = White200,
+	background = White500,
+	onPrimary = Black500,
+	onSecondary = DarkGray,
 )
 
-enum class AppTheme {
-	Light, Dark, Amoled
-}
 
 @Composable
 fun SnaptickTheme(
-	darkTheme: Boolean = false,
-	// Dynamic color is available on Android 12+
-	dynamicColor: Boolean = false,
 	theme: AppTheme = AppTheme.Dark,
+	dynamicColor: Boolean = false,
 	content: @Composable () -> Unit
 ) {
 	val colorScheme = when (theme) {
 //		dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
 //			val context = LocalContext.current
-//			if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+//			if (isSystemInDarkTheme()) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
 //		}
-
+		AppTheme.Light -> LightColorScheme
 		AppTheme.Dark -> DarkColorScheme
 		AppTheme.Amoled -> AmoledDarkColorScheme
-
-		else -> LightColorScheme
 	}
 	val view = LocalView.current
 	if (!view.isInEditMode) {
@@ -69,7 +59,7 @@ fun SnaptickTheme(
 			WindowCompat.getInsetsController(
 				window,
 				view
-			).isAppearanceLightStatusBars = darkTheme
+			).isAppearanceLightStatusBars = true
 		}
 	}
 

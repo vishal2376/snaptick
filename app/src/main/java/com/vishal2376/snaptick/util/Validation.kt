@@ -15,7 +15,7 @@ fun checkValidTask(
 	val currentDuration = task.getDuration(checkPastTask = true)
 	val startTimeSec = task.startTime.toSecondOfDay()
 
-	if (task.title.isEmpty()) {
+	if (task.title.trim().isEmpty()) {
 		return Pair(false, "Title can't be empty")
 	}
 

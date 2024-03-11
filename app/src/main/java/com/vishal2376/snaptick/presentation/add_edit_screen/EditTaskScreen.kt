@@ -56,17 +56,17 @@ import com.vishal2376.snaptick.presentation.add_edit_screen.components.PriorityC
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.WeekDaysComponent
 import com.vishal2376.snaptick.presentation.common.Priority
 import com.vishal2376.snaptick.presentation.common.ShowTimePicker
+import com.vishal2376.snaptick.presentation.common.SnackbarController.showCustomSnackbar
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.presentation.main.MainState
 import com.vishal2376.snaptick.ui.theme.Blue
-import com.vishal2376.snaptick.ui.theme.Green
+import com.vishal2376.snaptick.ui.theme.LightGreen
 import com.vishal2376.snaptick.ui.theme.Red
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.DummyTasks
 import com.vishal2376.snaptick.util.checkValidTask
-import com.vishal2376.snaptick.util.showToast
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -164,7 +164,7 @@ fun EditTaskScreen(
 						disabledContainerColor = MaterialTheme.colorScheme.secondary,
 						unfocusedIndicatorColor = Color.Transparent,
 						focusedIndicatorColor = Color.Transparent,
-						cursorColor = Color.White
+						cursorColor = MaterialTheme.colorScheme.onPrimary
 					),
 					textStyle = taskTextStyle,
 					onValueChange = {
@@ -193,7 +193,7 @@ fun EditTaskScreen(
 						Text(
 							text = stringResource(R.string.start_time),
 							style = taskTextStyle,
-							color = Green
+							color = LightGreen
 						)
 						Spacer(modifier = Modifier.height(8.dp))
 						ShowTimePicker(
@@ -229,13 +229,13 @@ fun EditTaskScreen(
 					Text(
 						text = stringResource(R.string.start_time),
 						style = h2TextStyle,
-						color = Color.White
+						color = MaterialTheme.colorScheme.onPrimary
 					)
 
 					Text(
 						text = task.getFormattedDuration(),
 						style = taskTextStyle,
-						color = Color.White
+						color = MaterialTheme.colorScheme.onPrimary
 					)
 				}
 				DurationComponent(
@@ -272,7 +272,7 @@ fun EditTaskScreen(
 						Text(
 							text = stringResource(R.string.reminder),
 							style = h2TextStyle,
-							color = Color.White
+							color = MaterialTheme.colorScheme.onPrimary
 						)
 
 						Switch(
@@ -298,7 +298,7 @@ fun EditTaskScreen(
 						Text(
 							text = stringResource(R.string.repeat),
 							style = h2TextStyle,
-							color = Color.White
+							color = MaterialTheme.colorScheme.onPrimary
 						)
 
 						Switch(
@@ -347,7 +347,7 @@ fun EditTaskScreen(
 							onEvent(AddEditScreenEvent.OnUpdateTask)
 							onBack()
 						} else {
-							showToast(context, errorMessage)
+							showCustomSnackbar(errorMessage)
 						}
 					},
 					colors = ButtonDefaults.buttonColors(
@@ -372,11 +372,8 @@ fun EditTaskScreen(
 @Preview
 @Composable
 fun EditTaskScreenPreview() {
-	SnaptickTheme(
-		darkTheme = true,
-		dynamicColor = false
-	) {
-		val task = DummyTasks.tasks[0]
+	SnaptickTheme {
+		val task = DummyTasks.dummyTasks[0]
 		EditTaskScreen(task, MainState(), {}, {})
 	}
 }

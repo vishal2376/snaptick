@@ -11,16 +11,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -30,21 +29,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vishal2376.snaptick.R
+import com.vishal2376.snaptick.presentation.common.AppTheme
 import com.vishal2376.snaptick.presentation.common.NavDrawerItem
 import com.vishal2376.snaptick.presentation.common.fontRobotoMono
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.h3TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.presentation.main.MainEvent
-import com.vishal2376.snaptick.ui.theme.AppTheme
-import com.vishal2376.snaptick.ui.theme.Blue
-import com.vishal2376.snaptick.ui.theme.LightGray
+import com.vishal2376.snaptick.presentation.main.MainState
 
 @Composable
 fun NavigationDrawerComponent(
-	appTheme: AppTheme,
-	buildVersionCode: String,
-	onMainEvent: (MainEvent) -> Unit
+	appState: MainState,
+	onMainEvent: (MainEvent) -> Unit,
+	onClickThisWeek: () -> Unit
 ) {
 
 	val context = LocalContext.current
@@ -63,7 +61,7 @@ fun NavigationDrawerComponent(
 			horizontalAlignment = Alignment.CenterHorizontally
 		) {
 			Image(
-				painter = painterResource(if (appTheme == AppTheme.Amoled) R.drawable.app_logo_amoled else R.drawable.app_logo),
+				painter = painterResource(if (appState.theme == AppTheme.Amoled) R.drawable.app_logo_amoled else R.drawable.app_logo),
 				contentDescription = null,
 				modifier = Modifier.size(64.dp),
 			)
@@ -71,14 +69,14 @@ fun NavigationDrawerComponent(
 			Text(
 				text = stringResource(R.string.app_name),
 				style = h2TextStyle,
-				color = Color.White
+				color = MaterialTheme.colorScheme.onPrimary
 			)
 			Text(
-				text = stringResource(R.string.buildVersion, buildVersionCode),
+				text = stringResource(R.string.buildVersion, appState.buildVersion),
 				fontFamily = fontRobotoMono,
 				fontSize = 15.sp,
 				fontWeight = FontWeight.Bold,
-				color = Color.White
+				color = MaterialTheme.colorScheme.onPrimary
 			)
 		}
 		Row(
@@ -86,31 +84,28 @@ fun NavigationDrawerComponent(
 			horizontalArrangement = Arrangement.spacedBy(16.dp)
 		) {
 			Text(
-				text = stringResource(R.string.amoled_theme),
+				text = stringResource(R.string.app_theme),
 				style = h3TextStyle,
-				color = Color.White
+				color = MaterialTheme.colorScheme.onPrimary
 			)
-			Switch(
-				checked = appTheme == AppTheme.Amoled,
-				onCheckedChange = {
-					onMainEvent(MainEvent.ToggleAmoledTheme(it, context))
-				},
-				colors = SwitchDefaults.colors(
-					checkedThumbColor = Blue,
-					checkedTrackColor = MaterialTheme.colorScheme.secondary,
-					uncheckedTrackColor = MaterialTheme.colorScheme.secondary
-				)
-			)
+			if (appState.streak != -1)
+				ThemeOptionComponent(defaultTheme = appState.theme) {
+					onMainEvent(MainEvent.UpdateAppTheme(it, context))
+				}
 		}
+
+
 
 		Divider(thickness = 2.dp, color = MaterialTheme.colorScheme.secondary)
 
-		Column(
-			modifier = Modifier.padding(start = 32.dp),
-			verticalArrangement = Arrangement.spacedBy(32.dp)
-		) {
+		Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+			NavDrawerItemUI(
+				icon = Icons.Default.CalendarMonth,
+				label = stringResource(R.string.this_week)
+			) { onClickThisWeek() }
+
 			NavDrawerItem.entries.forEach {
-				NavDrawerItemUI(icon = it.icon, label = it.display) {
+				NavDrawerItemUI(icon = it.icon, label = stringResource(id = it.stringId)) {
 					onMainEvent(MainEvent.OnClickNavDrawerItem(context, it))
 				}
 			}
@@ -125,7 +120,8 @@ fun NavDrawerItemUI(icon: ImageVector, label: String, onClick: () -> Unit) {
 	Row(
 		modifier = Modifier
 			.fillMaxWidth()
-			.clickable { onClick() },
+			.clickable { onClick() }
+			.padding(32.dp, 8.dp),
 		horizontalArrangement = Arrangement.spacedBy(10.dp),
 		verticalAlignment = Alignment.CenterVertically
 	) {
@@ -133,14 +129,14 @@ fun NavDrawerItemUI(icon: ImageVector, label: String, onClick: () -> Unit) {
 			modifier = Modifier.size(32.dp),
 			imageVector = icon,
 			contentDescription = null,
-			tint = LightGray
+			tint = MaterialTheme.colorScheme.onPrimary
 		)
-		Text(text = label, style = taskTextStyle, color = LightGray)
+		Text(text = label, style = taskTextStyle, color = MaterialTheme.colorScheme.onPrimary)
 	}
 }
 
 @Preview(widthDp = 350)
 @Composable
 fun NavigationDrawerComponentPreview() {
-	NavigationDrawerComponent(AppTheme.Amoled, "0.1", {})
+	NavigationDrawerComponent(MainState(), {}, {})
 }

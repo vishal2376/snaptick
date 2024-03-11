@@ -31,6 +31,6 @@
     <string name="analysis">Analyysi</string>
     <string name="free_time">Ilmainen Aika</string>
     <string name="no_tasks">Ei Tehtäviä</string>
-    <string name="amoled_theme">Muutettu Teema</string>
     <string name="sort_tasks_by">Järjestä tehtävät</string>
+    <string name="app_theme">Theme</string>
 </resources>

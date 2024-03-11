@@ -14,7 +14,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -60,12 +59,12 @@ fun CustomDurationDialogComponent(
 			) {
 				Text(
 					text = stringResource(R.string.custom_duration),
-					color = Color.White,
+					color = MaterialTheme.colorScheme.onPrimary,
 					style = durationTextStyle
 				)
 				WheelTimePicker(
 					startTime = LocalTime.of(hours, minutes),
-					textColor = Color.White,
+					textColor = MaterialTheme.colorScheme.onPrimary,
 					onSnappedTime = { customDuration = it }
 				)
 				Text(

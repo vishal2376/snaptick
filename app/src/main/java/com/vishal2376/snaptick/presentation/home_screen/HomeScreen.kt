@@ -53,6 +53,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
+import com.vishal2376.snaptick.presentation.common.SnackbarController.showCustomSnackbar
 import com.vishal2376.snaptick.presentation.common.SortTask
 import com.vishal2376.snaptick.presentation.common.SwipeActionBox
 import com.vishal2376.snaptick.presentation.common.fontRobotoMono
@@ -66,13 +67,12 @@ import com.vishal2376.snaptick.presentation.home_screen.components.TaskComponent
 import com.vishal2376.snaptick.presentation.main.MainEvent
 import com.vishal2376.snaptick.presentation.main.MainState
 import com.vishal2376.snaptick.ui.theme.Blue
-import com.vishal2376.snaptick.ui.theme.Green
+import com.vishal2376.snaptick.ui.theme.LightGreen
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.ui.theme.Yellow
 import com.vishal2376.snaptick.util.Constants
 import com.vishal2376.snaptick.util.DummyTasks
 import com.vishal2376.snaptick.util.getFreeTime
-import com.vishal2376.snaptick.util.showToast
 import kotlinx.coroutines.launch
 
 
@@ -89,16 +89,12 @@ fun HomeScreen(
 	onEditTask: (id: Int) -> Unit,
 	onAddTask: () -> Unit,
 	onClickCompletedInfo: () -> Unit,
+	onClickThisWeek: () -> Unit,
 	onClickFreeTimeInfo: () -> Unit,
 	onPomodoroTask: (id: Int) -> Unit,
 ) {
-
-
-	val completedTasks = mutableListOf<Task>()
-	val inCompletedTasks = mutableListOf<Task>()
-
-	tasks.filterTo(completedTasks) { it.isCompleted }
-	tasks.filterTo(inCompletedTasks) { !it.isCompleted }
+	val completedTasks = tasks.filter { it.isCompleted }
+	val inCompletedTasks = tasks.filter { !it.isCompleted }
 
 	// calc free time
 	val totalTaskTime = inCompletedTasks.sumOf { it.getDuration(checkPastTask = true) }
@@ -145,7 +141,16 @@ fun HomeScreen(
 		drawerState = drawerState,
 		drawerContent = {
 			ModalDrawerSheet(drawerContainerColor = MaterialTheme.colorScheme.primary) {
-				NavigationDrawerComponent(appState.theme, appState.buildVersion, onMainEvent)
+				NavigationDrawerComponent(
+					appState,
+					onMainEvent,
+					onClickThisWeek = {
+						onClickThisWeek.invoke()
+						scope.launch {
+							drawerState.close()
+						}
+					}
+				)
 			}
 		}) {
 		Scaffold(topBar = {
@@ -231,7 +236,7 @@ fun HomeScreen(
 						title = stringResource(R.string.completed),
 						desc = "$totalCompletedTasks/$totalTasks Tasks",
 						icon = R.drawable.ic_task_list,
-						backgroundColor = Green,
+						backgroundColor = LightGreen,
 						modifier = Modifier
 							.weight(1f)
 							.graphicsLayer {
@@ -252,7 +257,7 @@ fun HomeScreen(
 							},
 						onClick = {
 							if (inCompletedTasks.isEmpty()) {
-								showToast(context, "Add Tasks to Analyze")
+								showCustomSnackbar("Add Tasks to Analyze")
 							} else {
 								onClickFreeTimeInfo()
 							}
@@ -276,7 +281,7 @@ fun HomeScreen(
 						Text(
 							text = stringResource(R.string.today_tasks),
 							style = h2TextStyle,
-							color = Color.White,
+							color = MaterialTheme.colorScheme.onPrimary,
 							modifier = Modifier.padding(16.dp)
 						)
 
@@ -284,7 +289,7 @@ fun HomeScreen(
 							Icon(
 								imageVector = Icons.Default.Sort,
 								contentDescription = null,
-								tint = Color.White
+								tint = MaterialTheme.colorScheme.onPrimary
 							)
 						}
 
@@ -370,11 +375,8 @@ fun HomeScreen(
 @Preview
 @Composable
 fun HomeScreenPreview() {
-	SnaptickTheme(
-		darkTheme = true,
-		dynamicColor = false
-	) {
-		val tasks = DummyTasks.tasks
-		HomeScreen(tasks = tasks, MainState(), {}, {}, {}, {}, {}, {}, {})
+	SnaptickTheme {
+		val tasks = DummyTasks.dummyTasks
+		HomeScreen(tasks = tasks, MainState(), {}, {}, {}, {}, {}, {}, {}, {})
 	}
 }

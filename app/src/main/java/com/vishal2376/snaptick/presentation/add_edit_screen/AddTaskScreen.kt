@@ -1,6 +1,5 @@
 package com.vishal2376.snaptick.presentation.add_edit_screen
 
-import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -58,12 +57,13 @@ import com.vishal2376.snaptick.presentation.add_edit_screen.components.PriorityC
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.WeekDaysComponent
 import com.vishal2376.snaptick.presentation.common.Priority
 import com.vishal2376.snaptick.presentation.common.ShowTimePicker
+import com.vishal2376.snaptick.presentation.common.SnackbarController.showCustomSnackbar
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.presentation.main.MainState
 import com.vishal2376.snaptick.ui.theme.Blue
-import com.vishal2376.snaptick.ui.theme.Green
+import com.vishal2376.snaptick.ui.theme.LightGreen
 import com.vishal2376.snaptick.ui.theme.Red
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.checkValidTask
@@ -98,7 +98,6 @@ fun AddTaskScreen(
 
 	Scaffold(topBar = {
 		TopAppBar(
-			modifier = Modifier.padding(8.dp),
 			colors = TopAppBarDefaults.topAppBarColors(
 				containerColor = MaterialTheme.colorScheme.background,
 			),
@@ -162,7 +161,7 @@ fun AddTaskScreen(
 						disabledContainerColor = MaterialTheme.colorScheme.secondary,
 						unfocusedIndicatorColor = Color.Transparent,
 						focusedIndicatorColor = Color.Transparent,
-						cursorColor = Color.White,
+						cursorColor = MaterialTheme.colorScheme.onPrimary,
 					),
 					textStyle = taskTextStyle,
 					onValueChange = {
@@ -192,7 +191,7 @@ fun AddTaskScreen(
 						Text(
 							text = stringResource(R.string.start_time),
 							style = taskTextStyle,
-							color = Green
+							color = LightGreen
 						)
 						Spacer(modifier = Modifier.height(8.dp))
 						ShowTimePicker(
@@ -227,13 +226,13 @@ fun AddTaskScreen(
 					Text(
 						text = stringResource(R.string.duration),
 						style = h2TextStyle,
-						color = Color.White
+						color = MaterialTheme.colorScheme.onPrimary
 					)
 
 					Text(
 						text = getFormattedDuration(taskStartTime, taskEndTime),
 						style = taskTextStyle,
-						color = Color.White
+						color = MaterialTheme.colorScheme.onPrimary
 					)
 				}
 
@@ -262,7 +261,7 @@ fun AddTaskScreen(
 						Text(
 							text = stringResource(R.string.reminder),
 							style = h2TextStyle,
-							color = Color.White
+							color = MaterialTheme.colorScheme.onPrimary
 						)
 
 						Switch(
@@ -285,7 +284,7 @@ fun AddTaskScreen(
 						Text(
 							text = stringResource(R.string.repeat),
 							style = h2TextStyle,
-							color = Color.White
+							color = MaterialTheme.colorScheme.onPrimary
 						)
 
 						Switch(
@@ -324,7 +323,7 @@ fun AddTaskScreen(
 						val task = Task(
 							id = 0,
 							uuid = UUID.randomUUID().toString(),
-							title = taskTitle,
+							title = taskTitle.trim(),
 							isCompleted = false,
 							startTime = taskStartTime,
 							endTime = taskEndTime,
@@ -345,11 +344,7 @@ fun AddTaskScreen(
 							onEvent(AddEditScreenEvent.OnAddTaskClick(task))
 							onBack()
 						} else {
-							Toast.makeText(
-								context,
-								errorMessage,
-								Toast.LENGTH_SHORT
-							).show()
+							showCustomSnackbar(errorMessage)
 						}
 					},
 					colors = ButtonDefaults.buttonColors(
@@ -374,7 +369,7 @@ fun AddTaskScreen(
 @Preview()
 @Composable
 fun AddTaskScreenPreview() {
-	SnaptickTheme(darkTheme = true, dynamicColor = false) {
+	SnaptickTheme {
 		AddTaskScreen(MainState(), onEvent = {}, {})
 	}
 }

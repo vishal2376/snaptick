@@ -29,7 +29,19 @@ data class Task(
 	val priority: Int = 0,
 ) {
 	fun getRepeatWeekList(): List<Int> {
-		return repeatWeekdays.split(",").map { it.toInt() }
+		return if (repeatWeekdays.isEmpty())
+			emptyList()
+		else
+			repeatWeekdays.split(",")
+				.map { it.toInt() }
+	}
+
+	fun getWeekDaysTitle(): String {
+		val weekDays = getRepeatWeekList()
+		val weekdaysTitle = arrayOf("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
+
+		val selectedDays = weekDays.map { weekdaysTitle[it] }
+		return selectedDays.joinToString(", ")
 	}
 
 	fun getFormattedTime(): String {

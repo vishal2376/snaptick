@@ -16,12 +16,24 @@ import com.vishal2376.snaptick.presentation.completed_task_screen.CompletedTaskS
 import com.vishal2376.snaptick.presentation.free_time_screen.FreeTimeScreen
 import com.vishal2376.snaptick.presentation.home_screen.HomeScreen
 import com.vishal2376.snaptick.presentation.pomodoro_screen.PomodoroScreen
+import com.vishal2376.snaptick.presentation.this_week_task_screen.ThisWeekTaskScreen
 import com.vishal2376.snaptick.presentation.viewmodels.TaskViewModel
+import java.time.LocalDate
 
 @Composable
 fun AppNavigation(taskViewModel: TaskViewModel) {
 	val navController = rememberNavController()
 	val todayTasks by taskViewModel.todayTaskList.collectAsStateWithLifecycle(initialValue = emptyList())
+	val allTasks by taskViewModel.taskList.collectAsStateWithLifecycle(initialValue = emptyList())
+
+	val dayOfWeek = LocalDate.now().dayOfWeek.value - 1
+	val updatedTodayTasks = todayTasks.filter { task ->
+		if (task.isRepeated) {
+			task.getRepeatWeekList().contains(dayOfWeek)
+		} else {
+			true
+		}
+	}
 
 	NavHost(
 		navController = navController,
@@ -29,7 +41,7 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 	) {
 		composable(route = Routes.HomeScreen.name) {
 			HomeScreen(
-				tasks = todayTasks,
+				tasks = updatedTodayTasks,
 				appState = taskViewModel.appState,
 				onMainEvent = taskViewModel::onEvent,
 				onEvent = taskViewModel::onEvent,
@@ -42,6 +54,9 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 				onClickCompletedInfo = {
 					navController.navigate(route = Routes.CompletedTaskScreen.name)
 				},
+				onClickThisWeek = {
+					navController.navigate(route = Routes.ThisWeekTaskScreen.name)
+				},
 				onClickFreeTimeInfo = {
 					navController.navigate(route = Routes.FreeTimeScreen.name)
 				},
@@ -52,7 +67,21 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 
 		composable(route = Routes.CompletedTaskScreen.name) {
 			CompletedTaskScreen(
-				tasks = todayTasks,
+				tasks = updatedTodayTasks,
+				onEvent = taskViewModel::onEvent,
+				onBack = {
+					if (navController.isValidBackStack) {
+						navController.popBackStack()
+					}
+				})
+		}
+
+		composable(route = Routes.ThisWeekTaskScreen.name) {
+			ThisWeekTaskScreen(
+				tasks = allTasks,
+				onEditTask = { id ->
+					navController.navigate(route = "${Routes.EditTaskScreen.name}/$id")
+				},
 				onEvent = taskViewModel::onEvent,
 				onBack = {
 					if (navController.isValidBackStack) {
@@ -63,7 +92,7 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 
 		composable(route = Routes.FreeTimeScreen.name) {
 			FreeTimeScreen(
-				tasks = todayTasks,
+				tasks = updatedTodayTasks,
 				onBack = {
 					if (navController.isValidBackStack) {
 						navController.popBackStack()

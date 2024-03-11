@@ -55,7 +55,8 @@ fun WeekDaysComponent(
 						selectedDays
 					}
 				}
-				onChange(selectedDays.joinToString(separator = ","))
+				val sortedDaysList = selectedDays.sorted()
+				onChange(sortedDaysList.joinToString(separator = ","))
 			}
 		}
 	}
@@ -65,7 +66,7 @@ fun WeekDaysComponent(
 fun WeekDaysItemComponent(title: String, isSelected: Boolean, onChange: (Boolean) -> Unit) {
 
 	var bgColor = MaterialTheme.colorScheme.primary
-	var textColor = Color.White
+	var textColor = MaterialTheme.colorScheme.onPrimary
 	var borderWidth = 2.dp
 
 	if (isSelected) {

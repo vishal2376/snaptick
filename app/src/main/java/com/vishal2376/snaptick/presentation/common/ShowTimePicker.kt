@@ -6,8 +6,8 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 import com.commandiron.wheel_picker_compose.WheelTimePicker
 import com.commandiron.wheel_picker_compose.core.TimeFormat
 import java.time.LocalTime
@@ -26,7 +26,7 @@ fun ShowTimePicker(
 		WheelTimePicker(
 			timeFormat = TimeFormat.AM_PM,
 			startTime = time,
-			textColor = Color.White,
+			textColor = MaterialTheme.colorScheme.onPrimary,
 			onSnappedTime = onSelect
 		)
 	}
@@ -38,7 +38,7 @@ fun ShowTimePicker(
 		WheelTimePicker(
 			timeFormat = TimeFormat.AM_PM,
 			startTime = time,
-			textColor = Color.White,
+			textColor = MaterialTheme.colorScheme.onPrimary,
 			onSnappedTime = onSelect
 		)
 	}

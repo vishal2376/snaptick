@@ -7,5 +7,6 @@ enum class Routes {
 	CompletedTaskScreen,
 	PomodoroScreen,
 	FreeTimeScreen,
+	ThisWeekTaskScreen,
 	SettingsScreen,
 }

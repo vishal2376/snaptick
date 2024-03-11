@@ -7,7 +7,7 @@ import kotlin.random.Random
 
 object DummyTasks {
 
-	val tasks = generateDummyTasks()
+	val dummyTasks = generateDummyTasks()
 
 	private fun generateDummyTasks(count: Int = 5): List<Task> {
 		val tasks = mutableListOf<Task>()

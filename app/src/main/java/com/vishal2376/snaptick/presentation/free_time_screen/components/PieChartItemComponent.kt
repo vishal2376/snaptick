@@ -73,13 +73,13 @@ fun PieChartItemComponent(task: Task, itemColor: Color, animDelay: Int = 100) {
 					.basicMarquee(delayMillis = 1000)
 					.weight(1f),
 				style = taskTextStyle,
-				color = Color.White,
+				color = MaterialTheme.colorScheme.onPrimary,
 			)
 
 			Text(
 				text = task.getFormattedDuration(),
 				style = taskTextStyle,
-				color = Color.White
+				color = MaterialTheme.colorScheme.onPrimary
 			)
 		}
 	}
@@ -88,6 +88,6 @@ fun PieChartItemComponent(task: Task, itemColor: Color, animDelay: Int = 100) {
 @Preview
 @Composable
 fun PieChartItemComponentPreview() {
-	val task = DummyTasks.tasks[0]
+	val task = DummyTasks.dummyTasks[0]
 	PieChartItemComponent(task, Blue)
 }

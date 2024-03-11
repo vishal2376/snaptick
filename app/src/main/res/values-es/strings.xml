@@ -31,6 +31,6 @@
     <string name="analysis">Análisis</string>
     <string name="free_time">Tiempo libre</string>
     <string name="no_tasks">No hay tareas</string>
-    <string name="amoled_theme">Tema Amolado</string>
     <string name="sort_tasks_by">Ordenar tareas por</string>
+    <string name="app_theme">Theme</string>
 </resources>

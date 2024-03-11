@@ -25,7 +25,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -103,13 +102,13 @@ fun FreeTimeScreen(
 				Column(horizontalAlignment = Alignment.CenterHorizontally) {
 					Text(
 						text = stringResource(R.string.free_time),
-						color = Color.White,
+						color = MaterialTheme.colorScheme.onPrimary,
 						style = h2TextStyle
 					)
 
 					Text(
 						text = freeTimeText,
-						color = Color.White,
+						color = MaterialTheme.colorScheme.onPrimary,
 						style = taskTextStyle
 					)
 				}
@@ -138,7 +137,7 @@ fun FreeTimeScreen(
 @Preview
 @Composable
 fun FreeTimeScreenPreview() {
-	val tasks = DummyTasks.tasks
+	val tasks = DummyTasks.dummyTasks
 	SnaptickTheme {
 		FreeTimeScreen(tasks = tasks, {})
 	}

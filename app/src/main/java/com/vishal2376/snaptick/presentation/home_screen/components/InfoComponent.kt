@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.presentation.common.infoDescTextStyle
 import com.vishal2376.snaptick.presentation.common.infoTextStyle
+import com.vishal2376.snaptick.ui.theme.Black500
 import com.vishal2376.snaptick.ui.theme.Blue
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -55,7 +56,8 @@ fun InfoComponent(
 
 			Text(
 				text = title,
-				style = infoTextStyle
+				style = infoTextStyle,
+				color = Black500
 			)
 
 			Spacer(modifier = Modifier.height(4.dp))
@@ -66,11 +68,13 @@ fun InfoComponent(
 				Icon(
 					painter = painterResource(id = icon),
 					contentDescription = null,
+					tint = Black500,
 					modifier = Modifier.size(20.dp)
 				)
 				Text(
 					text = desc,
-					style = infoDescTextStyle
+					style = infoDescTextStyle,
+					color = Black500
 				)
 			}
 		}
