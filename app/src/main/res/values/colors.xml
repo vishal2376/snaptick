@@ -12,4 +12,8 @@
     <color name="blue_500">#FF161A30</color>
     <color name="blue_200">#FF31304D</color>
 
+    <color name="black_500">#FF000000</color>
+    <color name="black_200">#FF252526</color>
+
+
 </resources>
