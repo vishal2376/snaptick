@@ -41,7 +41,7 @@ class SnaptickWidget : GlanceAppWidget() {
 				.padding(16.dp)
 		) {
 			LazyColumn {
-				items(DummyTasks.tasks) { task ->
+				items(DummyTasks.dummyTasks) { task ->
 					TaskWidget(task)
 				}
 			}
