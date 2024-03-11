@@ -14,7 +14,9 @@ import androidx.glance.appwidget.provideContent
 import androidx.glance.background
 import androidx.glance.layout.Box
 import androidx.glance.layout.Column
+import androidx.glance.layout.Spacer
 import androidx.glance.layout.fillMaxWidth
+import androidx.glance.layout.height
 import androidx.glance.layout.padding
 import androidx.glance.material3.ColorProviders
 import androidx.glance.text.Text
@@ -37,7 +39,7 @@ class SnaptickWidget : GlanceAppWidget() {
 	private fun WidgetContent() {
 		Column(
 			modifier = GlanceModifier.fillMaxWidth()
-				.background(GlanceTheme.colors.primary)
+				.background(ImageProvider(R.drawable.bg_round_primary))
 				.padding(16.dp)
 		) {
 			LazyColumn {
@@ -50,13 +52,17 @@ class SnaptickWidget : GlanceAppWidget() {
 
 	@Composable
 	fun TaskWidget(task: Task) {
-		Box(
-			modifier = GlanceModifier
-				.fillMaxWidth()
-				.background(ImageProvider(R.drawable.task_bg_shape))
-				.padding(16.dp),
-		) {
-			Text(text = task.title)
+		Column {
+			Box(
+				modifier = GlanceModifier
+					.fillMaxWidth()
+					.background(ImageProvider(R.drawable.bg_round_secondary))
+					.padding(16.dp),
+			) {
+				Text(text = task.title)
+			}
+
+			Spacer(modifier = GlanceModifier.height(8.dp))
 		}
 	}
 }
