@@ -105,7 +105,7 @@ fun NavigationDrawerComponent(
 			) { onClickThisWeek() }
 
 			NavDrawerItem.entries.forEach {
-				NavDrawerItemUI(icon = it.icon, label = it.display) {
+				NavDrawerItemUI(icon = it.icon, label = stringResource(id = it.stringId)) {
 					onMainEvent(MainEvent.OnClickNavDrawerItem(context, it))
 				}
 			}

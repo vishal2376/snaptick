@@ -61,7 +61,7 @@ fun SortTaskDialogComponent(
 
 			SortTask.entries.forEach {
 				CustomRadioButton(
-					label = it.displayText,
+					label = stringResource(id = it.stringId),
 					isSelected = selectedOption == it
 				) {
 					selectedOption = it
