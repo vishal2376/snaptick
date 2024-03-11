@@ -32,5 +32,16 @@
     <string name="free_time">Gratis tid</string>
     <string name="no_tasks">Ingen oppgaver</string>
     <string name="sort_tasks_by">Sorter oppgaver etter</string>
-    <string name="app_theme">Theme</string>
+    <string name="settings">Innstillinger</string>
+    <string name="this_week">Denne uken</string>
+    <string name="app_theme">Tema</string>
+    <string name="report_bugs">Rapporter feil</string>
+    <string name="rate_us">Vurder Oss</string>
+    <string name="share_app">Del app</string>
+    <string name="priority_low_to_high">Prioritet (Til Høy)</string>
+    <string name="priority_high_to_low">Prioritet (Høy til Lav)</string>
+    <string name="start_time_latest_at_bottom">Start tid (nyeste på bunnen)</string>
+    <string name="start_time_latest_at_top">Start tid (nyeste på toppen)</string>
+    <string name="creation_time_latest_at_bottom">Opprettelsestid (lengst på bunnen)</string>
+    <string name="creation_time_latest_at_top">Opprettelsestid (øverste på toppen)</string>
 </resources>

@@ -32,5 +32,16 @@
     <string name="free_time">Ελεύθερος Χρόνος</string>
     <string name="no_tasks">Καμία Εργασία</string>
     <string name="sort_tasks_by">Ταξινόμηση εργασιών κατά</string>
-    <string name="app_theme">Theme</string>
+    <string name="settings">Ρυθμίσεις</string>
+    <string name="this_week">Αυτή Την Εβδομάδα</string>
+    <string name="app_theme">Θέμα</string>
+    <string name="report_bugs">Αναφορά Σφαλμάτων</string>
+    <string name="rate_us">Αξιολογήστε Μας</string>
+    <string name="share_app">Μοιραστείτε Την Εφαρμογή</string>
+    <string name="priority_low_to_high">Προτεραιότητα (Χαμηλή σε Υψηλή)</string>
+    <string name="priority_high_to_low">Προτεραιότητα (High to Low)</string>
+    <string name="start_time_latest_at_bottom">Χρόνος έναρξης (Τελευταία κάτω)</string>
+    <string name="start_time_latest_at_top">Χρόνος Έναρξης (Τελευταία στην Κορυφή)</string>
+    <string name="creation_time_latest_at_bottom">Χρόνος δημιουργίας (Τελευταία στο Κάτω)</string>
+    <string name="creation_time_latest_at_top">Χρόνος Δημιουργίας (Τελευταία στην Κορυφή)</string>
 </resources>
