@@ -15,5 +15,7 @@
     <color name="black_500">#FF000000</color>
     <color name="black_200">#FF252526</color>
 
+    <color name="white_500">#FFEAF3FF</color>
+    <color name="white_200">#FFD9E9FF</color>
 
 </resources>
