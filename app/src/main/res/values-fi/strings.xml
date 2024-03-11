@@ -32,5 +32,16 @@
     <string name="free_time">Ilmainen Aika</string>
     <string name="no_tasks">Ei Tehtäviä</string>
     <string name="sort_tasks_by">Järjestä tehtävät</string>
-    <string name="app_theme">Theme</string>
+    <string name="settings">Asetukset</string>
+    <string name="this_week">Tällä Viikolla</string>
+    <string name="app_theme">Teema</string>
+    <string name="report_bugs">Raportoi Bugeja</string>
+    <string name="rate_us">Arvostele Meidät</string>
+    <string name="share_app">Jaa Sovellus</string>
+    <string name="priority_low_to_high">Prioriteetti (alhaalta korkealle)</string>
+    <string name="priority_high_to_low">Prioriteetti (High to Low)</string>
+    <string name="start_time_latest_at_bottom">Aloitusaika (viimeisin alhaalta)</string>
+    <string name="start_time_latest_at_top">Aloitusaika (viimeisin ylhäältä)</string>
+    <string name="creation_time_latest_at_bottom">Luontiaika (Viimeisin alhaalta)</string>
+    <string name="creation_time_latest_at_top">Luomisen aika (Viimeisin ylhäältä)</string>
 </resources>

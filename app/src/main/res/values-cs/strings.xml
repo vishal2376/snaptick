@@ -32,5 +32,16 @@
     <string name="free_time">Volný čas</string>
     <string name="no_tasks">Žádné úkoly</string>
     <string name="sort_tasks_by">Seřadit úkoly podle</string>
-    <string name="app_theme">Theme</string>
+    <string name="settings">Nastavení</string>
+    <string name="this_week">Tento týden</string>
+    <string name="app_theme">Téma</string>
+    <string name="report_bugs">Nahlásit chyby</string>
+    <string name="rate_us">Ohodnoťte nás</string>
+    <string name="share_app">Sdílet aplikaci</string>
+    <string name="priority_low_to_high">Priorita (od nejvyšší)</string>
+    <string name="priority_high_to_low">Priorita (nízká až nízká)</string>
+    <string name="start_time_latest_at_bottom">Čas zahájení (poslední v dolní části)</string>
+    <string name="start_time_latest_at_top">Počáteční čas (Nejnovější nahoře)</string>
+    <string name="creation_time_latest_at_bottom">Čas vytvoření (poslední v dolní části)</string>
+    <string name="creation_time_latest_at_top">Čas vytvoření (Nejnovější nahoře)</string>
 </resources>

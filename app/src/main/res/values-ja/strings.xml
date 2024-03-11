@@ -32,5 +32,16 @@
     <string name="free_time">空き時間</string>
     <string name="no_tasks">タスクなし</string>
     <string name="sort_tasks_by">タスクを並べ替える</string>
-    <string name="app_theme">Theme</string>
+    <string name="settings">設定</string>
+    <string name="this_week">今週中</string>
+    <string name="app_theme">テーマ</string>
+    <string name="report_bugs">バグを報告</string>
+    <string name="rate_us">評価してください</string>
+    <string name="share_app">アプリを共有</string>
+    <string name="priority_low_to_high">優先度（低～高）</string>
+    <string name="priority_high_to_low">優先度 (高から低)</string>
+    <string name="start_time_latest_at_bottom">開始時刻（底部最新）</string>
+    <string name="start_time_latest_at_top">開始時刻（上部に最新）</string>
+    <string name="creation_time_latest_at_bottom">作成時間 (底部最新)</string>
+    <string name="creation_time_latest_at_top">作成時間 (最上部に最新)</string>
 </resources>

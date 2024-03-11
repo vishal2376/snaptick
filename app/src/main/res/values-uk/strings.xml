@@ -32,5 +32,16 @@
     <string name="free_time">Вільний час</string>
     <string name="no_tasks">Немає завдань</string>
     <string name="sort_tasks_by">Сортувати завдання за</string>
-    <string name="app_theme">Theme</string>
+    <string name="settings">Налаштування</string>
+    <string name="this_week">На цьому тижні</string>
+    <string name="app_theme">Тема</string>
+    <string name="report_bugs">Повідомити про помилку</string>
+    <string name="rate_us">Оцініть нас</string>
+    <string name="share_app">Поділитися додатком</string>
+    <string name="priority_low_to_high">Пріоритет (за зростанням)</string>
+    <string name="priority_high_to_low">Пріоритет (за спаданням)</string>
+    <string name="start_time_latest_at_bottom">Початковий час (останній вниз)</string>
+    <string name="start_time_latest_at_top">Час початку (останні вгору)</string>
+    <string name="creation_time_latest_at_bottom">Час створення (останній вниз)</string>
+    <string name="creation_time_latest_at_top">Час створення (останній угорі)</string>
 </resources>

@@ -32,5 +32,16 @@
     <string name="free_time">الوقت الحر</string>
     <string name="no_tasks">لا توجد مهام</string>
     <string name="sort_tasks_by">ترتيب المهام حسب</string>
-    <string name="app_theme">Theme</string>
+    <string name="settings">الإعدادات</string>
+    <string name="this_week">هذا الأسبوع</string>
+    <string name="app_theme">السمة</string>
+    <string name="report_bugs">الإبلاغ عن الأخطاء</string>
+    <string name="rate_us">قيمنا</string>
+    <string name="share_app">مشاركة التطبيق</string>
+    <string name="priority_low_to_high">الأولوية (منخفض إلى مرتفع)</string>
+    <string name="priority_high_to_low">الأولوية (أعلى إلى منخفض)</string>
+    <string name="start_time_latest_at_bottom">وقت البدء (الأحدث في الأسفل)</string>
+    <string name="start_time_latest_at_top">وقت البدء (الأحدث في الأعلى)</string>
+    <string name="creation_time_latest_at_bottom">وقت الإنشاء (الأخير في الأسفل)</string>
+    <string name="creation_time_latest_at_top">وقت الإنشاء (آخر وقت في الأعلى)</string>
 </resources>

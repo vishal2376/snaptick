@@ -32,5 +32,16 @@
     <string name="free_time">Tempo Libero</string>
     <string name="no_tasks">Nessuna Attività</string>
     <string name="sort_tasks_by">Ordina attività per</string>
-    <string name="app_theme">Theme</string>
+    <string name="settings">Impostazioni</string>
+    <string name="this_week">Questa Settimana</string>
+    <string name="app_theme">Tema</string>
+    <string name="report_bugs">Segnala Bug</string>
+    <string name="rate_us">Votaci</string>
+    <string name="share_app">Condividi App</string>
+    <string name="priority_low_to_high">Priorità (da basso a alto)</string>
+    <string name="priority_high_to_low">Priorità (dall\'alto al basso)</string>
+    <string name="start_time_latest_at_bottom">Ora di inizio (ultima in basso)</string>
+    <string name="start_time_latest_at_top">Ora di inizio (ultima in cima)</string>
+    <string name="creation_time_latest_at_bottom">Tempo di creazione (ultimo in basso)</string>
+    <string name="creation_time_latest_at_top">Tempo di creazione (ultimo in cima)</string>
 </resources>
