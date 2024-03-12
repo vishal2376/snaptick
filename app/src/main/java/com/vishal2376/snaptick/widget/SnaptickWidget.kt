@@ -2,6 +2,7 @@ package com.vishal2376.snaptick.widget
 
 import android.content.Context
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
@@ -20,6 +21,8 @@ import androidx.glance.layout.height
 import androidx.glance.layout.padding
 import androidx.glance.material3.ColorProviders
 import androidx.glance.text.Text
+import androidx.glance.text.TextStyle
+import androidx.glance.unit.ColorProvider
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.ui.theme.DarkColorScheme
@@ -59,7 +62,10 @@ class SnaptickWidget : GlanceAppWidget() {
 					.background(ImageProvider(R.drawable.bg_round_secondary))
 					.padding(16.dp),
 			) {
-				Text(text = task.title)
+				Text(
+					text = task.title,
+					style = TextStyle(color = ColorProvider(color = Color.White))
+				)
 			}
 
 			Spacer(modifier = GlanceModifier.height(8.dp))

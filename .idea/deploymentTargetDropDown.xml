@@ -6,20 +6,7 @@
         <State />
       </entry>
       <entry key="app_widget">
-        <State>
-          <runningDeviceTargetSelectedWithDropDown>
-            <Target>
-              <type value="RUNNING_DEVICE_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="SERIAL_NUMBER" />
-                  <value value="100.87.64.73:5555" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </runningDeviceTargetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-03-11T16:28:48.231427027Z" />
-        </State>
+        <State />
       </entry>
     </value>
   </component>
