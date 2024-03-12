@@ -25,6 +25,7 @@ import androidx.glance.layout.padding
 import androidx.glance.layout.size
 import androidx.glance.layout.width
 import androidx.glance.material3.ColorProviders
+import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
@@ -59,7 +60,8 @@ class SnaptickWidget : GlanceAppWidget() {
 				text = context.getString(R.string.today_tasks),
 				style = TextStyle(
 					color = ColorProvider(color = White500),
-					fontSize = 20.sp
+					fontSize = 20.sp,
+					fontWeight = FontWeight.Bold,
 				)
 			)
 			Spacer(modifier = GlanceModifier.height(16.dp))
@@ -86,7 +88,10 @@ class SnaptickWidget : GlanceAppWidget() {
 			) {
 				Text(
 					text = task.title,
-					style = TextStyle(color = ColorProvider(color = White500), fontSize = 16.sp)
+					style = TextStyle(
+						color = ColorProvider(color = White500),
+						fontSize = 16.sp,
+					)
 				)
 
 				Spacer(modifier = GlanceModifier.height(8.dp))
