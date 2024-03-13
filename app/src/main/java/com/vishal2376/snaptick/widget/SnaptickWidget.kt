@@ -2,6 +2,8 @@ package com.vishal2376.snaptick.widget
 
 import android.content.Context
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.glance.GlanceId
@@ -29,12 +31,15 @@ import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
+import androidx.room.Room
 import com.vishal2376.snaptick.R
+import com.vishal2376.snaptick.data.local.TaskDatabase
+import com.vishal2376.snaptick.data.repositories.TaskRepository
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.ui.theme.DarkColorScheme
 import com.vishal2376.snaptick.ui.theme.LightGray
 import com.vishal2376.snaptick.ui.theme.White500
-import com.vishal2376.snaptick.util.DummyTasks
+import java.time.LocalDate
 
 class SnaptickWidget : GlanceAppWidget() {
 
@@ -51,6 +56,18 @@ class SnaptickWidget : GlanceAppWidget() {
 
 		val context = LocalContext.current
 
+		val repository = getTaskRepository(context)
+		val todayTasks by repository.getTodayTasks().collectAsState(initial = emptyList())
+
+		val dayOfWeek = LocalDate.now().dayOfWeek.value - 1
+		val updatedTodayTasks = todayTasks.filter { task ->
+			if (task.isRepeated) {
+				task.getRepeatWeekList().contains(dayOfWeek)
+			} else {
+				true
+			}
+		}
+
 		Column(
 			modifier = GlanceModifier.fillMaxWidth()
 				.background(ImageProvider(R.drawable.bg_round_primary))
@@ -66,7 +83,7 @@ class SnaptickWidget : GlanceAppWidget() {
 			)
 			Spacer(modifier = GlanceModifier.height(16.dp))
 			LazyColumn {
-				items(DummyTasks.dummyTasks) { task ->
+				items(updatedTodayTasks) { task ->
 					Column {
 						TaskWidget(task)
 						Spacer(modifier = GlanceModifier.height(8.dp))
@@ -74,6 +91,17 @@ class SnaptickWidget : GlanceAppWidget() {
 				}
 			}
 		}
+	}
+
+	@Composable
+	private fun getTaskRepository(context: Context): TaskRepository {
+		val db = Room.databaseBuilder(
+			context.applicationContext,
+			TaskDatabase::class.java,
+			"local_db"
+		).build()
+
+		return TaskRepository(db.taskDao())
 	}
 
 	@Composable
