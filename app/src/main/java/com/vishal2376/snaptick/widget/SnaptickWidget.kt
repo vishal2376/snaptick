@@ -67,7 +67,10 @@ class SnaptickWidget : GlanceAppWidget() {
 			Spacer(modifier = GlanceModifier.height(16.dp))
 			LazyColumn {
 				items(DummyTasks.dummyTasks) { task ->
-					TaskWidget(task)
+					Column {
+						TaskWidget(task)
+						Spacer(modifier = GlanceModifier.height(8.dp))
+					}
 				}
 			}
 		}
@@ -79,41 +82,50 @@ class SnaptickWidget : GlanceAppWidget() {
 		val taskBackground =
 			listOf(R.drawable.bg_task_low, R.drawable.bg_task_med, R.drawable.bg_task_high)
 
-		Column {
-			Column(
-				modifier = GlanceModifier
-					.fillMaxWidth()
-					.background(ImageProvider(taskBackground[task.priority]))
-					.padding(16.dp, 8.dp),
-			) {
-				Text(
-					text = task.title,
-					style = TextStyle(
-						color = ColorProvider(color = White500),
-						fontSize = 16.sp,
-					)
+		val taskCheckImage =
+			if (task.isCompleted) R.drawable.ic_check_circle else R.drawable.ic_uncheck_circle
+
+		Column(
+			modifier = GlanceModifier
+				.fillMaxWidth()
+				.background(ImageProvider(taskBackground[task.priority]))
+				.padding(8.dp)
+		) {
+			Row(verticalAlignment = Alignment.CenterVertically) {
+				Image(
+					provider = ImageProvider(taskCheckImage),
+					contentDescription = null,
+					modifier = GlanceModifier.size(35.dp).padding(8.dp)
 				)
 
-				Spacer(modifier = GlanceModifier.height(8.dp))
-
-				Row(verticalAlignment = Alignment.CenterVertically) {
-					Image(
-						provider = ImageProvider(R.drawable.ic_clock),
-						contentDescription = null,
-						modifier = GlanceModifier.size(15.dp)
-					)
-					Spacer(modifier = GlanceModifier.width(4.dp))
+				Column {
 					Text(
-						text = task.getFormattedTime(),
+						text = task.title,
 						style = TextStyle(
-							color = ColorProvider(color = LightGray),
-							fontSize = 12.sp
+							color = ColorProvider(color = White500),
+							fontSize = 16.sp,
 						)
 					)
+
+					Spacer(modifier = GlanceModifier.height(8.dp))
+
+					Row(verticalAlignment = Alignment.CenterVertically) {
+						Image(
+							provider = ImageProvider(R.drawable.ic_clock),
+							contentDescription = null,
+							modifier = GlanceModifier.size(15.dp)
+						)
+						Spacer(modifier = GlanceModifier.width(4.dp))
+						Text(
+							text = task.getFormattedTime(),
+							style = TextStyle(
+								color = ColorProvider(color = LightGray),
+								fontSize = 12.sp
+							)
+						)
+					}
 				}
 			}
-
-			Spacer(modifier = GlanceModifier.height(8.dp))
 		}
 	}
 }

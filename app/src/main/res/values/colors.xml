@@ -19,6 +19,8 @@
     <color name="white_500">#FFEAF3FF</color>
     <color name="white_200">#FFD9E9FF</color>
 
+    <color name="green">#FFC7E9A7</color>
+
     <!--    priority colors-->
     <color name="light_gray">#FFCCD2D8</color>
     <color name="yellow">#FFFF9737</color>
