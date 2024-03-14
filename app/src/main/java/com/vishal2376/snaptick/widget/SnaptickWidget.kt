@@ -24,9 +24,11 @@ import androidx.glance.appwidget.provideContent
 import androidx.glance.appwidget.updateAll
 import androidx.glance.background
 import androidx.glance.layout.Alignment
+import androidx.glance.layout.Box
 import androidx.glance.layout.Column
 import androidx.glance.layout.Row
 import androidx.glance.layout.Spacer
+import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.height
 import androidx.glance.layout.padding
@@ -86,20 +88,38 @@ class SnaptickWidget : GlanceAppWidget() {
 				.background(ImageProvider(R.drawable.bg_round_primary))
 				.padding(16.dp)
 		) {
-			Text(
-				text = context.getString(R.string.today_tasks),
-				style = TextStyle(
-					color = ColorProvider(color = White500),
-					fontSize = 20.sp,
-					fontWeight = FontWeight.Bold,
-				)
-			)
-			Spacer(modifier = GlanceModifier.height(16.dp))
-			LazyColumn {
-				items(updatedTodayTasks) { task ->
-					Column {
-						WidgetTaskComponent(task)
-						Spacer(modifier = GlanceModifier.height(8.dp))
+			if (updatedTodayTasks.isEmpty()) {
+				Box(
+					modifier = GlanceModifier.fillMaxSize(),
+					contentAlignment = Alignment.Center
+				) {
+					Text(
+						text = context.getString(R.string.no_tasks),
+						style = TextStyle(
+							color = ColorProvider(color = LightGray),
+							fontSize = 30.sp,
+							fontWeight = FontWeight.Bold
+						)
+					)
+				}
+			} else {
+				Column {
+					Text(
+						text = context.getString(R.string.today_tasks),
+						style = TextStyle(
+							color = ColorProvider(color = White500),
+							fontSize = 20.sp,
+							fontWeight = FontWeight.Bold,
+						)
+					)
+					Spacer(modifier = GlanceModifier.height(16.dp))
+					LazyColumn {
+						items(updatedTodayTasks) { task ->
+							Column {
+								WidgetTaskComponent(task)
+								Spacer(modifier = GlanceModifier.height(8.dp))
+							}
+						}
 					}
 				}
 			}
