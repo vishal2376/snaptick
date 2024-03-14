@@ -12,10 +12,16 @@ import androidx.glance.GlanceTheme
 import androidx.glance.Image
 import androidx.glance.ImageProvider
 import androidx.glance.LocalContext
+import androidx.glance.action.ActionParameters
+import androidx.glance.action.actionParametersOf
+import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
+import androidx.glance.appwidget.action.ActionCallback
+import androidx.glance.appwidget.action.actionRunCallback
 import androidx.glance.appwidget.lazy.LazyColumn
 import androidx.glance.appwidget.lazy.items
 import androidx.glance.appwidget.provideContent
+import androidx.glance.appwidget.updateAll
 import androidx.glance.background
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Column
@@ -41,10 +47,19 @@ import com.vishal2376.snaptick.ui.theme.LightGray
 import com.vishal2376.snaptick.ui.theme.White500
 import java.time.LocalDate
 
+private val taskId = ActionParameters.Key<Int>("task_id")
+private lateinit var repository: TaskRepository
+
 class SnaptickWidget : GlanceAppWidget() {
 
+
 	override suspend fun provideGlance(context: Context, id: GlanceId) {
+
+
 		provideContent {
+			//fetch repository
+			repository = getTaskRepository(context = context.applicationContext)
+
 			GlanceTheme(ColorProviders(DarkColorScheme)) {
 				WidgetContent()
 			}
@@ -56,9 +71,7 @@ class SnaptickWidget : GlanceAppWidget() {
 
 		val context = LocalContext.current
 
-		val repository = getTaskRepository(context)
 		val todayTasks by repository.getTodayTasks().collectAsState(initial = emptyList())
-
 		val dayOfWeek = LocalDate.now().dayOfWeek.value - 1
 		val updatedTodayTasks = todayTasks.filter { task ->
 			if (task.isRepeated) {
@@ -85,7 +98,7 @@ class SnaptickWidget : GlanceAppWidget() {
 			LazyColumn {
 				items(updatedTodayTasks) { task ->
 					Column {
-						TaskWidget(task)
+						WidgetTaskComponent(task)
 						Spacer(modifier = GlanceModifier.height(8.dp))
 					}
 				}
@@ -93,19 +106,9 @@ class SnaptickWidget : GlanceAppWidget() {
 		}
 	}
 
-	@Composable
-	private fun getTaskRepository(context: Context): TaskRepository {
-		val db = Room.databaseBuilder(
-			context.applicationContext,
-			TaskDatabase::class.java,
-			"local_db"
-		).build()
-
-		return TaskRepository(db.taskDao())
-	}
 
 	@Composable
-	fun TaskWidget(task: Task) {
+	fun WidgetTaskComponent(task: Task) {
 
 		val taskBackground =
 			listOf(R.drawable.bg_task_low, R.drawable.bg_task_med, R.drawable.bg_task_high)
@@ -124,6 +127,11 @@ class SnaptickWidget : GlanceAppWidget() {
 					provider = ImageProvider(taskCheckImage),
 					contentDescription = null,
 					modifier = GlanceModifier.size(35.dp).padding(8.dp)
+						.clickable(
+							actionRunCallback<OnCompeteActionCallback>(
+								actionParametersOf(taskId to task.id)
+							)
+						)
 				)
 
 				Column {
@@ -156,4 +164,33 @@ class SnaptickWidget : GlanceAppWidget() {
 			}
 		}
 	}
+}
+
+class OnCompeteActionCallback : ActionCallback {
+	override suspend fun onAction(
+		context: Context,
+		glanceId: GlanceId,
+		parameters: ActionParameters
+	) {
+		val widgetTaskId: Int = parameters[taskId] ?: -1
+//		val repository = getTaskRepository(context.applicationContext)
+
+		val task = repository.getTaskById(widgetTaskId)
+		val updatedTask = task.copy(isCompleted = !task.isCompleted)
+		repository.updateTask(updatedTask)
+
+		// update widget
+		SnaptickWidget().updateAll(context)
+	}
+
+}
+
+private fun getTaskRepository(context: Context): TaskRepository {
+	val db = Room.databaseBuilder(
+		context.applicationContext,
+		TaskDatabase::class.java,
+		"local_db"
+	).build()
+
+	return TaskRepository(db.taskDao())
 }
