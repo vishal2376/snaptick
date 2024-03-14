@@ -173,14 +173,16 @@ class OnCompeteActionCallback : ActionCallback {
 		parameters: ActionParameters
 	) {
 		val widgetTaskId: Int = parameters[taskId] ?: -1
-//		val repository = getTaskRepository(context.applicationContext)
 
-		val task = repository.getTaskById(widgetTaskId)
-		val updatedTask = task.copy(isCompleted = !task.isCompleted)
-		repository.updateTask(updatedTask)
+		if (widgetTaskId != -1) {
+			// update task db
+			val task = repository.getTaskById(widgetTaskId)
+			val updatedTask = task.copy(isCompleted = !task.isCompleted)
+			repository.updateTask(updatedTask)
 
-		// update widget
-		SnaptickWidget().updateAll(context)
+			// update widget
+			SnaptickWidget().updateAll(context)
+		}
 	}
 
 }
