@@ -83,12 +83,14 @@ class SnaptickWidget : GlanceAppWidget() {
 			}
 		}
 
+		val inCompletedTasks = updatedTodayTasks.filter { !it.isCompleted }
+
 		Column(
 			modifier = GlanceModifier.fillMaxWidth()
 				.background(ImageProvider(R.drawable.bg_round_primary))
 				.padding(16.dp)
 		) {
-			if (updatedTodayTasks.isEmpty()) {
+			if (inCompletedTasks.isEmpty()) {
 				Box(
 					modifier = GlanceModifier.fillMaxSize(),
 					contentAlignment = Alignment.Center
@@ -114,7 +116,7 @@ class SnaptickWidget : GlanceAppWidget() {
 					)
 					Spacer(modifier = GlanceModifier.height(16.dp))
 					LazyColumn {
-						items(updatedTodayTasks) { task ->
+						items(inCompletedTasks) { task ->
 							Column {
 								WidgetTaskComponent(task)
 								Spacer(modifier = GlanceModifier.height(8.dp))
