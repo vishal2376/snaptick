@@ -91,11 +91,7 @@ fun TaskComponent(
 						topEnd = 8.dp,
 						bottomEnd = 8.dp
 					)
-				)
-				.padding(
-					8.dp,
-					16.dp
-				)
+				).padding(vertical = 10.dp)
 		) {
 
 			Row(
@@ -156,7 +152,7 @@ fun TaskComponent(
 							style = taskTextStyle,
 							color = MaterialTheme.colorScheme.onPrimary
 						)
-						Spacer(modifier = Modifier.height(8.dp))
+						Spacer(modifier = Modifier.height(5.dp))
 						Row(
 							horizontalArrangement = Arrangement.spacedBy(4.dp),
 							verticalAlignment = Alignment.CenterVertically
