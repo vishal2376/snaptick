@@ -34,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vishal2376.snaptick.R
@@ -91,7 +92,8 @@ fun TaskComponent(
 						topEnd = 8.dp,
 						bottomEnd = 8.dp
 					)
-				).padding(vertical = 10.dp)
+				)
+				.padding(start = 8.dp, top = 10.dp, end = 8.dp, bottom = 16.dp)
 		) {
 
 			Row(
@@ -150,9 +152,10 @@ fun TaskComponent(
 								.basicMarquee(delayMillis = 1000),
 							text = task.title,
 							style = taskTextStyle,
+							fontWeight = FontWeight.Bold,
 							color = MaterialTheme.colorScheme.onPrimary
 						)
-						Spacer(modifier = Modifier.height(5.dp))
+						Spacer(modifier = Modifier.height(8.dp))
 						Row(
 							horizontalArrangement = Arrangement.spacedBy(4.dp),
 							verticalAlignment = Alignment.CenterVertically
@@ -228,8 +231,7 @@ fun TaskComponent(
 @Preview
 @Composable
 fun TaskComponentPreview() {
-	var task = DummyTasks.dummyTasks[0]
-	task = task.copy(date = LocalDate.now().plusDays(1))
+	val task = DummyTasks.dummyTasks[0]
 	TaskComponent(
 		task = task,
 		{},
