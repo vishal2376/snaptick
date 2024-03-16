@@ -5,6 +5,7 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.vishal2376.snaptick.domain.converters.LocalDateConverter
 import com.vishal2376.snaptick.domain.converters.LocalTimeConverter
+import com.vishal2376.snaptick.util.Constants
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -42,6 +43,10 @@ data class Task(
 
 		val selectedDays = weekDays.map { weekdaysTitle[it] }
 		return selectedDays.joinToString(", ")
+	}
+
+	fun isValidPomodoroSession(timeLeft: Long): Boolean {
+		return (getDuration() - timeLeft) >= Constants.MIN_VALID_POMODORO_SESSION * 60
 	}
 
 	fun getFormattedTime(): String {

@@ -90,7 +90,7 @@ fun EditTaskScreen(
 	LaunchedEffect(isTimeUpdated)
 	{
 		if (isTimeUpdated) {
-			onEvent(AddEditScreenEvent.OnUpdatePomodoroTimer(-1))
+			onEvent(AddEditScreenEvent.ResetPomodoroTimer)
 		}
 	}
 
