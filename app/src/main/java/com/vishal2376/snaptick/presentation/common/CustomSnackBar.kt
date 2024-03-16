@@ -38,6 +38,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.vishal2376.snaptick.ui.theme.DarkGreen
 import com.vishal2376.snaptick.ui.theme.Red
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import kotlinx.coroutines.delay
@@ -52,6 +53,7 @@ object SnackbarController {
 
 	var delay: Long = 1000
 	var actionText: String? = null
+	var actionColor: Color = Red
 	var onClickAction: () -> Unit = {}
 
 
@@ -59,11 +61,13 @@ object SnackbarController {
 		msg: String?,
 		delay: Long = 3000,
 		actionText: String? = null,
+		actionColor: Color = Red,
 		onClickAction: () -> Unit = {}
 	) {
 		SnackbarController.delay = delay
 		_msg.value = msg
 		SnackbarController.actionText = actionText
+		SnackbarController.actionColor = actionColor
 		SnackbarController.onClickAction = onClickAction
 	}
 
@@ -75,6 +79,7 @@ fun CustomSnackBar() {
 	val snackBarMessage = SnackbarController.msg.value
 	val delay = SnackbarController.delay
 	val actionText = SnackbarController.actionText
+	val actionColor = SnackbarController.actionColor
 	val onClickAction: () -> Unit = SnackbarController.onClickAction
 
 	var isDismiss by remember { mutableStateOf(false) }
@@ -138,7 +143,7 @@ fun CustomSnackBar() {
 							}
 						}
 					)
-					.background(Red, shape = RoundedCornerShape(8.dp))
+					.background(actionColor, shape = RoundedCornerShape(8.dp))
 					.padding(bottom = 4.dp),
 				contentAlignment = Center,
 			) {
@@ -171,7 +176,7 @@ fun CustomSnackBar() {
 								text = actionText,
 								fontWeight = FontWeight.Bold,
 								style = h3TextStyle,
-								color = Red,
+								color = actionColor,
 								fontSize = 16.sp,
 								modifier = Modifier
 									.padding(16.dp)
@@ -190,7 +195,7 @@ fun CustomSnackBar() {
 @Preview(showSystemUi = true)
 @Composable
 fun SnackBarPreview() {
-	SnackbarController.showCustomSnackbar("Hello", actionText = "Ok")
+	SnackbarController.showCustomSnackbar("Hello", actionText = "Ok", actionColor = DarkGreen)
 	SnaptickTheme {
 		CustomSnackBar()
 	}
