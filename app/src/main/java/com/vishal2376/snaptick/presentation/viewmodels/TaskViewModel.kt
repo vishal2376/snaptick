@@ -166,6 +166,10 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 				task = task.copy(reminder = event.reminder)
 			}
 
+			is AddEditScreenEvent.OnUpdatePomodoroTimer -> {
+				task = task.copy(pomodoroTimer = event.remainingTime)
+			}
+
 			is AddEditScreenEvent.OnUpdateIsRepeated -> {
 				task = task.copy(isRepeated = event.isRepeated)
 			}
