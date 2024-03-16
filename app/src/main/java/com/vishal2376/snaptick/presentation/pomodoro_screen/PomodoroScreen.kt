@@ -51,10 +51,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
+import com.vishal2376.snaptick.presentation.common.SnackbarController
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.presentation.common.timerTextStyle
 import com.vishal2376.snaptick.presentation.pomodoro_screen.components.CustomCircularProgressBar
 import com.vishal2376.snaptick.ui.theme.LightGray
+import com.vishal2376.snaptick.ui.theme.LightGreen
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.DummyTasks
 import com.vishal2376.snaptick.util.vibrateDevice
@@ -118,6 +120,7 @@ fun PomodoroScreen(
 	if (totalTime == 0L) {
 		totalTime = task.getDuration()
 		timeLeft = if (task.pomodoroTimer != -1) {
+			SnackbarController.showCustomSnackbar("Resuming Previous Session", actionColor = LightGreen)
 			task.pomodoroTimer.toLong()
 		} else {
 			totalTime
