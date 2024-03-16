@@ -24,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.BottomCenter
@@ -91,6 +92,7 @@ fun CustomSnackBar() {
 	// animation
 	val translateY = 250f
 	val verticalTranslate = remember { Animatable(translateY) }
+	val scope = rememberCoroutineScope()
 
 	if (isDismiss) {
 		SnackbarController._msg.value = null
@@ -119,6 +121,7 @@ fun CustomSnackBar() {
 					translateY,
 					tween(500)
 				)
+				verticalTranslate.snapTo(translateY)
 				isDismiss = true
 			}
 			Box(
