@@ -115,7 +115,7 @@ dependencies {
 	implementation("com.google.code.gson:gson:2.10.1")
 
 	//calender
-	implementation("com.kizitonwose.calendar:compose:2.5.1")
+	implementation("com.kizitonwose.calendar:compose:2.4.1")
 
 	testImplementation("junit:junit:4.13.2")
 	androidTestImplementation("androidx.test.ext:junit:1.1.5")
