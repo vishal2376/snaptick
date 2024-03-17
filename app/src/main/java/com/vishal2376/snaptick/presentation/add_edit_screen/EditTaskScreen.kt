@@ -31,6 +31,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -85,6 +86,13 @@ fun EditTaskScreen(
 
 	var showDialogConfirmDelete by remember { mutableStateOf(false) }
 	var showDialogCustomDuration by remember { mutableStateOf(false) }
+
+	LaunchedEffect(isTimeUpdated)
+	{
+		if (isTimeUpdated) {
+			onEvent(AddEditScreenEvent.ResetPomodoroTimer)
+		}
+	}
 
 	Scaffold(topBar = {
 		TopAppBar(

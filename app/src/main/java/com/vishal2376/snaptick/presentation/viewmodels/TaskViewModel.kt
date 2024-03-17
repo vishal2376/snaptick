@@ -19,6 +19,7 @@ import com.vishal2376.snaptick.presentation.common.SortTask
 import com.vishal2376.snaptick.presentation.home_screen.HomeScreenEvent
 import com.vishal2376.snaptick.presentation.main.MainEvent
 import com.vishal2376.snaptick.presentation.main.MainState
+import com.vishal2376.snaptick.presentation.pomodoro_screen.PomodoroScreenEvent
 import com.vishal2376.snaptick.util.Constants
 import com.vishal2376.snaptick.util.SettingsStore
 import com.vishal2376.snaptick.util.openMail
@@ -106,16 +107,7 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 	fun onEvent(event: HomeScreenEvent) {
 		when (event) {
 			is HomeScreenEvent.OnCompleted -> {
-				viewModelScope.launch(Dispatchers.IO) {
-					task = repository.getTaskById(event.taskId)
-					task = task.copy(isCompleted = event.isCompleted)
-					repository.updateTask(task)
-					if (event.isCompleted) {
-						cancelNotification(task.uuid)
-					} else {
-						scheduleNotification(task)
-					}
-				}
+				toggleTaskCompletion(event.taskId, event.isCompleted)
 			}
 
 			is HomeScreenEvent.OnEditTask -> {
@@ -166,6 +158,10 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 				task = task.copy(reminder = event.reminder)
 			}
 
+			is AddEditScreenEvent.ResetPomodoroTimer -> {
+				task = task.copy(pomodoroTimer = -1)
+			}
+
 			is AddEditScreenEvent.OnUpdateIsRepeated -> {
 				task = task.copy(isRepeated = event.isRepeated)
 			}
@@ -188,6 +184,25 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 		}
 	}
 
+	// Pomodoro Screen Events
+	fun onEvent(event: PomodoroScreenEvent) {
+		when (event) {
+			is PomodoroScreenEvent.OnCompleted -> {
+				toggleTaskCompletion(event.taskId, event.isCompleted)
+			}
+
+			is PomodoroScreenEvent.OnDestroyScreen -> {
+				viewModelScope.launch {
+					task = repository.getTaskById(event.taskId)
+					task = if (task.isValidPomodoroSession(event.remainingTime))
+						task.copy(pomodoroTimer = event.remainingTime.toInt())
+					else
+						task.copy(pomodoroTimer = -1)
+					repository.updateTask(task)
+				}
+			}
+		}
+	}
 
 	private fun getTaskById(id: Int) {
 		viewModelScope.launch(Dispatchers.IO) {
@@ -199,6 +214,19 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 		viewModelScope.launch(Dispatchers.IO) {
 			cancelNotification(task.uuid)
 			repository.deleteTask(task)
+		}
+	}
+
+	private fun toggleTaskCompletion(taskId: Int, isCompleted: Boolean) {
+		viewModelScope.launch(Dispatchers.IO) {
+			task = repository.getTaskById(taskId)
+			task = task.copy(isCompleted = isCompleted)
+			repository.updateTask(task)
+			if (isCompleted) {
+				cancelNotification(task.uuid)
+			} else {
+				scheduleNotification(task)
+			}
 		}
 	}
 
