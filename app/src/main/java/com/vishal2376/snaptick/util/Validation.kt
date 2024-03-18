@@ -27,10 +27,10 @@ fun checkValidTask(
 		return Pair(false, "Task should be at least ${Constants.MIN_ALLOWED_DURATION} minutes.")
 	}
 
-	if (task.reminder) {
-		if (startTimeSec < currentTime && !task.isRepeated) {
-			return Pair(false, "Cannot set a reminder for past time")
-		}
-	}
+//	if (task.reminder) {
+//		if (startTimeSec < currentTime && !task.isRepeated) {
+//			return Pair(false, "Cannot set a reminder for past time")
+//		}
+//	}
 	return Pair(true, "Valid Task")
 }
