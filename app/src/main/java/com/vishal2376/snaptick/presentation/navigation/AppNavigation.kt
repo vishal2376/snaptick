@@ -12,6 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.vishal2376.snaptick.presentation.add_edit_screen.AddTaskScreen
 import com.vishal2376.snaptick.presentation.add_edit_screen.EditTaskScreen
+import com.vishal2376.snaptick.presentation.calender_screen.CalenderScreen
 import com.vishal2376.snaptick.presentation.completed_task_screen.CompletedTaskScreen
 import com.vishal2376.snaptick.presentation.free_time_screen.FreeTimeScreen
 import com.vishal2376.snaptick.presentation.home_screen.HomeScreen
@@ -54,6 +55,9 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 				onClickCompletedInfo = {
 					navController.navigate(route = Routes.CompletedTaskScreen.name)
 				},
+				onClickCalender = {
+					navController.navigate(route = Routes.CalenderScreen.name)
+				},
 				onClickThisWeek = {
 					navController.navigate(route = Routes.ThisWeekTaskScreen.name)
 				},
@@ -83,6 +87,15 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 					navController.navigate(route = "${Routes.EditTaskScreen.name}/$id")
 				},
 				onEvent = taskViewModel::onEvent,
+				onBack = {
+					if (navController.isValidBackStack) {
+						navController.popBackStack()
+					}
+				})
+		}
+
+		composable(route = Routes.CalenderScreen.name) {
+			CalenderScreen(
 				onBack = {
 					if (navController.isValidBackStack) {
 						navController.popBackStack()

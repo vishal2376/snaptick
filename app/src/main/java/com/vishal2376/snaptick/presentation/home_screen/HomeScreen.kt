@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Sort
 import androidx.compose.material3.DrawerValue
@@ -89,6 +90,7 @@ fun HomeScreen(
 	onEditTask: (id: Int) -> Unit,
 	onAddTask: () -> Unit,
 	onClickCompletedInfo: () -> Unit,
+	onClickCalender: () -> Unit,
 	onClickThisWeek: () -> Unit,
 	onClickFreeTimeInfo: () -> Unit,
 	onPomodoroTask: (id: Int) -> Unit,
@@ -179,6 +181,12 @@ fun HomeScreen(
 					}
 				},
 				actions = {
+					IconButton(onClick = { onClickCalender() }) {
+						Icon(
+							imageVector = Icons.Default.CalendarMonth,
+							contentDescription = null
+						)
+					}
 					Text(
 						text = appState.streak.toString(),
 						fontSize = 18.sp,
@@ -377,6 +385,6 @@ fun HomeScreen(
 fun HomeScreenPreview() {
 	SnaptickTheme {
 		val tasks = DummyTasks.dummyTasks
-		HomeScreen(tasks = tasks, MainState(), {}, {}, {}, {}, {}, {}, {}, {})
+		HomeScreen(tasks = tasks, MainState(), {}, {}, {}, {}, {}, {}, {}, {},{})
 	}
 }
