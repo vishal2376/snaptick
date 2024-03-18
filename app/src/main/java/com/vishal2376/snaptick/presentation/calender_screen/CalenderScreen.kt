@@ -123,7 +123,7 @@ fun CalenderScreen(onBack: () -> Unit) {
 					modifier = Modifier.padding(horizontal = 10.dp),
 					state = weekState,
 					dayContent = { day ->
-						WeekDayComponent(day.date, selected = selection == day.date) {
+						WeekDayComponent(day, selected = selection == day.date) {
 							selection = it
 						}
 					},

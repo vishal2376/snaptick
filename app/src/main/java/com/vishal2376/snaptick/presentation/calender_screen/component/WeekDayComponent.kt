@@ -18,6 +18,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.kizitonwose.calendar.core.WeekDay
+import com.kizitonwose.calendar.core.WeekDayPosition
 import com.vishal2376.snaptick.presentation.common.infoTextStyle
 import com.vishal2376.snaptick.presentation.common.taskDescTextStyle
 import com.vishal2376.snaptick.ui.theme.Black500
@@ -32,10 +34,16 @@ private val dateFormatter = DateTimeFormatter.ofPattern("dd")
 
 @Composable
 fun WeekDayComponent(
-	date: LocalDate,
+	day: WeekDay,
 	selected: Boolean = false,
 	onClick: (LocalDate) -> Unit = {},
 ) {
+	val textColor = if (selected) {
+		Black500
+	} else {
+		MaterialTheme.colorScheme.onPrimary
+	}
+
 	val configuration = LocalConfiguration.current
 	val screenWidth = configuration.screenWidthDp.dp
 	Box(
@@ -44,8 +52,12 @@ fun WeekDayComponent(
 			.padding(4.dp)
 			.clip(RoundedCornerShape(16.dp))
 			.background(if (selected) Blue else MaterialTheme.colorScheme.secondary)
-			.border(if (date == LocalDate.now()) 2.dp else (-1).dp, Blue, RoundedCornerShape(16.dp))
-			.clickable { onClick(date) },
+			.border(
+				if (day.date == LocalDate.now()) 2.dp else (-1).dp,
+				Blue,
+				RoundedCornerShape(16.dp)
+			)
+			.clickable { onClick(day.date) },
 		contentAlignment = Alignment.Center,
 	) {
 		Column(
@@ -54,14 +66,14 @@ fun WeekDayComponent(
 			verticalArrangement = Arrangement.Center
 		) {
 			Text(
-				text = dateFormatter.format(date),
+				text = dateFormatter.format(day.date),
 				style = infoTextStyle,
-				color = if (selected) Black500 else MaterialTheme.colorScheme.onPrimary
+				color = textColor
 			)
 			Text(
-				text = date.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault()),
-				color = if (selected) Black500 else MaterialTheme.colorScheme.onPrimary,
+				text = day.date.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault()),
 				style = taskDescTextStyle,
+				color = textColor,
 			)
 		}
 	}
@@ -71,6 +83,6 @@ fun WeekDayComponent(
 @Composable
 fun WeekDayComponentPreview() {
 	SnaptickTheme {
-		WeekDayComponent(date = LocalDate.now())
+		WeekDayComponent(WeekDay(LocalDate.now(), position = WeekDayPosition.InDate))
 	}
 }

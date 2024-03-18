@@ -25,6 +25,7 @@ import com.vishal2376.snaptick.presentation.common.infoDescTextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.ui.theme.Black500
 import com.vishal2376.snaptick.ui.theme.Blue
+import com.vishal2376.snaptick.ui.theme.DarkGray
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.TextStyle
@@ -36,10 +37,13 @@ fun MonthDayComponent(
 	selected: Boolean,
 	onClick: (LocalDate) -> Unit = {}
 ) {
-	val textColor = if (day.position == DayPosition.MonthDate) {
-		if (selected) Black500 else MaterialTheme.colorScheme.onPrimary
+	val textColor = if (selected) {
+		Black500
 	} else {
-		MaterialTheme.colorScheme.onSecondary
+		if (day.position == DayPosition.MonthDate)
+			MaterialTheme.colorScheme.onPrimary
+		else
+			DarkGray
 	}
 
 	Box(
