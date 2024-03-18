@@ -82,8 +82,8 @@ fun AddTaskScreen(
 ) {
 
 	var taskTitle by remember { mutableStateOf("") }
-	var taskStartTime by remember { mutableStateOf(LocalTime.now().plusMinutes(5)) }
-	var taskEndTime by remember { mutableStateOf(LocalTime.now().plusMinutes(5).plusHours(1)) }
+	var taskStartTime by remember { mutableStateOf(LocalTime.now()) }
+	var taskEndTime by remember { mutableStateOf(LocalTime.now().plusHours(1)) }
 	var isTaskReminderOn by remember { mutableStateOf(true) }
 	var isTaskRepeated by remember { mutableStateOf(false) }
 	var repeatedWeekDays by remember { mutableStateOf("") }
