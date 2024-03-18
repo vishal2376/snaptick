@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -51,12 +50,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.common.SnackbarController.showCustomSnackbar
 import com.vishal2376.snaptick.presentation.common.SortTask
 import com.vishal2376.snaptick.presentation.common.SwipeActionBox
+import com.vishal2376.snaptick.presentation.common.durationTextStyle
 import com.vishal2376.snaptick.presentation.common.fontRobotoMono
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
@@ -181,25 +180,30 @@ fun HomeScreen(
 					}
 				},
 				actions = {
-					IconButton(onClick = { onClickCalender() }) {
+					Row(
+						horizontalArrangement = Arrangement.spacedBy(2.dp),
+						verticalAlignment = Alignment.CenterVertically
+					) {
+						IconButton(onClick = { onClickCalender() }) {
+							Icon(
+								imageVector = Icons.Default.CalendarMonth,
+								contentDescription = null
+							)
+						}
+						Text(
+							text = appState.streak.toString(),
+							style = durationTextStyle,
+							color = MaterialTheme.colorScheme.onSecondary,
+							fontFamily = fontRobotoMono,
+							fontWeight = FontWeight.Bold
+						)
 						Icon(
-							imageVector = Icons.Default.CalendarMonth,
-							contentDescription = null
+							painter = painterResource(id = R.drawable.ic_fire),
+							contentDescription = null,
+							tint = Yellow,
 						)
 					}
-					Text(
-						text = appState.streak.toString(),
-						fontSize = 18.sp,
-						fontFamily = fontRobotoMono,
-						fontWeight = FontWeight.Bold
-					)
-					Spacer(modifier = Modifier.width(4.dp))
-					Icon(
-						painter = painterResource(id = R.drawable.ic_fire),
-						contentDescription = null,
-						tint = Yellow,
-						modifier = Modifier.size(22.dp)
-					)
+					Spacer(modifier = Modifier.width(8.dp))
 				})
 		},
 			floatingActionButton = {
@@ -385,6 +389,6 @@ fun HomeScreen(
 fun HomeScreenPreview() {
 	SnaptickTheme {
 		val tasks = DummyTasks.dummyTasks
-		HomeScreen(tasks = tasks, MainState(), {}, {}, {}, {}, {}, {}, {}, {},{})
+		HomeScreen(tasks = tasks, MainState(), {}, {}, {}, {}, {}, {}, {}, {}, {})
 	}
 }
