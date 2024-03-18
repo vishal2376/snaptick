@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.DayPosition
+import com.vishal2376.snaptick.presentation.common.infoDescTextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.ui.theme.Black500
 import com.vishal2376.snaptick.ui.theme.Blue
@@ -35,6 +36,12 @@ fun MonthDayComponent(
 	selected: Boolean,
 	onClick: (LocalDate) -> Unit = {}
 ) {
+	val textColor = if (day.position == DayPosition.MonthDate) {
+		if (selected) Black500 else MaterialTheme.colorScheme.onPrimary
+	} else {
+		MaterialTheme.colorScheme.onSecondary
+	}
+
 	Box(
 		modifier = Modifier
 			.aspectRatio(1f)
@@ -52,7 +59,7 @@ fun MonthDayComponent(
 		Text(
 			text = day.date.dayOfMonth.toString(),
 			style = taskTextStyle,
-			color = if (selected) Black500 else MaterialTheme.colorScheme.onPrimary
+			color = textColor
 		)
 	}
 }
@@ -64,7 +71,7 @@ fun DaysOfWeekTitle(daysOfWeek: List<DayOfWeek>) {
 			Text(
 				modifier = Modifier.weight(1f),
 				textAlign = TextAlign.Center,
-				style = taskTextStyle,
+				style = infoDescTextStyle,
 				color = MaterialTheme.colorScheme.onSecondary,
 				text = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault()),
 			)
