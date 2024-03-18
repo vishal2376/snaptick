@@ -5,8 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarMonth
-import androidx.compose.material.icons.filled.CalendarViewWeek
 import androidx.compose.material.icons.filled.Restore
+import androidx.compose.material.icons.filled.ViewWeek
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -109,7 +109,7 @@ fun CalenderScreen(onBack: () -> Unit) {
 
 				IconButton(onClick = { isWeekCalender = !isWeekCalender }) {
 					val currentIcon =
-						if (isWeekCalender) Icons.Default.CalendarMonth else Icons.Default.CalendarViewWeek
+						if (isWeekCalender) Icons.Default.CalendarMonth else Icons.Default.ViewWeek
 					Icon(imageVector = currentIcon, contentDescription = null)
 				}
 			}
