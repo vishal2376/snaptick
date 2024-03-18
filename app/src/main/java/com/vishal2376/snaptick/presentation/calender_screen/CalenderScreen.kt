@@ -51,8 +51,8 @@ fun CalenderScreen(onBack: () -> Unit) {
 
 	// monthly calender
 	val currentMonth = remember { YearMonth.now() }
-	val startMonth = remember { currentMonth.minusMonths(300) }
-	val endMonth = remember { currentMonth.plusMonths(300) }
+	val startMonth = remember { currentMonth.minusMonths(50) }
+	val endMonth = remember { currentMonth.plusMonths(50) }
 	val monthState = rememberCalendarState(
 		startMonth = startMonth,
 		endMonth = endMonth,
@@ -62,8 +62,8 @@ fun CalenderScreen(onBack: () -> Unit) {
 
 	// weekly calender
 	val currentDate = remember { LocalDate.now() }
-	val startDate = remember { currentDate.minusDays(200) }
-	val endDate = remember { currentDate.plusDays(200) }
+	val startDate = remember { currentDate.minusDays(100) }
+	val endDate = remember { currentDate.plusDays(100) }
 	var selection by remember { mutableStateOf<LocalDate>(currentDate) }
 	val weekState = rememberWeekCalendarState(
 		startDate = startDate,
