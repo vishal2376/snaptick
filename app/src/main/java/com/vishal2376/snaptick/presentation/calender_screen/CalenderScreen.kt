@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.CalendarViewWeek
+import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -20,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,6 +36,7 @@ import com.vishal2376.snaptick.presentation.calender_screen.component.MonthDayCo
 import com.vishal2376.snaptick.presentation.calender_screen.component.WeekDayComponent
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.TextStyle
@@ -42,6 +45,7 @@ import java.util.Locale
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CalenderScreen(onBack: () -> Unit) {
+	val scope = rememberCoroutineScope()
 	var isWeekCalender by remember { mutableStateOf(false) }
 	val firstDayOfWeek = remember { firstDayOfWeekFromLocale() }
 
@@ -67,6 +71,10 @@ fun CalenderScreen(onBack: () -> Unit) {
 		firstDayOfWeek = firstDayOfWeek
 	)
 
+	var currentMonthTitle by remember { mutableStateOf(currentMonth.month) }
+	currentMonthTitle = if (isWeekCalender) weekState.firstVisibleWeek.days[0].date.month
+	else monthState.lastVisibleMonth.yearMonth.month
+
 	Scaffold(topBar = {
 		TopAppBar(
 			colors = TopAppBarDefaults.topAppBarColors(
@@ -74,7 +82,7 @@ fun CalenderScreen(onBack: () -> Unit) {
 			),
 			title = {
 				Text(
-					text = currentDate.month.getDisplayName(TextStyle.FULL, Locale.getDefault()),
+					text = currentMonthTitle.getDisplayName(TextStyle.FULL, Locale.getDefault()),
 					style = h1TextStyle
 				)
 			},
@@ -87,6 +95,18 @@ fun CalenderScreen(onBack: () -> Unit) {
 				}
 			},
 			actions = {
+				IconButton(onClick = {
+					scope.launch {
+						selection = currentDate
+						if (isWeekCalender)
+							weekState.animateScrollToWeek(currentDate)
+						else
+							monthState.animateScrollToMonth(currentMonth)
+					}
+				}) {
+					Icon(imageVector = Icons.Default.Restore, contentDescription = null)
+				}
+
 				IconButton(onClick = { isWeekCalender = !isWeekCalender }) {
 					val currentIcon =
 						if (isWeekCalender) Icons.Default.CalendarMonth else Icons.Default.CalendarViewWeek
