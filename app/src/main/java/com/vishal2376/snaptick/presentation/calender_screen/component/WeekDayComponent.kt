@@ -36,6 +36,7 @@ private val dateFormatter = DateTimeFormatter.ofPattern("dd")
 fun WeekDayComponent(
 	day: WeekDay,
 	selected: Boolean = false,
+	indicator: Boolean = true,
 	onClick: (LocalDate) -> Unit = {},
 ) {
 	val textColor = if (selected) {

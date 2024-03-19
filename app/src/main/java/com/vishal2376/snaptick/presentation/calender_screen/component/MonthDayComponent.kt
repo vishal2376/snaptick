@@ -4,10 +4,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -35,6 +38,7 @@ import java.util.Locale
 fun MonthDayComponent(
 	day: CalendarDay,
 	selected: Boolean,
+	indicator: Boolean = true,
 	onClick: (LocalDate) -> Unit = {}
 ) {
 	val textColor = if (selected) {
@@ -60,11 +64,21 @@ fun MonthDayComponent(
 			.clickable { onClick(day.date) },
 		contentAlignment = Alignment.Center
 	) {
-		Text(
-			text = day.date.dayOfMonth.toString(),
-			style = taskTextStyle,
-			color = textColor
-		)
+		Column(
+			horizontalAlignment = Alignment.CenterHorizontally
+		) {
+			Text(
+				text = day.date.dayOfMonth.toString(),
+				style = taskTextStyle,
+				color = textColor
+			)
+			Box(
+				modifier = Modifier
+					.size(4.dp)
+					.clip(CircleShape)
+					.background(if (indicator && day.position == DayPosition.MonthDate) Blue else Color.Transparent)
+			)
+		}
 	}
 }
 
@@ -86,5 +100,5 @@ fun DaysOfWeekTitle(daysOfWeek: List<DayOfWeek>) {
 @Preview
 @Composable
 fun MonthDayComponentPreview() {
-	MonthDayComponent(CalendarDay(LocalDate.now(), DayPosition.MonthDate), true)
+	MonthDayComponent(CalendarDay(LocalDate.now(), DayPosition.MonthDate), false)
 }
