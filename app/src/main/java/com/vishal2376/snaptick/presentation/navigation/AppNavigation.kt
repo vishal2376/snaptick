@@ -96,6 +96,7 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 
 		composable(route = Routes.CalenderScreen.name) {
 			CalenderScreen(
+				tasks = allTasks,
 				onBack = {
 					if (navController.isValidBackStack) {
 						navController.popBackStack()
