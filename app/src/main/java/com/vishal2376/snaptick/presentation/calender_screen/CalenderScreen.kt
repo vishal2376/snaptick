@@ -1,8 +1,16 @@
 package com.vishal2376.snaptick.presentation.calender_screen
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Restore
@@ -31,20 +39,26 @@ import com.kizitonwose.calendar.compose.WeekCalendar
 import com.kizitonwose.calendar.compose.rememberCalendarState
 import com.kizitonwose.calendar.compose.weekcalendar.rememberWeekCalendarState
 import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
+import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.calender_screen.component.DaysOfWeekTitle
 import com.vishal2376.snaptick.presentation.calender_screen.component.MonthDayComponent
 import com.vishal2376.snaptick.presentation.calender_screen.component.WeekDayComponent
+import com.vishal2376.snaptick.presentation.common.getTasksByDate
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
+import com.vishal2376.snaptick.presentation.home_screen.components.EmptyTaskComponent
+import com.vishal2376.snaptick.presentation.home_screen.components.TaskComponent
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
+import com.vishal2376.snaptick.util.Constants
+import com.vishal2376.snaptick.util.DummyTasks
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.Locale
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-fun CalenderScreen(onBack: () -> Unit) {
+fun CalenderScreen(tasks: List<Task>, onBack: () -> Unit) {
 	val scope = rememberCoroutineScope()
 	var isWeekCalender by remember { mutableStateOf(false) }
 	val firstDayOfWeek = remember { firstDayOfWeekFromLocale() }
@@ -64,13 +78,13 @@ fun CalenderScreen(onBack: () -> Unit) {
 	val currentDate = remember { LocalDate.now() }
 	val startDate = remember { currentDate.minusDays(100) }
 	val endDate = remember { currentDate.plusDays(100) }
-	var selection by remember { mutableStateOf<LocalDate>(currentDate) }
 	val weekState = rememberWeekCalendarState(
 		startDate = startDate,
 		endDate = endDate,
 		firstDayOfWeek = firstDayOfWeek
 	)
 
+	var selectedDay by remember { mutableStateOf<LocalDate>(currentDate) }
 	var currentMonthTitle by remember { mutableStateOf(currentMonth.month) }
 	currentMonthTitle = if (isWeekCalender) weekState.firstVisibleWeek.days[0].date.month
 	else monthState.lastVisibleMonth.yearMonth.month
@@ -97,7 +111,7 @@ fun CalenderScreen(onBack: () -> Unit) {
 			actions = {
 				IconButton(onClick = {
 					scope.launch {
-						selection = currentDate
+						selectedDay = currentDate
 						if (isWeekCalender)
 							weekState.animateScrollToWeek(currentDate)
 						else
@@ -123,8 +137,12 @@ fun CalenderScreen(onBack: () -> Unit) {
 					modifier = Modifier.padding(horizontal = 10.dp),
 					state = weekState,
 					dayContent = { day ->
-						WeekDayComponent(day, selected = selection == day.date) {
-							selection = it
+						WeekDayComponent(
+							day,
+							selected = selectedDay == day.date,
+							indicator = getTasksByDate(tasks, day.date).isNotEmpty()
+						) {
+							selectedDay = it
 						}
 					},
 				)
@@ -135,8 +153,12 @@ fun CalenderScreen(onBack: () -> Unit) {
 					modifier = Modifier.padding(horizontal = 10.dp),
 					state = monthState,
 					dayContent = { day ->
-						MonthDayComponent(day, selected = selection == day.date) {
-							selection = it
+						MonthDayComponent(
+							day,
+							selected = selectedDay == day.date,
+							indicator = getTasksByDate(tasks, day.date).isNotEmpty()
+						) {
+							selectedDay = it
 						}
 					},
 					monthHeader = { month ->
@@ -151,6 +173,36 @@ fun CalenderScreen(onBack: () -> Unit) {
 				thickness = 2.dp,
 				color = MaterialTheme.colorScheme.secondary
 			)
+
+			val selectedDayTasks = getTasksByDate(tasks, selectedDay)
+			if (selectedDayTasks.isEmpty()) {
+				EmptyTaskComponent()
+			} else {
+				LazyColumn(
+					modifier = Modifier
+						.fillMaxSize()
+						.padding(16.dp, 0.dp)
+				) {
+					itemsIndexed(items = selectedDayTasks,
+						key = { index, task ->
+							task.id
+						}) { index, task ->
+						Box(
+							modifier = Modifier.animateItemPlacement(tween(500))
+						) {
+							TaskComponent(
+								task = task,
+								onEdit = {},
+								onComplete = {},
+								onPomodoro = {},
+								animDelay = index * Constants.LIST_ANIMATION_DELAY
+							)
+						}
+						Spacer(modifier = Modifier.height(10.dp))
+					}
+				}
+			}
+
 		}
 	}
 }
@@ -160,6 +212,7 @@ fun CalenderScreen(onBack: () -> Unit) {
 @Composable
 fun CalenderScreenPreview() {
 	SnaptickTheme {
-		CalenderScreen({})
+		val tasks = DummyTasks.dummyTasks
+		CalenderScreen(tasks, {})
 	}
 }
