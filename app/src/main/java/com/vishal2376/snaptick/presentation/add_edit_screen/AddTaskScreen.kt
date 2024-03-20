@@ -373,6 +373,10 @@ fun AddTaskScreen(
 
 						if (isValid) {
 							onEvent(AddEditScreenEvent.OnAddTaskClick(task))
+							showCustomSnackbar(
+								context.getString(R.string.tasks_added_successfully),
+								actionColor = LightGreen
+							)
 							onBack()
 						} else {
 							showCustomSnackbar(errorMessage)
