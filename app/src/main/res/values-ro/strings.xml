@@ -44,4 +44,6 @@
     <string name="start_time_latest_at_top">Ora de începere (cel mai bun în partea de sus)</string>
     <string name="creation_time_latest_at_bottom">Timp de creare (cel mai mare în jos)</string>
     <string name="creation_time_latest_at_top">Timp creare (cel mai mare în partea de sus)</string>
+    <string name="calender">Calender</string>
+    <string name="today">Today</string>
 </resources>
