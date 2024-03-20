@@ -55,6 +55,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
+import com.vishal2376.snaptick.presentation.add_edit_screen.components.CustomDatePickerDialog
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.CustomDurationDialogComponent
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.DurationComponent
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.PriorityComponent
@@ -102,6 +103,7 @@ fun AddTaskScreen(
 	val focusRequester = FocusRequester()
 
 	var showDialogCustomDuration by remember { mutableStateOf(false) }
+	var showDialogDatePicker by remember { mutableStateOf(false) }
 
 	Scaffold(topBar = {
 		TopAppBar(
@@ -125,11 +127,9 @@ fun AddTaskScreen(
 			actions = {
 				Row(
 					modifier = Modifier
+						.clickable { showDialogDatePicker = true }
 						.border(2.dp, MaterialTheme.colorScheme.secondary, RoundedCornerShape(8.dp))
-						.padding(top = 8.dp, bottom = 8.dp, end = 10.dp, start = 8.dp)
-						.clickable {
-
-						},
+						.padding(top = 8.dp, bottom = 8.dp, end = 10.dp, start = 8.dp),
 					verticalAlignment = Alignment.CenterVertically,
 					horizontalArrangement = Arrangement.spacedBy(8.dp)
 				) {
@@ -163,6 +163,13 @@ fun AddTaskScreen(
 					isTimeUpdated = !isTimeUpdated
 				}
 			)
+		}
+
+		if (showDialogDatePicker) {
+			CustomDatePickerDialog(onClose = { day ->
+				taskDate = day
+				showDialogDatePicker = false
+			})
 		}
 
 		Column(

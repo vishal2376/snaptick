@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.DayPosition
 import com.vishal2376.snaptick.presentation.common.infoDescTextStyle
+import com.vishal2376.snaptick.presentation.common.taskDescTextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.ui.theme.Black500
 import com.vishal2376.snaptick.ui.theme.Blue
@@ -39,6 +40,7 @@ fun MonthDayComponent(
 	day: CalendarDay,
 	selected: Boolean,
 	indicator: Boolean = true,
+	isDatePicker: Boolean = false,
 	onClick: (LocalDate) -> Unit = {}
 ) {
 	val textColor = if (selected) {
@@ -48,6 +50,12 @@ fun MonthDayComponent(
 			MaterialTheme.colorScheme.onPrimary
 		else
 			DarkGray
+	}
+
+	val dayTextStyle = if (isDatePicker) {
+		taskDescTextStyle
+	} else {
+		taskTextStyle
 	}
 
 	Box(
@@ -69,7 +77,7 @@ fun MonthDayComponent(
 		) {
 			Text(
 				text = day.date.dayOfMonth.toString(),
-				style = taskTextStyle,
+				style = dayTextStyle,
 				color = textColor
 			)
 			Box(
