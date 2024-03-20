@@ -46,4 +46,5 @@
     <string name="creation_time_latest_at_top">Opprettelsestid (øverste på toppen)</string>
     <string name="calender">Calender</string>
     <string name="today">Today</string>
+    <string name="selected_date">Selected Date</string>
 </resources>
