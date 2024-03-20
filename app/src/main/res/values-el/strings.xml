@@ -44,4 +44,6 @@
     <string name="start_time_latest_at_top">Χρόνος Έναρξης (Τελευταία στην Κορυφή)</string>
     <string name="creation_time_latest_at_bottom">Χρόνος δημιουργίας (Τελευταία στο Κάτω)</string>
     <string name="creation_time_latest_at_top">Χρόνος Δημιουργίας (Τελευταία στην Κορυφή)</string>
+    <string name="calender">Calender</string>
+    <string name="today">Today</string>
 </resources>
