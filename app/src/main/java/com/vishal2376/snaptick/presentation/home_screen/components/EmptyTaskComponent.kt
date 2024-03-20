@@ -1,6 +1,7 @@
 package com.vishal2376.snaptick.presentation.home_screen.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,18 +19,17 @@ import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 
 @Composable
-fun EmptyTaskComponent() {
-	Box(
-		modifier = Modifier.fillMaxSize(),
-		contentAlignment = Alignment.Center
-	) {
+fun EmptyTaskComponent(modifier: Modifier = Modifier) {
+	Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center)
+	{
 		Column(
-			horizontalAlignment = Alignment.CenterHorizontally
+			modifier = modifier.size(250.dp),
+			horizontalAlignment = Alignment.CenterHorizontally,
+			verticalArrangement = Arrangement.spacedBy(24.dp)
 		) {
 			Image(
 				painter = painterResource(id = R.drawable.no_tasks),
-				contentDescription = null,
-				modifier = Modifier.size(250.dp)
+				contentDescription = null
 			)
 			Text(
 				text = stringResource(R.string.no_tasks),
