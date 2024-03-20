@@ -47,4 +47,5 @@
     <string name="calender">Calender</string>
     <string name="today">Today</string>
     <string name="selected_date">Selected Date</string>
+    <string name="tasks_added_successfully">Tasks Added Successfully</string>
 </resources>
