@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Snaptick</string>
+    <string name="app_name">naptick</string>
     <string name="today_tasks">Tarefas de Hoje</string>
-    <string name="what_would_you_like_to_do">O que você gostaria de fazer?</string>
+    <string name="what_would_you_like_to_do">O que você gostaria de fazer ?</string>
     <string name="edit_task">Editar tarefa</string>
     <string name="add_task">Adicionar tarefa</string>
     <string name="update_task">Atualizar Tarefa</string>
@@ -11,14 +11,14 @@
     <string name="dialog_text">Desculpe, ocorreu um erro inesperado.\n\nVocê quer enviar um relatório de erro para o desenvolvedor?</string>
     <string name="dialog_title">Relatório de Erro</string>
     <string name="dialog_positive">Mandar</string>
-    <string name="dialog_negative">Cancelar</string>
+    <string name="dialog_negative">cancelar</string>
     <string name="report_bug">Relatar erro</string>
     <string name="suggestions">Sugestões</string>
     <string name="tag_line"></string>
     <string name="buildVersion">v%1$s</string>
     <string name="delete_task">Excluir tarefa?</string>
-    <string name="cancel">Cancelar</string>
-    <string name="delete">Deletar</string>
+    <string name="cancel">cancelar</string>
+    <string name="delete">excluir</string>
     <string name="custom_duration">Duração Personalizada</string>
     <string name="done">Concluído</string>
     <string name="repeat">Repetir</string>
@@ -32,8 +32,8 @@
     <string name="free_time">Tempo livre</string>
     <string name="no_tasks">Nenhuma Tarefa</string>
     <string name="sort_tasks_by">Ordenar Tarefas por</string>
-    <string name="settings">Configurações</string>
-    <string name="this_week">Esta Semana</string>
+    <string name="settings">Confirgurações</string>
+    <string name="this_week">Esta semana</string>
     <string name="app_theme">Tema</string>
     <string name="report_bugs">Relatar erros</string>
     <string name="rate_us">Avalie-nos</string>
@@ -47,4 +47,5 @@
     <string name="calender">Calender</string>
     <string name="today">Today</string>
     <string name="selected_date">Selected Date</string>
+    <string name="tasks_added_successfully">Tasks Added Successfully</string>
 </resources>
