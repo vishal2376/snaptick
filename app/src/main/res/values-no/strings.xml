@@ -44,4 +44,6 @@
     <string name="start_time_latest_at_top">Start tid (nyeste på toppen)</string>
     <string name="creation_time_latest_at_bottom">Opprettelsestid (lengst på bunnen)</string>
     <string name="creation_time_latest_at_top">Opprettelsestid (øverste på toppen)</string>
+    <string name="calender">Calender</string>
+    <string name="today">Today</string>
 </resources>
