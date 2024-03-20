@@ -126,14 +126,14 @@ fun AddTaskScreen(
 				Row(
 					modifier = Modifier
 						.border(2.dp, MaterialTheme.colorScheme.secondary, RoundedCornerShape(8.dp))
-						.padding(8.dp)
+						.padding(top = 8.dp, bottom = 8.dp, end = 10.dp, start = 8.dp)
 						.clickable {
 
 						},
 					verticalAlignment = Alignment.CenterVertically,
 					horizontalArrangement = Arrangement.spacedBy(8.dp)
 				) {
-					val dtf = DateTimeFormatter.ofPattern("d MMM, YY")
+					val dtf = DateTimeFormatter.ofPattern("d MMMM")
 					Icon(imageVector = Icons.Default.Today, contentDescription = null)
 					Text(
 						text = taskDate.format(dtf),
@@ -199,10 +199,7 @@ fun AddTaskScreen(
 					modifier = Modifier
 						.focusRequester(focusRequester)
 						.fillMaxWidth()
-						.padding(
-							32.dp,
-							8.dp
-						),
+						.padding(32.dp, 8.dp),
 					keyboardOptions = KeyboardOptions(
 						capitalization = KeyboardCapitalization.Sentences,
 						imeAction = ImeAction.Done
@@ -212,7 +209,7 @@ fun AddTaskScreen(
 					horizontalArrangement = Arrangement.SpaceBetween,
 					modifier = Modifier
 						.fillMaxWidth(.8f)
-						.padding(top = 24.dp)
+						.padding(top = 16.dp)
 				) {
 					Column(horizontalAlignment = Alignment.CenterHorizontally) {
 						Text(
