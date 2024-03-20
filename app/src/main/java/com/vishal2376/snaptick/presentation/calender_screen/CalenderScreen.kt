@@ -43,7 +43,7 @@ import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.calender_screen.component.DaysOfWeekTitle
 import com.vishal2376.snaptick.presentation.calender_screen.component.MonthDayComponent
 import com.vishal2376.snaptick.presentation.calender_screen.component.WeekDayComponent
-import com.vishal2376.snaptick.presentation.common.getTasksByDate
+import com.vishal2376.snaptick.presentation.common.filterTasksByDate
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.home_screen.components.EmptyTaskComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.TaskComponent
@@ -140,7 +140,7 @@ fun CalenderScreen(tasks: List<Task>, onBack: () -> Unit) {
 						WeekDayComponent(
 							day,
 							selected = selectedDay == day.date,
-							indicator = getTasksByDate(tasks, day.date).isNotEmpty()
+							indicator = filterTasksByDate(tasks, day.date).isNotEmpty()
 						) {
 							selectedDay = it
 						}
@@ -156,7 +156,7 @@ fun CalenderScreen(tasks: List<Task>, onBack: () -> Unit) {
 						MonthDayComponent(
 							day,
 							selected = selectedDay == day.date,
-							indicator = getTasksByDate(tasks, day.date).isNotEmpty()
+							indicator = filterTasksByDate(tasks, day.date).isNotEmpty()
 						) {
 							selectedDay = it
 						}
@@ -174,7 +174,7 @@ fun CalenderScreen(tasks: List<Task>, onBack: () -> Unit) {
 				color = MaterialTheme.colorScheme.secondary
 			)
 
-			val selectedDayTasks = getTasksByDate(tasks, selectedDay)
+			val selectedDayTasks = filterTasksByDate(tasks, selectedDay)
 			if (selectedDayTasks.isEmpty()) {
 				EmptyTaskComponent()
 			} else {

@@ -10,7 +10,7 @@ fun getTasksByMonth(tasks: List<Task>, month: YearMonth = YearMonth.now()): List
 	}
 }
 
-fun getTasksByDate(tasks: List<Task>, date: LocalDate = LocalDate.now()): List<Task> {
+fun filterTasksByDate(tasks: List<Task>, date: LocalDate = LocalDate.now()): List<Task> {
 	return tasks.filter { task ->
 		task.date == date
 	}
