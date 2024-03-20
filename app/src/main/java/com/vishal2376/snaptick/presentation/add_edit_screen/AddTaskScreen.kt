@@ -1,6 +1,8 @@
 package com.vishal2376.snaptick.presentation.add_edit_screen
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,11 +11,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Today
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -60,6 +64,7 @@ import com.vishal2376.snaptick.presentation.common.ShowTimePicker
 import com.vishal2376.snaptick.presentation.common.SnackbarController.showCustomSnackbar
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
+import com.vishal2376.snaptick.presentation.common.h3TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.presentation.main.MainState
 import com.vishal2376.snaptick.ui.theme.Blue
@@ -71,6 +76,7 @@ import com.vishal2376.snaptick.util.getFormattedDuration
 import kotlinx.coroutines.job
 import java.time.LocalDate
 import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -84,6 +90,7 @@ fun AddTaskScreen(
 	var taskTitle by remember { mutableStateOf("") }
 	var taskStartTime by remember { mutableStateOf(LocalTime.now()) }
 	var taskEndTime by remember { mutableStateOf(LocalTime.now().plusHours(1)) }
+	var taskDate by remember { mutableStateOf(LocalDate.now()) }
 	var isTaskReminderOn by remember { mutableStateOf(true) }
 	var isTaskRepeated by remember { mutableStateOf(false) }
 	var repeatedWeekDays by remember { mutableStateOf("") }
@@ -115,6 +122,26 @@ fun AddTaskScreen(
 					)
 				}
 			},
+			actions = {
+				Row(
+					modifier = Modifier
+						.border(2.dp, MaterialTheme.colorScheme.secondary, RoundedCornerShape(8.dp))
+						.padding(8.dp)
+						.clickable {
+
+						},
+					verticalAlignment = Alignment.CenterVertically,
+					horizontalArrangement = Arrangement.spacedBy(8.dp)
+				) {
+					val dtf = DateTimeFormatter.ofPattern("d MMM, YY")
+					Icon(imageVector = Icons.Default.Today, contentDescription = null)
+					Text(
+						text = taskDate.format(dtf),
+						style = h3TextStyle
+					)
+				}
+				Spacer(modifier = Modifier.width(8.dp))
+			}
 		)
 	}) { innerPadding ->
 
