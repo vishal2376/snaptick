@@ -106,7 +106,7 @@ data class Task(
 		return when {
 			hours > 0 && minutes > 0 -> String.format("%dh %02dm", hours, minutes)
 			hours > 0 -> String.format("%d $hoursString", hours)
-			else -> String.format("%dmin", minutes)
+			else -> String.format("%d min", minutes)
 		}
 
 	}
