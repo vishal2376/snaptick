@@ -63,6 +63,7 @@ fun CalenderScreen(
 	tasks: List<Task>,
 	onEvent: (HomeScreenEvent) -> Unit,
 	onEditTask: (id: Int) -> Unit,
+	onPomodoroTask: (id: Int) -> Unit,
 	onBack: () -> Unit
 ) {
 	val scope = rememberCoroutineScope()
@@ -202,8 +203,13 @@ fun CalenderScreen(
 									onEvent(HomeScreenEvent.OnEditTask(it))
 									onEditTask(it)
 								},
-								onComplete = {},
-								onPomodoro = {},
+								onComplete = {
+									onEvent(HomeScreenEvent.OnCompleted(it, !task.isCompleted))
+								},
+								onPomodoro = {
+									onEvent(HomeScreenEvent.OnPomodoro(it))
+									onPomodoroTask(it)
+								},
 								animDelay = index * Constants.LIST_ANIMATION_DELAY
 							)
 						}
@@ -222,6 +228,6 @@ fun CalenderScreen(
 fun CalenderScreenPreview() {
 	SnaptickTheme {
 		val tasks = DummyTasks.dummyTasks
-		CalenderScreen(tasks, {}, {}, {})
+		CalenderScreen(tasks, {}, {}, {}, {})
 	}
 }

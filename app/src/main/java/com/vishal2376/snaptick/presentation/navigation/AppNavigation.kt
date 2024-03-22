@@ -101,6 +101,9 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 					navController.navigate(route = "${Routes.EditTaskScreen.name}/$id")
 				},
 				onEvent = taskViewModel::onEvent,
+				onPomodoroTask = { id ->
+					navController.navigate(route = "${Routes.PomodoroScreen.name}/$id")
+				},
 				onBack = {
 					if (navController.isValidBackStack) {
 						navController.popBackStack()
