@@ -35,9 +35,9 @@
     <string name="settings">Thiết đặt</string>
     <string name="this_week">Tuần này</string>
     <string name="app_theme">Chủ đề</string>
-    <string name="report_bugs">Report Bugs</string>
-    <string name="rate_us">Rate Us</string>
-    <string name="share_app">Share App</string>
+    <string name="report_bugs">Báo cáo lỗi</string>
+    <string name="rate_us">Xếp hạng chúng tôi</string>
+    <string name="share_app">Chia sẻ ứng dụng</string>
     <string name="priority_low_to_high">Priority (Low to High)</string>
     <string name="priority_high_to_low">Priority (High to Low)</string>
     <string name="start_time_latest_at_bottom">Start Time (Latest at Bottom)</string>
