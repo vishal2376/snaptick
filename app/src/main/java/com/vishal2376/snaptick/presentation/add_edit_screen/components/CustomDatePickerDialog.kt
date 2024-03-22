@@ -52,10 +52,10 @@ import java.util.Locale
 
 
 @Composable
-fun CustomDatePickerDialog(onClose: (LocalDate) -> Unit) {
+fun CustomDatePickerDialog(defaultDay:LocalDate = LocalDate.now(),onClose: (LocalDate) -> Unit) {
 	val scope = rememberCoroutineScope()
 	val firstDayOfWeek = remember { firstDayOfWeekFromLocale() }
-	var selectedDay by remember { mutableStateOf(LocalDate.now()) }
+	var selectedDay by remember { mutableStateOf(defaultDay) }
 
 	// monthly calender
 	val currentMonth = remember { YearMonth.now() }
@@ -178,6 +178,6 @@ fun CustomDatePickerDialog(onClose: (LocalDate) -> Unit) {
 @Composable
 fun CustomDatePickerPreview() {
 	SnaptickTheme {
-		CustomDatePickerDialog({})
+		CustomDatePickerDialog(onClose = {})
 	}
 }

@@ -166,7 +166,8 @@ fun AddTaskScreen(
 		}
 
 		if (showDialogDatePicker) {
-			CustomDatePickerDialog(onClose = { day ->
+			CustomDatePickerDialog(
+				defaultDay = taskDate,onClose = { day ->
 				taskDate = day
 				showDialogDatePicker = false
 			})
