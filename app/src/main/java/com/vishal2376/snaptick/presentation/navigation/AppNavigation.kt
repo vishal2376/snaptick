@@ -97,6 +97,10 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 		composable(route = Routes.CalenderScreen.name) {
 			CalenderScreen(
 				tasks = allTasks,
+				onEditTask = { id ->
+					navController.navigate(route = "${Routes.EditTaskScreen.name}/$id")
+				},
+				onEvent = taskViewModel::onEvent,
 				onBack = {
 					if (navController.isValidBackStack) {
 						navController.popBackStack()

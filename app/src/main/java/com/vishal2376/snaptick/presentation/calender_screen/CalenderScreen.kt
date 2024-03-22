@@ -45,6 +45,7 @@ import com.vishal2376.snaptick.presentation.calender_screen.component.MonthDayCo
 import com.vishal2376.snaptick.presentation.calender_screen.component.WeekDayComponent
 import com.vishal2376.snaptick.presentation.common.filterTasksByDate
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
+import com.vishal2376.snaptick.presentation.home_screen.HomeScreenEvent
 import com.vishal2376.snaptick.presentation.home_screen.components.EmptyTaskComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.TaskComponent
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
@@ -58,7 +59,12 @@ import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-fun CalenderScreen(tasks: List<Task>, onBack: () -> Unit) {
+fun CalenderScreen(
+	tasks: List<Task>,
+	onEvent: (HomeScreenEvent) -> Unit,
+	onEditTask: (id: Int) -> Unit,
+	onBack: () -> Unit
+) {
 	val scope = rememberCoroutineScope()
 	var isWeekCalender by remember { mutableStateOf(false) }
 	val firstDayOfWeek = remember { firstDayOfWeekFromLocale() }
@@ -192,7 +198,10 @@ fun CalenderScreen(tasks: List<Task>, onBack: () -> Unit) {
 						) {
 							TaskComponent(
 								task = task,
-								onEdit = {},
+								onEdit = {
+									onEvent(HomeScreenEvent.OnEditTask(it))
+									onEditTask(it)
+								},
 								onComplete = {},
 								onPomodoro = {},
 								animDelay = index * Constants.LIST_ANIMATION_DELAY
@@ -213,6 +222,6 @@ fun CalenderScreen(tasks: List<Task>, onBack: () -> Unit) {
 fun CalenderScreenPreview() {
 	SnaptickTheme {
 		val tasks = DummyTasks.dummyTasks
-		CalenderScreen(tasks, {})
+		CalenderScreen(tasks, {}, {}, {})
 	}
 }
