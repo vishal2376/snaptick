@@ -101,6 +101,9 @@ fun HomeScreen(
 	val totalTaskTime = inCompletedTasks.sumOf { it.getDuration(checkPastTask = true) }
 	val freeTimeText = getFreeTime(totalTaskTime)
 
+	// streak
+	val appStreakText = if (appState.streak != -1) appState.streak.toString() else "0"
+
 	LaunchedEffect(inCompletedTasks) {
 		appState.totalTaskDuration = totalTaskTime
 	}
@@ -191,7 +194,7 @@ fun HomeScreen(
 							)
 						}
 						Text(
-							text = appState.streak.toString(),
+							text = appStreakText,
 							style = durationTextStyle,
 							color = MaterialTheme.colorScheme.onSecondary,
 							fontFamily = fontRobotoMono,
