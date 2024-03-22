@@ -200,11 +200,15 @@ fun CalenderScreen(
 							TaskComponent(
 								task = task,
 								onEdit = {
-									onEvent(HomeScreenEvent.OnEditTask(it))
-									onEditTask(it)
+									if (task.date >= LocalDate.now()) {
+										onEvent(HomeScreenEvent.OnEditTask(it))
+										onEditTask(it)
+									}
 								},
 								onComplete = {
-									onEvent(HomeScreenEvent.OnCompleted(it, !task.isCompleted))
+									if (task.date >= LocalDate.now()) {
+										onEvent(HomeScreenEvent.OnCompleted(it, !task.isCompleted))
+									}
 								},
 								onPomodoro = {
 									onEvent(HomeScreenEvent.OnPomodoro(it))

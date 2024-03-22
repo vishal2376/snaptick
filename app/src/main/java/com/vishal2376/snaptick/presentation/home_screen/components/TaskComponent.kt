@@ -107,26 +107,13 @@ fun TaskComponent(
 						.size(32.dp)
 						.weight(0.1f)
 				) {
-					if (task.date.isEqual(LocalDate.now())) {
-						if (task.isCompleted) {
-							Icon(
-								painter = painterResource(id = R.drawable.ic_check_circle),
-								contentDescription = null,
-								tint = if (isSystemInDarkTheme()) LightGreen else DarkGreen,
-								modifier = Modifier.size(20.dp)
-							)
-						} else {
-							Box(modifier = Modifier
-								.size(20.dp)
-								.border(
-									width = 2.dp,
-									color = MaterialTheme.colorScheme.onSecondary,
-									shape = CircleShape
-								),
-								contentAlignment = Alignment.Center,
-								content = {})
-						}
-
+					if (task.isCompleted) {
+						Icon(
+							painter = painterResource(id = R.drawable.ic_check_circle),
+							contentDescription = null,
+							tint = if (isSystemInDarkTheme()) LightGreen else DarkGreen,
+							modifier = Modifier.size(20.dp)
+						)
 					} else {
 						Box(modifier = Modifier
 							.size(20.dp)
@@ -138,6 +125,8 @@ fun TaskComponent(
 							contentAlignment = Alignment.Center,
 							content = {})
 					}
+
+
 				}
 				Row(
 					modifier = Modifier.weight(0.8f),
