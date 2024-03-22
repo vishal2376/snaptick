@@ -29,10 +29,10 @@ import com.vishal2376.snaptick.worker.NotificationWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.ZoneOffset
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -239,9 +239,10 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 			cancelNotification(task.uuid)
 
 			//calculate delay
-			val startDateTime = LocalDateTime.of(task.date, task.startTime)
-			val currentDateTime = LocalDateTime.now()
-			val delaySec = Duration.between(startDateTime, currentDateTime).seconds
+			val startDateTimeSec =
+				LocalDateTime.of(task.date, task.startTime).toEpochSecond(ZoneOffset.UTC)
+			val currentDateTimeSec = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
+			val delaySec = startDateTimeSec - currentDateTimeSec
 
 			if (delaySec > 0) {
 				val data = Data.Builder().putString(Constants.TASK_UUID, task.uuid)
