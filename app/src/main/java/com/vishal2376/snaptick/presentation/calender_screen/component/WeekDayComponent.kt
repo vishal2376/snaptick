@@ -41,6 +41,8 @@ fun WeekDayComponent(
 ) {
 	val textColor = if (selected) {
 		Black500
+	} else if (indicator) {
+		Blue
 	} else {
 		MaterialTheme.colorScheme.onPrimary
 	}
