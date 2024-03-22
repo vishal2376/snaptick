@@ -216,7 +216,6 @@ fun AddTaskScreen(
 					horizontalArrangement = Arrangement.SpaceBetween,
 					modifier = Modifier
 						.fillMaxWidth(.8f)
-						.padding(top = 16.dp)
 				) {
 					Column(horizontalAlignment = Alignment.CenterHorizontally) {
 						Text(

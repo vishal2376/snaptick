@@ -195,7 +195,6 @@ fun EditTaskScreen(
 					horizontalArrangement = Arrangement.SpaceBetween,
 					modifier = Modifier
 						.fillMaxWidth(.8f)
-						.padding(top = 24.dp)
 				) {
 					Column(horizontalAlignment = Alignment.CenterHorizontally) {
 						Text(
