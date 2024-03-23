@@ -60,6 +60,7 @@ fun <T> SwipeActionBox(
 		if (isActionDone) {
 			delay(animationDuration.toLong())
 			onAction(item)
+			isActionDone = false
 		}
 	}
 
