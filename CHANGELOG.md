@@ -2,6 +2,77 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1] - 2024-03-23
+
+### 🚀 Features
+
+- *(snackbar)* Add action color flexibility
+- *(repeat-task)* Improve insert and update task logic
+- *(calender)* Edit tasks
+- *(calender)* Add indicator in weekly view
+- *(calender)* Impl edit task ,toggle completion and start pomodoro timer
+
+### 🐛 Bug Fixes
+
+- *(snackbar)* One-time animation issue
+- Month title not changing
+- Colors for in-out months
+- Large empty task ui
+- Small ripple
+- *(swipe-action)* Froze swipe bg
+
+### 📚 Documentation
+
+- Update screenshot
+
+### ⚙️ Miscellaneous Tasks
+
+- Add debug build suffix
+- Converted hardcoded text into strings
+- Improve task component ui spacings
+- Add sleepTime constraint
+- Set pomodoro timer to -1 if time duration updated
+- Save and load pomodoro session
+- Fix title style and padding
+- *(pomodoro)* Show snackbar on resuming previous session #51 issue solved
+- Remove reminder past time restriction
+- Sync time picker with current system time
+- *(gradle)* Downgrade calendar lib version to 2.4.1
+- Ui improvement
+- Add month calender view + animation
+- Impl toggle view , change title to month and fix selection text color
+- Impl calender screen nav
+- Fix topbar action icons spacing
+- Minimize the calc
+- Improve icons
+- Add indicator for non empty tasks
+- Add all tasks
+- Add filter tasks utils
+- Add filtered tasks + indicator
+- Show date while adding tasks
+- Improve add screen ui
+- Add custom date picker #49
+- Add more controls #49
+- Update task with selected date
+- Add past date validation and
+- Show snackbar when task added
+- Remove decimal formatted duration #25
+- Remove decimal formatted free time duration #25
+- Fix formatting
+- Fix padding issue in add/edit screen
+- Impl date-time delay system for notification
+- Set default date to user selected date
+- Fix delay glitch
+- Fix streak -1 text issue
+- *(calender)* Restrict edits on past tasks
+- *(swipe-action)* Add undo option
+
+### Add
+
+- Calender dependency
+- Weekday ui component
+- Calender screen
+
 ## [2.0] - 2024-03-10
 
 ### 🐛 Bug Fixes
@@ -30,6 +101,10 @@ All notable changes to this project will be documented in this file.
 - Theme indicator not updating default value
 - Ripple box issue
 - Non-repeated tasks not showing
+
+### 📚 Documentation
+
+- Add changelog
 
 ### ⚙️ Miscellaneous Tasks
 
@@ -229,7 +304,7 @@ All notable changes to this project will be documented in this file.
 - Show wrong time and priority onEditTask
 - *(pomodoro_screen)* Show wrong time and priority
 - Theme switch button not working
-- Flicker effect when reset timer and  timer text alpha not resetting
+- Flicker effect when reset timer and timer text alpha not resetting
 - Wrong exception
 - Topbar bg color delay
 - Free time count past task durations
@@ -396,7 +471,7 @@ All notable changes to this project will be documented in this file.
 - Remove startTime validation
 - Improve validation and duration logic
 - Add releases to .gitignore
-- Increase  default startTime to 5min
+- Increase default startTime to 5min
 - Update reminder notification when update OnComplete Task
 
 ### Add
