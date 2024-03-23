@@ -40,6 +40,7 @@ import javax.inject.Inject
 class TaskViewModel @Inject constructor(private val repository: TaskRepository) : ViewModel() {
 
 	var appState by mutableStateOf(MainState())
+	var deletedTask: Task? = null
 	var task: Task by mutableStateOf(
 		Task(
 			id = 0,
@@ -121,7 +122,17 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 			}
 
 			is HomeScreenEvent.OnSwipeTask -> {
+				deletedTask = event.task
 				deleteTask(event.task)
+			}
+
+			is HomeScreenEvent.OnUndoDelete -> {
+				viewModelScope.launch(Dispatchers.IO) {
+					if (deletedTask != null) {
+						repository.insertTask(deletedTask!!)
+						scheduleNotification(deletedTask!!)
+					}
+				}
 			}
 		}
 	}
@@ -214,6 +225,7 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 
 	private fun deleteTask(task: Task) {
 		viewModelScope.launch(Dispatchers.IO) {
+			deletedTask = task
 			cancelNotification(task.uuid)
 			repository.deleteTask(task)
 		}

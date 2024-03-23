@@ -359,6 +359,12 @@ fun HomeScreen(
 							) {
 								SwipeActionBox(item = task, onAction = {
 									onEvent(HomeScreenEvent.OnSwipeTask(it))
+									showCustomSnackbar(
+										msg = "Task Deleted",
+										actionText = "Undo",
+										onClickAction = {
+											onEvent(HomeScreenEvent.OnUndoDelete)
+										})
 								})
 								{
 									TaskComponent(
