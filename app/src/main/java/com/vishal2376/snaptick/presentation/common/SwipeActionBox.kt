@@ -45,7 +45,7 @@ fun <T> SwipeActionBox(
 	content: @Composable (T) -> Unit
 ) {
 	var isActionDone by remember { mutableStateOf(false) }
-	val state = rememberDismissState(
+	val state = rememberDismissState(initialValue = DismissValue.Default,
 		confirmValueChange = { dismissValue ->
 			if (dismissValue == DismissValue.DismissedToStart) {
 				isActionDone = true
@@ -60,7 +60,7 @@ fun <T> SwipeActionBox(
 		if (isActionDone) {
 			delay(animationDuration.toLong())
 			onAction(item)
-			isActionDone = false
+			state.snapTo(DismissValue.Default)
 		}
 	}
 
