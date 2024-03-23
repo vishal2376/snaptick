@@ -92,11 +92,12 @@ fun DurationItemComponent(
 
 	Box(
 		modifier = modifier
+			.clickable { onClick() }
 			.fillMaxWidth()
 			.background(bgColor, shape)
 			.border(2.dp, MaterialTheme.colorScheme.secondary, shape)
 			.padding(vertical = 16.dp)
-			.clickable { onClick() },
+		,
 		contentAlignment = Alignment.Center
 	) {
 		Text(text = text, color = MaterialTheme.colorScheme.onPrimary, fontFamily = fontRobotoMono)

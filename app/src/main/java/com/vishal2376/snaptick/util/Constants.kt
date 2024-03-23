@@ -6,6 +6,7 @@ object Constants {
 
 	const val LIST_ANIMATION_DELAY = 100
 	const val MIN_ALLOWED_DURATION = 5L // 5 min
+	const val MIN_VALID_POMODORO_SESSION = 1L // 1 min
 
 	// DATA STORE KEYS
 	const val SETTINGS_KEY = "settings_key"

@@ -34,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vishal2376.snaptick.R
@@ -92,10 +93,7 @@ fun TaskComponent(
 						bottomEnd = 8.dp
 					)
 				)
-				.padding(
-					8.dp,
-					16.dp
-				)
+				.padding(start = 8.dp, top = 10.dp, end = 8.dp, bottom = 16.dp)
 		) {
 
 			Row(
@@ -109,26 +107,13 @@ fun TaskComponent(
 						.size(32.dp)
 						.weight(0.1f)
 				) {
-					if (task.date.isEqual(LocalDate.now())) {
-						if (task.isCompleted) {
-							Icon(
-								painter = painterResource(id = R.drawable.ic_check_circle),
-								contentDescription = null,
-								tint = if (isSystemInDarkTheme()) LightGreen else DarkGreen,
-								modifier = Modifier.size(20.dp)
-							)
-						} else {
-							Box(modifier = Modifier
-								.size(20.dp)
-								.border(
-									width = 2.dp,
-									color = MaterialTheme.colorScheme.onSecondary,
-									shape = CircleShape
-								),
-								contentAlignment = Alignment.Center,
-								content = {})
-						}
-
+					if (task.isCompleted) {
+						Icon(
+							painter = painterResource(id = R.drawable.ic_check_circle),
+							contentDescription = null,
+							tint = if (isSystemInDarkTheme()) LightGreen else DarkGreen,
+							modifier = Modifier.size(20.dp)
+						)
 					} else {
 						Box(modifier = Modifier
 							.size(20.dp)
@@ -140,6 +125,8 @@ fun TaskComponent(
 							contentAlignment = Alignment.Center,
 							content = {})
 					}
+
+
 				}
 				Row(
 					modifier = Modifier.weight(0.8f),
@@ -154,6 +141,7 @@ fun TaskComponent(
 								.basicMarquee(delayMillis = 1000),
 							text = task.title,
 							style = taskTextStyle,
+							fontWeight = FontWeight.Bold,
 							color = MaterialTheme.colorScheme.onPrimary
 						)
 						Spacer(modifier = Modifier.height(8.dp))
@@ -232,8 +220,7 @@ fun TaskComponent(
 @Preview
 @Composable
 fun TaskComponentPreview() {
-	var task = DummyTasks.dummyTasks[0]
-	task = task.copy(date = LocalDate.now().plusDays(1))
+	val task = DummyTasks.dummyTasks[0]
 	TaskComponent(
 		task = task,
 		{},

@@ -12,12 +12,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Sort
 import androidx.compose.material3.DrawerValue
@@ -50,12 +50,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.common.SnackbarController.showCustomSnackbar
 import com.vishal2376.snaptick.presentation.common.SortTask
 import com.vishal2376.snaptick.presentation.common.SwipeActionBox
+import com.vishal2376.snaptick.presentation.common.durationTextStyle
 import com.vishal2376.snaptick.presentation.common.fontRobotoMono
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
@@ -89,6 +89,7 @@ fun HomeScreen(
 	onEditTask: (id: Int) -> Unit,
 	onAddTask: () -> Unit,
 	onClickCompletedInfo: () -> Unit,
+	onClickCalender: () -> Unit,
 	onClickThisWeek: () -> Unit,
 	onClickFreeTimeInfo: () -> Unit,
 	onPomodoroTask: (id: Int) -> Unit,
@@ -99,6 +100,9 @@ fun HomeScreen(
 	// calc free time
 	val totalTaskTime = inCompletedTasks.sumOf { it.getDuration(checkPastTask = true) }
 	val freeTimeText = getFreeTime(totalTaskTime)
+
+	// streak
+	val appStreakText = if (appState.streak != -1) appState.streak.toString() else "0"
 
 	LaunchedEffect(inCompletedTasks) {
 		appState.totalTaskDuration = totalTaskTime
@@ -179,19 +183,30 @@ fun HomeScreen(
 					}
 				},
 				actions = {
-					Text(
-						text = appState.streak.toString(),
-						fontSize = 18.sp,
-						fontFamily = fontRobotoMono,
-						fontWeight = FontWeight.Bold
-					)
-					Spacer(modifier = Modifier.width(4.dp))
-					Icon(
-						painter = painterResource(id = R.drawable.ic_fire),
-						contentDescription = null,
-						tint = Yellow,
-						modifier = Modifier.size(22.dp)
-					)
+					Row(
+						horizontalArrangement = Arrangement.spacedBy(2.dp),
+						verticalAlignment = Alignment.CenterVertically
+					) {
+						IconButton(onClick = { onClickCalender() }) {
+							Icon(
+								imageVector = Icons.Default.CalendarMonth,
+								contentDescription = null
+							)
+						}
+						Text(
+							text = appStreakText,
+							style = durationTextStyle,
+							color = MaterialTheme.colorScheme.onSecondary,
+							fontFamily = fontRobotoMono,
+							fontWeight = FontWeight.Bold
+						)
+						Icon(
+							painter = painterResource(id = R.drawable.ic_fire),
+							contentDescription = null,
+							tint = Yellow,
+						)
+					}
+					Spacer(modifier = Modifier.width(8.dp))
 				})
 		},
 			floatingActionButton = {
@@ -377,6 +392,6 @@ fun HomeScreen(
 fun HomeScreenPreview() {
 	SnaptickTheme {
 		val tasks = DummyTasks.dummyTasks
-		HomeScreen(tasks = tasks, MainState(), {}, {}, {}, {}, {}, {}, {}, {})
+		HomeScreen(tasks = tasks, MainState(), {}, {}, {}, {}, {}, {}, {}, {}, {})
 	}
 }

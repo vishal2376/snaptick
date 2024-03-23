@@ -5,6 +5,7 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.vishal2376.snaptick.domain.converters.LocalDateConverter
 import com.vishal2376.snaptick.domain.converters.LocalTimeConverter
+import com.vishal2376.snaptick.util.Constants
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -42,6 +43,10 @@ data class Task(
 
 		val selectedDays = weekDays.map { weekdaysTitle[it] }
 		return selectedDays.joinToString(", ")
+	}
+
+	fun isValidPomodoroSession(timeLeft: Long): Boolean {
+		return (getDuration() - timeLeft) >= Constants.MIN_VALID_POMODORO_SESSION * 60
 	}
 
 	fun getFormattedTime(): String {
@@ -93,21 +98,15 @@ data class Task(
 	fun getFormattedDuration(): String {
 		val taskDuration = getDuration()
 
-		val hours = taskDuration / 3600
-		val minutes = (taskDuration % 3600) / 60
+		val hours = (taskDuration / 3600).toInt()
+		val minutes = ((taskDuration % 3600) / 60).toInt()
 
-		if (hours > 0) {
-			//show in hours
-			if (minutes > 0) {
-				val timeDuration = hours + (minutes / 60f)
-				return String.format("%.1f hrs", timeDuration)
-			} else {
-				if (hours == 1L) return "1 hour"
-				return "$hours hours"
-			}
-		} else {
-			//show in minutes
-			return "$minutes min"
+		val hoursString = if (hours == 1) "hour" else "hours"
+
+		return when {
+			hours > 0 && minutes > 0 -> String.format("%dh %02dm", hours, minutes)
+			hours > 0 -> String.format("%d $hoursString", hours)
+			else -> String.format("%d min", minutes)
 		}
 
 	}

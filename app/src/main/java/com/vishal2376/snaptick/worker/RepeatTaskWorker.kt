@@ -46,7 +46,7 @@ class RepeatTaskWorker(val context: Context, params: WorkerParameters) :
 						val startTimeSec = task.startTime.toSecondOfDay()
 						val currentTimeSec = LocalTime.now().toSecondOfDay()
 						val delaySec = max(startTimeSec - currentTimeSec, 0)
-						
+
 						if (delaySec > 0 || startTimeSec < 60) {
 							val data = Data.Builder().putString(Constants.TASK_UUID, task.uuid)
 								.putString(Constants.TASK_TITLE, task.title)
@@ -64,13 +64,19 @@ class RepeatTaskWorker(val context: Context, params: WorkerParameters) :
 						}
 					}
 
-					//update task
+					// disable repeat in old task
+					val oldTask = task.copy(isRepeated = false)
+					repository.updateTask(oldTask)
+
+					// insert new task
 					val newTask = task.copy(
+						id = 0,
 						isCompleted = false,
 						date = LocalDate.now(),
-						pomodoroTimer = -1
+						pomodoroTimer = -1,
+						isRepeated = true
 					)
-					repository.updateTask(newTask)
+					repository.insertTask(newTask)
 				}
 			}
 

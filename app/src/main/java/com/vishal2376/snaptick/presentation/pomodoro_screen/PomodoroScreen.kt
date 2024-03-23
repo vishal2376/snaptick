@@ -51,11 +51,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
+import com.vishal2376.snaptick.presentation.common.SnackbarController
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.presentation.common.timerTextStyle
-import com.vishal2376.snaptick.presentation.home_screen.HomeScreenEvent
 import com.vishal2376.snaptick.presentation.pomodoro_screen.components.CustomCircularProgressBar
 import com.vishal2376.snaptick.ui.theme.LightGray
+import com.vishal2376.snaptick.ui.theme.LightGreen
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.DummyTasks
 import com.vishal2376.snaptick.util.vibrateDevice
@@ -65,7 +66,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun PomodoroScreen(
 	task: Task,
-	onEvent: (HomeScreenEvent) -> Unit,
+	onEvent: (PomodoroScreenEvent) -> Unit,
 	onBack: () -> Unit
 ) {
 	val context = LocalContext.current
@@ -118,7 +119,12 @@ fun PomodoroScreen(
 	// timer logic
 	if (totalTime == 0L) {
 		totalTime = task.getDuration()
-		timeLeft = totalTime
+		timeLeft = if (task.pomodoroTimer != -1) {
+			SnackbarController.showCustomSnackbar("Resuming Previous Session", actionColor = LightGreen)
+			task.pomodoroTimer.toLong()
+		} else {
+			totalTime
+		}
 	}
 
 	LaunchedEffect(isReset) {
@@ -146,6 +152,7 @@ fun PomodoroScreen(
 	// reset timer onDestroy Screen
 	DisposableEffect(Unit) {
 		onDispose {
+			onEvent(PomodoroScreenEvent.OnDestroyScreen(task.id, timeLeft))
 			totalTime = 0L
 			timeLeft = 0L
 		}
@@ -176,7 +183,7 @@ fun PomodoroScreen(
 			actions = {
 				IconButton(onClick = {
 					onEvent(
-						HomeScreenEvent.OnCompleted(
+						PomodoroScreenEvent.OnCompleted(
 							taskId = task.id,
 							isCompleted = true
 						)

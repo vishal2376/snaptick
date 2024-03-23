@@ -114,6 +114,9 @@ dependencies {
 	//gson
 	implementation("com.google.code.gson:gson:2.10.1")
 
+	//calender
+	implementation("com.kizitonwose.calendar:compose:2.4.1")
+
 	//widget
 	implementation("androidx.glance:glance-appwidget:1.0.0")
 	implementation("androidx.glance:glance-material3:1.0.0")

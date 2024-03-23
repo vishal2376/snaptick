@@ -1,6 +1,7 @@
 package com.vishal2376.snaptick.util
 
 import com.vishal2376.snaptick.domain.model.Task
+import java.time.LocalDate
 import java.time.LocalTime
 
 fun checkValidTask(
@@ -27,10 +28,14 @@ fun checkValidTask(
 		return Pair(false, "Task should be at least ${Constants.MIN_ALLOWED_DURATION} minutes.")
 	}
 
-	if (task.reminder) {
-		if (startTimeSec < currentTime && !task.isRepeated) {
-			return Pair(false, "Cannot set a reminder for past time")
-		}
+	if (task.date < LocalDate.now()) {
+		return Pair(false, "Past dates are not allowed")
 	}
+
+//	if (task.reminder) {
+//		if (startTimeSec < currentTime && !task.isRepeated) {
+//			return Pair(false, "Cannot set a reminder for past time")
+//		}
+//	}
 	return Pair(true, "Valid Task")
 }
