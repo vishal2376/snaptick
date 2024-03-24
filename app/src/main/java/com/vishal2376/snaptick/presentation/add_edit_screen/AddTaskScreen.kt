@@ -17,6 +17,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Today
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material3.Button
@@ -221,9 +223,10 @@ fun AddTaskScreen(
 					)
 				)
 				Row(
-					horizontalArrangement = Arrangement.SpaceBetween,
+					horizontalArrangement = Arrangement.SpaceAround,
 					modifier = Modifier
-						.fillMaxWidth(.8f)
+						.fillMaxWidth()
+						.padding(24.dp, 0.dp)
 				) {
 					Column(horizontalAlignment = Alignment.CenterHorizontally) {
 						Text(
@@ -257,7 +260,7 @@ fun AddTaskScreen(
 				Row(
 					modifier = Modifier
 						.fillMaxWidth()
-						.padding(start = 32.dp, end = 32.dp, top = 8.dp),
+						.padding(start = 30.dp, end = 32.dp, top = 8.dp),
 					verticalAlignment = Alignment.CenterVertically,
 					horizontalArrangement = Arrangement.SpaceBetween
 				) {
@@ -292,11 +295,14 @@ fun AddTaskScreen(
 					Row(
 						modifier = Modifier
 							.fillMaxWidth()
-							.padding(32.dp, 0.dp),
-						horizontalArrangement = Arrangement.SpaceBetween,
+							.padding(24.dp, 0.dp),
 						verticalAlignment = Alignment.CenterVertically
 					) {
+						Icon(imageVector = Icons.Default.Notifications, contentDescription = null)
 						Text(
+							modifier = Modifier
+								.weight(1f)
+								.padding(start = 4.dp),
 							text = stringResource(R.string.reminder),
 							style = h2TextStyle,
 							color = MaterialTheme.colorScheme.onPrimary
@@ -315,11 +321,14 @@ fun AddTaskScreen(
 					Row(
 						modifier = Modifier
 							.fillMaxWidth()
-							.padding(32.dp, 0.dp),
-						horizontalArrangement = Arrangement.SpaceBetween,
+							.padding(24.dp, 0.dp),
 						verticalAlignment = Alignment.CenterVertically
 					) {
+						Icon(imageVector = Icons.Default.Refresh, contentDescription = null)
 						Text(
+							modifier = Modifier
+								.weight(1f)
+								.padding(start = 4.dp),
 							text = stringResource(R.string.repeat),
 							style = h2TextStyle,
 							color = MaterialTheme.colorScheme.onPrimary

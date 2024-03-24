@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.presentation.common.fontRobotoMono
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
@@ -95,12 +96,12 @@ fun DurationItemComponent(
 			.clickable { onClick() }
 			.fillMaxWidth()
 			.background(bgColor, shape)
-			.border(2.dp, MaterialTheme.colorScheme.secondary, shape)
+			.border(1.dp, MaterialTheme.colorScheme.secondary, shape)
 			.padding(vertical = 16.dp)
 		,
 		contentAlignment = Alignment.Center
 	) {
-		Text(text = text, color = MaterialTheme.colorScheme.onPrimary, fontFamily = fontRobotoMono)
+		Text(text = text, color = MaterialTheme.colorScheme.onPrimary, fontFamily = fontRobotoMono, fontSize = 14.sp)
 	}
 }
 
