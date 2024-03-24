@@ -52,7 +52,7 @@ import java.util.Locale
 
 
 @Composable
-fun CustomDatePickerDialog(defaultDay:LocalDate = LocalDate.now(),onClose: (LocalDate) -> Unit) {
+fun CustomDatePickerDialog(defaultDay: LocalDate = LocalDate.now(), onClose: (LocalDate) -> Unit) {
 	val scope = rememberCoroutineScope()
 	val firstDayOfWeek = remember { firstDayOfWeekFromLocale() }
 	var selectedDay by remember { mutableStateOf(defaultDay) }
@@ -70,7 +70,7 @@ fun CustomDatePickerDialog(defaultDay:LocalDate = LocalDate.now(),onClose: (Loca
 
 	val dtf = DateTimeFormatter.ofPattern("d MMMM, yyyy")
 
-	Dialog(onDismissRequest = { onClose(selectedDay) }) {
+	Dialog(onDismissRequest = { onClose(LocalDate.now()) }) {
 		Card(
 			modifier = Modifier
 				.fillMaxWidth()
