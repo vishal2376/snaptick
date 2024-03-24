@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.Today
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -191,7 +192,7 @@ fun AddTaskScreen(
 			Column(
 				modifier = Modifier.fillMaxWidth(),
 				horizontalAlignment = Alignment.CenterHorizontally,
-				verticalArrangement = Arrangement.spacedBy(16.dp)
+				verticalArrangement = Arrangement.spacedBy(8.dp)
 			) {
 
 				Box(
@@ -238,7 +239,7 @@ fun AddTaskScreen(
 					horizontalArrangement = Arrangement.SpaceAround,
 					modifier = Modifier
 						.fillMaxWidth()
-						.padding(24.dp, 0.dp)
+						.padding(24.dp, 8.dp)
 				) {
 					Column(horizontalAlignment = Alignment.CenterHorizontally) {
 						Text(
@@ -367,6 +368,10 @@ fun AddTaskScreen(
 
 
 				}
+				Divider(
+					modifier = Modifier.padding(bottom = 8.dp),
+					color = MaterialTheme.colorScheme.secondary
+				)
 				PriorityComponent {
 					taskPriority = it
 				}

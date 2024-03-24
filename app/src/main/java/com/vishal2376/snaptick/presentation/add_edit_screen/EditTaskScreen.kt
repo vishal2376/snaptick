@@ -1,7 +1,9 @@
 package com.vishal2376.snaptick.presentation.add_edit_screen
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,9 +17,12 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -40,7 +45,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -68,6 +72,7 @@ import com.vishal2376.snaptick.ui.theme.DarkGreen
 import com.vishal2376.snaptick.ui.theme.LightGreen
 import com.vishal2376.snaptick.ui.theme.Red
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
+import com.vishal2376.snaptick.ui.theme.priorityColors
 import com.vishal2376.snaptick.util.DummyTasks
 import com.vishal2376.snaptick.util.checkValidTask
 
@@ -79,8 +84,6 @@ fun EditTaskScreen(
 	onEvent: (AddEditScreenEvent) -> Unit,
 	onBack: () -> Unit
 ) {
-	val context = LocalContext.current
-
 	var taskStartTime by remember { mutableStateOf(task.startTime) }
 	var taskEndTime by remember { mutableStateOf(task.endTime) }
 	var isTimeUpdated by remember { mutableStateOf(false) }
@@ -162,41 +165,46 @@ fun EditTaskScreen(
 			Column(
 				modifier = Modifier.fillMaxWidth(),
 				horizontalAlignment = Alignment.CenterHorizontally,
-				verticalArrangement = Arrangement.spacedBy(16.dp)
+				verticalArrangement = Arrangement.spacedBy(8.dp)
 			) {
 
-				TextField(
-					value = task.title,
-					singleLine = true,
-					colors = TextFieldDefaults.colors(
-						focusedContainerColor = MaterialTheme.colorScheme.secondary,
-						unfocusedContainerColor = MaterialTheme.colorScheme.secondary,
-						disabledContainerColor = MaterialTheme.colorScheme.secondary,
-						unfocusedIndicatorColor = Color.Transparent,
-						focusedIndicatorColor = Color.Transparent,
-						cursorColor = MaterialTheme.colorScheme.onPrimary
-					),
-					textStyle = taskTextStyle,
-					onValueChange = {
-						onEvent(AddEditScreenEvent.OnUpdateTitle(it))
-					},
-					placeholder = { Text(text = stringResource(id = R.string.what_would_you_like_to_do)) },
-					shape = RoundedCornerShape(16.dp),
+				Box(
 					modifier = Modifier
 						.fillMaxWidth()
-						.padding(
-							32.dp,
-							8.dp
+						.padding(32.dp, 8.dp)
+						.background(priorityColors[task.priority], RoundedCornerShape(8.dp))
+				) {
+					TextField(
+						value = task.title,
+						singleLine = true,
+						colors = TextFieldDefaults.colors(
+							focusedContainerColor = MaterialTheme.colorScheme.secondary,
+							unfocusedContainerColor = MaterialTheme.colorScheme.secondary,
+							disabledContainerColor = MaterialTheme.colorScheme.secondary,
+							unfocusedIndicatorColor = Color.Transparent,
+							focusedIndicatorColor = Color.Transparent,
+							cursorColor = MaterialTheme.colorScheme.onPrimary
 						),
-					keyboardOptions = KeyboardOptions(
-						capitalization = KeyboardCapitalization.Sentences,
-						imeAction = ImeAction.Done
+						textStyle = taskTextStyle,
+						onValueChange = {
+							onEvent(AddEditScreenEvent.OnUpdateTitle(it))
+						},
+						placeholder = { Text(text = stringResource(id = R.string.what_would_you_like_to_do)) },
+						shape = RoundedCornerShape(topEnd = 8.dp, bottomEnd = 8.dp),
+						modifier = Modifier
+							.fillMaxWidth()
+							.padding(start = 8.dp),
+						keyboardOptions = KeyboardOptions(
+							capitalization = KeyboardCapitalization.Sentences,
+							imeAction = ImeAction.Done
+						)
 					)
-				)
+				}
 				Row(
-					horizontalArrangement = Arrangement.SpaceBetween,
+					horizontalArrangement = Arrangement.SpaceAround,
 					modifier = Modifier
-						.fillMaxWidth(.8f)
+						.fillMaxWidth()
+						.padding(24.dp, 8.dp)
 				) {
 					Column(horizontalAlignment = Alignment.CenterHorizontally) {
 						Text(
@@ -270,15 +278,17 @@ fun EditTaskScreen(
 				}
 
 				Column {
-
 					Row(
 						modifier = Modifier
 							.fillMaxWidth()
-							.padding(32.dp, 0.dp),
-						horizontalArrangement = Arrangement.SpaceBetween,
+							.padding(24.dp, 0.dp),
 						verticalAlignment = Alignment.CenterVertically
 					) {
+						Icon(imageVector = Icons.Default.Notifications, contentDescription = null)
 						Text(
+							modifier = Modifier
+								.weight(1f)
+								.padding(start = 4.dp),
 							text = stringResource(R.string.reminder),
 							style = h2TextStyle,
 							color = MaterialTheme.colorScheme.onPrimary
@@ -296,15 +306,17 @@ fun EditTaskScreen(
 							)
 						)
 					}
-
 					Row(
 						modifier = Modifier
 							.fillMaxWidth()
-							.padding(32.dp, 0.dp),
-						horizontalArrangement = Arrangement.SpaceBetween,
+							.padding(24.dp, 0.dp),
 						verticalAlignment = Alignment.CenterVertically
 					) {
+						Icon(imageVector = Icons.Default.Refresh, contentDescription = null)
 						Text(
+							modifier = Modifier
+								.weight(1f)
+								.padding(start = 4.dp),
 							text = stringResource(R.string.repeat),
 							style = h2TextStyle,
 							color = MaterialTheme.colorScheme.onPrimary
@@ -330,7 +342,10 @@ fun EditTaskScreen(
 						)
 					}
 				}
-
+				Divider(
+					modifier = Modifier.padding(bottom = 8.dp),
+					color = MaterialTheme.colorScheme.secondary
+				)
 				PriorityComponent(defaultSortTask = Priority.entries[task.priority]) {
 					onEvent(AddEditScreenEvent.OnUpdatePriority(it))
 				}

@@ -96,7 +96,7 @@ fun DurationItemComponent(
 			.clickable { onClick() }
 			.fillMaxWidth()
 			.background(bgColor, shape)
-			.border(1.dp, MaterialTheme.colorScheme.secondary, shape)
+			.border(2.dp, MaterialTheme.colorScheme.secondary, shape)
 			.padding(vertical = 16.dp)
 		,
 		contentAlignment = Alignment.Center
