@@ -337,7 +337,9 @@ fun AddTaskScreen(
 					}
 
 					AnimatedVisibility(visible = isTaskRepeated) {
+						val dayOfWeek = LocalDate.now().dayOfWeek.value - 1
 						WeekDaysComponent(
+							defaultRepeatedDays = listOf(dayOfWeek),
 							onChange = { repeatedWeekDays = it }
 						)
 					}
