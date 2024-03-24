@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -75,19 +76,26 @@ fun PriorityItemComponent(
 		verticalArrangement = Arrangement.spacedBy(4.dp),
 		horizontalAlignment = Alignment.CenterHorizontally
 	) {
+		var priorityBackground = MaterialTheme.colorScheme.secondary
+		var textColor = MaterialTheme.colorScheme.onSecondary
+
+		if (isSelected) {
+			priorityBackground = backgroundColor
+			textColor = Black500
+		}
 
 		Box(
 			modifier = Modifier
 				.fillMaxWidth()
-				.background(backgroundColor, RoundedCornerShape(8.dp))
+				.background(priorityBackground, RoundedCornerShape(8.dp))
 				.clickable { onClick() },
 			contentAlignment = Alignment.Center
 		) {
 			Text(
 				text = title,
 				style = h3TextStyle,
-				color = Black500,
-				modifier = Modifier.padding(4.dp, 24.dp)
+				color = textColor,
+				modifier = Modifier.padding(4.dp, 16.dp)
 			)
 		}
 
