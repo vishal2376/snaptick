@@ -1,9 +1,11 @@
 package com.vishal2376.snaptick.presentation.add_edit_screen
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -76,6 +78,7 @@ import com.vishal2376.snaptick.ui.theme.DarkGreen
 import com.vishal2376.snaptick.ui.theme.LightGreen
 import com.vishal2376.snaptick.ui.theme.Red
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
+import com.vishal2376.snaptick.ui.theme.priorityColors
 import com.vishal2376.snaptick.util.checkValidTask
 import com.vishal2376.snaptick.util.getFormattedDuration
 import kotlinx.coroutines.job
@@ -191,37 +194,46 @@ fun AddTaskScreen(
 				verticalArrangement = Arrangement.spacedBy(16.dp)
 			) {
 
-				TextField(
-					value = taskTitle,
-					singleLine = true,
-					colors = TextFieldDefaults.colors(
-						focusedContainerColor = MaterialTheme.colorScheme.secondary,
-						unfocusedContainerColor = MaterialTheme.colorScheme.secondary,
-						disabledContainerColor = MaterialTheme.colorScheme.secondary,
-						unfocusedIndicatorColor = Color.Transparent,
-						focusedIndicatorColor = Color.Transparent,
-						cursorColor = MaterialTheme.colorScheme.onPrimary,
-					),
-					textStyle = taskTextStyle,
-					onValueChange = {
-						taskTitle = it
-					},
-					placeholder = {
-						Text(
-							text = stringResource(id = R.string.what_would_you_like_to_do),
-							color = MaterialTheme.colorScheme.onSecondary
-						)
-					},
-					shape = RoundedCornerShape(16.dp),
+				Box(
 					modifier = Modifier
-						.focusRequester(focusRequester)
 						.fillMaxWidth()
-						.padding(32.dp, 8.dp),
-					keyboardOptions = KeyboardOptions(
-						capitalization = KeyboardCapitalization.Sentences,
-						imeAction = ImeAction.Done
+						.padding(32.dp, 8.dp)
+						.background(priorityColors[taskPriority.ordinal], RoundedCornerShape(8.dp))
+				) {
+
+					TextField(
+						value = taskTitle,
+						singleLine = true,
+						colors = TextFieldDefaults.colors(
+							focusedContainerColor = MaterialTheme.colorScheme.secondary,
+							unfocusedContainerColor = MaterialTheme.colorScheme.secondary,
+							disabledContainerColor = MaterialTheme.colorScheme.secondary,
+							unfocusedIndicatorColor = Color.Transparent,
+							focusedIndicatorColor = Color.Transparent,
+							cursorColor = MaterialTheme.colorScheme.onPrimary,
+						),
+						textStyle = taskTextStyle,
+						onValueChange = {
+							taskTitle = it
+						},
+						placeholder = {
+							Text(
+								text = stringResource(id = R.string.what_would_you_like_to_do),
+								color = MaterialTheme.colorScheme.onSecondary
+							)
+						},
+						shape = RoundedCornerShape(topEnd = 8.dp, bottomEnd = 8.dp),
+						modifier = Modifier
+							.focusRequester(focusRequester)
+							.fillMaxWidth()
+							.padding(start = 8.dp),
+						keyboardOptions = KeyboardOptions(
+							capitalization = KeyboardCapitalization.Sentences,
+							imeAction = ImeAction.Done
+						)
 					)
-				)
+				}
+
 				Row(
 					horizontalArrangement = Arrangement.SpaceAround,
 					modifier = Modifier
@@ -355,7 +367,7 @@ fun AddTaskScreen(
 
 
 				}
-				PriorityComponent() {
+				PriorityComponent {
 					taskPriority = it
 				}
 			}
