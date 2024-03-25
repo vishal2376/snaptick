@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForwardIos
-import androidx.compose.material.icons.filled.FormatPaint
-import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -21,9 +19,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.presentation.common.infoDescTextStyle
 import com.vishal2376.snaptick.presentation.common.infoTextStyle
 import com.vishal2376.snaptick.presentation.settings.common.SettingCategoryItem
@@ -32,16 +31,22 @@ import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 
 @Composable
 fun SettingsCategoryComponent(categoryTitle: String, categoryList: List<SettingCategoryItem>) {
-	Column(modifier = Modifier.padding(16.dp),verticalArrangement = Arrangement.spacedBy(8.dp)) {
-		Text(
-			modifier = Modifier.padding(start = 8.dp),
-			text = categoryTitle,
-			style = infoDescTextStyle,
-			color = MaterialTheme.colorScheme.onSecondary
-		)
+	Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+		if (categoryTitle.isNotEmpty()) {
+			Text(
+				modifier = Modifier.padding(start = 8.dp),
+				text = categoryTitle,
+				style = infoDescTextStyle,
+				color = MaterialTheme.colorScheme.onSecondary
+			)
+		}
 		Column(modifier = Modifier.clip(RoundedCornerShape(8.dp))) {
 			categoryList.forEachIndexed { index, item ->
-				CategoryItemComponent(title = item.title, icon = item.icon, onClick = item.onClick)
+				CategoryItemComponent(
+					title = item.title,
+					resId = item.resId,
+					onClick = item.onClick
+				)
 				if (index != categoryList.lastIndex) {
 					Divider(color = MaterialTheme.colorScheme.primary)
 				}
@@ -52,7 +57,9 @@ fun SettingsCategoryComponent(categoryTitle: String, categoryList: List<SettingC
 
 
 @Composable
-fun CategoryItemComponent(title: String, icon: ImageVector, onClick: () -> Unit) {
+fun CategoryItemComponent(title: String, resId: Int, onClick: () -> Unit) {
+	val icon = painterResource(id = resId)
+
 	Row(modifier = Modifier
 		.fillMaxWidth()
 		.clickable { onClick() }
@@ -64,7 +71,7 @@ fun CategoryItemComponent(title: String, icon: ImageVector, onClick: () -> Unit)
 	) {
 		Icon(
 			modifier = Modifier.size(20.dp),
-			imageVector = icon,
+			painter = icon,
 			contentDescription = null,
 			tint = MaterialTheme.colorScheme.onPrimary
 		)
@@ -88,8 +95,8 @@ fun CategoryItemComponent(title: String, icon: ImageVector, onClick: () -> Unit)
 @Composable
 fun SettingsCategoryComponentPreview() {
 	val generalCategoryList = listOf(
-		SettingCategoryItem("Theme", Icons.Default.FormatPaint),
-		SettingCategoryItem("Language", Icons.Default.Translate)
+		SettingCategoryItem("Theme", R.drawable.ic_theme),
+		SettingCategoryItem("Language", R.drawable.ic_translate)
 	)
 	SnaptickTheme {
 		SettingsCategoryComponent("General", generalCategoryList)
