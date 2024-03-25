@@ -11,6 +11,8 @@ val settingsAbout = listOf(
 val settingsGeneral = listOf(
 	SettingCategoryItem(title = "Theme", resId = R.drawable.ic_theme),
 	SettingCategoryItem(title = "Language", resId = R.drawable.ic_translate),
+	SettingCategoryItem(title = "Sleep Time", resId = R.drawable.ic_moon),
+	SettingCategoryItem(title = "Time Picker", resId = R.drawable.ic_clock),
 )
 
 val settingsFollow = listOf(

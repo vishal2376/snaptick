@@ -23,7 +23,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vishal2376.snaptick.R
+import com.vishal2376.snaptick.presentation.common.AppTheme
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
+import com.vishal2376.snaptick.presentation.common.infoDescTextStyle
 import com.vishal2376.snaptick.presentation.settings.components.SettingsCategoryComponent
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 
@@ -76,7 +78,12 @@ fun SettingsScreen() {
 				)
 			}
 
-			Text(modifier = Modifier.padding(8.dp), text = "Made with ♥ by Vishal Singh")
+			Text(
+				modifier = Modifier.padding(8.dp),
+				text = stringResource(R.string.made_with_by_vishal_singh),
+				style = infoDescTextStyle,
+				color = MaterialTheme.colorScheme.onSecondary
+			)
 		}
 	}
 }
@@ -84,7 +91,7 @@ fun SettingsScreen() {
 @Preview
 @Composable
 fun SettingsScreenPreview() {
-	SnaptickTheme {
+	SnaptickTheme(theme = AppTheme.Amoled) {
 		SettingsScreen()
 	}
 }
