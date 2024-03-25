@@ -60,3 +60,8 @@ var timerTextStyle = TextStyle(
 	fontSize = 42.sp,
 	fontFamily = fontRobotoMonoThin
 )
+
+var settingItemTextStyle = TextStyle(
+	fontSize = 18.sp,
+	fontFamily = fontMontserrat,
+)

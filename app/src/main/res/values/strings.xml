@@ -47,4 +47,6 @@
     <string name="today">Today</string>
     <string name="selected_date">Selected Date</string>
     <string name="tasks_added_successfully">Tasks Added Successfully</string>
+    <string name="follow_developer">Follow Developer</string>
+    <string name="general_settings">General Settings</string>
 </resources>

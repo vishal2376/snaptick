@@ -24,14 +24,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.presentation.common.infoDescTextStyle
-import com.vishal2376.snaptick.presentation.common.infoTextStyle
+import com.vishal2376.snaptick.presentation.common.settingItemTextStyle
 import com.vishal2376.snaptick.presentation.settings.common.SettingCategoryItem
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 
 
 @Composable
 fun SettingsCategoryComponent(categoryTitle: String, categoryList: List<SettingCategoryItem>) {
-	Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+	Column(modifier = Modifier.padding(16.dp,0.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
 		if (categoryTitle.isNotEmpty()) {
 			Text(
 				modifier = Modifier.padding(start = 8.dp),
@@ -78,7 +78,7 @@ fun CategoryItemComponent(title: String, resId: Int, onClick: () -> Unit) {
 		Text(
 			modifier = Modifier.weight(1f),
 			text = title,
-			style = infoTextStyle,
+			style = settingItemTextStyle,
 			color = MaterialTheme.colorScheme.onPrimary
 		)
 		Icon(
