@@ -174,22 +174,18 @@ fun HomeScreen(
 					}
 				},
 				actions = {
-					Row(
-						verticalAlignment = Alignment.CenterVertically
-					) {
-						IconButton(onClick = { onNavigate(Routes.CalenderScreen.name) }) {
-							Icon(
-								imageVector = Icons.Default.CalendarMonth,
-								contentDescription = null
-							)
-						}
-						IconButton(onClick = { onNavigate(Routes.SettingsScreen.name) }) {
-							Icon(
-								imageVector = Icons.Default.Settings,
-								contentDescription = null,
-								tint = MaterialTheme.colorScheme.onSecondary,
-							)
-						}
+					IconButton(onClick = { onNavigate(Routes.CalenderScreen.name) }) {
+						Icon(
+							imageVector = Icons.Default.CalendarMonth,
+							contentDescription = null
+						)
+					}
+					IconButton(onClick = { onNavigate(Routes.SettingsScreen.name) }) {
+						Icon(
+							imageVector = Icons.Default.Settings,
+							contentDescription = null,
+							tint = MaterialTheme.colorScheme.onSecondary,
+						)
 					}
 					Spacer(modifier = Modifier.width(8.dp))
 				})

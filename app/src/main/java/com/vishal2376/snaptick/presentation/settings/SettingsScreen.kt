@@ -113,7 +113,7 @@ fun SettingsScreen(
 				)
 			},
 			navigationIcon = {
-				IconButton(onClick = { }) {
+				IconButton(onClick = { onBack() }) {
 					Icon(
 						imageVector = Icons.Rounded.ArrowBack,
 						contentDescription = null
