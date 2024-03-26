@@ -1,6 +1,7 @@
 package com.vishal2376.snaptick.presentation.settings
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -12,11 +13,18 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -31,6 +39,7 @@ import com.vishal2376.snaptick.presentation.main.MainEvent
 import com.vishal2376.snaptick.presentation.main.MainState
 import com.vishal2376.snaptick.presentation.settings.common.SettingCategoryItem
 import com.vishal2376.snaptick.presentation.settings.components.SettingsCategoryComponent
+import com.vishal2376.snaptick.presentation.settings.components.ThemeOptionComponent
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.Constants
 import com.vishal2376.snaptick.util.openUrl
@@ -43,6 +52,9 @@ fun SettingsScreen(
 	onBack: () -> Unit
 ) {
 	val context = LocalContext.current
+	val sheetState = rememberModalBottomSheetState()
+	val scope = rememberCoroutineScope()
+	var showBottomSheetById by remember { mutableIntStateOf(0) }
 
 	val settingsAbout = listOf(
 		SettingCategoryItem(title = stringResource(R.string.about),
@@ -59,7 +71,7 @@ fun SettingsScreen(
 		SettingCategoryItem(
 			title = stringResource(R.string.theme),
 			resId = R.drawable.ic_theme,
-			onClick = {}
+			onClick = { showBottomSheetById = R.string.theme }
 		),
 		SettingCategoryItem(
 			title = stringResource(R.string.language),
@@ -122,6 +134,21 @@ fun SettingsScreen(
 			},
 		)
 	}) { innerPadding ->
+
+		if (showBottomSheetById != 0) {
+			ModalBottomSheet(
+				onDismissRequest = { showBottomSheetById = 0 },
+				sheetState = sheetState,
+				containerColor = MaterialTheme.colorScheme.secondary,
+			) {
+				Box(modifier = Modifier.padding(16.dp)) {
+					ThemeOptionComponent(defaultTheme = appState.theme) {
+						onEvent(MainEvent.UpdateAppTheme(it, context))
+					}
+				}
+			}
+		}
+
 		Column(
 			modifier = Modifier
 				.padding(innerPadding)

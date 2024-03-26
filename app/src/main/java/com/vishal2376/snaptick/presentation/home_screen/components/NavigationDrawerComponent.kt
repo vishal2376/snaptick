@@ -37,6 +37,7 @@ import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.infoTextStyle
 import com.vishal2376.snaptick.presentation.main.MainEvent
 import com.vishal2376.snaptick.presentation.main.MainState
+import com.vishal2376.snaptick.presentation.settings.components.ThemeOptionComponent
 
 @Composable
 fun NavigationDrawerComponent(
@@ -77,20 +78,6 @@ fun NavigationDrawerComponent(
 				color = MaterialTheme.colorScheme.onPrimary
 			)
 		}
-//		Row(
-//			verticalAlignment = Alignment.CenterVertically,
-//			horizontalArrangement = Arrangement.spacedBy(16.dp)
-//		) {
-//			Text(
-//				text = stringResource(R.string.app_theme),
-//				style = h3TextStyle,
-//				color = MaterialTheme.colorScheme.onPrimary
-//			)
-//			if (appState.streak != -1)
-//				ThemeOptionComponent(defaultTheme = appState.theme) {
-//					onMainEvent(MainEvent.UpdateAppTheme(it, context))
-//				}
-//		}
 
 		Divider(
 			modifier = Modifier.padding(top = 24.dp, bottom = 8.dp),
@@ -98,17 +85,18 @@ fun NavigationDrawerComponent(
 		)
 
 		Column {
-			NavDrawerItemUI(
-				icon = Icons.Default.Settings,
-				label = stringResource(R.string.settings)
-			) { onClickSettings() }
-
-			Spacer(modifier = Modifier.height(8.dp))
 
 			NavDrawerItemUI(
 				icon = Icons.Default.CalendarMonth,
 				label = stringResource(R.string.this_week)
 			) { onClickThisWeek() }
+
+			Spacer(modifier = Modifier.height(8.dp))
+
+			NavDrawerItemUI(
+				icon = Icons.Default.Settings,
+				label = stringResource(R.string.settings)
+			) { onClickSettings() }
 
 			Divider(
 				modifier = Modifier.padding(vertical = 10.dp),
