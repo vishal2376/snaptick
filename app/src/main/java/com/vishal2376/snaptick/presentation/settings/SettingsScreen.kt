@@ -27,6 +27,8 @@ import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.presentation.common.AppTheme
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.infoDescTextStyle
+import com.vishal2376.snaptick.presentation.main.MainEvent
+import com.vishal2376.snaptick.presentation.main.MainState
 import com.vishal2376.snaptick.presentation.settings.common.SettingCategoryItem
 import com.vishal2376.snaptick.presentation.settings.components.SettingsCategoryComponent
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
@@ -35,19 +37,45 @@ import com.vishal2376.snaptick.util.openUrl
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen() {
+fun SettingsScreen(
+	appState: MainState,
+	onEvent: (MainEvent) -> Unit,
+	onBack: () -> Unit
+) {
 	val context = LocalContext.current
 
 	val settingsAbout = listOf(
-		SettingCategoryItem(title = "About", resId = R.drawable.ic_info),
-		SettingCategoryItem(title = "Support", resId = R.drawable.ic_support),
+		SettingCategoryItem(title = "About",
+			resId = R.drawable.ic_info,
+			onClick = {}
+		),
+		SettingCategoryItem(title = "Support",
+			resId = R.drawable.ic_support,
+			onClick = {}
+		),
 	)
 
 	val settingsGeneral = listOf(
-		SettingCategoryItem(title = "Theme", resId = R.drawable.ic_theme),
-		SettingCategoryItem(title = "Language", resId = R.drawable.ic_translate),
-		SettingCategoryItem(title = "Sleep Time", resId = R.drawable.ic_moon),
-		SettingCategoryItem(title = "Time Picker", resId = R.drawable.ic_clock),
+		SettingCategoryItem(
+			title = "Theme",
+			resId = R.drawable.ic_theme,
+			onClick = {}
+		),
+		SettingCategoryItem(
+			title = "Language",
+			resId = R.drawable.ic_translate,
+			onClick = {}
+		),
+		SettingCategoryItem(
+			title = "Sleep Time",
+			resId = R.drawable.ic_moon,
+			onClick = {}
+		),
+		SettingCategoryItem(
+			title = "Time Picker",
+			resId = R.drawable.ic_clock,
+			onClick = {}
+		),
 	)
 
 	val settingsFollow = listOf(
@@ -133,6 +161,6 @@ fun SettingsScreen() {
 @Composable
 fun SettingsScreenPreview() {
 	SnaptickTheme(theme = AppTheme.Amoled) {
-		SettingsScreen()
+		SettingsScreen(MainState(), {}, {})
 	}
 }

@@ -103,6 +103,12 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 					}
 				}
 			}
+
+			is MainEvent.OnClickSettingItem -> {
+				when (event.resId) {
+					else -> {}
+				}
+			}
 		}
 	}
 

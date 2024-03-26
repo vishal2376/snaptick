@@ -17,6 +17,7 @@ import com.vishal2376.snaptick.presentation.completed_task_screen.CompletedTaskS
 import com.vishal2376.snaptick.presentation.free_time_screen.FreeTimeScreen
 import com.vishal2376.snaptick.presentation.home_screen.HomeScreen
 import com.vishal2376.snaptick.presentation.pomodoro_screen.PomodoroScreen
+import com.vishal2376.snaptick.presentation.settings.SettingsScreen
 import com.vishal2376.snaptick.presentation.this_week_task_screen.ThisWeekTaskScreen
 import com.vishal2376.snaptick.presentation.viewmodels.TaskViewModel
 import java.time.LocalDate
@@ -167,6 +168,18 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 						}
 					})
 			}
+		}
+
+		composable(route = Routes.SettingsScreen.name) {
+			SettingsScreen(
+				appState = taskViewModel.appState,
+				onEvent = taskViewModel::onEvent,
+				onBack = {
+					if (navController.isValidBackStack) {
+						navController.popBackStack()
+					}
+				}
+			)
 		}
 	}
 }

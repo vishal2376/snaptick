@@ -10,4 +10,5 @@ sealed class MainEvent {
 	data class UpdateSortByTask(val sortTask: SortTask, val context: Context) : MainEvent()
 	data class UpdateFreeTime(val freeTime: Long) : MainEvent()
 	data class OnClickNavDrawerItem(val context: Context, val item: NavDrawerItem) : MainEvent()
+	data class OnClickSettingItem(val context: Context, val resId: Int) : MainEvent()
 }
