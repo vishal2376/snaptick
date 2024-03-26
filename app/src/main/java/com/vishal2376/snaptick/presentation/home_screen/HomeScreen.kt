@@ -19,6 +19,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Sort
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -45,9 +46,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vishal2376.snaptick.R
@@ -55,8 +54,6 @@ import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.common.SnackbarController.showCustomSnackbar
 import com.vishal2376.snaptick.presentation.common.SortTask
 import com.vishal2376.snaptick.presentation.common.SwipeActionBox
-import com.vishal2376.snaptick.presentation.common.durationTextStyle
-import com.vishal2376.snaptick.presentation.common.fontRobotoMono
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.home_screen.components.EmptyTaskComponent
@@ -70,7 +67,6 @@ import com.vishal2376.snaptick.presentation.navigation.Routes
 import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.ui.theme.LightGreen
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
-import com.vishal2376.snaptick.ui.theme.Yellow
 import com.vishal2376.snaptick.util.Constants
 import com.vishal2376.snaptick.util.DummyTasks
 import com.vishal2376.snaptick.util.getFreeTime
@@ -179,7 +175,6 @@ fun HomeScreen(
 				},
 				actions = {
 					Row(
-						horizontalArrangement = Arrangement.spacedBy(2.dp),
 						verticalAlignment = Alignment.CenterVertically
 					) {
 						IconButton(onClick = { onNavigate(Routes.CalenderScreen.name) }) {
@@ -188,18 +183,13 @@ fun HomeScreen(
 								contentDescription = null
 							)
 						}
-						Text(
-							text = appStreakText,
-							style = durationTextStyle,
-							color = MaterialTheme.colorScheme.onSecondary,
-							fontFamily = fontRobotoMono,
-							fontWeight = FontWeight.Bold
-						)
-						Icon(
-							painter = painterResource(id = R.drawable.ic_fire),
-							contentDescription = null,
-							tint = Yellow,
-						)
+						IconButton(onClick = { onNavigate(Routes.SettingsScreen.name) }) {
+							Icon(
+								imageVector = Icons.Default.Settings,
+								contentDescription = null,
+								tint = MaterialTheme.colorScheme.onSecondary,
+							)
+						}
 					}
 					Spacer(modifier = Modifier.width(8.dp))
 				})
