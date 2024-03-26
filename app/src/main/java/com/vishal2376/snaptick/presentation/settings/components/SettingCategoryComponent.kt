@@ -31,7 +31,10 @@ import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 
 @Composable
 fun SettingsCategoryComponent(categoryTitle: String, categoryList: List<SettingCategoryItem>) {
-	Column(modifier = Modifier.padding(16.dp,0.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+	Column(
+		modifier = Modifier.padding(16.dp, 0.dp),
+		verticalArrangement = Arrangement.spacedBy(8.dp)
+	) {
 		if (categoryTitle.isNotEmpty()) {
 			Text(
 				modifier = Modifier.padding(start = 8.dp),
@@ -65,7 +68,6 @@ fun CategoryItemComponent(title: String, resId: Int, onClick: () -> Unit) {
 		.clickable { onClick() }
 		.background(MaterialTheme.colorScheme.secondary)
 		.padding(16.dp, 8.dp),
-
 		verticalAlignment = Alignment.CenterVertically,
 		horizontalArrangement = Arrangement.spacedBy(8.dp)
 	) {
