@@ -50,4 +50,14 @@
     <string name="follow_developer">Follow Developer</string>
     <string name="general_settings">General Settings</string>
     <string name="made_with_by_vishal_singh">Made with ♥ by Vishal Singh</string>
+    <string name="about">About</string>
+    <string name="support">Support</string>
+    <string name="theme">Theme</string>
+    <string name="language">Language</string>
+    <string name="sleep_time">Sleep Time</string>
+    <string name="time_picker">Time Picker</string>
+    <string name="twitter">Twitter</string>
+    <string name="github">Github</string>
+    <string name="linkedin">LinkedIn</string>
+    <string name="instagram">Instagram</string>
 </resources>

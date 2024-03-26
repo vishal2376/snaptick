@@ -45,11 +45,11 @@ fun SettingsScreen(
 	val context = LocalContext.current
 
 	val settingsAbout = listOf(
-		SettingCategoryItem(title = "About",
+		SettingCategoryItem(title = stringResource(R.string.about),
 			resId = R.drawable.ic_info,
 			onClick = {}
 		),
-		SettingCategoryItem(title = "Support",
+		SettingCategoryItem(title = stringResource(R.string.support),
 			resId = R.drawable.ic_support,
 			onClick = {}
 		),
@@ -57,22 +57,22 @@ fun SettingsScreen(
 
 	val settingsGeneral = listOf(
 		SettingCategoryItem(
-			title = "Theme",
+			title = stringResource(R.string.theme),
 			resId = R.drawable.ic_theme,
 			onClick = {}
 		),
 		SettingCategoryItem(
-			title = "Language",
+			title = stringResource(R.string.language),
 			resId = R.drawable.ic_translate,
 			onClick = {}
 		),
 		SettingCategoryItem(
-			title = "Sleep Time",
+			title = stringResource(R.string.sleep_time),
 			resId = R.drawable.ic_moon,
 			onClick = {}
 		),
 		SettingCategoryItem(
-			title = "Time Picker",
+			title = stringResource(R.string.time_picker),
 			resId = R.drawable.ic_clock,
 			onClick = {}
 		),
@@ -80,22 +80,22 @@ fun SettingsScreen(
 
 	val settingsFollow = listOf(
 		SettingCategoryItem(
-			title = "Twitter",
+			title = stringResource(R.string.twitter),
 			resId = R.drawable.ic_twitter,
 			onClick = { openUrl(context, Constants.TWITTER) }
 		),
 		SettingCategoryItem(
-			title = "Github",
+			title = stringResource(R.string.github),
 			resId = R.drawable.ic_github,
 			onClick = { openUrl(context, Constants.GITHUB) }
 		),
 		SettingCategoryItem(
-			title = "LinkedIn",
+			title = stringResource(R.string.linkedin),
 			resId = R.drawable.ic_linkedin,
 			onClick = { openUrl(context, Constants.LINKEDIN) }
 		),
 		SettingCategoryItem(
-			title = "Instagram",
+			title = stringResource(R.string.instagram),
 			resId = R.drawable.ic_instagram,
 			onClick = { openUrl(context, Constants.INSTAGRAM) }
 		),
