@@ -25,6 +25,7 @@ import com.vishal2376.snaptick.util.SettingsStore
 import com.vishal2376.snaptick.util.openMail
 import com.vishal2376.snaptick.util.openUrl
 import com.vishal2376.snaptick.util.shareApp
+import com.vishal2376.snaptick.util.updateLocale
 import com.vishal2376.snaptick.worker.NotificationWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -79,10 +80,6 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 				}
 			}
 
-			is MainEvent.UpdateFreeTime -> {
-				appState = appState.copy(freeTime = event.freeTime)
-			}
-
 			is MainEvent.OnClickNavDrawerItem -> {
 				when (event.item) {
 					NavDrawerItem.REPORT_BUGS -> {
@@ -101,12 +98,6 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 					NavDrawerItem.SHARE_APP -> {
 						shareApp(event.context)
 					}
-				}
-			}
-
-			is MainEvent.OnClickSettingItem -> {
-				when (event.resId) {
-					else -> {}
 				}
 			}
 		}
@@ -295,6 +286,12 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 		viewModelScope.launch {
 			settingsStore.streakKey.collect {
 				appState = appState.copy(streak = it)
+			}
+		}
+
+		viewModelScope.launch {
+			settingsStore.languageKey.collect { language ->
+				updateLocale(context.applicationContext, language)
 			}
 		}
 
