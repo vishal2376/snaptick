@@ -19,6 +19,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -26,12 +27,52 @@ import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.presentation.common.AppTheme
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.infoDescTextStyle
+import com.vishal2376.snaptick.presentation.settings.common.SettingCategoryItem
 import com.vishal2376.snaptick.presentation.settings.components.SettingsCategoryComponent
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
+import com.vishal2376.snaptick.util.Constants
+import com.vishal2376.snaptick.util.openUrl
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen() {
+	val context = LocalContext.current
+
+	val settingsAbout = listOf(
+		SettingCategoryItem(title = "About", resId = R.drawable.ic_info),
+		SettingCategoryItem(title = "Support", resId = R.drawable.ic_support),
+	)
+
+	val settingsGeneral = listOf(
+		SettingCategoryItem(title = "Theme", resId = R.drawable.ic_theme),
+		SettingCategoryItem(title = "Language", resId = R.drawable.ic_translate),
+		SettingCategoryItem(title = "Sleep Time", resId = R.drawable.ic_moon),
+		SettingCategoryItem(title = "Time Picker", resId = R.drawable.ic_clock),
+	)
+
+	val settingsFollow = listOf(
+		SettingCategoryItem(
+			title = "Twitter",
+			resId = R.drawable.ic_twitter,
+			onClick = { openUrl(context, Constants.TWITTER) }
+		),
+		SettingCategoryItem(
+			title = "Github",
+			resId = R.drawable.ic_github,
+			onClick = { openUrl(context, Constants.GITHUB) }
+		),
+		SettingCategoryItem(
+			title = "LinkedIn",
+			resId = R.drawable.ic_linkedin,
+			onClick = { openUrl(context, Constants.LINKEDIN) }
+		),
+		SettingCategoryItem(
+			title = "Instagram",
+			resId = R.drawable.ic_instagram,
+			onClick = { openUrl(context, Constants.INSTAGRAM) }
+		),
+	)
+
 	Scaffold(topBar = {
 		TopAppBar(
 			colors = TopAppBarDefaults.topAppBarColors(

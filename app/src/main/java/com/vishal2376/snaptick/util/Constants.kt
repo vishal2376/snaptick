@@ -3,6 +3,10 @@ package com.vishal2376.snaptick.util
 object Constants {
 	const val PLAY_STORE_BASE_URL: String = "http://play.google.com/store/apps/details?id="
 	const val EMAIL = "vishalsingh2376@gmail.com"
+	const val GITHUB = "https://github.com/vishal2376"
+	const val LINKEDIN = "https://www.linkedin.com/in/vishal2376"
+	const val TWITTER = "https://twitter.com/vishal2376"
+	const val INSTAGRAM = "https://www.instagram.com/vishal_2376/"
 
 	const val LIST_ANIMATION_DELAY = 100
 	const val MIN_ALLOWED_DURATION = 5L // 5 min
