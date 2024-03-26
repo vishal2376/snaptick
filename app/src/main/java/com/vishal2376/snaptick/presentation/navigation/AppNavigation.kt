@@ -1,5 +1,8 @@
 package com.vishal2376.snaptick.presentation.navigation
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.EaseOut
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.Lifecycle
@@ -152,7 +155,13 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 			}
 		}
 
-		composable(route = Routes.SettingsScreen.name) {
+		composable(route = Routes.SettingsScreen.name,
+			enterTransition = {
+				slideIntoContainer(
+					animationSpec = tween(300, easing = EaseOut),
+					towards = AnimatedContentTransitionScope.SlideDirection.Up
+				)
+			}) {
 			SettingsScreen(
 				appState = taskViewModel.appState,
 				onEvent = taskViewModel::onEvent,
