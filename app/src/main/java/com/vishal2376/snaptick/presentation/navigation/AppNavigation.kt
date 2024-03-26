@@ -47,26 +47,8 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 				appState = taskViewModel.appState,
 				onMainEvent = taskViewModel::onEvent,
 				onEvent = taskViewModel::onEvent,
-				onEditTask = { id ->
-					navController.navigate(route = "${Routes.EditTaskScreen.name}/$id")
-				},
-				onAddTask = {
-					navController.navigate(route = Routes.AddTaskScreen.name)
-				},
-				onClickCompletedInfo = {
-					navController.navigate(route = Routes.CompletedTaskScreen.name)
-				},
-				onClickCalender = {
-					navController.navigate(route = Routes.CalenderScreen.name)
-				},
-				onClickThisWeek = {
-					navController.navigate(route = Routes.ThisWeekTaskScreen.name)
-				},
-				onClickFreeTimeInfo = {
-					navController.navigate(route = Routes.FreeTimeScreen.name)
-				},
-				onPomodoroTask = { id ->
-					navController.navigate(route = "${Routes.PomodoroScreen.name}/$id")
+				onNavigate = { route ->
+					navController.navigate(route = route)
 				})
 		}
 

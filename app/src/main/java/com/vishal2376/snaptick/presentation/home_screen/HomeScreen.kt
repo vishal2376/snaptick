@@ -66,6 +66,7 @@ import com.vishal2376.snaptick.presentation.home_screen.components.SortTaskDialo
 import com.vishal2376.snaptick.presentation.home_screen.components.TaskComponent
 import com.vishal2376.snaptick.presentation.main.MainEvent
 import com.vishal2376.snaptick.presentation.main.MainState
+import com.vishal2376.snaptick.presentation.navigation.Routes
 import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.ui.theme.LightGreen
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
@@ -86,13 +87,7 @@ fun HomeScreen(
 	appState: MainState,
 	onMainEvent: (MainEvent) -> Unit,
 	onEvent: (HomeScreenEvent) -> Unit,
-	onEditTask: (id: Int) -> Unit,
-	onAddTask: () -> Unit,
-	onClickCompletedInfo: () -> Unit,
-	onClickCalender: () -> Unit,
-	onClickThisWeek: () -> Unit,
-	onClickFreeTimeInfo: () -> Unit,
-	onPomodoroTask: (id: Int) -> Unit,
+	onNavigate: (String) -> Unit,
 ) {
 	val completedTasks = tasks.filter { it.isCompleted }
 	val inCompletedTasks = tasks.filter { !it.isCompleted }
@@ -149,7 +144,7 @@ fun HomeScreen(
 					appState,
 					onMainEvent,
 					onClickThisWeek = {
-						onClickThisWeek.invoke()
+						onNavigate(Routes.ThisWeekTaskScreen.name)
 						scope.launch {
 							drawerState.close()
 						}
@@ -187,7 +182,7 @@ fun HomeScreen(
 						horizontalArrangement = Arrangement.spacedBy(2.dp),
 						verticalAlignment = Alignment.CenterVertically
 					) {
-						IconButton(onClick = { onClickCalender() }) {
+						IconButton(onClick = { onNavigate(Routes.CalenderScreen.name) }) {
 							Icon(
 								imageVector = Icons.Default.CalendarMonth,
 								contentDescription = null
@@ -212,7 +207,7 @@ fun HomeScreen(
 			floatingActionButton = {
 				FloatingActionButton(
 					onClick = {
-						onAddTask()
+						onNavigate(Routes.AddTaskScreen.name)
 					},
 					containerColor = Blue,
 					contentColor = MaterialTheme.colorScheme.secondary
@@ -257,7 +252,7 @@ fun HomeScreen(
 							.graphicsLayer {
 								translationX = leftTranslate.value
 							},
-						onClick = { onClickCompletedInfo() }
+						onClick = { onNavigate(Routes.CompletedTaskScreen.name) }
 					)
 
 					InfoComponent(
@@ -274,7 +269,7 @@ fun HomeScreen(
 							if (inCompletedTasks.isEmpty()) {
 								showCustomSnackbar("Add Tasks to Analyze")
 							} else {
-								onClickFreeTimeInfo()
+								onNavigate(Routes.FreeTimeScreen.name)
 							}
 						}
 					)
@@ -369,16 +364,16 @@ fun HomeScreen(
 								{
 									TaskComponent(
 										task = task,
-										onEdit = {
-											onEvent(HomeScreenEvent.OnEditTask(it))
-											onEditTask(it)
+										onEdit = { taskId ->
+											onEvent(HomeScreenEvent.OnEditTask(taskId))
+											onNavigate("${Routes.EditTaskScreen.name}/$taskId")
 										},
 										onComplete = {
 											onEvent(HomeScreenEvent.OnCompleted(it, true))
 										},
-										onPomodoro = {
-											onEvent(HomeScreenEvent.OnPomodoro(it))
-											onPomodoroTask(it)
+										onPomodoro = { taskId ->
+											onEvent(HomeScreenEvent.OnPomodoro(taskId))
+											onNavigate("${Routes.PomodoroScreen.name}/$taskId")
 										},
 										animDelay = index * Constants.LIST_ANIMATION_DELAY
 									)
@@ -398,6 +393,6 @@ fun HomeScreen(
 fun HomeScreenPreview() {
 	SnaptickTheme {
 		val tasks = DummyTasks.dummyTasks
-		HomeScreen(tasks = tasks, MainState(), {}, {}, {}, {}, {}, {}, {}, {}, {})
+		HomeScreen(tasks = tasks, MainState(), {}, {}, {})
 	}
 }
