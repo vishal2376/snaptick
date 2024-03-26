@@ -20,10 +20,12 @@ class SettingsStore(val context: Context) {
 		val Context.dataStore: DataStore<Preferences> by preferencesDataStore(Constants.SETTINGS_KEY)
 
 		private val THEME_KEY = intPreferencesKey("theme_key")
+		private val LANGUAGE_KEY = stringPreferencesKey("language_key")
 		private val SORT_TASK_KEY = intPreferencesKey("sort_task_key")
 		private val LAST_OPENED_KEY = stringPreferencesKey("last_opened_key")
 		private val STREAK_KEY = intPreferencesKey("streak_key")
 
+		private const val DEFAULT_LANGUAGE = "en"
 		private val DEFAULT_THEME = AppTheme.Dark.ordinal
 		private val DEFAULT_SORT_TASK = SortTask.BY_CREATE_TIME_DESCENDING.ordinal
 		private val DEFAULT_LAST_OPENED = LocalDate.now().toString()
@@ -33,6 +35,10 @@ class SettingsStore(val context: Context) {
 
 	val themeKey: Flow<Int> = context.dataStore.data.map { preferences ->
 		preferences[THEME_KEY] ?: DEFAULT_THEME
+	}
+
+	val languageKey: Flow<String> = context.dataStore.data.map { preferences ->
+		preferences[LANGUAGE_KEY] ?: DEFAULT_LANGUAGE
 	}
 
 	val sortTaskKey: Flow<Int> = context.dataStore.data.map { preferences ->
@@ -50,6 +56,12 @@ class SettingsStore(val context: Context) {
 	suspend fun setTheme(theme: Int) {
 		context.dataStore.edit { preferences ->
 			preferences[THEME_KEY] = theme
+		}
+	}
+
+	suspend fun setLanguage(language: String) {
+		context.dataStore.edit { preferences ->
+			preferences[LANGUAGE_KEY] = language
 		}
 	}
 
