@@ -22,6 +22,14 @@ fun vibrateDevice(
 	}
 }
 
+fun updateLocale(context: Context, selectedLocale: String) {
+	val updatedContext = LocaleHelper.setLocale(context, selectedLocale)
+	context.resources.updateConfiguration(
+		updatedContext.resources.configuration,
+		updatedContext.resources.displayMetrics
+	)
+}
+
 fun showToast(context: Context, message: String, duration: Int = Toast.LENGTH_LONG) {
 	Toast.makeText(context, message, duration).show()
 }
