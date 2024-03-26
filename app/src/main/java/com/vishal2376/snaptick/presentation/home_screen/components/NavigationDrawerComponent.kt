@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -33,8 +34,7 @@ import com.vishal2376.snaptick.presentation.common.AppTheme
 import com.vishal2376.snaptick.presentation.common.NavDrawerItem
 import com.vishal2376.snaptick.presentation.common.fontRobotoMono
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
-import com.vishal2376.snaptick.presentation.common.h3TextStyle
-import com.vishal2376.snaptick.presentation.common.taskTextStyle
+import com.vishal2376.snaptick.presentation.common.infoTextStyle
 import com.vishal2376.snaptick.presentation.main.MainEvent
 import com.vishal2376.snaptick.presentation.main.MainState
 
@@ -42,14 +42,14 @@ import com.vishal2376.snaptick.presentation.main.MainState
 fun NavigationDrawerComponent(
 	appState: MainState,
 	onMainEvent: (MainEvent) -> Unit,
-	onClickThisWeek: () -> Unit
+	onClickThisWeek: () -> Unit,
+	onClickSettings: () -> Unit
 ) {
 
 	val context = LocalContext.current
 
 	Column(
 		horizontalAlignment = Alignment.CenterHorizontally,
-		verticalArrangement = Arrangement.spacedBy(16.dp),
 		modifier = Modifier
 			.fillMaxHeight()
 			.fillMaxWidth(0.8f)
@@ -57,9 +57,7 @@ fun NavigationDrawerComponent(
 	) {
 
 		Spacer(modifier = Modifier.height(50.dp))
-		Column(
-			horizontalAlignment = Alignment.CenterHorizontally
-		) {
+		Column(horizontalAlignment = Alignment.CenterHorizontally) {
 			Image(
 				painter = painterResource(if (appState.theme == AppTheme.Amoled) R.drawable.app_logo_amoled else R.drawable.app_logo),
 				contentDescription = null,
@@ -79,35 +77,49 @@ fun NavigationDrawerComponent(
 				color = MaterialTheme.colorScheme.onPrimary
 			)
 		}
-		Row(
-			verticalAlignment = Alignment.CenterVertically,
-			horizontalArrangement = Arrangement.spacedBy(16.dp)
-		) {
-			Text(
-				text = stringResource(R.string.app_theme),
-				style = h3TextStyle,
-				color = MaterialTheme.colorScheme.onPrimary
-			)
-			if (appState.streak != -1)
-				ThemeOptionComponent(defaultTheme = appState.theme) {
-					onMainEvent(MainEvent.UpdateAppTheme(it, context))
-				}
-		}
+//		Row(
+//			verticalAlignment = Alignment.CenterVertically,
+//			horizontalArrangement = Arrangement.spacedBy(16.dp)
+//		) {
+//			Text(
+//				text = stringResource(R.string.app_theme),
+//				style = h3TextStyle,
+//				color = MaterialTheme.colorScheme.onPrimary
+//			)
+//			if (appState.streak != -1)
+//				ThemeOptionComponent(defaultTheme = appState.theme) {
+//					onMainEvent(MainEvent.UpdateAppTheme(it, context))
+//				}
+//		}
 
+		Divider(
+			modifier = Modifier.padding(top = 24.dp, bottom = 8.dp),
+			color = MaterialTheme.colorScheme.secondary
+		)
 
+		Column {
+			NavDrawerItemUI(
+				icon = Icons.Default.Settings,
+				label = stringResource(R.string.settings)
+			) { onClickSettings() }
 
-		Divider(thickness = 2.dp, color = MaterialTheme.colorScheme.secondary)
+			Spacer(modifier = Modifier.height(8.dp))
 
-		Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
 			NavDrawerItemUI(
 				icon = Icons.Default.CalendarMonth,
 				label = stringResource(R.string.this_week)
 			) { onClickThisWeek() }
 
+			Divider(
+				modifier = Modifier.padding(vertical = 10.dp),
+				color = MaterialTheme.colorScheme.secondary
+			)
+
 			NavDrawerItem.entries.forEach {
 				NavDrawerItemUI(icon = it.icon, label = stringResource(id = it.stringId)) {
 					onMainEvent(MainEvent.OnClickNavDrawerItem(context, it))
 				}
+				Spacer(modifier = Modifier.height(8.dp))
 			}
 		}
 
@@ -126,17 +138,17 @@ fun NavDrawerItemUI(icon: ImageVector, label: String, onClick: () -> Unit) {
 		verticalAlignment = Alignment.CenterVertically
 	) {
 		Icon(
-			modifier = Modifier.size(32.dp),
+			modifier = Modifier.size(28.dp),
 			imageVector = icon,
 			contentDescription = null,
 			tint = MaterialTheme.colorScheme.onPrimary
 		)
-		Text(text = label, style = taskTextStyle, color = MaterialTheme.colorScheme.onPrimary)
+		Text(text = label, style = infoTextStyle, color = MaterialTheme.colorScheme.onPrimary)
 	}
 }
 
 @Preview(widthDp = 350)
 @Composable
 fun NavigationDrawerComponentPreview() {
-	NavigationDrawerComponent(MainState(), {}, {})
+	NavigationDrawerComponent(MainState(), {}, {}, {})
 }
