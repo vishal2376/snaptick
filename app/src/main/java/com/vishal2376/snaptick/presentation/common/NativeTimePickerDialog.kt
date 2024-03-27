@@ -13,7 +13,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TimePicker
 import androidx.compose.material3.TimePickerDefaults
-import androidx.compose.material3.TimePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,14 +25,16 @@ import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.ui.theme.Black500
 import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
+import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NativeTimePickerDialog(
-	state: TimePickerState,
-	onClose: () -> Unit,
+	time: LocalTime,
+	onClose: (LocalTime) -> Unit,
 ) {
-	Dialog(onDismissRequest = { onClose() }) {
+	val state = rememberTimePickerState(time.hour, time.minute, false)
+	Dialog(onDismissRequest = { onClose(time) }) {
 		Card(
 			modifier = Modifier
 				.fillMaxWidth()
@@ -65,7 +66,8 @@ fun NativeTimePickerDialog(
 					modifier = Modifier
 						.padding(16.dp, 8.dp)
 						.clickable {
-							onClose()
+							val newTime = LocalTime.of(state.hour, state.minute)
+							onClose(newTime)
 						}
 						.align(Alignment.End),
 					text = stringResource(R.string.done),
@@ -83,6 +85,6 @@ fun NativeTimePickerDialog(
 fun NativeTimePickerDialogPreview() {
 	val state = rememberTimePickerState()
 	SnaptickTheme {
-		NativeTimePickerDialog(state = state, {})
+		NativeTimePickerDialog(LocalTime.now(), {})
 	}
 }

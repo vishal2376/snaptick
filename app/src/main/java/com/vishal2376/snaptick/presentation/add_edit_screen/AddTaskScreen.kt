@@ -38,6 +38,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -64,8 +65,10 @@ import com.vishal2376.snaptick.presentation.add_edit_screen.components.CustomDat
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.CustomDurationDialogComponent
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.DurationComponent
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.PriorityComponent
+import com.vishal2376.snaptick.presentation.add_edit_screen.components.ShowNativeTimePicker
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.WeekDaysComponent
 import com.vishal2376.snaptick.presentation.common.AppTheme
+import com.vishal2376.snaptick.presentation.common.NativeTimePickerDialog
 import com.vishal2376.snaptick.presentation.common.Priority
 import com.vishal2376.snaptick.presentation.common.ShowTimePicker
 import com.vishal2376.snaptick.presentation.common.SnackbarController.showCustomSnackbar
@@ -96,9 +99,10 @@ fun AddTaskScreen(
 	onBack: () -> Unit
 ) {
 
+	val currentTime = LocalTime.now()
 	var taskTitle by remember { mutableStateOf("") }
-	var taskStartTime by remember { mutableStateOf(LocalTime.now()) }
-	var taskEndTime by remember { mutableStateOf(LocalTime.now().plusHours(1)) }
+	var taskStartTime by remember { mutableStateOf(currentTime) }
+	var taskEndTime by remember { mutableStateOf(currentTime.plusHours(1)) }
 	var taskDate by remember { mutableStateOf(LocalDate.now()) }
 	var isTaskReminderOn by remember { mutableStateOf(true) }
 	var isTaskRepeated by remember { mutableStateOf(false) }
@@ -112,6 +116,8 @@ fun AddTaskScreen(
 
 	var showDialogCustomDuration by remember { mutableStateOf(false) }
 	var showDialogDatePicker by remember { mutableStateOf(false) }
+	var showDialogStartTimePicker by remember { mutableStateOf(false) }
+	var showDialogEndTimePicker by remember { mutableStateOf(false) }
 
 	Scaffold(topBar = {
 		TopAppBar(
@@ -171,6 +177,22 @@ fun AddTaskScreen(
 					isTimeUpdated = !isTimeUpdated
 				}
 			)
+		}
+
+		if (showDialogStartTimePicker) {
+			NativeTimePickerDialog(time = taskStartTime, onClose = {
+				taskStartTime = it
+				showDialogStartTimePicker = false
+			})
+		}
+
+		if (showDialogEndTimePicker) {
+			NativeTimePickerDialog(
+				time = taskEndTime,
+				onClose = {
+					taskEndTime = it
+					showDialogEndTimePicker = false
+				})
 		}
 
 		if (showDialogDatePicker) {
@@ -248,10 +270,16 @@ fun AddTaskScreen(
 							color = if (appState.theme == AppTheme.Light) DarkGreen else LightGreen
 						)
 						Spacer(modifier = Modifier.height(8.dp))
-						ShowTimePicker(
-							time = taskStartTime
-						) { snappedTime ->
-							taskStartTime = snappedTime
+						if (appState.isWheelTimePicker) {
+							ShowTimePicker(
+								time = taskStartTime
+							) { snappedTime ->
+								taskStartTime = snappedTime
+							}
+						} else {
+							ShowNativeTimePicker(time = taskStartTime) {
+								showDialogStartTimePicker = true
+							}
 						}
 					}
 					Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -261,11 +289,18 @@ fun AddTaskScreen(
 							color = Red
 						)
 						Spacer(modifier = Modifier.height(8.dp))
-						ShowTimePicker(
-							time = taskEndTime,
-							isTimeUpdated = isTimeUpdated
-						) { snappedTime ->
-							taskEndTime = snappedTime
+						if (appState.isWheelTimePicker) {
+
+							ShowTimePicker(
+								time = taskEndTime,
+								isTimeUpdated = isTimeUpdated
+							) { snappedTime ->
+								taskEndTime = snappedTime
+							}
+						} else {
+							ShowNativeTimePicker(time = taskEndTime) {
+								showDialogEndTimePicker = true
+							}
 						}
 					}
 				}

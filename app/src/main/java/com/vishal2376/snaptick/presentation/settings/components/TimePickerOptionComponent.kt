@@ -18,11 +18,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTime
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -45,21 +43,19 @@ import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TimePickerOptionComponent(isWheelTimePicker: Boolean, onSelect: (Boolean) -> Unit) {
 	var selectedOption by remember { mutableStateOf(isWheelTimePicker) }
-	var showDialogDatePicker by remember { mutableStateOf(false) }
+	var showDialogTimePicker by remember { mutableStateOf(false) }
 	val selectedTime by remember { mutableStateOf(LocalTime.now()) }
-	val state = rememberTimePickerState(selectedTime.hour, selectedTime.minute, false)
 
 	Column(
 		horizontalAlignment = Alignment.CenterHorizontally,
 		verticalArrangement = Arrangement.spacedBy(8.dp)
 	) {
 
-		if (showDialogDatePicker) {
-			NativeTimePickerDialog(state = state, onClose = { showDialogDatePicker = false })
+		if (showDialogTimePicker) {
+			NativeTimePickerDialog(selectedTime, onClose = { showDialogTimePicker = false })
 		}
 
 		Text(
@@ -77,7 +73,7 @@ fun TimePickerOptionComponent(isWheelTimePicker: Boolean, onSelect: (Boolean) ->
 			Row(
 				modifier = Modifier
 					.clip(RoundedCornerShape(16.dp))
-					.clickable { showDialogDatePicker = true }
+					.clickable { showDialogTimePicker = true }
 					.border(1.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(16.dp))
 					.padding(10.dp),
 				verticalAlignment = Alignment.CenterVertically,
@@ -91,7 +87,7 @@ fun TimePickerOptionComponent(isWheelTimePicker: Boolean, onSelect: (Boolean) ->
 				)
 				val dtf = DateTimeFormatter.ofPattern("hh : mm a")
 				Text(
-					text = LocalTime.of(state.hour, state.minute).format(dtf),
+					text = selectedTime.format(dtf),
 					style = taskTextStyle,
 					color = MaterialTheme.colorScheme.onPrimary
 				)
