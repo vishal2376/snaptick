@@ -30,8 +30,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.presentation.common.NativeTimePickerDialog
 import com.vishal2376.snaptick.presentation.common.ShowTimePicker
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
@@ -59,7 +61,7 @@ fun TimePickerOptionComponent(isWheelTimePicker: Boolean, onSelect: (Boolean) ->
 		}
 
 		Text(
-			text = "Choose Time Picker Style",
+			text = stringResource(R.string.choose_time_picker_style),
 			style = h2TextStyle,
 			color = MaterialTheme.colorScheme.onPrimary,
 		)
@@ -100,11 +102,11 @@ fun TimePickerOptionComponent(isWheelTimePicker: Boolean, onSelect: (Boolean) ->
 				.padding(8.dp),
 			horizontalArrangement = Arrangement.SpaceAround
 		) {
-			ToggleOptions(title = "Scroll", isSelected = selectedOption) {
+			ToggleOptions(title = stringResource(R.string.scroll), isSelected = selectedOption) {
 				selectedOption = true
 				onSelect(true)
 			}
-			ToggleOptions(title = "Click", isSelected = !selectedOption) {
+			ToggleOptions(title = stringResource(R.string.clock), isSelected = !selectedOption) {
 				selectedOption = false
 				onSelect(false)
 			}

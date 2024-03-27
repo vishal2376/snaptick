@@ -60,4 +60,7 @@
     <string name="github">Github</string>
     <string name="linkedin">LinkedIn</string>
     <string name="instagram">Instagram</string>
+    <string name="choose_time_picker_style">Choose Time Picker Style</string>
+    <string name="clock">Clock</string>
+    <string name="scroll">Scroll</string>
 </resources>
