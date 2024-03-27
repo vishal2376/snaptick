@@ -14,5 +14,5 @@ data class MainState(
 	val streak: Int = -1,
 	val sleepTime: LocalTime = LocalTime.MAX,
 	val language: String = Locale.getDefault().language,
-	val isWheelTimePicker: Boolean = false,
+	val isWheelTimePicker: Boolean = true,
 )
