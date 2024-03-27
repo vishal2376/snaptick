@@ -40,6 +40,7 @@ import com.vishal2376.snaptick.presentation.main.MainState
 import com.vishal2376.snaptick.presentation.settings.common.SettingCategoryItem
 import com.vishal2376.snaptick.presentation.settings.components.SettingsCategoryComponent
 import com.vishal2376.snaptick.presentation.settings.components.ThemeOptionComponent
+import com.vishal2376.snaptick.presentation.settings.components.TimePickerOptionComponent
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.Constants
 import com.vishal2376.snaptick.util.openUrl
@@ -76,17 +77,17 @@ fun SettingsScreen(
 		SettingCategoryItem(
 			title = stringResource(R.string.language),
 			resId = R.drawable.ic_translate,
-			onClick = {}
+			onClick = { showBottomSheetById = R.string.language }
 		),
 		SettingCategoryItem(
 			title = stringResource(R.string.sleep_time),
 			resId = R.drawable.ic_moon,
-			onClick = {}
+			onClick = { showBottomSheetById = R.string.sleep_time }
 		),
 		SettingCategoryItem(
 			title = stringResource(R.string.time_picker),
 			resId = R.drawable.ic_clock,
-			onClick = {}
+			onClick = { showBottomSheetById = R.string.time_picker }
 		),
 	)
 
@@ -142,8 +143,20 @@ fun SettingsScreen(
 				containerColor = MaterialTheme.colorScheme.secondary,
 			) {
 				Box(modifier = Modifier.padding(16.dp)) {
-					ThemeOptionComponent(defaultTheme = appState.theme) {
-						onEvent(MainEvent.UpdateAppTheme(it, context))
+					when (showBottomSheetById) {
+						R.string.theme -> {
+							ThemeOptionComponent(defaultTheme = appState.theme) {
+								onEvent(MainEvent.UpdateAppTheme(it, context))
+							}
+						}
+						R.string.language -> {}
+						R.string.sleep_time -> {}
+						R.string.time_picker -> {
+							TimePickerOptionComponent(
+								isWheelTimePicker = appState.isWheelTimePicker,
+								onSelect = {}
+							)
+						}
 					}
 				}
 			}
