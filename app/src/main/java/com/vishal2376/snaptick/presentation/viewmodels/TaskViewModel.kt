@@ -73,6 +73,13 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 				}
 			}
 
+			is MainEvent.UpdateTimePicker -> {
+				viewModelScope.launch {
+					appState = appState.copy(isWheelTimePicker = event.isWheelTimePicker)
+					SettingsStore(event.context).setTimePicker(event.isWheelTimePicker)
+				}
+			}
+
 			is MainEvent.UpdateSortByTask -> {
 				viewModelScope.launch {
 					appState = appState.copy(sortBy = event.sortTask)
@@ -280,6 +287,12 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 		viewModelScope.launch {
 			settingsStore.themeKey.collect {
 				appState = appState.copy(theme = AppTheme.entries[it])
+			}
+		}
+
+		viewModelScope.launch {
+			settingsStore.timePickerKey.collect {
+				appState = appState.copy(isWheelTimePicker = it)
 			}
 		}
 

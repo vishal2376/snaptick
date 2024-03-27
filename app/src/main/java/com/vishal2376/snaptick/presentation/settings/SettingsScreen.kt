@@ -149,13 +149,13 @@ fun SettingsScreen(
 								onEvent(MainEvent.UpdateAppTheme(it, context))
 							}
 						}
+
 						R.string.language -> {}
 						R.string.sleep_time -> {}
 						R.string.time_picker -> {
-							TimePickerOptionComponent(
-								isWheelTimePicker = appState.isWheelTimePicker,
-								onSelect = {}
-							)
+							TimePickerOptionComponent(isWheelTimePicker = appState.isWheelTimePicker) {
+								onEvent(MainEvent.UpdateTimePicker(it, context))
+							}
 						}
 					}
 				}
