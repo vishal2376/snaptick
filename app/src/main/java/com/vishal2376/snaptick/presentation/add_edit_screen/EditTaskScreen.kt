@@ -58,8 +58,10 @@ import com.vishal2376.snaptick.presentation.add_edit_screen.components.ConfirmDe
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.CustomDurationDialogComponent
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.DurationComponent
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.PriorityComponent
+import com.vishal2376.snaptick.presentation.add_edit_screen.components.ShowNativeTimePicker
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.WeekDaysComponent
 import com.vishal2376.snaptick.presentation.common.AppTheme
+import com.vishal2376.snaptick.presentation.common.NativeTimePickerDialog
 import com.vishal2376.snaptick.presentation.common.Priority
 import com.vishal2376.snaptick.presentation.common.ShowTimePicker
 import com.vishal2376.snaptick.presentation.common.SnackbarController.showCustomSnackbar
@@ -91,6 +93,8 @@ fun EditTaskScreen(
 
 	var showDialogConfirmDelete by remember { mutableStateOf(false) }
 	var showDialogCustomDuration by remember { mutableStateOf(false) }
+	var showDialogStartTimePicker by remember { mutableStateOf(false) }
+	var showDialogEndTimePicker by remember { mutableStateOf(false) }
 
 	LaunchedEffect(isTimeUpdated)
 	{
@@ -129,6 +133,24 @@ fun EditTaskScreen(
 	}) { innerPadding ->
 
 
+		if (showDialogStartTimePicker) {
+			NativeTimePickerDialog(time = taskStartTime, onClose = {
+				onEvent(AddEditScreenEvent.OnUpdateStartTime(it))
+				taskStartTime = it
+				showDialogStartTimePicker = false
+			})
+		}
+
+		if (showDialogEndTimePicker) {
+			NativeTimePickerDialog(
+				time = taskEndTime,
+				onClose = {
+					onEvent(AddEditScreenEvent.OnUpdateEndTime(it))
+					taskEndTime = it
+					showDialogEndTimePicker = false
+				})
+		}
+
 		// confirm delete dialog
 		if (showDialogConfirmDelete) {
 			ConfirmDeleteDialog(
@@ -141,7 +163,7 @@ fun EditTaskScreen(
 			)
 		}
 
-		// confirm delete dialog
+		// confirm custom duration dialog
 		if (showDialogCustomDuration) {
 			CustomDurationDialogComponent(
 				onClose = { showDialogCustomDuration = false },
@@ -213,11 +235,17 @@ fun EditTaskScreen(
 							color = if (appState.theme == AppTheme.Light) DarkGreen else LightGreen
 						)
 						Spacer(modifier = Modifier.height(8.dp))
-						ShowTimePicker(
-							time = taskStartTime
-						) { snappedTime ->
-							onEvent(AddEditScreenEvent.OnUpdateStartTime(snappedTime))
-							taskStartTime = snappedTime
+						if (appState.isWheelTimePicker) {
+							ShowTimePicker(
+								time = taskStartTime
+							) { snappedTime ->
+								onEvent(AddEditScreenEvent.OnUpdateStartTime(snappedTime))
+								taskStartTime = snappedTime
+							}
+						} else {
+							ShowNativeTimePicker(time = taskStartTime) {
+								showDialogStartTimePicker = true
+							}
 						}
 					}
 					Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -227,12 +255,18 @@ fun EditTaskScreen(
 							color = Red
 						)
 						Spacer(modifier = Modifier.height(8.dp))
-						ShowTimePicker(
-							time = taskEndTime,
-							isTimeUpdated = isTimeUpdated
-						) { snappedTime ->
-							onEvent(AddEditScreenEvent.OnUpdateEndTime(snappedTime))
-							taskEndTime = snappedTime
+						if (appState.isWheelTimePicker) {
+							ShowTimePicker(
+								time = taskEndTime,
+								isTimeUpdated = isTimeUpdated
+							) { snappedTime ->
+								onEvent(AddEditScreenEvent.OnUpdateEndTime(snappedTime))
+								taskEndTime = snappedTime
+							}
+						} else {
+							ShowNativeTimePicker(time = taskEndTime) {
+								showDialogEndTimePicker = true
+							}
 						}
 					}
 				}
