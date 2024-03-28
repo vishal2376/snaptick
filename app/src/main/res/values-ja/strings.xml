@@ -44,4 +44,8 @@
     <string name="start_time_latest_at_top">開始時刻（上部に最新）</string>
     <string name="creation_time_latest_at_bottom">作成時間 (底部最新)</string>
     <string name="creation_time_latest_at_top">作成時間 (最上部に最新)</string>
+    <string name="calender">Calender</string>
+    <string name="today">Today</string>
+    <string name="selected_date">Selected Date</string>
+    <string name="tasks_added_successfully">Tasks Added Successfully</string>
 </resources>

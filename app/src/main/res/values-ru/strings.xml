@@ -44,4 +44,8 @@
     <string name="start_time_latest_at_top">Время старта (сверху)</string>
     <string name="creation_time_latest_at_bottom">Время создания (последняя в снизу)</string>
     <string name="creation_time_latest_at_top">Время создания (последняя наверху)</string>
+    <string name="calender">Calender</string>
+    <string name="today">Today</string>
+    <string name="selected_date">Selected Date</string>
+    <string name="tasks_added_successfully">Tasks Added Successfully</string>
 </resources>
