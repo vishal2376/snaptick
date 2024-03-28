@@ -19,7 +19,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Sort
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -95,10 +94,10 @@ fun HomeScreen(
 
 	// calc free time
 	val totalTaskTime = inCompletedTasks.sumOf { it.getDuration(checkPastTask = true) }
-	val freeTimeText = getFreeTime(totalTaskTime)
+	val freeTimeText = getFreeTime(totalTaskTime, appState.sleepTime)
 
 	// streak
-	val appStreakText = if (appState.streak != -1) appState.streak.toString() else "0"
+	val appStreakText = if (appState.streak > 0) appState.streak.toString() else "0"
 
 	LaunchedEffect(inCompletedTasks) {
 		appState.totalTaskDuration = totalTaskTime

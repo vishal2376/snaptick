@@ -35,6 +35,7 @@ import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.presentation.free_time_screen.components.CustomPieChart
 import com.vishal2376.snaptick.presentation.free_time_screen.components.PieChartItemComponent
+import com.vishal2376.snaptick.presentation.main.MainState
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.ui.theme.pieChartColors
 import com.vishal2376.snaptick.util.Constants
@@ -45,6 +46,7 @@ import com.vishal2376.snaptick.util.getFreeTime
 @Composable
 fun FreeTimeScreen(
 	tasks: List<Task>,
+	appState: MainState,
 	onBack: () -> Unit
 ) {
 
@@ -52,9 +54,8 @@ fun FreeTimeScreen(
 	val sortedTasks = inCompletedTasks.sortedBy { -it.getDuration() }
 	val totalColors = pieChartColors.size
 
-	// todo :save free time in app state
 	val totalTaskTime = inCompletedTasks.sumOf { it.getDuration(checkPastTask = true) }
-	val freeTimeText = getFreeTime(totalTaskTime)
+	val freeTimeText = getFreeTime(totalTaskTime, appState.sleepTime)
 
 	Scaffold(topBar = {
 		TopAppBar(
@@ -139,6 +140,6 @@ fun FreeTimeScreen(
 fun FreeTimeScreenPreview() {
 	val tasks = DummyTasks.dummyTasks
 	SnaptickTheme {
-		FreeTimeScreen(tasks = tasks, {})
+		FreeTimeScreen(tasks = tasks, MainState(), {})
 	}
 }

@@ -54,8 +54,8 @@ fun getFormattedDuration(
 
 }
 
-fun getFreeTime(totalDuration: Long): String {
-	val maxTime = LocalTime.MAX.toSecondOfDay()
+fun getFreeTime(totalDuration: Long, sleepTime: LocalTime): String {
+	val maxTime = sleepTime.toSecondOfDay()
 	val currentTime = LocalTime.now().toSecondOfDay()
 
 	val totalFreeDuration = maxTime - currentTime - totalDuration

@@ -100,6 +100,7 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 		composable(route = Routes.FreeTimeScreen.name) {
 			FreeTimeScreen(
 				tasks = updatedTodayTasks,
+				appState = taskViewModel.appState,
 				onBack = {
 					if (navController.isValidBackStack) {
 						navController.popBackStack()

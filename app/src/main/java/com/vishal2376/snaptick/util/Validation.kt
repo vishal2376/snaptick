@@ -6,12 +6,13 @@ import java.time.LocalTime
 
 fun checkValidTask(
 	task: Task,
-	totalTasksDuration: Long = 0
+	totalTasksDuration: Long = 0,
+	sleepTime: LocalTime = LocalTime.MAX
 ): Pair<Boolean, String> {
-	val maxTime = LocalTime.MAX.toSecondOfDay()
+	val maxTime = sleepTime.toSecondOfDay()
 	val currentTime = LocalTime.now().toSecondOfDay()
 	val freeTime = maxTime - currentTime - totalTasksDuration
-	val formattedFreeTime = getFreeTime(totalTasksDuration)
+	val formattedFreeTime = getFreeTime(totalTasksDuration, sleepTime)
 
 	val currentDuration = task.getDuration(checkPastTask = true)
 	val startTimeSec = task.startTime.toSecondOfDay()
