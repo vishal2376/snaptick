@@ -38,6 +38,7 @@ import com.vishal2376.snaptick.presentation.common.infoDescTextStyle
 import com.vishal2376.snaptick.presentation.main.MainEvent
 import com.vishal2376.snaptick.presentation.main.MainState
 import com.vishal2376.snaptick.presentation.settings.common.SettingCategoryItem
+import com.vishal2376.snaptick.presentation.settings.components.LanguageOptionComponent
 import com.vishal2376.snaptick.presentation.settings.components.SettingsCategoryComponent
 import com.vishal2376.snaptick.presentation.settings.components.SleepTimeOptionComponent
 import com.vishal2376.snaptick.presentation.settings.components.ThemeOptionComponent
@@ -151,7 +152,12 @@ fun SettingsScreen(
 							}
 						}
 
-						R.string.language -> {}
+						R.string.language -> {
+							LanguageOptionComponent(defaultLanguage = appState.language){
+								onEvent(MainEvent.UpdateLanguage(it,context))
+							}
+						}
+
 						R.string.sleep_time -> {
 							SleepTimeOptionComponent(defaultSleepTime = appState.sleepTime) {
 								onEvent(MainEvent.UpdateSleepTime(it, context))

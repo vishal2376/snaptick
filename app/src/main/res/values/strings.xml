@@ -65,4 +65,5 @@
     <string name="scroll">Scroll</string>
     <string name="set_sleep_time">Set Sleep Time</string>
     <string name="min_max">Min - %1$s \t\t Max - %2$s</string>
+    <string name="select_language">Select Language</string>
 </resources>
