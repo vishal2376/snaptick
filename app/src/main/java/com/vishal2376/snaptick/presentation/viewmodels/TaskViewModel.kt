@@ -107,6 +107,10 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 					}
 				}
 			}
+
+			is MainEvent.UpdateSleepTime -> {
+				appState = appState.copy(sleepTime = event.sleepTime)
+			}
 		}
 	}
 

@@ -39,6 +39,7 @@ import com.vishal2376.snaptick.presentation.main.MainEvent
 import com.vishal2376.snaptick.presentation.main.MainState
 import com.vishal2376.snaptick.presentation.settings.common.SettingCategoryItem
 import com.vishal2376.snaptick.presentation.settings.components.SettingsCategoryComponent
+import com.vishal2376.snaptick.presentation.settings.components.SleepTimeOptionComponent
 import com.vishal2376.snaptick.presentation.settings.components.ThemeOptionComponent
 import com.vishal2376.snaptick.presentation.settings.components.TimePickerOptionComponent
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
@@ -151,7 +152,12 @@ fun SettingsScreen(
 						}
 
 						R.string.language -> {}
-						R.string.sleep_time -> {}
+						R.string.sleep_time -> {
+							SleepTimeOptionComponent(defaultSleepTime = appState.sleepTime) {
+								onEvent(MainEvent.UpdateSleepTime(it, context))
+							}
+						}
+
 						R.string.time_picker -> {
 							TimePickerOptionComponent(isWheelTimePicker = appState.isWheelTimePicker) {
 								onEvent(MainEvent.UpdateTimePicker(it, context))

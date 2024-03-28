@@ -63,4 +63,6 @@
     <string name="choose_time_picker_style">Choose Time Picker Style</string>
     <string name="clock">Clock</string>
     <string name="scroll">Scroll</string>
+    <string name="set_sleep_time">Set Sleep Time</string>
+    <string name="min_max">Min - %1$s \t\t Max - %2$s</string>
 </resources>
