@@ -44,4 +44,8 @@
     <string name="start_time_latest_at_top">Begintijd (het beste boven)</string>
     <string name="creation_time_latest_at_bottom">Aanmaaktijd (het beste aan onder)</string>
     <string name="creation_time_latest_at_top">Aanmaaktijd (het beste boven)</string>
+    <string name="calender">Calender</string>
+    <string name="today">Today</string>
+    <string name="selected_date">Selected Date</string>
+    <string name="tasks_added_successfully">Tasks Added Successfully</string>
 </resources>
