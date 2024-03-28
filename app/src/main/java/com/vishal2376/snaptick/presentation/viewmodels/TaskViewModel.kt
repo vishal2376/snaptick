@@ -80,6 +80,13 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 				}
 			}
 
+			is MainEvent.UpdateSleepTime -> {
+				viewModelScope.launch {
+					appState = appState.copy(sleepTime = event.sleepTime)
+					SettingsStore(event.context).setSleepTime(event.sleepTime.toString())
+				}
+			}
+
 			is MainEvent.UpdateSortByTask -> {
 				viewModelScope.launch {
 					appState = appState.copy(sortBy = event.sortTask)
@@ -106,10 +113,6 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 						shareApp(event.context)
 					}
 				}
-			}
-
-			is MainEvent.UpdateSleepTime -> {
-				appState = appState.copy(sleepTime = event.sleepTime)
 			}
 		}
 	}
@@ -303,6 +306,12 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 		viewModelScope.launch {
 			settingsStore.streakKey.collect {
 				appState = appState.copy(streak = it)
+			}
+		}
+
+		viewModelScope.launch {
+			settingsStore.sleepTimeKey.collect {
+				appState = appState.copy(sleepTime = LocalTime.parse(it))
 			}
 		}
 

@@ -27,7 +27,7 @@ class SettingsStore(val context: Context) {
 		private val SORT_TASK_KEY = intPreferencesKey("sort_task_key")
 		private val LAST_OPENED_KEY = stringPreferencesKey("last_opened_key")
 		private val STREAK_KEY = intPreferencesKey("streak_key")
-		private val SLEEP_TIME_KEY = intPreferencesKey("sleep_time_key")
+		private val SLEEP_TIME_KEY = stringPreferencesKey("sleep_time_key")
 
 		private const val DEFAULT_LANGUAGE = "en"
 		private val DEFAULT_THEME = AppTheme.Dark.ordinal
@@ -35,7 +35,7 @@ class SettingsStore(val context: Context) {
 		private val DEFAULT_SORT_TASK = SortTask.BY_CREATE_TIME_DESCENDING.ordinal
 		private val DEFAULT_LAST_OPENED = LocalDate.now().toString()
 		private const val DEFAULT_STREAK = 0
-		private val DEFAULT_SLEEP_TIME_KEY = LocalTime.MAX.toSecondOfDay()
+		private val DEFAULT_SLEEP_TIME_KEY = LocalTime.of(23, 59).toString()
 	}
 
 
@@ -51,7 +51,7 @@ class SettingsStore(val context: Context) {
 		preferences[LANGUAGE_KEY] ?: DEFAULT_LANGUAGE
 	}
 
-	val sleepTimeKey: Flow<Int> = context.dataStore.data.map { preferences ->
+	val sleepTimeKey: Flow<String> = context.dataStore.data.map { preferences ->
 		preferences[SLEEP_TIME_KEY] ?: DEFAULT_SLEEP_TIME_KEY
 	}
 
@@ -85,9 +85,9 @@ class SettingsStore(val context: Context) {
 		}
 	}
 
-	suspend fun setSleepTime(timeInSec: Int) {
+	suspend fun setSleepTime(time: String) {
 		context.dataStore.edit { preferences ->
-			preferences[SLEEP_TIME_KEY] = timeInSec
+			preferences[SLEEP_TIME_KEY] = time
 		}
 	}
 
