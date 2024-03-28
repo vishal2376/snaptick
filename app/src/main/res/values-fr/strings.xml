@@ -44,4 +44,8 @@
     <string name="start_time_latest_at_top">Heure de début (plus bas en haut)</string>
     <string name="creation_time_latest_at_bottom">Temps de création (plus bas en bas)</string>
     <string name="creation_time_latest_at_top">Temps de création (plus bas en haut)</string>
+    <string name="calender">Calender</string>
+    <string name="today">Today</string>
+    <string name="selected_date">Selected Date</string>
+    <string name="tasks_added_successfully">Tasks Added Successfully</string>
 </resources>
