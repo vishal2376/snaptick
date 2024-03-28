@@ -55,7 +55,7 @@ fun SleepTimeOptionComponent(defaultSleepTime: LocalTime, onSelect: (LocalTime) 
 			maxTime = LocalTime.MAX,
 			textColor = MaterialTheme.colorScheme.onPrimary,
 			onSnappedTime = {
-				val sleepTime = LocalTime.of(it.hour, it.second)
+				val sleepTime = LocalTime.of(it.hour, it.minute)
 				onSelect(sleepTime)
 			}
 		)
