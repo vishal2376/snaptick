@@ -13,6 +13,6 @@ data class MainState(
 	val durationList: List<Long> = listOf(30, 60, 90, 0),
 	val streak: Int = -1,
 	val sleepTime: LocalTime = LocalTime.of(23, 59),
-	val language: String = Locale.getDefault().language,
+	val language: String = Locale.ENGLISH.language,
 	val isWheelTimePicker: Boolean = true,
 )
