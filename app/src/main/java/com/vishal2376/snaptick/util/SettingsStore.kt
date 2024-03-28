@@ -13,6 +13,7 @@ import com.vishal2376.snaptick.presentation.common.SortTask
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.time.LocalDate
+import java.time.LocalTime
 
 
 class SettingsStore(val context: Context) {
@@ -26,6 +27,7 @@ class SettingsStore(val context: Context) {
 		private val SORT_TASK_KEY = intPreferencesKey("sort_task_key")
 		private val LAST_OPENED_KEY = stringPreferencesKey("last_opened_key")
 		private val STREAK_KEY = intPreferencesKey("streak_key")
+		private val SLEEP_TIME_KEY = intPreferencesKey("sleep_time_key")
 
 		private const val DEFAULT_LANGUAGE = "en"
 		private val DEFAULT_THEME = AppTheme.Dark.ordinal
@@ -33,6 +35,7 @@ class SettingsStore(val context: Context) {
 		private val DEFAULT_SORT_TASK = SortTask.BY_CREATE_TIME_DESCENDING.ordinal
 		private val DEFAULT_LAST_OPENED = LocalDate.now().toString()
 		private const val DEFAULT_STREAK = 0
+		private val DEFAULT_SLEEP_TIME_KEY = LocalTime.MAX.toSecondOfDay()
 	}
 
 
@@ -46,6 +49,10 @@ class SettingsStore(val context: Context) {
 
 	val languageKey: Flow<String> = context.dataStore.data.map { preferences ->
 		preferences[LANGUAGE_KEY] ?: DEFAULT_LANGUAGE
+	}
+
+	val sleepTimeKey: Flow<Int> = context.dataStore.data.map { preferences ->
+		preferences[SLEEP_TIME_KEY] ?: DEFAULT_SLEEP_TIME_KEY
 	}
 
 	val sortTaskKey: Flow<Int> = context.dataStore.data.map { preferences ->
@@ -75,6 +82,12 @@ class SettingsStore(val context: Context) {
 	suspend fun setLanguage(language: String) {
 		context.dataStore.edit { preferences ->
 			preferences[LANGUAGE_KEY] = language
+		}
+	}
+
+	suspend fun setSleepTime(timeInSec: Int) {
+		context.dataStore.edit { preferences ->
+			preferences[SLEEP_TIME_KEY] = timeInSec
 		}
 	}
 
