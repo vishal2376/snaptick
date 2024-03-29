@@ -21,6 +21,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Icon
@@ -54,6 +55,7 @@ fun TaskComponent(
 	onEdit: (Int) -> Unit,
 	onComplete: (Int) -> Unit,
 	onPomodoro: (Int) -> Unit,
+	onDelete: (Int) -> Unit = {},
 	animDelay: Int = 100
 ) {
 
@@ -206,6 +208,18 @@ fun TaskComponent(
 					) {
 						Icon(
 							painter = painterResource(id = R.drawable.ic_timer),
+							tint = MaterialTheme.colorScheme.onSecondary,
+							contentDescription = null
+						)
+					}
+				}
+				if (task.date < LocalDate.now()) {
+					IconButton(
+						onClick = { onDelete(task.id) },
+						modifier = Modifier.weight(0.1f)
+					) {
+						Icon(
+							imageVector = Icons.Default.Delete,
 							tint = MaterialTheme.colorScheme.onSecondary,
 							contentDescription = null
 						)

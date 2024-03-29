@@ -138,6 +138,14 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 				getTaskById(event.taskId)
 			}
 
+			is HomeScreenEvent.OnDeleteTask -> {
+				viewModelScope.launch {
+					task = repository.getTaskById(event.taskId)
+					deletedTask = task
+					repository.deleteTask(task)
+				}
+			}
+
 			is HomeScreenEvent.OnSwipeTask -> {
 				deletedTask = event.task
 				deleteTask(event.task)

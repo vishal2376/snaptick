@@ -43,6 +43,7 @@ import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.calender_screen.component.DaysOfWeekTitle
 import com.vishal2376.snaptick.presentation.calender_screen.component.MonthDayComponent
 import com.vishal2376.snaptick.presentation.calender_screen.component.WeekDayComponent
+import com.vishal2376.snaptick.presentation.common.SnackbarController.showCustomSnackbar
 import com.vishal2376.snaptick.presentation.common.filterTasksByDate
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.home_screen.HomeScreenEvent
@@ -213,6 +214,15 @@ fun CalenderScreen(
 								onPomodoro = {
 									onEvent(HomeScreenEvent.OnPomodoro(it))
 									onPomodoroTask(it)
+								},
+								onDelete = {
+									onEvent(HomeScreenEvent.OnDeleteTask(it))
+									showCustomSnackbar(
+										msg = "Task Deleted",
+										actionText = "Undo",
+										onClickAction = {
+											onEvent(HomeScreenEvent.OnUndoDelete)
+										})
 								},
 								animDelay = index * Constants.LIST_ANIMATION_DELAY
 							)
