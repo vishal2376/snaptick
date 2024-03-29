@@ -39,6 +39,12 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/snaptick_widget_info" />
         </receiver>
+
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            tools:node="remove" />
+
     </application>
 
 </manifest>
