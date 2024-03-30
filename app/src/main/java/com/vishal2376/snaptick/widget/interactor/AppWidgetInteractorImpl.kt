@@ -8,8 +8,17 @@ class AppWidgetInteractorImpl(
 	private val context: Context
 ) : AppWidgetInteractor {
 
-	override fun enqueueWidgetDataWorker() = WidgetTaskUpdateDataWorker.enqueueWorker(context)
+	override fun enqueueWidgetDataWorker() =
+		WidgetTaskUpdateDataWorker.enqueueWorker(context)
 
-	override fun cancelWidgetDateWorker() = WidgetTaskUpdateDataWorker.cancelWorker(context)
+	override fun cancelWidgetDateWorker() =
+		WidgetTaskUpdateDataWorker.cancelWorker(context)
+
+
+	override fun enqueuePeriodicWidgetUpdateWorker() =
+		WidgetTaskUpdateDataWorker.enqueuePeriodicWorker(context)
+
+	override fun cancelPeriodicWidgetUpdateWorker() =
+		WidgetTaskUpdateDataWorker.cancelPeriodicWorker(context)
 
 }

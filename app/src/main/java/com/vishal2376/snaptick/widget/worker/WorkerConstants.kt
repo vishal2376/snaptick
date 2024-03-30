@@ -4,6 +4,7 @@ object WorkerConstants {
 	
 	// WORKER_TAG
 	const val WIDGET_WORKER = "WIDGET_WORKER"
+	const val PERIODIC_WORKER = "WIDGET_PERIODIC_WORKER"
 
 	// Widget Data Worker
 	const val WIDGET_DATA_WORKER_ERROR_KEY = "WIDGET_DATA_ERROR"

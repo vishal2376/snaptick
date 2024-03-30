@@ -5,8 +5,10 @@ import android.util.Log
 import androidx.glance.appwidget.updateAll
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
+import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
@@ -20,7 +22,9 @@ import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
+import java.time.Duration
 import java.time.LocalDate
+import java.time.LocalTime
 
 private const val LOGGER = "WIDGET_DATA_WORKER"
 
@@ -68,24 +72,49 @@ class WidgetTaskUpdateDataWorker @AssistedInject constructor(
 
 	companion object {
 
-		private const val WORKER_NAME = "WIDGET_DATA_WORKER"
-
-		private val updateWorker = OneTimeWorkRequestBuilder<WidgetTaskUpdateDataWorker>()
-			.addTag(WorkerConstants.WIDGET_WORKER)
-			.build()
+		private const val WORKER_NAME = "WIDGET_DATA_UPDATE_WORKER"
+		private const val PERIODIC_WORKER_NAME = "WIDGET_DATA_UPDATE_PERIODIC_WORKER"
 
 		fun enqueueWorker(
 			context: Context,
 			policy: ExistingWorkPolicy = ExistingWorkPolicy.REPLACE
 		) {
+			val updateWorker = OneTimeWorkRequestBuilder<WidgetTaskUpdateDataWorker>()
+				.addTag(WorkerConstants.WIDGET_WORKER)
+				.build()
+
 			val manager = WorkManager.getInstance(context)
 			manager.enqueueUniqueWork(WORKER_NAME, policy, updateWorker)
+		}
+
+		fun enqueuePeriodicWorker(
+			context: Context,
+			policy: ExistingPeriodicWorkPolicy = ExistingPeriodicWorkPolicy.UPDATE
+		) {
+
+			val timeDifference = Duration.between(LocalTime.now(), LocalTime.MAX).toMillis()
+
+			val periodicWorker =
+				PeriodicWorkRequestBuilder<WidgetTaskUpdateDataWorker>(Duration.ofDays(1))
+					.addTag(WorkerConstants.PERIODIC_WORKER)
+					.setNextScheduleTimeOverride(timeDifference)
+					.build()
+
+			val manager = WorkManager.getInstance(context)
+			manager.enqueueUniquePeriodicWork(PERIODIC_WORKER_NAME, policy, periodicWorker)
+		}
+
+
+		fun cancelPeriodicWorker(context: Context) {
+			val manager = WorkManager.getInstance(context)
+			// cancels the periodic worker
+			manager.cancelUniqueWork(PERIODIC_WORKER_NAME)
 		}
 
 		fun cancelWorker(context: Context) {
 			val manager = WorkManager.getInstance(context)
 			// it will cancel the work if not in complete state
-			manager.cancelWorkById(updateWorker.id)
+			manager.cancelUniqueWork(WORKER_NAME)
 		}
 	}
 }

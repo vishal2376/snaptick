@@ -21,15 +21,15 @@ class SnaptickWidgetReceiver : GlanceAppWidgetReceiver() {
 
 	override fun onEnabled(context: Context) {
 		super.onEnabled(context)
-		Log.d(LOGGER_TAG, "WORKER_ENQUEUED")
+		Log.d(LOGGER_TAG, "PERIODIC_WORKER_ENQUEUED")
 		// enqueue the worker on enabled
-		interceptor.enqueueWidgetDataWorker()
+		interceptor.enqueuePeriodicWidgetUpdateWorker()
 	}
 
-	override fun onDeleted(context: Context, appWidgetIds: IntArray) {
-		Log.d(LOGGER_TAG, "WORKER_CANCELED")
+	override fun onDisabled(context: Context?) {
+		Log.d(LOGGER_TAG, "PERIODIC_WORKER_CANCELED")
 		// cancel worker on remove
-		interceptor.cancelWidgetDateWorker()
-		super.onDeleted(context, appWidgetIds)
+		interceptor.cancelPeriodicWidgetUpdateWorker()
+		super.onDisabled(context)
 	}
 }
