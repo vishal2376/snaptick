@@ -1,6 +1,5 @@
 package com.vishal2376.snaptick
 
-import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,7 +9,6 @@ import com.vishal2376.snaptick.presentation.common.CustomSnackBar
 import com.vishal2376.snaptick.presentation.navigation.AppNavigation
 import com.vishal2376.snaptick.presentation.viewmodels.TaskViewModel
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
-import com.vishal2376.snaptick.util.LocaleHelper
 import com.vishal2376.snaptick.util.NotificationHelper
 import com.vishal2376.snaptick.util.updateLocale
 import dagger.hilt.android.AndroidEntryPoint

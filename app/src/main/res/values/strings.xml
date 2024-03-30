@@ -13,7 +13,7 @@
     <string name="dialog_negative">Cancel</string>
     <string name="report_bug">Report Bug</string>
     <string name="suggestions">Suggestions</string>
-    <string name="tag_line" />
+    <string name="tag_line" translatable="false" />
     <string name="buildVersion">v%1$s</string>
     <string name="delete_task">Delete Task ?</string>
     <string name="cancel">Cancel</string>

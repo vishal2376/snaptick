@@ -25,6 +25,7 @@ import com.vishal2376.snaptick.util.SettingsStore
 import com.vishal2376.snaptick.util.openMail
 import com.vishal2376.snaptick.util.openUrl
 import com.vishal2376.snaptick.util.shareApp
+import com.vishal2376.snaptick.util.updateLocale
 import com.vishal2376.snaptick.worker.NotificationWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -90,6 +91,7 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 				viewModelScope.launch {
 					appState = appState.copy(language = event.language)
 					SettingsStore(event.context).setLanguage(event.language)
+					updateLocale(event.context, appState.language)
 				}
 			}
 
