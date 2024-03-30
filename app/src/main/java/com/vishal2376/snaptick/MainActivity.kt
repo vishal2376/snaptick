@@ -10,7 +10,6 @@ import com.vishal2376.snaptick.presentation.navigation.AppNavigation
 import com.vishal2376.snaptick.presentation.viewmodels.TaskViewModel
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.NotificationHelper
-import com.vishal2376.snaptick.util.updateLocale
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,9 +30,6 @@ class MainActivity : ComponentActivity() {
 
 		// load app state
 		taskViewModel.loadAppState(applicationContext)
-
-		// set language
-		updateLocale(applicationContext, taskViewModel.appState.language)
 
 		setContent {
 			SnaptickTheme(theme = taskViewModel.appState.theme) {

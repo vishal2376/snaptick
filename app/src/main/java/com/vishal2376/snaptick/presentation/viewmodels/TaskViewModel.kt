@@ -90,8 +90,8 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 			is MainEvent.UpdateLanguage -> {
 				viewModelScope.launch {
 					appState = appState.copy(language = event.language)
+					updateLocale(event.context, event.language)
 					SettingsStore(event.context).setLanguage(event.language)
-					updateLocale(event.context, appState.language)
 				}
 			}
 

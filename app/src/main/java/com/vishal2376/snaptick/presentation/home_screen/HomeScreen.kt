@@ -73,7 +73,9 @@ import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.ui.theme.Yellow
 import com.vishal2376.snaptick.util.Constants
 import com.vishal2376.snaptick.util.DummyTasks
+import com.vishal2376.snaptick.util.SettingsStore
 import com.vishal2376.snaptick.util.getFreeTime
+import com.vishal2376.snaptick.util.updateLocale
 import kotlinx.coroutines.launch
 
 
@@ -98,14 +100,21 @@ fun HomeScreen(
 
 	// streak
 	val appStreakText = if (appState.streak > 0) appState.streak.toString() else "0"
+	val context = LocalContext.current
 
 	LaunchedEffect(inCompletedTasks) {
 		appState.totalTaskDuration = totalTaskTime
 	}
 
+	LaunchedEffect(Unit) {
+		val store = SettingsStore(context)
+		store.languageKey.collect {
+			updateLocale(context, it)
+		}
+	}
+
 	val totalTasks = tasks.size
 	val totalCompletedTasks = completedTasks.size
-	val context = LocalContext.current
 
 	// animation
 	val translateX = 600f
