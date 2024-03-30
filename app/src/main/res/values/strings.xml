@@ -47,4 +47,11 @@
     <string name="today">Today</string>
     <string name="selected_date">Selected Date</string>
     <string name="tasks_added_successfully">Tasks Added Successfully</string>
+
+    <string name="unchecked_circle_desc" translatable="false">Unchecked Circle</string>
+    <string name="glance_preview_task_1" translatable="false">Task 1</string>
+    <string name="glance_preview_task_2" translatable="false">Task 2</string>
+    <string name="glance_preview_task_3" translatable="false">Task 3</string>
+    <string name="clock_icon_desc" translatable="false">Clock Icon</string>
+    <string name="glance_preview_random_time" translatable="false">12:00am - 1:00pm</string>
 </resources>
