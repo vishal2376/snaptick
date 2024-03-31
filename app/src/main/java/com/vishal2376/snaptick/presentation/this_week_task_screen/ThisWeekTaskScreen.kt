@@ -39,7 +39,9 @@ import com.vishal2376.snaptick.presentation.home_screen.components.TaskComponent
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.Constants
 import com.vishal2376.snaptick.util.DummyTasks
+import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.temporal.TemporalAdjusters
 
 @OptIn(
 	ExperimentalMaterial3Api::class,
@@ -53,7 +55,18 @@ fun ThisWeekTaskScreen(
 	onBack: () -> Unit
 ) {
 
-	val repeatedTasks = tasks.filter { it.isRepeated }
+	val today = LocalDate.now()
+	val dayOfWeek = today.dayOfWeek.value - 1
+	val startOfWeek = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
+	val endOfWeek = today.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY))
+
+	val thisWeekTasks = tasks.filter { task ->
+		!task.isCompleted && (if (task.isRepeated && task.repeatWeekdays.contains(today.dayOfWeek.value.toString())) {
+			true
+		} else {
+			task.date in startOfWeek..endOfWeek
+		})
+	}
 
 	Scaffold(topBar = {
 		TopAppBar(
@@ -96,7 +109,7 @@ fun ThisWeekTaskScreen(
 
 		Column(modifier = Modifier.padding(innerPadding)) {
 
-			if (repeatedTasks.isEmpty()) {
+			if (thisWeekTasks.isEmpty()) {
 				EmptyTaskComponent()
 			} else {
 				LazyColumn(
@@ -107,7 +120,7 @@ fun ThisWeekTaskScreen(
 							0.dp
 						)
 				) {
-					itemsIndexed(items = repeatedTasks,
+					itemsIndexed(items = thisWeekTasks,
 						key = { index, task ->
 							task.id
 						}) { index, task ->
