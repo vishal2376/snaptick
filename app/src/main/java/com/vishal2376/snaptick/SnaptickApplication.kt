@@ -2,12 +2,17 @@ package com.vishal2376.snaptick
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
+import androidx.hilt.work.HiltWorkerFactory
+import androidx.work.Configuration
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import com.vishal2376.snaptick.util.Constants
 import com.vishal2376.snaptick.worker.RepeatTaskWorker
 import dagger.hilt.android.HiltAndroidApp
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.asExecutor
 import org.acra.ACRA
 import org.acra.BuildConfig
 import org.acra.config.CoreConfigurationBuilder
@@ -16,9 +21,22 @@ import org.acra.config.MailSenderConfigurationBuilder
 import org.acra.data.StringFormat
 import java.time.LocalTime
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 @HiltAndroidApp
-class SnaptickApplication : Application() {
+class SnaptickApplication : Application(), Configuration.Provider {
+
+	@Inject
+	lateinit var workerFactory: HiltWorkerFactory
+
+	override val workManagerConfiguration: Configuration
+		get() = Configuration.Builder()
+			.setWorkerFactory(workerFactory)
+			.setMinimumLoggingLevel(Log.INFO)
+			.setExecutor(Dispatchers.Default.asExecutor())
+			.build()
+
+
 	override fun attachBaseContext(base: Context?) {
 		super.attachBaseContext(base)
 		ACRA.init(

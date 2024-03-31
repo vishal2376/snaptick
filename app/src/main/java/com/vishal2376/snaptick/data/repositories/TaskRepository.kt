@@ -1,11 +1,16 @@
 package com.vishal2376.snaptick.data.repositories
 
 import com.vishal2376.snaptick.data.local.TaskDao
+import com.vishal2376.snaptick.domain.interactor.AppWidgetInteractor
 import com.vishal2376.snaptick.domain.model.Task
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.onEach
 import java.time.LocalDate
 
-class TaskRepository(private val dao: TaskDao) {
+class TaskRepository(
+	private val dao: TaskDao,
+	private val interactor: AppWidgetInteractor
+) {
 	suspend fun insertTask(task: Task) {
 		dao.insertTask(task)
 	}
@@ -40,7 +45,11 @@ class TaskRepository(private val dao: TaskDao) {
 	}
 
 	fun getAllTasks(): Flow<List<Task>> {
-		return dao.getAllTasks()
+		return dao.getAllTasks().onEach {
+			//on each emit enqueue the worker
+			// thus widget get updated on any of CRUD operation
+			interactor.enqueueWidgetDataWorker()
+		}
 	}
 
 }
