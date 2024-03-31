@@ -61,7 +61,7 @@ fun ThisWeekTaskScreen(
 	val endOfWeek = today.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY))
 
 	val thisWeekTasks = tasks.filter { task ->
-		!task.isCompleted && (if (task.isRepeated && task.repeatWeekdays.contains(today.dayOfWeek.value.toString())) {
+		!task.isCompleted && (if (task.isRepeated && task.getRepeatWeekList().contains(dayOfWeek)) {
 			true
 		} else {
 			task.date in startOfWeek..endOfWeek
