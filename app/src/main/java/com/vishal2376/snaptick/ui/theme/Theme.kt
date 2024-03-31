@@ -11,7 +11,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 import com.vishal2376.snaptick.presentation.common.AppTheme
 
-private val DarkColorScheme = darkColorScheme(
+val DarkColorScheme = darkColorScheme(
 	primary = Blue500,
 	secondary = Blue200,
 	background = Blue500,
@@ -19,7 +19,7 @@ private val DarkColorScheme = darkColorScheme(
 	onSecondary = LightGray,
 )
 
-private val AmoledDarkColorScheme = darkColorScheme(
+val AmoledDarkColorScheme = darkColorScheme(
 	primary = Black500,
 	secondary = Black200,
 	background = Black500,

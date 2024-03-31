@@ -7,4 +7,23 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+
+    <!--    theme colors-->
+    <color name="blue_500">#FF161A30</color>
+    <color name="blue_200">#FF31304D</color>
+
+    <color name="black_500">#FF000000</color>
+    <color name="black_200">#FF252526</color>
+
+    <color name="white_500">#FFEAF3FF</color>
+    <color name="white_200">#FFD9E9FF</color>
+
+    <color name="green">#FFC7E9A7</color>
+
+    <!--    priority colors-->
+    <color name="light_gray">#FFCCD2D8</color>
+    <color name="yellow">#FFFF9737</color>
+    <color name="red">#FFEB8080</color>
+
 </resources>

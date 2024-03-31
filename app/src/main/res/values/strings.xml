@@ -66,4 +66,11 @@
     <string name="set_sleep_time">Set Sleep Time</string>
     <string name="min_max">Min - %1$s \t\t Max - %2$s</string>
     <string name="select_language">Select Language</string>
+
+    <string name="unchecked_circle_desc" translatable="false">Unchecked Circle</string>
+    <string name="glance_preview_task_1" translatable="false">Task 1</string>
+    <string name="glance_preview_task_2" translatable="false">Task 2</string>
+    <string name="glance_preview_task_3" translatable="false">Task 3</string>
+    <string name="clock_icon_desc" translatable="false">Clock Icon</string>
+    <string name="glance_preview_random_time" translatable="false">12:00am - 1:00pm</string>
 </resources>

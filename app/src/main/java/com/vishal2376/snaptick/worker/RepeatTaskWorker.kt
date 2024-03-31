@@ -2,34 +2,32 @@ package com.vishal2376.snaptick.worker
 
 import android.content.Context
 import android.util.Log
-import androidx.room.Room
+import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import com.vishal2376.snaptick.data.local.TaskDatabase
 import com.vishal2376.snaptick.data.repositories.TaskRepository
 import com.vishal2376.snaptick.util.Constants
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import java.time.LocalDate
 import java.time.LocalTime
 import java.util.concurrent.TimeUnit
 import kotlin.math.max
 
-class RepeatTaskWorker(val context: Context, params: WorkerParameters) :
-	CoroutineWorker(context, params) {
+@HiltWorker
+class RepeatTaskWorker @AssistedInject constructor(
+	@Assisted val context: Context,
+	@Assisted params: WorkerParameters,
+	private val repository: TaskRepository,
+) : CoroutineWorker(context, params) {
 
 	override suspend fun doWork(): Result {
 		try {
 			val dayOfWeek = LocalDate.now().dayOfWeek.value - 1 // because mon-1,sun-7
 
-			val db = Room.databaseBuilder(
-				context.applicationContext,
-				TaskDatabase::class.java,
-				"local_db"
-			).build()
-
-			val repository = TaskRepository(db.taskDao())
 			val taskList = repository.getLastRepeatedTasks()
 
 			taskList.forEach { task ->
@@ -79,8 +77,6 @@ class RepeatTaskWorker(val context: Context, params: WorkerParameters) :
 					repository.insertTask(newTask)
 				}
 			}
-
-			db.close()
 			return Result.success()
 		} catch (e: Exception) {
 			Log.e("@@@", "doWork: Error : ${e.message}")
