@@ -50,14 +50,16 @@ fun WidgetTaskComponent(
 	Row(
 		modifier = modifier
 			.padding(8.dp)
-			.background(taskBackground)
-			.clickable(onClick),
+			.background(taskBackground),
 		verticalAlignment = Alignment.CenterVertically
 	) {
 		Image(
 			provider = checkedImage,
 			contentDescription = null,
-			modifier = GlanceModifier.size(35.dp).padding(8.dp)
+			modifier = GlanceModifier
+				.size(35.dp)
+				.padding(8.dp)
+				.clickable(onClick)
 		)
 		Column {
 			Text(

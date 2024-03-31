@@ -21,8 +21,11 @@ class SnaptickWidgetReceiver : GlanceAppWidgetReceiver() {
 
 	override fun onEnabled(context: Context) {
 		super.onEnabled(context)
+		Log.d(LOGGER_TAG,"ONE_TIME_WORKER_ENQUEUED")
+		// enqueue the current worker for current update
+		interceptor.enqueueWidgetDataWorker()
 		Log.d(LOGGER_TAG, "PERIODIC_WORKER_ENQUEUED")
-		// enqueue the worker on enabled
+		// enqueue the periodic worker
 		interceptor.enqueuePeriodicWidgetUpdateWorker()
 	}
 

@@ -15,7 +15,7 @@ import androidx.work.workDataOf
 import com.vishal2376.snaptick.data.repositories.TaskRepository
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.widget.SnaptickWidget
-import com.vishal2376.snaptick.widget.SnaptickWidgetState
+import com.vishal2376.snaptick.widget.SnaptickWidgetStateDefinition
 import com.vishal2376.snaptick.widget.model.toWidgetTask
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -51,7 +51,7 @@ class WidgetTaskUpdateDataWorker @AssistedInject constructor(
 				Log.d(LOGGER, "ALL_TASKS $tasks")
 				Log.d(LOGGER, "FEW_TASKS $incompleteTasks")
 
-				SnaptickWidgetState.updateData(context, incompleteTasks)
+				SnaptickWidgetStateDefinition.updateData(context, incompleteTasks)
 				//update the widget
 				SnaptickWidget.updateAll(context)
 				// results success
@@ -89,15 +89,18 @@ class WidgetTaskUpdateDataWorker @AssistedInject constructor(
 
 		fun enqueuePeriodicWorker(
 			context: Context,
-			policy: ExistingPeriodicWorkPolicy = ExistingPeriodicWorkPolicy.UPDATE
+			policy: ExistingPeriodicWorkPolicy = ExistingPeriodicWorkPolicy.KEEP
 		) {
 
-			val timeDifference = Duration.between(LocalTime.now(), LocalTime.MAX).toMillis()
+			val timeDifference = Duration.between(LocalTime.now(), LocalTime.MAX)
+				// adding an extra 2 second as LocalTime.MAX is 11:59:59
+				// then the 2 seconds will really stat the worker after 12
+				.plus(Duration.ofSeconds(2))
 
 			val periodicWorker =
 				PeriodicWorkRequestBuilder<WidgetTaskUpdateDataWorker>(Duration.ofDays(1))
 					.addTag(WorkerConstants.PERIODIC_WORKER)
-					.setNextScheduleTimeOverride(timeDifference)
+					.setInitialDelay(timeDifference)
 					.build()
 
 			val manager = WorkManager.getInstance(context)
