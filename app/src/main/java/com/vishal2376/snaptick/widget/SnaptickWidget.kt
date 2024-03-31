@@ -1,6 +1,9 @@
 package com.vishal2376.snaptick.widget
 
 import android.content.Context
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.dp
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
@@ -19,21 +22,24 @@ import androidx.glance.state.GlanceStateDefinition
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.widget.components.SnaptickWidgetTheme
 import com.vishal2376.snaptick.widget.components.WidgetTasks
-import com.vishal2376.snaptick.widget.model.WidgetTaskModel
 
 val parameterTaskId = ActionParameters.Key<Int>("task_id")
 
 object SnaptickWidget : GlanceAppWidget() {
 
-	override val stateDefinition: GlanceStateDefinition<List<WidgetTaskModel>>
-		get() = SnaptickWidgetState
+	override val stateDefinition: GlanceStateDefinition<SnaptickWidgetState>
+		get() = SnaptickWidgetStateDefinition
 
 
 	override suspend fun provideGlance(context: Context, id: GlanceId) {
 
 		provideContent {
 
-			val tasks = currentState<List<WidgetTaskModel>>()
+			val state = currentState<SnaptickWidgetState>()
+
+			val tasks by remember(state) {
+				derivedStateOf{ state.tasks }
+			}
 
 			SnaptickWidgetTheme {
 				WidgetTasks(
