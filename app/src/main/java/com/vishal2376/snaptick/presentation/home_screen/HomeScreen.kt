@@ -20,6 +20,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Sort
+import androidx.compose.material.icons.filled.Today
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -303,12 +304,22 @@ fun HomeScreen(
 						verticalAlignment = Alignment.CenterVertically
 					) {
 
-						Text(
-							text = stringResource(R.string.today_tasks),
-							style = h2TextStyle,
-							color = MaterialTheme.colorScheme.onPrimary,
-							modifier = Modifier.padding(16.dp)
-						)
+						Row(
+							modifier = Modifier.padding(8.dp),
+							verticalAlignment = Alignment.CenterVertically,
+							horizontalArrangement = Arrangement.spacedBy(8.dp)
+						) {
+							Icon(
+								imageVector = Icons.Default.Today,
+								contentDescription = null,
+								tint = MaterialTheme.colorScheme.onPrimary
+							)
+							Text(
+								text = stringResource(R.string.today_tasks),
+								style = h2TextStyle,
+								color = MaterialTheme.colorScheme.onPrimary,
+							)
+						}
 
 						IconButton(onClick = { showSortDialog = true }) {
 							Icon(
