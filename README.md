@@ -1,4 +1,3 @@
-
 <div align="center">
 
 <img src="https://github.com/vishal2376/snaptick/assets/38159691/099fd345-4a63-4916-845c-065b31b6e381" width="100px"/>
@@ -24,6 +23,13 @@ Snaptick is a free daily task planner app designed to help users increase produc
 <a href='https://apt.izzysoft.de/fdroid/index/apk/com.vishal2376.snaptick'><img alt='Get it on IzzyOnDroid' src='https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png' style="width:200px"></a>
 
 </div>
+
+<h3 align="center">💰 Support </h3>
+<p align="center">
+  <a href="https://ko-fi.com/vishal2376"><img src="https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white" /></a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://buymeacoffee.com/vishal2376"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black" /></a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://paypal.me/vishal2376"><img src="https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white" /></a>&nbsp;&nbsp;&nbsp;&nbsp;
+</p>
 
 ## Features
 - Create and Edit Tasks
