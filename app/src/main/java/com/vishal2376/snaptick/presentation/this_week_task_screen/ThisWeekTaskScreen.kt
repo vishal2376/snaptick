@@ -58,11 +58,11 @@ fun ThisWeekTaskScreen(
 
 	val startDayOfWeek = WeekFields.of(DayOfWeek.MONDAY, 1).weekOfYear()
 	val currentWeek = LocalDate.now().get(startDayOfWeek)
-	val previousWeek = currentWeek - 1
+	val previousWeek = LocalDate.now().minusWeeks(1)
 
 	val thisWeekTasks = tasks.filter { task ->
 		val taskWeekOfYear = task.date.get(startDayOfWeek)
-		(taskWeekOfYear == currentWeek) || (taskWeekOfYear == previousWeek && task.isRepeated)
+		(taskWeekOfYear == currentWeek) || ((task.date in previousWeek..LocalDate.now()) && task.isRepeated)
 	}
 
 	Scaffold(topBar = {
