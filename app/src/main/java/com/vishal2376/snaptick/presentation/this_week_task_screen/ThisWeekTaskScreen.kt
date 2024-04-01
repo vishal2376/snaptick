@@ -41,7 +41,7 @@ import com.vishal2376.snaptick.util.Constants
 import com.vishal2376.snaptick.util.DummyTasks
 import java.time.DayOfWeek
 import java.time.LocalDate
-import java.time.temporal.TemporalAdjusters
+import java.time.temporal.WeekFields
 
 @OptIn(
 	ExperimentalMaterial3Api::class,
@@ -55,17 +55,14 @@ fun ThisWeekTaskScreen(
 	onBack: () -> Unit
 ) {
 
-	val today = LocalDate.now()
-	val dayOfWeek = today.dayOfWeek.value - 1
-	val startOfWeek = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
-	val endOfWeek = today.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY))
+
+	val startDayOfWeek = WeekFields.of(DayOfWeek.MONDAY, 1).weekOfYear()
+	val currentWeek = LocalDate.now().get(startDayOfWeek)
+	val previousWeek = currentWeek - 1
 
 	val thisWeekTasks = tasks.filter { task ->
-		!task.isCompleted && (if (task.isRepeated && task.getRepeatWeekList().contains(dayOfWeek)) {
-			true
-		} else {
-			task.date in startOfWeek..endOfWeek
-		})
+		val taskWeekOfYear = task.date.get(startDayOfWeek)
+		(taskWeekOfYear == currentWeek) || (taskWeekOfYear == previousWeek && task.isRepeated)
 	}
 
 	Scaffold(topBar = {
