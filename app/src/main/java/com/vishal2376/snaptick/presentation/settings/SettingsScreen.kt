@@ -66,7 +66,10 @@ fun SettingsScreen(
 		),
 		SettingCategoryItem(title = stringResource(R.string.support),
 			resId = R.drawable.ic_support,
-			onClick = {}
+			onClick = {
+				val repoUrl = Constants.GITHUB + "/snaptick#snaptick"
+				openUrl(context, repoUrl)
+			}
 		),
 	)
 
@@ -153,8 +156,8 @@ fun SettingsScreen(
 						}
 
 						R.string.language -> {
-							LanguageOptionComponent(defaultLanguage = appState.language){
-								onEvent(MainEvent.UpdateLanguage(it,context))
+							LanguageOptionComponent(defaultLanguage = appState.language) {
+								onEvent(MainEvent.UpdateLanguage(it, context))
 							}
 						}
 
