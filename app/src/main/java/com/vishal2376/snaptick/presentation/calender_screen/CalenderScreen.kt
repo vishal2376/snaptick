@@ -12,12 +12,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.filled.ViewWeek
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -49,6 +51,8 @@ import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.home_screen.HomeScreenEvent
 import com.vishal2376.snaptick.presentation.home_screen.components.EmptyTaskComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.TaskComponent
+import com.vishal2376.snaptick.presentation.navigation.Routes
+import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.Constants
 import com.vishal2376.snaptick.util.DummyTasks
@@ -63,8 +67,7 @@ import java.util.Locale
 fun CalenderScreen(
 	tasks: List<Task>,
 	onEvent: (HomeScreenEvent) -> Unit,
-	onEditTask: (id: Int) -> Unit,
-	onPomodoroTask: (id: Int) -> Unit,
+	onNavigate: (route: String) -> Unit,
 	onBack: () -> Unit
 ) {
 	val scope = rememberCoroutineScope()
@@ -104,7 +107,10 @@ fun CalenderScreen(
 			),
 			title = {
 				Text(
-					text = currentMonthTitle.getDisplayName(TextStyle.FULL, Locale.getDefault()),
+					text = currentMonthTitle.getDisplayName(
+						TextStyle.FULL,
+						Locale.getDefault()
+					),
 					style = h1TextStyle
 				)
 			},
@@ -136,7 +142,23 @@ fun CalenderScreen(
 				}
 			}
 		)
-	}) { innerPadding ->
+	},
+		floatingActionButton = {
+			if (selectedDay >= LocalDate.now()) {
+				FloatingActionButton(
+					onClick = {
+						onNavigate(Routes.AddTaskScreen.name)
+					},
+					containerColor = Blue,
+					contentColor = MaterialTheme.colorScheme.secondary
+				) {
+					Icon(
+						imageVector = Icons.Default.Add,
+						contentDescription = null
+					)
+				}
+			}
+		}) { innerPadding ->
 
 		Column(modifier = Modifier.padding(innerPadding)) {
 
@@ -200,10 +222,10 @@ fun CalenderScreen(
 						) {
 							TaskComponent(
 								task = task,
-								onEdit = {
+								onEdit = { taskId ->
 									if (task.date >= LocalDate.now()) {
-										onEvent(HomeScreenEvent.OnEditTask(it))
-										onEditTask(it)
+										onEvent(HomeScreenEvent.OnEditTask(taskId))
+										onNavigate("${Routes.EditTaskScreen.name}/$taskId")
 									}
 								},
 								onComplete = {
@@ -211,9 +233,9 @@ fun CalenderScreen(
 										onEvent(HomeScreenEvent.OnCompleted(it, !task.isCompleted))
 									}
 								},
-								onPomodoro = {
-									onEvent(HomeScreenEvent.OnPomodoro(it))
-									onPomodoroTask(it)
+								onPomodoro = { taskId ->
+									onEvent(HomeScreenEvent.OnPomodoro(taskId))
+									onNavigate("${Routes.PomodoroScreen.name}/$taskId")
 								},
 								onDelete = {
 									onEvent(HomeScreenEvent.OnDeleteTask(it))
@@ -242,6 +264,6 @@ fun CalenderScreen(
 fun CalenderScreenPreview() {
 	SnaptickTheme {
 		val tasks = DummyTasks.dummyTasks
-		CalenderScreen(tasks, {}, {}, {}, {})
+		CalenderScreen(tasks, {}, {}, {})
 	}
 }
