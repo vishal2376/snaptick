@@ -51,6 +51,7 @@ import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.home_screen.HomeScreenEvent
 import com.vishal2376.snaptick.presentation.home_screen.components.EmptyTaskComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.TaskComponent
+import com.vishal2376.snaptick.presentation.main.MainEvent
 import com.vishal2376.snaptick.presentation.navigation.Routes
 import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
@@ -67,6 +68,7 @@ import java.util.Locale
 fun CalenderScreen(
 	tasks: List<Task>,
 	onEvent: (HomeScreenEvent) -> Unit,
+	onMainEvent: (MainEvent) -> Unit,
 	onNavigate: (route: String) -> Unit,
 	onBack: () -> Unit
 ) {
@@ -147,6 +149,7 @@ fun CalenderScreen(
 			if (selectedDay >= LocalDate.now()) {
 				FloatingActionButton(
 					onClick = {
+						onMainEvent(MainEvent.UpdateCalenderDate(selectedDay))
 						onNavigate(Routes.AddTaskScreen.name)
 					},
 					containerColor = Blue,
@@ -264,6 +267,6 @@ fun CalenderScreen(
 fun CalenderScreenPreview() {
 	SnaptickTheme {
 		val tasks = DummyTasks.dummyTasks
-		CalenderScreen(tasks, {}, {}, {})
+		CalenderScreen(tasks, {}, {}, {}, {})
 	}
 }

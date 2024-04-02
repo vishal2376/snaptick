@@ -41,7 +41,7 @@ import javax.inject.Inject
 class TaskViewModel @Inject constructor(private val repository: TaskRepository) : ViewModel() {
 
 	var appState by mutableStateOf(MainState())
-	var deletedTask: Task? = null
+	private var deletedTask: Task? = null
 	var task: Task by mutableStateOf(
 		Task(
 			id = 0,
@@ -100,6 +100,10 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 					appState = appState.copy(sortBy = event.sortTask)
 					SettingsStore(event.context).setSortTask(event.sortTask.ordinal)
 				}
+			}
+
+			is MainEvent.UpdateCalenderDate -> {
+				appState = appState.copy(calenderDate = event.date)
 			}
 
 			is MainEvent.OnClickNavDrawerItem -> {

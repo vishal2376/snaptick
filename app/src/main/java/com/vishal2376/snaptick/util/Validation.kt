@@ -21,16 +21,20 @@ fun checkValidTask(
 		return Pair(false, "Title can't be empty")
 	}
 
-	if (currentDuration >= freeTime) {
-		return Pair(false, "Invalid Duration! You have only $formattedFreeTime remaining.")
-	}
-
 	if (task.getDuration() < Constants.MIN_ALLOWED_DURATION * 60) {
 		return Pair(false, "Task should be at least ${Constants.MIN_ALLOWED_DURATION} minutes.")
 	}
 
 	if (task.date < LocalDate.now()) {
 		return Pair(false, "Past dates are not allowed")
+	}
+
+	if (task.date > LocalDate.now()) {
+		return Pair(true, "Future Task")
+	}
+
+	if (currentDuration >= freeTime) {
+		return Pair(false, "Invalid Duration! You have only $formattedFreeTime remaining.")
 	}
 
 //	if (task.reminder) {

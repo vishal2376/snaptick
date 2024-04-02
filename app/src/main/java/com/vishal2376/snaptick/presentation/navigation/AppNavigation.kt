@@ -84,6 +84,7 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 			CalenderScreen(
 				tasks = allTasks,
 				onEvent = taskViewModel::onEvent,
+				onMainEvent = taskViewModel::onEvent,
 				onBack = {
 					if (navController.isValidBackStack) {
 						navController.popBackStack()
@@ -109,6 +110,7 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 			AddTaskScreen(
 				appState = taskViewModel.appState,
 				onEvent = taskViewModel::onEvent,
+				onMainEvent = taskViewModel::onEvent,
 				onBack = {
 					if (navController.isValidBackStack) {
 						navController.popBackStack()

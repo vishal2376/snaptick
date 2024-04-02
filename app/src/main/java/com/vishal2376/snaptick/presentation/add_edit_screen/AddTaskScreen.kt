@@ -38,7 +38,6 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -76,6 +75,7 @@ import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.h3TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
+import com.vishal2376.snaptick.presentation.main.MainEvent
 import com.vishal2376.snaptick.presentation.main.MainState
 import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.ui.theme.DarkGreen
@@ -96,14 +96,19 @@ import java.util.UUID
 fun AddTaskScreen(
 	appState: MainState,
 	onEvent: (AddEditScreenEvent) -> Unit,
+	onMainEvent: (MainEvent) -> Unit,
 	onBack: () -> Unit
 ) {
 
 	val currentTime = LocalTime.now()
+	val currentDate = appState.calenderDate ?: LocalDate.now()
+	onMainEvent(MainEvent.UpdateCalenderDate(null))
+
+
 	var taskTitle by remember { mutableStateOf("") }
 	var taskStartTime by remember { mutableStateOf(currentTime) }
 	var taskEndTime by remember { mutableStateOf(currentTime.plusHours(1)) }
-	var taskDate by remember { mutableStateOf(LocalDate.now()) }
+	var taskDate by remember { mutableStateOf(currentDate) }
 	var isTaskReminderOn by remember { mutableStateOf(true) }
 	var isTaskRepeated by remember { mutableStateOf(false) }
 	var repeatedWeekDays by remember { mutableStateOf("") }
@@ -475,6 +480,6 @@ fun AddTaskScreen(
 @Composable
 fun AddTaskScreenPreview() {
 	SnaptickTheme {
-		AddTaskScreen(MainState(), onEvent = {}, {})
+		AddTaskScreen(MainState(), onEvent = {}, {}, {})
 	}
 }
