@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">闪光灯</string>
     <string name="today_tasks">今天的任务</string>
     <string name="what_would_you_like_to_do">你想做什么？</string>
     <string name="edit_task">编辑任务</string>
