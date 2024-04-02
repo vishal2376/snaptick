@@ -41,7 +41,9 @@ import com.vishal2376.snaptick.util.Constants
 import com.vishal2376.snaptick.util.DummyTasks
 import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.format.TextStyle
 import java.time.temporal.WeekFields
+import java.util.Locale
 
 @OptIn(
 	ExperimentalMaterial3Api::class,
@@ -95,7 +97,10 @@ fun ThisWeekTaskScreen(
 						tint = MaterialTheme.colorScheme.onPrimary
 					)
 					Text(
-						text = LocalDate.now().dayOfWeek.name.take(3),
+						text = LocalDate.now().dayOfWeek.getDisplayName(
+							TextStyle.SHORT,
+							Locale.getDefault()
+						),
 						style = infoTextStyle,
 						color = MaterialTheme.colorScheme.onPrimary
 					)
