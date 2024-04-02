@@ -179,7 +179,7 @@ fun TaskComponent(
 								)
 							}
 						}
-						if (task.repeatWeekdays.isNotEmpty()) {
+						if (task.repeatWeekdays.isNotEmpty() && task.isRepeated) {
 							Row(
 								modifier = Modifier.padding(top = 2.dp),
 								horizontalArrangement = Arrangement.spacedBy(4.dp),
