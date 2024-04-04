@@ -59,7 +59,7 @@ fun TaskComponent(
 	animDelay: Int = 100
 ) {
 
-	val alphaAnimation = remember { Animatable(initialValue = 1f) }
+	val alphaAnimation = remember { Animatable(initialValue = 0f) }
 
 	LaunchedEffect(animDelay) {
 		alphaAnimation.animateTo(targetValue = 1f, animationSpec = tween(1000, animDelay))
