@@ -2,6 +2,113 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.0] - 2024-04-04
+
+### 🚀 Features
+
+- *(settings)* Impl theme selector with new ui
+- *(settings)* Enter transition animation
+- *(settings)* Save/load lang key
+- *(settings)* Locale helper object
+- *(setting)* Impl time picker selector #38
+- *(setting)* Save/load time picker settings #38
+- *(settings)* Impl sleep time settings
+- *(localization)* Update all translations
+- Impl task ui
+- *(widget)* Load tasks from DB
+- *(widget)* Impl user interaction
+
+### 🐛 Bug Fixes
+
+- Green color contrast in light theme
+- Wrong date selected if dismiss alertbox
+- Back button not working
+- Showing innvalid minutes
+- Save/load sleep time not workingi
+- Translation not changing
+- Lang not updated on app startup
+- Bg and text color of task widget
+- Widget invalid task id
+- Loading completed tasks in widget
+- This week tasks issue
+- This week logic
+- Including all previous week task
+- Display name
+- Repeated task issue
+- App name wrong translations
+- Animation issue in task component
+
+### 📚 Documentation
+
+- Update banner
+- Update features
+- Add support links
+- Update features + add emoji
+- Fix row issue
+
+### ⚙️ Miscellaneous Tasks
+
+- Improve priority ui
+- Set default today as day of week
+- Add icons in addScreen and fix duration large text
+- Improve input field ui with priority colors
+- Modify add/edit UI with more ease to use
+- Impl setting category ui
+- Refactor from imageVector to resId
+- Add setting's category data
+- Created setting screen UI
+- Add more option in settings
+- Merge data and add onclick for follow links
+- Add onClick func and compose nav for SettingsScreen
+- Refactor nav function
+- Impl setting nav in home
+- Impl setting nav in home
+- Add setting option in nav drawer
+- Fix hardcoded strings
+- Locale impl +code cleanup
+- Impl native time picker dialog #38
+- Integrate native timer in add task screen #38
+- Integrate native timer in edit task screen #38
+- Change default time picker
+- Fix hardcoded string
+- Save/load sleep time
+- Impl sleep time in homescreen and analysis screen #26
+- Impl save/load for app language
+- Impl language setting UI
+- Add delete option in past tasks
+- Add country flags in lang setting
+- Add receiver class in manifest
+- Create basic task shape
+- Add more colors
+- Add round shapes
+- Add light theme color
+- Basic list of tasks
+- Change widget height
+- Modify title style
+- Add check/uncheck icons
+- Add ui for empty tasks
+- Improve home screen
+- Impl support onclick
+- Remove logo and improve spacings
+- Impl create task from calender
+- Impl share dates between calender screen and add task screen
+- Add about screen
+- Impl nav for about screen
+
+### Add
+
+- Icons for setting screen
+- Glance lib for widget
+- Widget class
+- Widget receiver class
+- Widget_info
+- Priority colors
+- Task bg  shapes with priority colors
+
+### Upgrade
+
+- AppVersion to 3.0
+
 ## [2.1] - 2024-03-23
 
 ### 🚀 Features
@@ -10,7 +117,7 @@ All notable changes to this project will be documented in this file.
 - *(repeat-task)* Improve insert and update task logic
 - *(calender)* Edit tasks
 - *(calender)* Add indicator in weekly view
-- *(calender)* Impl edit task ,toggle completion and start pomodoro timer
+- *(calender)* Impl  edit task ,toggle completion and start pomodoro timer
 
 ### 🐛 Bug Fixes
 
@@ -20,10 +127,12 @@ All notable changes to this project will be documented in this file.
 - Large empty task ui
 - Small ripple
 - *(swipe-action)* Froze swipe bg
+- Swipe background issue
 
 ### 📚 Documentation
 
 - Update screenshot
+- Add 2.1 changelogs
 
 ### ⚙️ Miscellaneous Tasks
 
@@ -72,6 +181,10 @@ All notable changes to this project will be documented in this file.
 - Calender dependency
 - Weekday ui component
 - Calender screen
+
+### Upgrade
+
+- AppVersion to 2.1
 
 ## [2.0] - 2024-03-10
 
@@ -304,7 +417,7 @@ All notable changes to this project will be documented in this file.
 - Show wrong time and priority onEditTask
 - *(pomodoro_screen)* Show wrong time and priority
 - Theme switch button not working
-- Flicker effect when reset timer and timer text alpha not resetting
+- Flicker effect when reset timer and  timer text alpha not resetting
 - Wrong exception
 - Topbar bg color delay
 - Free time count past task durations
@@ -471,7 +584,7 @@ All notable changes to this project will be documented in this file.
 - Remove startTime validation
 - Improve validation and duration logic
 - Add releases to .gitignore
-- Increase default startTime to 5min
+- Increase  default startTime to 5min
 - Update reminder notification when update OnComplete Task
 
 ### Add
