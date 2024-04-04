@@ -18,9 +18,10 @@ Snaptick is a free daily task planner app designed to help users increase produc
 <br/>
 <br/>
 
-<a href='https://play.google.com/store/apps/details?id=com.vishal2376.snaptick'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' style="width:200px"></a>
-
-<a href='https://apt.izzysoft.de/fdroid/index/apk/com.vishal2376.snaptick'><img alt='Get it on IzzyOnDroid' src='https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png' style="width:200px"></a>
+<div style="display: flex; flex-direction: row;">
+    <a href='https://play.google.com/store/apps/details?id=com.vishal2376.snaptick'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' style="width:200px"></a>
+    <a href='https://apt.izzysoft.de/fdroid/index/apk/com.vishal2376.snaptick'><img alt='Get it on IzzyOnDroid' src='https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png' style="width:200px"></a>
+</div>
 
 </div>
 
@@ -31,19 +32,20 @@ Snaptick is a free daily task planner app designed to help users increase produc
   <a href="https://paypal.me/vishal2376"><img src="https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white" /></a>&nbsp;&nbsp;&nbsp;&nbsp;
 </p>
 
-## Features
-- Create and Edit Tasks
-- Pomodoro Timer
-- Sort Tasks
-- Analyze Free Time
-- Set Sleep Time
-- Manage tasks in Calender View
-- Repetable Tasks with notification
-- Smooth animations
-- Modern UI with Cool Themes
-- Available in 10+ languages
-- Create Widgets `Coming Soon`
-- Import/Export Your Data `Coming Soon`
+
+## 🚀 Features
+
+- 📝 **Create and Edit Tasks**
+- ⏲️ **Pomodoro Timer**
+- 🔄 **Sort Tasks**
+- ⏰ **Analyze Free Time**
+- 😴 **Set Sleep Time**
+- 🗓️ **Manage tasks in Calendar View**
+- 🔁 **Repeatable Tasks with Notification**
+- 🎬 **Smooth Animations**
+- 🎨 **Modern UI with Cool Themes**
+- 🌐 **Available in 15+ Languages**
+- 🧩 **Create Widgets**
 
 
 ## Screenshots ([All Designs(Figma)](https://www.figma.com/file/fO6pafK7iAJMZDAtjOy1Mt/Snaptick-App-UI?type=design&node-id=0%3A1&mode=design&t=071Ijr8Yg44PVvmz-1))
