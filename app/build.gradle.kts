@@ -14,8 +14,8 @@ android {
 		applicationId = "com.vishal2376.snaptick"
 		minSdk = 26
 		targetSdk = 34
-		versionCode = 7
-		versionName = "2.1"
+		versionCode = 8
+		versionName = "3.0"
 
 		testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 		vectorDrawables {
