@@ -10,4 +10,5 @@ enum class Routes {
 	ThisWeekTaskScreen,
 	CalenderScreen,
 	SettingsScreen,
+	AboutScreen,
 }

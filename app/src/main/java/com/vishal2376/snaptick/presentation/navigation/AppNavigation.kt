@@ -13,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.vishal2376.snaptick.presentation.about_screen.AboutScreen
 import com.vishal2376.snaptick.presentation.add_edit_screen.AddTaskScreen
 import com.vishal2376.snaptick.presentation.add_edit_screen.EditTaskScreen
 import com.vishal2376.snaptick.presentation.calender_screen.CalenderScreen
@@ -165,6 +166,20 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 			SettingsScreen(
 				appState = taskViewModel.appState,
 				onEvent = taskViewModel::onEvent,
+				onClickAbout = {
+					navController.navigate(route = Routes.AboutScreen.name)
+				},
+				onBack = {
+					if (navController.isValidBackStack) {
+						navController.popBackStack()
+					}
+				}
+			)
+		}
+
+		composable(route = Routes.AboutScreen.name) {
+			AboutScreen(
+				appState = taskViewModel.appState,
 				onBack = {
 					if (navController.isValidBackStack) {
 						navController.popBackStack()

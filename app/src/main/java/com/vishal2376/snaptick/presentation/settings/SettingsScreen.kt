@@ -52,6 +52,7 @@ import com.vishal2376.snaptick.util.openUrl
 fun SettingsScreen(
 	appState: MainState,
 	onEvent: (MainEvent) -> Unit,
+	onClickAbout: () -> Unit,
 	onBack: () -> Unit
 ) {
 	val context = LocalContext.current
@@ -62,7 +63,7 @@ fun SettingsScreen(
 	val settingsAbout = listOf(
 		SettingCategoryItem(title = stringResource(R.string.about),
 			resId = R.drawable.ic_info,
-			onClick = {}
+			onClick = { onClickAbout() }
 		),
 		SettingCategoryItem(title = stringResource(R.string.support),
 			resId = R.drawable.ic_support,
@@ -216,6 +217,6 @@ fun SettingsScreen(
 @Composable
 fun SettingsScreenPreview() {
 	SnaptickTheme(theme = AppTheme.Amoled) {
-		SettingsScreen(MainState(), {}, {})
+		SettingsScreen(MainState(), {}, {}, {})
 	}
 }
