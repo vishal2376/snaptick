@@ -115,7 +115,7 @@ fun AboutScreen(
 			)
 
 			Text(
-				text = "Source Code",
+				text = stringResource(R.string.source_code),
 				modifier = Modifier
 					.fillMaxWidth()
 					.clickable {

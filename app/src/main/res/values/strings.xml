@@ -75,4 +75,15 @@
     <string name="glance_preview_random_time" translatable="false">12:00am - 1:00pm</string>
     <string name="app_description">Snaptick is an MVVM Jetpack Compose app, offering ad-free task management with a built-in pomodoro timer to help you organize your daily plans</string>
     <string name="features">Features</string>
+    <string name="source_code">Source Code</string>
+    <string name="create_and_edit_tasks">Create and Edit Tasks</string>
+    <string name="pomodoro_timer">Pomodoro Timer</string>
+    <string name="sort_tasks">Sort Tasks</string>
+    <string name="create_widgets">Create Widgets</string>
+    <string name="available_in_15_languages">Available in 15+ Languages</string>
+    <string name="modern_ui_with_cool_themes">Modern UI with Cool Themes</string>
+    <string name="smooth_animations">Smooth Animations</string>
+    <string name="repeatable_tasks_with_notification">Repeatable Tasks with Notification</string>
+    <string name="manage_tasks_in_calendar_view">Manage tasks in Calendar View</string>
+    <string name="analyze_free_time">Analyze Free Time</string>
 </resources>

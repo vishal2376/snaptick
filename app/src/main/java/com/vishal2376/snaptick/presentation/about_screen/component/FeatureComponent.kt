@@ -13,7 +13,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.presentation.common.h3TextStyle
 import com.vishal2376.snaptick.presentation.common.infoTextStyle
 
@@ -21,21 +23,20 @@ import com.vishal2376.snaptick.presentation.common.infoTextStyle
 fun FeaturesComponent(modifier: Modifier = Modifier) {
 	Column(
 		modifier = modifier
-			.padding(32.dp,0.dp)
-			.verticalScroll(rememberScrollState())
-		, verticalArrangement = Arrangement.spacedBy(8.dp)
+			.padding(32.dp, 0.dp)
+			.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)
 	) {
-		FeatureItem(icon = "📝", text = "Create and Edit Tasks")
-		FeatureItem(icon = "⏲️", text = "Pomodoro Timer")
-		FeatureItem(icon = "🔄", text = "Sort Tasks")
-		FeatureItem(icon = "⏰", text = "Analyze Free Time")
-		FeatureItem(icon = "😴", text = "Set Sleep Time")
-		FeatureItem(icon = "🗓️", text = "Manage tasks in Calendar View")
-		FeatureItem(icon = "🔁", text = "Repeatable Tasks with Notification")
-		FeatureItem(icon = "🎬", text = "Smooth Animations")
-		FeatureItem(icon = "🎨", text = "Modern UI with Cool Themes")
-		FeatureItem(icon = "🌐", text = "Available in 15+ Languages")
-		FeatureItem(icon = "🧩", text = "Create Widgets")
+		FeatureItem(icon = "📝", text = stringResource(R.string.create_and_edit_tasks))
+		FeatureItem(icon = "⏲️", text = stringResource(R.string.pomodoro_timer))
+		FeatureItem(icon = "🔄", text = stringResource(R.string.sort_tasks))
+		FeatureItem(icon = "⏰", text = stringResource(R.string.analyze_free_time))
+		FeatureItem(icon = "😴", text = stringResource(R.string.set_sleep_time))
+		FeatureItem(icon = "🗓️", text = stringResource(R.string.manage_tasks_in_calendar_view))
+		FeatureItem(icon = "🔁", text = stringResource(R.string.repeatable_tasks_with_notification))
+		FeatureItem(icon = "🎬", text = stringResource(R.string.smooth_animations))
+		FeatureItem(icon = "🎨", text = stringResource(R.string.modern_ui_with_cool_themes))
+		FeatureItem(icon = "🌐", text = stringResource(R.string.available_in_15_languages))
+		FeatureItem(icon = "🧩", text = stringResource(R.string.create_widgets))
 	}
 }
 
