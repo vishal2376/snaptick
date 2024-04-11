@@ -1,6 +1,7 @@
 package com.vishal2376.snaptick.presentation.main
 
 import com.vishal2376.snaptick.presentation.common.AppTheme
+import com.vishal2376.snaptick.presentation.common.CalenderView
 import com.vishal2376.snaptick.presentation.common.SortTask
 import java.time.LocalDate
 import java.time.LocalTime
@@ -16,5 +17,6 @@ data class MainState(
 	val sleepTime: LocalTime = LocalTime.of(23, 59),
 	val language: String = Locale.ENGLISH.language,
 	val isWheelTimePicker: Boolean = true,
+	val calenderView: CalenderView = CalenderView.MONTHLY,
 	val calenderDate: LocalDate? = null
 )

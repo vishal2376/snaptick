@@ -14,6 +14,7 @@ import com.vishal2376.snaptick.data.repositories.TaskRepository
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.add_edit_screen.AddEditScreenEvent
 import com.vishal2376.snaptick.presentation.common.AppTheme
+import com.vishal2376.snaptick.presentation.common.CalenderView
 import com.vishal2376.snaptick.presentation.common.NavDrawerItem
 import com.vishal2376.snaptick.presentation.common.SortTask
 import com.vishal2376.snaptick.presentation.home_screen.HomeScreenEvent
@@ -99,6 +100,13 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 				viewModelScope.launch {
 					appState = appState.copy(sortBy = event.sortTask)
 					SettingsStore(event.context).setSortTask(event.sortTask.ordinal)
+				}
+			}
+
+			is MainEvent.UpdateCalenderView -> {
+				viewModelScope.launch {
+					appState = appState.copy(calenderView = event.calenderView)
+					SettingsStore(event.context).setCalenderView(event.calenderView.ordinal)
 				}
 			}
 
@@ -338,6 +346,12 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 		viewModelScope.launch {
 			settingsStore.languageKey.collect { language ->
 				appState = appState.copy(language = language)
+			}
+		}
+
+		viewModelScope.launch {
+			settingsStore.calenderViewKey.collect {
+				appState = appState.copy(calenderView = CalenderView.entries[it])
 			}
 		}
 
