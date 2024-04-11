@@ -24,13 +24,21 @@ Snaptick is a free daily task planner app designed to help users increase produc
 </div>
 
 </div>
+<br>
+<h3 align="center">❤️ Support Development</h3>
+<p align="center">
+    <a href="https://nowpayments.io/donation?api_key=J8D6KV4-FJ7M181-QKRCGV3-6MMDNZT&source=lk_donation&medium=referral" target="_blank">
+     <img src="https://nowpayments.io/images/embeds/donation-button-black.svg" width="150px" alt="Crypto donation button by NOWPayments">
+    </a>
+</p>
 
-<h3 align="center">💰 Support </h3>
 <p align="center">
   <a href="https://ko-fi.com/vishal2376"><img src="https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white" /></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="https://buymeacoffee.com/vishal2376"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black" /></a>&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="https://paypal.me/vishal2376"><img src="https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white" /></a>&nbsp;&nbsp;&nbsp;&nbsp;
+    
 </p>
+
 
 
 ## 🚀 Features
