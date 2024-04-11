@@ -354,7 +354,12 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 				appState = appState.copy(calenderView = CalenderView.entries[it])
 			}
 		}
-
+		viewModelScope.launch {
+			settingsStore.sortTaskKey.collect {
+				appState = appState.copy(sortBy = SortTask.entries[it])
+			}
+		}
+		
 		viewModelScope.launch {
 			settingsStore.lastOpenedKey.collect { lastDateString ->
 				if (lastDateString == "") {
@@ -369,12 +374,6 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 						settingsStore.setStreak(newStreak)
 						settingsStore.setLastOpened(LocalDate.now().toString())
 					}
-				}
-			}
-
-			viewModelScope.launch {
-				settingsStore.sortTaskKey.collect {
-					appState = appState.copy(sortBy = SortTask.entries[it])
 				}
 			}
 		}
