@@ -84,6 +84,7 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 		composable(route = Routes.CalenderScreen.name) {
 			CalenderScreen(
 				tasks = allTasks,
+				appState = taskViewModel.appState,
 				onEvent = taskViewModel::onEvent,
 				onMainEvent = taskViewModel::onEvent,
 				onBack = {

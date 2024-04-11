@@ -34,6 +34,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kizitonwose.calendar.compose.HorizontalCalendar
@@ -45,6 +46,7 @@ import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.calender_screen.component.DaysOfWeekTitle
 import com.vishal2376.snaptick.presentation.calender_screen.component.MonthDayComponent
 import com.vishal2376.snaptick.presentation.calender_screen.component.WeekDayComponent
+import com.vishal2376.snaptick.presentation.common.CalenderView
 import com.vishal2376.snaptick.presentation.common.SnackbarController.showCustomSnackbar
 import com.vishal2376.snaptick.presentation.common.filterTasksByDate
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
@@ -52,6 +54,7 @@ import com.vishal2376.snaptick.presentation.home_screen.HomeScreenEvent
 import com.vishal2376.snaptick.presentation.home_screen.components.EmptyTaskComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.TaskComponent
 import com.vishal2376.snaptick.presentation.main.MainEvent
+import com.vishal2376.snaptick.presentation.main.MainState
 import com.vishal2376.snaptick.presentation.navigation.Routes
 import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
@@ -67,13 +70,15 @@ import java.util.Locale
 @Composable
 fun CalenderScreen(
 	tasks: List<Task>,
+	appState: MainState,
 	onEvent: (HomeScreenEvent) -> Unit,
 	onMainEvent: (MainEvent) -> Unit,
 	onNavigate: (route: String) -> Unit,
 	onBack: () -> Unit
 ) {
 	val scope = rememberCoroutineScope()
-	var isWeekCalender by remember { mutableStateOf(false) }
+	val context = LocalContext.current
+	var calenderView by remember { mutableStateOf(appState.calenderView) }
 	val firstDayOfWeek = remember { firstDayOfWeekFromLocale() }
 
 	// monthly calender
@@ -99,8 +104,10 @@ fun CalenderScreen(
 
 	var selectedDay by remember { mutableStateOf<LocalDate>(currentDate) }
 	var currentMonthTitle by remember { mutableStateOf(currentMonth.month) }
-	currentMonthTitle = if (isWeekCalender) weekState.firstVisibleWeek.days[0].date.month
-	else monthState.lastVisibleMonth.yearMonth.month
+	currentMonthTitle = if (calenderView == CalenderView.WEEKLY)
+		weekState.firstVisibleWeek.days[0].date.month
+	else
+		monthState.lastVisibleMonth.yearMonth.month
 
 	Scaffold(topBar = {
 		TopAppBar(
@@ -128,7 +135,7 @@ fun CalenderScreen(
 				IconButton(onClick = {
 					scope.launch {
 						selectedDay = currentDate
-						if (isWeekCalender)
+						if (calenderView == CalenderView.WEEKLY)
 							weekState.animateScrollToWeek(currentDate)
 						else
 							monthState.animateScrollToMonth(currentMonth)
@@ -137,9 +144,16 @@ fun CalenderScreen(
 					Icon(imageVector = Icons.Default.Restore, contentDescription = null)
 				}
 
-				IconButton(onClick = { isWeekCalender = !isWeekCalender }) {
+				IconButton(onClick = {
+					calenderView = if (calenderView == CalenderView.WEEKLY)
+						CalenderView.MONTHLY
+					else
+						CalenderView.WEEKLY
+
+					onMainEvent(MainEvent.UpdateCalenderView(calenderView, context))
+				}) {
 					val currentIcon =
-						if (isWeekCalender) Icons.Default.CalendarMonth else Icons.Default.ViewWeek
+						if (calenderView == CalenderView.WEEKLY) Icons.Default.CalendarMonth else Icons.Default.ViewWeek
 					Icon(imageVector = currentIcon, contentDescription = null)
 				}
 			}
@@ -165,7 +179,7 @@ fun CalenderScreen(
 
 		Column(modifier = Modifier.padding(innerPadding)) {
 
-			AnimatedVisibility(visible = isWeekCalender) {
+			AnimatedVisibility(visible = calenderView == CalenderView.WEEKLY) {
 				WeekCalendar(
 					modifier = Modifier.padding(horizontal = 10.dp),
 					state = weekState,
@@ -181,7 +195,7 @@ fun CalenderScreen(
 				)
 			}
 
-			AnimatedVisibility(visible = !isWeekCalender) {
+			AnimatedVisibility(visible = calenderView == CalenderView.MONTHLY) {
 				HorizontalCalendar(
 					modifier = Modifier.padding(horizontal = 10.dp),
 					state = monthState,
@@ -267,6 +281,6 @@ fun CalenderScreen(
 fun CalenderScreenPreview() {
 	SnaptickTheme {
 		val tasks = DummyTasks.dummyTasks
-		CalenderScreen(tasks, {}, {}, {}, {})
+		CalenderScreen(tasks, MainState(), {}, {}, {}, {})
 	}
 }
