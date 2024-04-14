@@ -81,6 +81,13 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 				}
 			}
 
+			is MainEvent.UpdateTimeFormat -> {
+				viewModelScope.launch {
+					appState = appState.copy(is24hourTimeFormat = event.isTimeFormat)
+					SettingsStore(event.context).setTimeFormat(event.isTimeFormat)
+				}
+			}
+
 			is MainEvent.UpdateSleepTime -> {
 				viewModelScope.launch {
 					appState = appState.copy(sleepTime = event.sleepTime)
@@ -354,12 +361,19 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 				appState = appState.copy(calenderView = CalenderView.entries[it])
 			}
 		}
+
+		viewModelScope.launch {
+			settingsStore.timeFormatKey.collect {
+				appState = appState.copy(is24hourTimeFormat = it)
+			}
+		}
+
 		viewModelScope.launch {
 			settingsStore.sortTaskKey.collect {
 				appState = appState.copy(sortBy = SortTask.entries[it])
 			}
 		}
-		
+
 		viewModelScope.launch {
 			settingsStore.lastOpenedKey.collect { lastDateString ->
 				if (lastDateString == "") {

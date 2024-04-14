@@ -17,7 +17,7 @@ data class MainState(
 	val sleepTime: LocalTime = LocalTime.of(23, 59),
 	val language: String = Locale.ENGLISH.language,
 	val isWheelTimePicker: Boolean = true,
-	val is24hourTimeFormat: Boolean = true,
+	val is24hourTimeFormat: Boolean = false,
 	val calenderView: CalenderView = CalenderView.MONTHLY,
 	val calenderDate: LocalDate? = null
 )
