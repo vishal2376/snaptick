@@ -16,6 +16,7 @@ import java.time.LocalTime
 fun ShowTimePicker(
 	time: LocalTime,
 	isTimeUpdated: Boolean = false,
+	is24hourFormat: Boolean = false,
 	onSelect: (LocalTime) -> Unit
 ) {
 	AnimatedVisibility(
@@ -24,7 +25,7 @@ fun ShowTimePicker(
 		exit = fadeOut() + shrinkVertically(tween(0))
 	) {
 		WheelTimePicker(
-			timeFormat = TimeFormat.AM_PM,
+			timeFormat = if (is24hourFormat) TimeFormat.HOUR_24 else TimeFormat.AM_PM,
 			startTime = time,
 			textColor = MaterialTheme.colorScheme.onPrimary,
 			onSnappedTime = onSelect
@@ -36,7 +37,7 @@ fun ShowTimePicker(
 		exit = fadeOut() + shrinkVertically(tween(0))
 	) {
 		WheelTimePicker(
-			timeFormat = TimeFormat.AM_PM,
+			timeFormat = if (is24hourFormat) TimeFormat.HOUR_24 else TimeFormat.AM_PM,
 			startTime = time,
 			textColor = MaterialTheme.colorScheme.onPrimary,
 			onSnappedTime = onSelect

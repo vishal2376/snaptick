@@ -134,21 +134,25 @@ fun EditTaskScreen(
 
 
 		if (showDialogStartTimePicker) {
-			NativeTimePickerDialog(time = taskStartTime, onClose = {
+			NativeTimePickerDialog(
+				time = taskStartTime,
+				is24hourFormat = appState.is24hourTimeFormat
+			) {
 				onEvent(AddEditScreenEvent.OnUpdateStartTime(it))
 				taskStartTime = it
 				showDialogStartTimePicker = false
-			})
+			}
 		}
 
 		if (showDialogEndTimePicker) {
 			NativeTimePickerDialog(
 				time = taskEndTime,
-				onClose = {
-					onEvent(AddEditScreenEvent.OnUpdateEndTime(it))
-					taskEndTime = it
-					showDialogEndTimePicker = false
-				})
+				is24hourFormat = appState.is24hourTimeFormat
+			) {
+				onEvent(AddEditScreenEvent.OnUpdateEndTime(it))
+				taskEndTime = it
+				showDialogEndTimePicker = false
+			}
 		}
 
 		// confirm delete dialog
@@ -237,13 +241,17 @@ fun EditTaskScreen(
 						Spacer(modifier = Modifier.height(8.dp))
 						if (appState.isWheelTimePicker) {
 							ShowTimePicker(
-								time = taskStartTime
+								time = taskStartTime,
+								is24hourFormat = appState.is24hourTimeFormat
 							) { snappedTime ->
 								onEvent(AddEditScreenEvent.OnUpdateStartTime(snappedTime))
 								taskStartTime = snappedTime
 							}
 						} else {
-							ShowNativeTimePicker(time = taskStartTime) {
+							ShowNativeTimePicker(
+								time = taskStartTime,
+								is24hourFormat = appState.is24hourTimeFormat
+							) {
 								showDialogStartTimePicker = true
 							}
 						}
@@ -258,13 +266,17 @@ fun EditTaskScreen(
 						if (appState.isWheelTimePicker) {
 							ShowTimePicker(
 								time = taskEndTime,
+								is24hourFormat = appState.is24hourTimeFormat,
 								isTimeUpdated = isTimeUpdated
 							) { snappedTime ->
 								onEvent(AddEditScreenEvent.OnUpdateEndTime(snappedTime))
 								taskEndTime = snappedTime
 							}
 						} else {
-							ShowNativeTimePicker(time = taskEndTime) {
+							ShowNativeTimePicker(
+								time = taskEndTime,
+								is24hourFormat = appState.is24hourTimeFormat
+							) {
 								showDialogEndTimePicker = true
 							}
 						}

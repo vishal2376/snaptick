@@ -185,15 +185,19 @@ fun AddTaskScreen(
 		}
 
 		if (showDialogStartTimePicker) {
-			NativeTimePickerDialog(time = taskStartTime, onClose = {
-				taskStartTime = it
-				showDialogStartTimePicker = false
-			})
+			NativeTimePickerDialog(
+				time = taskStartTime,
+				is24hourFormat = appState.is24hourTimeFormat,
+				onClose = {
+					taskStartTime = it
+					showDialogStartTimePicker = false
+				})
 		}
 
 		if (showDialogEndTimePicker) {
 			NativeTimePickerDialog(
 				time = taskEndTime,
+				is24hourFormat = appState.is24hourTimeFormat,
 				onClose = {
 					taskEndTime = it
 					showDialogEndTimePicker = false
@@ -277,12 +281,16 @@ fun AddTaskScreen(
 						Spacer(modifier = Modifier.height(8.dp))
 						if (appState.isWheelTimePicker) {
 							ShowTimePicker(
-								time = taskStartTime
+								time = taskStartTime,
+								is24hourFormat = appState.is24hourTimeFormat
 							) { snappedTime ->
 								taskStartTime = snappedTime
 							}
 						} else {
-							ShowNativeTimePicker(time = taskStartTime) {
+							ShowNativeTimePicker(
+								time = taskStartTime,
+								is24hourFormat = appState.is24hourTimeFormat
+							) {
 								showDialogStartTimePicker = true
 							}
 						}
@@ -298,12 +306,16 @@ fun AddTaskScreen(
 
 							ShowTimePicker(
 								time = taskEndTime,
+								is24hourFormat = appState.is24hourTimeFormat,
 								isTimeUpdated = isTimeUpdated
 							) { snappedTime ->
 								taskEndTime = snappedTime
 							}
 						} else {
-							ShowNativeTimePicker(time = taskEndTime) {
+							ShowNativeTimePicker(
+								time = taskEndTime,
+								is24hourFormat = appState.is24hourTimeFormat
+							) {
 								showDialogEndTimePicker = true
 							}
 						}

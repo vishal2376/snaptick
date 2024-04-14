@@ -31,9 +31,10 @@ import java.time.LocalTime
 @Composable
 fun NativeTimePickerDialog(
 	time: LocalTime,
+	is24hourFormat: Boolean = false,
 	onClose: (LocalTime) -> Unit,
 ) {
-	val state = rememberTimePickerState(time.hour, time.minute, false)
+	val state = rememberTimePickerState(time.hour, time.minute, is24hourFormat)
 	Dialog(onDismissRequest = { onClose(time) }) {
 		Card(
 			modifier = Modifier
@@ -85,6 +86,6 @@ fun NativeTimePickerDialog(
 fun NativeTimePickerDialogPreview() {
 	val state = rememberTimePickerState()
 	SnaptickTheme {
-		NativeTimePickerDialog(LocalTime.now(), {})
+		NativeTimePickerDialog(LocalTime.now(),false, {})
 	}
 }

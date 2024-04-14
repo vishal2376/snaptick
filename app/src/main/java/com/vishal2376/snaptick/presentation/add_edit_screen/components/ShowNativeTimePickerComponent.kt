@@ -23,7 +23,7 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun ShowNativeTimePicker(time: LocalTime, onClick: () -> Unit) {
+fun ShowNativeTimePicker(time: LocalTime, is24hourFormat: Boolean = false, onClick: () -> Unit) {
 	Box(modifier = Modifier.padding(vertical = 16.dp)) {
 		Row(
 			modifier = Modifier
@@ -40,7 +40,11 @@ fun ShowNativeTimePicker(time: LocalTime, onClick: () -> Unit) {
 				tint = MaterialTheme.colorScheme.onPrimary,
 				modifier = Modifier.size(24.dp)
 			)
-			val dtf = DateTimeFormatter.ofPattern("hh : mm a")
+			val dtf = if (is24hourFormat)
+				DateTimeFormatter.ofPattern("HH : mm")
+			else
+				DateTimeFormatter.ofPattern("hh : mm a")
+
 			Text(
 				text = time.format(dtf),
 				style = taskTextStyle,
