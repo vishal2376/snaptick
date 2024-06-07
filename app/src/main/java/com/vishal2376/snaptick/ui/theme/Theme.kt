@@ -59,7 +59,7 @@ fun SnaptickTheme(
 			WindowCompat.getInsetsController(
 				window,
 				view
-			).isAppearanceLightStatusBars = true
+			).isAppearanceLightStatusBars = theme == AppTheme.Light
 		}
 	}
 
