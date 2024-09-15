@@ -169,9 +169,15 @@ fun SettingsScreen(
 						}
 
 						R.string.time_picker -> {
-							TimePickerOptionComponent(isWheelTimePicker = appState.isWheelTimePicker) {
-								onEvent(MainEvent.UpdateTimePicker(it, context))
-							}
+							TimePickerOptionComponent(
+								isWheelTimePicker = appState.isWheelTimePicker,
+								is24HourTimeFormat = appState.is24hourTimeFormat,
+								onSelect = {
+									onEvent(MainEvent.UpdateTimePicker(it, context))
+								},
+								onSelectTimeFormat = {
+									onEvent(MainEvent.UpdateTimeFormat(it, context))
+								})
 						}
 					}
 				}

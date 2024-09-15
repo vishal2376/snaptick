@@ -18,8 +18,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTime
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -46,10 +49,16 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun TimePickerOptionComponent(isWheelTimePicker: Boolean, onSelect: (Boolean) -> Unit) {
+fun TimePickerOptionComponent(
+	isWheelTimePicker: Boolean,
+	is24HourTimeFormat: Boolean,
+	onSelect: (Boolean) -> Unit,
+	onSelectTimeFormat: (Boolean) -> Unit
+) {
 	var selectedOption by remember { mutableStateOf(isWheelTimePicker) }
 	var showDialogTimePicker by remember { mutableStateOf(false) }
 	val selectedTime by remember { mutableStateOf(LocalTime.now()) }
+	var is24HourTimeFormatEnabled by remember { mutableStateOf(is24HourTimeFormat) }
 
 	Column(
 		horizontalAlignment = Alignment.CenterHorizontally,
@@ -111,6 +120,32 @@ fun TimePickerOptionComponent(isWheelTimePicker: Boolean, onSelect: (Boolean) ->
 				onSelect(false)
 			}
 		}
+
+		Divider(modifier = Modifier.padding(top = 8.dp),thickness = 1.dp, color = MaterialTheme.colorScheme.primary)
+
+		Row(
+			Modifier
+				.fillMaxWidth()
+				.padding(16.dp, 0.dp),
+			horizontalArrangement = Arrangement.SpaceBetween,
+			verticalAlignment = Alignment.CenterVertically
+		) {
+			Text(
+				text = stringResource(R.string.enable_24_hour_format),
+				style = h3TextStyle,
+				color = MaterialTheme.colorScheme.onPrimary
+			)
+
+			Switch(checked = is24HourTimeFormatEnabled,
+				colors = SwitchDefaults.colors(
+					checkedThumbColor = Blue,
+					checkedTrackColor = MaterialTheme.colorScheme.primary
+				),
+				onCheckedChange = {
+					is24HourTimeFormatEnabled = !is24HourTimeFormatEnabled
+					onSelectTimeFormat(is24HourTimeFormatEnabled)
+				})
+		}
 	}
 
 }
@@ -157,6 +192,6 @@ fun ToggleOptions(title: String, isSelected: Boolean, onClick: () -> Unit) {
 @Composable
 fun TimePickerOptionComponentPreview() {
 	SnaptickTheme {
-		TimePickerOptionComponent(false, onSelect = {})
+		TimePickerOptionComponent(false, true, onSelect = {}, {})
 	}
 }

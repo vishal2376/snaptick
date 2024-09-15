@@ -1,5 +1,6 @@
 package com.vishal2376.snaptick.domain.model
 
+import android.annotation.SuppressLint
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
@@ -49,8 +50,12 @@ data class Task(
 		return (getDuration() - timeLeft) >= Constants.MIN_VALID_POMODORO_SESSION * 60
 	}
 
-	fun getFormattedTime(): String {
-		val dtf = DateTimeFormatter.ofPattern("hh:mm a")
+	fun getFormattedTime(is24HourFormat: Boolean = false): String {
+		val dtf = if (is24HourFormat) {
+			DateTimeFormatter.ofPattern("HH:mm")
+		} else {
+			DateTimeFormatter.ofPattern("hh:mm a")
+		}
 		val startTimeFormat = startTime.format(dtf)
 		val endTimeFormat = endTime.format(dtf)
 		return "$startTimeFormat - $endTimeFormat"
@@ -74,6 +79,7 @@ data class Task(
 		}
 	}
 
+	@SuppressLint("DefaultLocale")
 	fun getDurationTimeStamp(duration: Long): String {
 		val hours = duration / 3600
 		val minutes = (duration % 3600) / 60
@@ -95,6 +101,7 @@ data class Task(
 		}
 	}
 
+	@SuppressLint("DefaultLocale")
 	fun getFormattedDuration(): String {
 		val taskDuration = getDuration()
 
