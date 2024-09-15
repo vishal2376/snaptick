@@ -56,7 +56,8 @@ fun TaskComponent(
 	onComplete: (Int) -> Unit,
 	onPomodoro: (Int) -> Unit,
 	onDelete: (Int) -> Unit = {},
-	animDelay: Int = 100
+	animDelay: Int = 100,
+	is24HourTimeFormat: Boolean = false
 ) {
 
 	val alphaAnimation = remember { Animatable(initialValue = 0f) }
@@ -158,7 +159,7 @@ fun TaskComponent(
 								tint = MaterialTheme.colorScheme.onSecondary
 							)
 							Text(
-								text = task.getFormattedTime(),
+								text = task.getFormattedTime(is24HourTimeFormat),
 								style = taskDescTextStyle,
 								color = MaterialTheme.colorScheme.onSecondary
 							)

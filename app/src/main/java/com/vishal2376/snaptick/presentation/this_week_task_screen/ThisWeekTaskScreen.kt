@@ -36,6 +36,7 @@ import com.vishal2376.snaptick.presentation.common.infoTextStyle
 import com.vishal2376.snaptick.presentation.home_screen.HomeScreenEvent
 import com.vishal2376.snaptick.presentation.home_screen.components.EmptyTaskComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.TaskComponent
+import com.vishal2376.snaptick.presentation.main.MainState
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.Constants
 import com.vishal2376.snaptick.util.DummyTasks
@@ -52,6 +53,7 @@ import java.util.Locale
 @Composable
 fun ThisWeekTaskScreen(
 	tasks: List<Task>,
+	appState: MainState,
 	onEvent: (HomeScreenEvent) -> Unit,
 	onEditTask: (id: Int) -> Unit,
 	onBack: () -> Unit
@@ -131,6 +133,7 @@ fun ThisWeekTaskScreen(
 						) {
 							TaskComponent(
 								task = task,
+								is24HourTimeFormat = appState.is24hourTimeFormat,
 								onEdit = {
 									onEvent(HomeScreenEvent.OnEditTask(it))
 									onEditTask(it)
@@ -154,8 +157,6 @@ fun ThisWeekTaskScreenPreview() {
 	SnaptickTheme {
 		val tasks = DummyTasks.dummyTasks
 		ThisWeekTaskScreen(
-			tasks = tasks,
-			{}, {}, {}
-		)
+			tasks = tasks, appState = MainState(), {}, {}, {})
 	}
 }

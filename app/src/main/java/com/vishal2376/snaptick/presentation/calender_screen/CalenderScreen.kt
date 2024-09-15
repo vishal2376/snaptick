@@ -239,6 +239,7 @@ fun CalenderScreen(
 						) {
 							TaskComponent(
 								task = task,
+								is24HourTimeFormat = appState.is24hourTimeFormat,
 								onEdit = { taskId ->
 									if (task.date >= LocalDate.now()) {
 										onEvent(HomeScreenEvent.OnEditTask(taskId))

@@ -59,6 +59,7 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 		composable(route = Routes.CompletedTaskScreen.name) {
 			CompletedTaskScreen(
 				tasks = updatedTodayTasks,
+				appState = taskViewModel.appState,
 				onEvent = taskViewModel::onEvent,
 				onBack = {
 					if (navController.isValidBackStack) {
@@ -70,6 +71,7 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 		composable(route = Routes.ThisWeekTaskScreen.name) {
 			ThisWeekTaskScreen(
 				tasks = allTasks,
+				appState = taskViewModel.appState,
 				onEditTask = { id ->
 					navController.navigate(route = "${Routes.EditTaskScreen.name}/$id")
 				},

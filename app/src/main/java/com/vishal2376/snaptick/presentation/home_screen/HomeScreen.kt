@@ -378,6 +378,7 @@ fun HomeScreen(
 								{
 									TaskComponent(
 										task = task,
+										is24HourTimeFormat = appState.is24hourTimeFormat,
 										onEdit = { taskId ->
 											onEvent(HomeScreenEvent.OnEditTask(taskId))
 											onNavigate("${Routes.EditTaskScreen.name}/$taskId")

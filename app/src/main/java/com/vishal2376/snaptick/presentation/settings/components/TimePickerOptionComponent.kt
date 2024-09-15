@@ -66,7 +66,7 @@ fun TimePickerOptionComponent(
 	) {
 
 		if (showDialogTimePicker) {
-			NativeTimePickerDialog(selectedTime, onClose = { showDialogTimePicker = false })
+			NativeTimePickerDialog(selectedTime,is24HourTimeFormatEnabled, onClose = { showDialogTimePicker = false })
 		}
 
 		Text(
@@ -80,7 +80,10 @@ fun TimePickerOptionComponent(
 			verticalAlignment = Alignment.CenterVertically,
 			horizontalArrangement = Arrangement.SpaceAround
 		) {
-			ShowTimePicker(time = LocalTime.now(), onSelect = {})
+			ShowTimePicker(
+				time = LocalTime.now(),
+				is24hourFormat = is24HourTimeFormatEnabled,
+				onSelect = {})
 			Row(
 				modifier = Modifier
 					.clip(RoundedCornerShape(16.dp))
@@ -96,7 +99,12 @@ fun TimePickerOptionComponent(
 					tint = MaterialTheme.colorScheme.onPrimary,
 					modifier = Modifier.size(24.dp)
 				)
-				val dtf = DateTimeFormatter.ofPattern("hh : mm a")
+
+				val dtf = if (is24HourTimeFormatEnabled) {
+					DateTimeFormatter.ofPattern("HH : mm")
+				} else {
+					DateTimeFormatter.ofPattern("hh : mm a")
+				}
 				Text(
 					text = selectedTime.format(dtf),
 					style = taskTextStyle,
@@ -121,7 +129,11 @@ fun TimePickerOptionComponent(
 			}
 		}
 
-		Divider(modifier = Modifier.padding(top = 8.dp),thickness = 1.dp, color = MaterialTheme.colorScheme.primary)
+		Divider(
+			modifier = Modifier.padding(top = 8.dp),
+			thickness = 1.dp,
+			color = MaterialTheme.colorScheme.primary
+		)
 
 		Row(
 			Modifier
