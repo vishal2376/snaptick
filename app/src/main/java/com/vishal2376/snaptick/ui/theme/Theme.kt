@@ -38,7 +38,7 @@ private val LightColorScheme = lightColorScheme(
 
 @Composable
 fun SnaptickTheme(
-	theme: AppTheme = AppTheme.Dark,
+	theme: AppTheme = AppTheme.Amoled,
 	dynamicColor: Boolean = false,
 	content: @Composable () -> Unit
 ) {
