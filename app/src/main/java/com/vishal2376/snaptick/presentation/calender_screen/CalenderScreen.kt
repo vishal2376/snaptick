@@ -247,7 +247,7 @@ fun CalenderScreen(
 									}
 								},
 								onComplete = {
-									if (task.date >= LocalDate.now()) {
+									if (task.date <= LocalDate.now()) {
 										onEvent(HomeScreenEvent.OnCompleted(it, !task.isCompleted))
 									}
 								},
