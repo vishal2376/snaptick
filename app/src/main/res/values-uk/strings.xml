@@ -52,7 +52,7 @@
     <string name="about">Про програму</string>
     <string name="support">Підтримка</string>
     <string name="theme">Тема</string>
-    <string name="language">Мова:</string>
+    <string name="language">Мова</string>
     <string name="sleep_time">Час сну</string>
     <string name="time_picker">Піпетка часу</string>
     <string name="twitter">Твіттер</string>
@@ -63,5 +63,5 @@
     <string name="clock">Годинник</string>
     <string name="scroll">Прокрутка</string>
     <string name="set_sleep_time">Встановити час сну</string>
-    <string name="min_max">Min - %1$s \t\t Max - %2$s</string>
+    <string name="min_max">Мін. - %1$s \t\t Макс. - %2$s</string>
 </resources>
