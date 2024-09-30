@@ -63,5 +63,5 @@
     <string name="clock">Годинник</string>
     <string name="scroll">Прокрутка</string>
     <string name="set_sleep_time">Встановити час сну</string>
-    <string name="min_max">Мін. - %1$s \t\t Макс. - %2$s</string>
+    <string name="min_max">Мін - %1$s \t\t Макс - %2$s</string>
 </resources>
