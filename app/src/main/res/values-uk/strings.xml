@@ -7,7 +7,7 @@
     <string name="update_task">Оновлення завдання</string>
     <string name="select">Вибрати</string>
     <string name="completed">Завершені</string>
-    <string name="dialog_text">Sorry, An unexpected error occurred.\n\nDo you want to send a crash report to the developer?</string>
+    <string name="dialog_text">Вибачте, сталася невідома помилка.\n\nХочете надіслати звіт про неї розробнику?</string>
     <string name="dialog_title">Звіт про помилку</string>
     <string name="dialog_positive">Відправити</string>
     <string name="dialog_negative">Скасувати</string>
@@ -17,7 +17,7 @@
     <string name="delete_task">Видалити завдання?</string>
     <string name="cancel">Скасувати</string>
     <string name="delete">Видалити</string>
-    <string name="custom_duration">Користувацька тривалість</string>
+    <string name="custom_duration">Своя</string>
     <string name="done">Виконано</string>
     <string name="repeat">Повторити</string>
     <string name="start_time">Час початку</string>
@@ -48,7 +48,7 @@
     <string name="tasks_added_successfully">Завдання додано успішно</string>
     <string name="follow_developer">Підписатись на розробника</string>
     <string name="general_settings">Загальні налаштування</string>
-    <string name="made_with_by_vishal_singh">Зроблено ♥️ від Vishal Сінгх</string>
+    <string name="made_with_by_vishal_singh">Зроблено з ♥️ від Vishal Сінгх</string>
     <string name="about">Про програму</string>
     <string name="support">Підтримка</string>
     <string name="theme">Тема</string>
