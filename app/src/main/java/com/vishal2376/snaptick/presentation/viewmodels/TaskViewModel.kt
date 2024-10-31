@@ -27,8 +27,6 @@ import com.vishal2376.snaptick.util.BackupManager
 import com.vishal2376.snaptick.util.Constants
 import com.vishal2376.snaptick.util.SettingsStore
 import com.vishal2376.snaptick.util.openMail
-import com.vishal2376.snaptick.util.openUrl
-import com.vishal2376.snaptick.util.shareApp
 import com.vishal2376.snaptick.util.showToast
 import com.vishal2376.snaptick.util.updateLocale
 import com.vishal2376.snaptick.worker.NotificationWorker
@@ -145,15 +143,6 @@ class TaskViewModel @Inject constructor(
 
 					NavDrawerItem.SUGGESTIONS -> {
 						openMail(event.context, event.context.getString(R.string.suggestions))
-					}
-
-					NavDrawerItem.RATE_US -> {
-						val appUrl = Constants.PLAY_STORE_BASE_URL + event.context.packageName
-						openUrl(event.context, appUrl)
-					}
-
-					NavDrawerItem.SHARE_APP -> {
-						shareApp(event.context)
 					}
 				}
 			}

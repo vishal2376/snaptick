@@ -50,7 +50,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.vishal2376.snaptick.MainActivity
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.common.SnackbarController.showCustomSnackbar
@@ -104,7 +103,6 @@ fun HomeScreen(
 	// streak
 	val appStreakText = if (appState.streak > 0) appState.streak.toString() else "0"
 	val context = LocalContext.current
-	val activity = context as MainActivity
 
 	LaunchedEffect(inCompletedTasks) {
 		appState.totalTaskDuration = totalTaskTime

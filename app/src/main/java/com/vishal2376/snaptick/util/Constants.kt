@@ -1,7 +1,7 @@
 package com.vishal2376.snaptick.util
 
 object Constants {
-	const val PLAY_STORE_BASE_URL: String = "http://play.google.com/store/apps/details?id="
+
 	const val EMAIL = "vishalsingh2376@gmail.com"
 	const val GITHUB = "https://github.com/vishal2376"
 	const val LINKEDIN = "https://www.linkedin.com/in/vishal2376"
