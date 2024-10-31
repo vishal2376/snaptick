@@ -5,6 +5,7 @@ import androidx.compose.animation.core.EaseOut
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -13,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.vishal2376.snaptick.MainActivity
 import com.vishal2376.snaptick.presentation.about_screen.AboutScreen
 import com.vishal2376.snaptick.presentation.add_edit_screen.AddTaskScreen
 import com.vishal2376.snaptick.presentation.add_edit_screen.EditTaskScreen
@@ -41,6 +43,8 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 		}
 	}
 
+	val activity = LocalContext.current as MainActivity
+
 	NavHost(
 		navController = navController,
 		startDestination = Routes.HomeScreen.name
@@ -53,7 +57,14 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 				onEvent = taskViewModel::onEvent,
 				onNavigate = { route ->
 					navController.navigate(route = route)
-				})
+				},
+				onBackupData = {
+					activity.backupPickerLauncher.launch(taskViewModel.backupManager.getBackupFilePickerIntent())
+				},
+				onRestoreData = {
+					activity.restorePickerLauncher.launch(taskViewModel.backupManager.getLoadBackupFilePickerIntent())
+				}
+			)
 		}
 
 		composable(route = Routes.CompletedTaskScreen.name) {
