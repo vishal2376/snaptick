@@ -63,7 +63,10 @@ class MainActivity : ComponentActivity() {
 			}
 
 		setContent {
-			SnaptickTheme(theme = taskViewModel.appState.theme) {
+			SnaptickTheme(
+				theme = taskViewModel.appState.theme,
+				dynamicColor = taskViewModel.appState.dynamicTheme
+			) {
 				AppNavigation(taskViewModel = taskViewModel)
 				CustomSnackBar()
 			}

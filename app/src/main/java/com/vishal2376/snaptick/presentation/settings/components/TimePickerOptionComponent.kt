@@ -42,8 +42,6 @@ import com.vishal2376.snaptick.presentation.common.ShowTimePicker
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.h3TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
-import com.vishal2376.snaptick.ui.theme.Blue
-import com.vishal2376.snaptick.ui.theme.DarkGray
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -154,7 +152,8 @@ fun TimePickerOptionComponent(
 			Switch(checked = is24HourTimeFormatEnabled,
 				colors = SwitchDefaults.colors(
 					checkedThumbColor = MaterialTheme.colorScheme.primary,
-					checkedTrackColor = DarkGray
+					checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
+					checkedBorderColor = MaterialTheme.colorScheme.primary
 				),
 				onCheckedChange = {
 					is24HourTimeFormatEnabled = !is24HourTimeFormatEnabled
@@ -175,7 +174,7 @@ fun ToggleOptions(title: String, isSelected: Boolean, onClick: () -> Unit) {
 			modifier = Modifier
 				.clip(RoundedCornerShape(8.dp))
 				.clickable { onClick() }
-				.background(if (isSelected) MaterialTheme.colorScheme.primary else DarkGray),
+				.background(if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.primaryContainer),
 			contentAlignment = Alignment.Center
 		) {
 			Text(
@@ -197,7 +196,7 @@ fun ToggleOptions(title: String, isSelected: Boolean, onClick: () -> Unit) {
 				modifier = Modifier
 					.width(40.dp * animValue.value)
 					.height(4.dp)
-					.background(Blue, RoundedCornerShape(8.dp))
+					.background(MaterialTheme.colorScheme.primary, RoundedCornerShape(8.dp))
 			)
 		}
 	}

@@ -23,6 +23,7 @@ class SettingsStore(val context: Context) {
 		val Context.dataStore: DataStore<Preferences> by preferencesDataStore(Constants.SETTINGS_KEY)
 
 		private val THEME_KEY = intPreferencesKey("theme_key")
+		private val DYNAMIC_THEME_KEY = booleanPreferencesKey("dynamic_theme_key")
 		private val TIME_PICKER_KEY = booleanPreferencesKey("time_picker_key")
 		private val TIME_FORMAT_KEY = booleanPreferencesKey("time_format_key")
 		private val LANGUAGE_KEY = stringPreferencesKey("language_key")
@@ -34,6 +35,7 @@ class SettingsStore(val context: Context) {
 
 		private const val DEFAULT_LANGUAGE = "en"
 		private val DEFAULT_THEME = AppTheme.Dark.ordinal
+		private const val DEFAULT_DYNAMIC_THEME = false
 		private const val DEFAULT_TIME_PICKER_KEY = true
 		private const val DEFAULT_TIME_FORMAT = false
 		private val DEFAULT_CALENDER_VIEW = CalenderView.MONTHLY.ordinal
@@ -46,6 +48,10 @@ class SettingsStore(val context: Context) {
 
 	val themeKey: Flow<Int> = context.dataStore.data.map { preferences ->
 		preferences[THEME_KEY] ?: DEFAULT_THEME
+	}
+
+	val dynamicThemeKey: Flow<Boolean> = context.dataStore.data.map { preferences ->
+		preferences[DYNAMIC_THEME_KEY] ?: DEFAULT_DYNAMIC_THEME
 	}
 
 	val timePickerKey: Flow<Boolean> = context.dataStore.data.map { preferences ->
@@ -83,6 +89,12 @@ class SettingsStore(val context: Context) {
 	suspend fun setTheme(theme: Int) {
 		context.dataStore.edit { preferences ->
 			preferences[THEME_KEY] = theme
+		}
+	}
+
+	suspend fun setDynamicTheme(isEnabled: Boolean) {
+		context.dataStore.edit { preferences ->
+			preferences[DYNAMIC_THEME_KEY] = isEnabled
 		}
 	}
 

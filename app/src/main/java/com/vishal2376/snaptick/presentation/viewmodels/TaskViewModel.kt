@@ -88,6 +88,13 @@ class TaskViewModel @Inject constructor(
 				}
 			}
 
+			is MainEvent.UpdateDynamicTheme -> {
+				viewModelScope.launch {
+					appState = appState.copy(dynamicTheme = event.isEnabled)
+					SettingsStore(event.context).setDynamicTheme(event.isEnabled)
+				}
+			}
+
 			is MainEvent.UpdateTimePicker -> {
 				viewModelScope.launch {
 					appState = appState.copy(isWheelTimePicker = event.isWheelTimePicker)
@@ -360,6 +367,12 @@ class TaskViewModel @Inject constructor(
 		viewModelScope.launch {
 			settingsStore.themeKey.collect {
 				appState = appState.copy(theme = AppTheme.entries[it])
+			}
+		}
+
+		viewModelScope.launch {
+			settingsStore.dynamicThemeKey.collect {
+				appState = appState.copy(dynamicTheme = it)
 			}
 		}
 
