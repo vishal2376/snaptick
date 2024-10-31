@@ -45,10 +45,12 @@ Snaptick is a free daily task planner app designed to help users increase produc
 
 - 📝 **Create and Edit Tasks**
 - ⏲️ **Pomodoro Timer**
+- 💾 **Offline Backup**
 - 🔄 **Sort Tasks**
 - ⏰ **Analyze Free Time**
 - 😴 **Set Sleep Time**
 - 🗓️ **Manage tasks in Calendar View**
+- 🎨 **Material Dynamic Theme Support**
 - 🔁 **Repeatable Tasks with Notification**
 - 🎬 **Smooth Animations**
 - 🎨 **Modern UI with Cool Themes**
