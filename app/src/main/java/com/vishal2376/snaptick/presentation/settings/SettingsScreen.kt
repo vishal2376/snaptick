@@ -146,7 +146,7 @@ fun SettingsScreen(
 			ModalBottomSheet(
 				onDismissRequest = { showBottomSheetById = 0 },
 				sheetState = sheetState,
-				containerColor = MaterialTheme.colorScheme.secondary,
+				containerColor = MaterialTheme.colorScheme.primaryContainer,
 			) {
 				Box(modifier = Modifier.padding(16.dp)) {
 					when (showBottomSheetById) {
@@ -213,7 +213,7 @@ fun SettingsScreen(
 				modifier = Modifier.padding(8.dp),
 				text = stringResource(R.string.made_with_by_vishal_singh),
 				style = infoDescTextStyle,
-				color = MaterialTheme.colorScheme.onSecondary
+				color = MaterialTheme.colorScheme.onPrimaryContainer
 			)
 		}
 	}

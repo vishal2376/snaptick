@@ -96,7 +96,7 @@ fun ThisWeekTaskScreen(
 				) {
 					Icon(
 						imageVector = Icons.Default.Today, contentDescription = null,
-						tint = MaterialTheme.colorScheme.onPrimary
+						tint = MaterialTheme.colorScheme.onBackground
 					)
 					Text(
 						text = LocalDate.now().dayOfWeek.getDisplayName(
@@ -104,7 +104,7 @@ fun ThisWeekTaskScreen(
 							Locale.getDefault()
 						),
 						style = infoTextStyle,
-						color = MaterialTheme.colorScheme.onPrimary
+						color = MaterialTheme.colorScheme.onBackground
 					)
 				}
 			}
