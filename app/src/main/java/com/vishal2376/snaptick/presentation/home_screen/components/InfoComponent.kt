@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.presentation.common.infoDescTextStyle
 import com.vishal2376.snaptick.presentation.common.infoTextStyle
+import com.vishal2376.snaptick.ui.theme.Black500
 import com.vishal2376.snaptick.ui.theme.Blue
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,17 +36,28 @@ fun InfoComponent(
 	desc: String,
 	icon: Int,
 	backgroundColor: Color,
+	dynamicTheme: Boolean,
 	modifier: Modifier,
 	onClick: () -> Unit
 ) {
+	var borderColor = Color.Transparent
+	var bgColor = backgroundColor
+	var contentColor = Black500
+
+	if (dynamicTheme) {
+		borderColor = MaterialTheme.colorScheme.onPrimaryContainer
+		bgColor = MaterialTheme.colorScheme.primaryContainer
+		contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+	}
+
 	Card(
 		modifier = modifier.border(
 			2.dp,
-			MaterialTheme.colorScheme.onPrimaryContainer,
+			borderColor,
 			RoundedCornerShape(16.dp)
 		),
 		shape = RoundedCornerShape(16.dp),
-		colors = CardDefaults.cardColors(containerColor = backgroundColor),
+		colors = CardDefaults.cardColors(containerColor = bgColor),
 		onClick = { onClick() }
 	) {
 		Column(
@@ -59,7 +71,7 @@ fun InfoComponent(
 			Text(
 				text = title,
 				style = infoTextStyle,
-				color = MaterialTheme.colorScheme.onPrimaryContainer
+				color = contentColor
 			)
 
 			Spacer(modifier = Modifier.height(4.dp))
@@ -70,13 +82,13 @@ fun InfoComponent(
 				Icon(
 					painter = painterResource(id = icon),
 					contentDescription = null,
-					tint = MaterialTheme.colorScheme.onPrimaryContainer,
+					tint = contentColor,
 					modifier = Modifier.size(20.dp)
 				)
 				Text(
 					text = desc,
 					style = infoDescTextStyle,
-					color = MaterialTheme.colorScheme.onPrimaryContainer
+					color = contentColor
 				)
 			}
 		}
@@ -90,8 +102,9 @@ private fun InfoComponentPreview() {
 		title = "Completed",
 		desc = "1/3 Tasks",
 		icon = R.drawable.ic_task_list,
+		dynamicTheme = false,
 		backgroundColor = Blue,
 		modifier = Modifier,
-		{}
+		onClick = {}
 	)
 }
