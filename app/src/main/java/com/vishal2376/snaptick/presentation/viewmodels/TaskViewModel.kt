@@ -1,6 +1,7 @@
 package com.vishal2376.snaptick.presentation.viewmodels
 
 import android.content.Context
+import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -11,6 +12,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.data.repositories.TaskRepository
+import com.vishal2376.snaptick.domain.model.BackupData
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.add_edit_screen.AddEditScreenEvent
 import com.vishal2376.snaptick.presentation.common.AppTheme
@@ -21,11 +23,13 @@ import com.vishal2376.snaptick.presentation.home_screen.HomeScreenEvent
 import com.vishal2376.snaptick.presentation.main.MainEvent
 import com.vishal2376.snaptick.presentation.main.MainState
 import com.vishal2376.snaptick.presentation.pomodoro_screen.PomodoroScreenEvent
+import com.vishal2376.snaptick.util.BackupManager
 import com.vishal2376.snaptick.util.Constants
 import com.vishal2376.snaptick.util.SettingsStore
 import com.vishal2376.snaptick.util.openMail
 import com.vishal2376.snaptick.util.openUrl
 import com.vishal2376.snaptick.util.shareApp
+import com.vishal2376.snaptick.util.showToast
 import com.vishal2376.snaptick.util.updateLocale
 import com.vishal2376.snaptick.worker.NotificationWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -39,7 +43,10 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltViewModel
-class TaskViewModel @Inject constructor(private val repository: TaskRepository) : ViewModel() {
+class TaskViewModel @Inject constructor(
+	private val repository: TaskRepository,
+	val backupManager: BackupManager
+) : ViewModel() {
 
 	var appState by mutableStateOf(MainState())
 	private var deletedTask: Task? = null
@@ -63,6 +70,15 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 
 	var taskList = repository.getAllTasks()
 	var todayTaskList = repository.getTodayTasks()
+	val backupData = mutableStateOf(BackupData())
+
+	init {
+		viewModelScope.launch {
+			repository.getAllTasks().collect {
+				backupData.value = BackupData(it)
+			}
+		}
+	}
 
 	// Main App Events
 	fun onEvent(event: MainEvent) {
@@ -266,6 +282,32 @@ class TaskViewModel @Inject constructor(private val repository: TaskRepository) 
 	private fun getTaskById(id: Int) {
 		viewModelScope.launch(Dispatchers.IO) {
 			task = repository.getTaskById(id)
+		}
+	}
+
+	fun createBackup(uri: Uri, backupData: BackupData, context: Context) {
+		viewModelScope.launch {
+			val success = backupManager.createBackup(uri, backupData)
+			if (success) {
+				showToast(context, "Backup created successfully")
+			} else {
+				showToast(context, "Failed to create backup")
+			}
+		}
+	}
+
+	fun loadBackup(uri: Uri, context: Context) {
+		viewModelScope.launch {
+			val backupData = backupManager.loadBackup(uri)
+			if (backupData == null) {
+				showToast(context, "Failed to restore backup")
+			} else {
+				repository.deleteAllTasks()
+				for (task in backupData.tasks) {
+					repository.insertTask(task)
+				}
+				showToast(context, "Backup Restored")
+			}
 		}
 	}
 

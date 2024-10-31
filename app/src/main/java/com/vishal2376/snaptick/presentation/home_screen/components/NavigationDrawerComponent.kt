@@ -11,8 +11,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Backup
 import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
@@ -37,14 +41,15 @@ import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.infoTextStyle
 import com.vishal2376.snaptick.presentation.main.MainEvent
 import com.vishal2376.snaptick.presentation.main.MainState
-import com.vishal2376.snaptick.presentation.settings.components.ThemeOptionComponent
 
 @Composable
 fun NavigationDrawerComponent(
 	appState: MainState,
 	onMainEvent: (MainEvent) -> Unit,
 	onClickThisWeek: () -> Unit,
-	onClickSettings: () -> Unit
+	onClickSettings: () -> Unit,
+	onClickBackup: () -> Unit,
+	onClickRestore: () -> Unit
 ) {
 
 	val context = LocalContext.current
@@ -54,6 +59,7 @@ fun NavigationDrawerComponent(
 		modifier = Modifier
 			.fillMaxHeight()
 			.fillMaxWidth(0.8f)
+			.verticalScroll(rememberScrollState())
 			.padding(vertical = 64.dp)
 	) {
 
@@ -98,6 +104,20 @@ fun NavigationDrawerComponent(
 				label = stringResource(R.string.settings)
 			) { onClickSettings() }
 
+			Spacer(modifier = Modifier.height(8.dp))
+
+			NavDrawerItemUI(
+				icon = Icons.Default.Backup,
+				label = "Backup"
+			) { onClickBackup() }
+
+			Spacer(modifier = Modifier.height(8.dp))
+
+			NavDrawerItemUI(
+				icon = Icons.Default.Restore,
+				label = "Restore"
+			) { onClickRestore() }
+
 			Divider(
 				modifier = Modifier.padding(vertical = 10.dp),
 				color = MaterialTheme.colorScheme.secondary
@@ -138,5 +158,5 @@ fun NavDrawerItemUI(icon: ImageVector, label: String, onClick: () -> Unit) {
 @Preview(widthDp = 350)
 @Composable
 fun NavigationDrawerComponentPreview() {
-	NavigationDrawerComponent(MainState(), {}, {}, {})
+	NavigationDrawerComponent(MainState(), {}, {}, {}, {}, {})
 }
