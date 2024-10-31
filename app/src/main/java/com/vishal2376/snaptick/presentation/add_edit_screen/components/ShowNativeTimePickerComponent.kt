@@ -29,7 +29,7 @@ fun ShowNativeTimePicker(time: LocalTime, is24hourFormat: Boolean = false, onCli
 			modifier = Modifier
 				.clip(RoundedCornerShape(16.dp))
 				.clickable { onClick() }
-				.border(2.dp, MaterialTheme.colorScheme.secondary, RoundedCornerShape(16.dp))
+				.border(2.dp, MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(16.dp))
 				.padding(10.dp),
 			verticalAlignment = Alignment.CenterVertically,
 			horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -37,7 +37,7 @@ fun ShowNativeTimePicker(time: LocalTime, is24hourFormat: Boolean = false, onCli
 			Icon(
 				imageVector = Icons.Default.AccessTime,
 				contentDescription = null,
-				tint = MaterialTheme.colorScheme.onPrimary,
+				tint = MaterialTheme.colorScheme.onBackground,
 				modifier = Modifier.size(24.dp)
 			)
 			val dtf = if (is24hourFormat)
@@ -48,7 +48,7 @@ fun ShowNativeTimePicker(time: LocalTime, is24hourFormat: Boolean = false, onCli
 			Text(
 				text = time.format(dtf),
 				style = taskTextStyle,
-				color = MaterialTheme.colorScheme.onPrimary
+				color = MaterialTheme.colorScheme.onBackground
 			)
 		}
 	}

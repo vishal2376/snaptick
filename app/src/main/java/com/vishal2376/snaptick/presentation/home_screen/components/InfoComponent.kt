@@ -1,5 +1,6 @@
 package com.vishal2376.snaptick.presentation.home_screen.components
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +14,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.presentation.common.infoDescTextStyle
 import com.vishal2376.snaptick.presentation.common.infoTextStyle
-import com.vishal2376.snaptick.ui.theme.Black500
 import com.vishal2376.snaptick.ui.theme.Blue
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,7 +39,11 @@ fun InfoComponent(
 	onClick: () -> Unit
 ) {
 	Card(
-		modifier = modifier,
+		modifier = modifier.border(
+			2.dp,
+			MaterialTheme.colorScheme.onPrimaryContainer,
+			RoundedCornerShape(16.dp)
+		),
 		shape = RoundedCornerShape(16.dp),
 		colors = CardDefaults.cardColors(containerColor = backgroundColor),
 		onClick = { onClick() }
@@ -54,7 +59,7 @@ fun InfoComponent(
 			Text(
 				text = title,
 				style = infoTextStyle,
-				color = Black500
+				color = MaterialTheme.colorScheme.onPrimaryContainer
 			)
 
 			Spacer(modifier = Modifier.height(4.dp))
@@ -65,13 +70,13 @@ fun InfoComponent(
 				Icon(
 					painter = painterResource(id = icon),
 					contentDescription = null,
-					tint = Black500,
+					tint = MaterialTheme.colorScheme.onPrimaryContainer,
 					modifier = Modifier.size(20.dp)
 				)
 				Text(
 					text = desc,
 					style = infoDescTextStyle,
-					color = Black500
+					color = MaterialTheme.colorScheme.onPrimaryContainer
 				)
 			}
 		}

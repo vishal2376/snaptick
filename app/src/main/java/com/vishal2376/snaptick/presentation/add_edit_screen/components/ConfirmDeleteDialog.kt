@@ -37,9 +37,13 @@ fun ConfirmDeleteDialog(onClose: () -> Unit, onDelete: () -> Unit) {
 		Card(
 			modifier = Modifier
 				.fillMaxWidth()
-				.border(4.dp, MaterialTheme.colorScheme.secondary, RoundedCornerShape(16.dp)),
+				.border(
+					4.dp,
+					MaterialTheme.colorScheme.primaryContainer,
+					RoundedCornerShape(16.dp)
+				),
 			shape = RoundedCornerShape(16.dp),
-			colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary)
+			colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
 		) {
 			Column(
 				modifier = Modifier
@@ -52,7 +56,7 @@ fun ConfirmDeleteDialog(onClose: () -> Unit, onDelete: () -> Unit) {
 			) {
 				Text(
 					text = stringResource(R.string.delete_task),
-					color = MaterialTheme.colorScheme.onPrimary,
+					color = MaterialTheme.colorScheme.onBackground,
 					style = h2TextStyle
 				)
 				Image(
@@ -67,7 +71,7 @@ fun ConfirmDeleteDialog(onClose: () -> Unit, onDelete: () -> Unit) {
 				) {
 					Button(
 						onClick = { onClose() },
-						colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+						colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.background),
 						shape = RoundedCornerShape(8.dp),
 						border = BorderStroke(
 							2.dp,

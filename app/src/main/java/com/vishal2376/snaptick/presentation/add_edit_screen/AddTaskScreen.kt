@@ -77,7 +77,6 @@ import com.vishal2376.snaptick.presentation.common.h3TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.presentation.main.MainEvent
 import com.vishal2376.snaptick.presentation.main.MainState
-import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.ui.theme.DarkGreen
 import com.vishal2376.snaptick.ui.theme.LightGreen
 import com.vishal2376.snaptick.ui.theme.Red
@@ -147,7 +146,11 @@ fun AddTaskScreen(
 				Row(
 					modifier = Modifier
 						.clickable { showDialogDatePicker = true }
-						.border(2.dp, MaterialTheme.colorScheme.secondary, RoundedCornerShape(8.dp))
+						.border(
+							2.dp,
+							MaterialTheme.colorScheme.primaryContainer,
+							RoundedCornerShape(8.dp)
+						)
 						.padding(top = 8.dp, bottom = 8.dp, end = 10.dp, start = 8.dp),
 					verticalAlignment = Alignment.CenterVertically,
 					horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -237,12 +240,12 @@ fun AddTaskScreen(
 						value = taskTitle,
 						singleLine = true,
 						colors = TextFieldDefaults.colors(
-							focusedContainerColor = MaterialTheme.colorScheme.secondary,
-							unfocusedContainerColor = MaterialTheme.colorScheme.secondary,
-							disabledContainerColor = MaterialTheme.colorScheme.secondary,
+							focusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+							unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+							disabledContainerColor = MaterialTheme.colorScheme.primaryContainer,
 							unfocusedIndicatorColor = Color.Transparent,
 							focusedIndicatorColor = Color.Transparent,
-							cursorColor = MaterialTheme.colorScheme.onPrimary,
+							cursorColor = MaterialTheme.colorScheme.onBackground,
 						),
 						textStyle = taskTextStyle,
 						onValueChange = {
@@ -251,7 +254,7 @@ fun AddTaskScreen(
 						placeholder = {
 							Text(
 								text = stringResource(id = R.string.what_would_you_like_to_do),
-								color = MaterialTheme.colorScheme.onSecondary
+								color = MaterialTheme.colorScheme.onPrimaryContainer
 							)
 						},
 						shape = RoundedCornerShape(topEnd = 8.dp, bottomEnd = 8.dp),
@@ -332,13 +335,13 @@ fun AddTaskScreen(
 					Text(
 						text = stringResource(R.string.duration),
 						style = h2TextStyle,
-						color = MaterialTheme.colorScheme.onPrimary
+						color = MaterialTheme.colorScheme.onBackground
 					)
 
 					Text(
 						text = getFormattedDuration(taskStartTime, taskEndTime),
 						style = taskTextStyle,
-						color = MaterialTheme.colorScheme.onPrimary
+						color = MaterialTheme.colorScheme.onBackground
 					)
 				}
 
@@ -370,16 +373,16 @@ fun AddTaskScreen(
 								.padding(start = 4.dp),
 							text = stringResource(R.string.reminder),
 							style = h2TextStyle,
-							color = MaterialTheme.colorScheme.onPrimary
+							color = MaterialTheme.colorScheme.onBackground
 						)
 
 						Switch(
 							checked = isTaskReminderOn,
 							onCheckedChange = { isTaskReminderOn = it },
 							colors = SwitchDefaults.colors(
-								checkedThumbColor = Blue,
-								checkedTrackColor = MaterialTheme.colorScheme.secondary,
-								uncheckedTrackColor = MaterialTheme.colorScheme.secondary
+								checkedThumbColor = MaterialTheme.colorScheme.primary,
+								checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
+								uncheckedTrackColor = MaterialTheme.colorScheme.primaryContainer
 							)
 						)
 					}
@@ -396,16 +399,16 @@ fun AddTaskScreen(
 								.padding(start = 4.dp),
 							text = stringResource(R.string.repeat),
 							style = h2TextStyle,
-							color = MaterialTheme.colorScheme.onPrimary
+							color = MaterialTheme.colorScheme.onBackground
 						)
 
 						Switch(
 							checked = isTaskRepeated,
 							onCheckedChange = { isTaskRepeated = it },
 							colors = SwitchDefaults.colors(
-								checkedThumbColor = Blue,
-								checkedTrackColor = MaterialTheme.colorScheme.secondary,
-								uncheckedTrackColor = MaterialTheme.colorScheme.secondary
+								checkedThumbColor = MaterialTheme.colorScheme.primary,
+								checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
+								uncheckedTrackColor = MaterialTheme.colorScheme.primaryContainer
 							)
 						)
 					}
@@ -422,7 +425,7 @@ fun AddTaskScreen(
 				}
 				Divider(
 					modifier = Modifier.padding(bottom = 8.dp),
-					color = MaterialTheme.colorScheme.secondary
+					color = MaterialTheme.colorScheme.primaryContainer
 				)
 				PriorityComponent {
 					taskPriority = it
@@ -470,8 +473,8 @@ fun AddTaskScreen(
 						}
 					},
 					colors = ButtonDefaults.buttonColors(
-						containerColor = Blue,
-						contentColor = Color.Black
+						containerColor = MaterialTheme.colorScheme.primary,
+						contentColor = MaterialTheme.colorScheme.onPrimary
 					),
 					shape = RoundedCornerShape(16.dp),
 					modifier = Modifier.fillMaxWidth()
@@ -480,6 +483,7 @@ fun AddTaskScreen(
 						text = stringResource(R.string.add_task),
 						fontWeight = FontWeight.Bold,
 						fontSize = 16.sp,
+						color = MaterialTheme.colorScheme.onPrimary,
 						modifier = Modifier.padding(8.dp)
 					)
 				}

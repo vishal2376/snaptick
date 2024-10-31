@@ -22,7 +22,6 @@ import com.commandiron.wheel_picker_compose.WheelTimePicker
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.presentation.common.durationTextStyle
 import com.vishal2376.snaptick.presentation.common.h3TextStyle
-import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import java.time.LocalTime
 
@@ -43,9 +42,13 @@ fun CustomDurationDialogComponent(
 		Card(
 			modifier = Modifier
 				.fillMaxWidth()
-				.border(4.dp, MaterialTheme.colorScheme.secondary, RoundedCornerShape(16.dp)),
+				.border(
+					4.dp,
+					MaterialTheme.colorScheme.primaryContainer,
+					RoundedCornerShape(16.dp)
+				),
 			shape = RoundedCornerShape(16.dp),
-			colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary)
+			colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
 		) {
 			Column(
 				modifier = Modifier
@@ -59,12 +62,12 @@ fun CustomDurationDialogComponent(
 			) {
 				Text(
 					text = stringResource(R.string.custom_duration),
-					color = MaterialTheme.colorScheme.onPrimary,
+					color = MaterialTheme.colorScheme.onBackground,
 					style = durationTextStyle
 				)
 				WheelTimePicker(
 					startTime = LocalTime.of(hours, minutes),
-					textColor = MaterialTheme.colorScheme.onPrimary,
+					textColor = MaterialTheme.colorScheme.onBackground,
 					onSnappedTime = { customDuration = it }
 				)
 				Text(
@@ -77,7 +80,7 @@ fun CustomDurationDialogComponent(
 						.align(Alignment.End),
 					text = stringResource(R.string.done),
 					style = h3TextStyle,
-					color = Blue
+					color = MaterialTheme.colorScheme.primary
 				)
 			}
 		}

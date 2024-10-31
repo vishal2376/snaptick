@@ -69,7 +69,6 @@ import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.presentation.main.MainState
-import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.ui.theme.DarkGreen
 import com.vishal2376.snaptick.ui.theme.LightGreen
 import com.vishal2376.snaptick.ui.theme.Red
@@ -204,18 +203,23 @@ fun EditTaskScreen(
 						value = task.title,
 						singleLine = true,
 						colors = TextFieldDefaults.colors(
-							focusedContainerColor = MaterialTheme.colorScheme.secondary,
-							unfocusedContainerColor = MaterialTheme.colorScheme.secondary,
-							disabledContainerColor = MaterialTheme.colorScheme.secondary,
+							focusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+							unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+							disabledContainerColor = MaterialTheme.colorScheme.primaryContainer,
 							unfocusedIndicatorColor = Color.Transparent,
 							focusedIndicatorColor = Color.Transparent,
-							cursorColor = MaterialTheme.colorScheme.onPrimary
+							cursorColor = MaterialTheme.colorScheme.onBackground
 						),
 						textStyle = taskTextStyle,
 						onValueChange = {
 							onEvent(AddEditScreenEvent.OnUpdateTitle(it))
 						},
-						placeholder = { Text(text = stringResource(id = R.string.what_would_you_like_to_do)) },
+						placeholder = {
+							Text(
+								text = stringResource(id = R.string.what_would_you_like_to_do),
+								color = MaterialTheme.colorScheme.onPrimaryContainer
+							)
+						},
 						shape = RoundedCornerShape(topEnd = 8.dp, bottomEnd = 8.dp),
 						modifier = Modifier
 							.fillMaxWidth()
@@ -292,13 +296,13 @@ fun EditTaskScreen(
 					Text(
 						text = stringResource(R.string.start_time),
 						style = h2TextStyle,
-						color = MaterialTheme.colorScheme.onPrimary
+						color = MaterialTheme.colorScheme.onBackground
 					)
 
 					Text(
 						text = task.getFormattedDuration(),
 						style = taskTextStyle,
-						color = MaterialTheme.colorScheme.onPrimary
+						color = MaterialTheme.colorScheme.onBackground
 					)
 				}
 				DurationComponent(
@@ -337,7 +341,7 @@ fun EditTaskScreen(
 								.padding(start = 4.dp),
 							text = stringResource(R.string.reminder),
 							style = h2TextStyle,
-							color = MaterialTheme.colorScheme.onPrimary
+							color = MaterialTheme.colorScheme.onBackground
 						)
 
 						Switch(
@@ -346,9 +350,9 @@ fun EditTaskScreen(
 								onEvent(AddEditScreenEvent.OnUpdateReminder(it))
 							},
 							colors = SwitchDefaults.colors(
-								checkedThumbColor = Blue,
-								checkedTrackColor = MaterialTheme.colorScheme.secondary,
-								uncheckedTrackColor = MaterialTheme.colorScheme.secondary
+								checkedThumbColor = MaterialTheme.colorScheme.primary,
+								checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
+								uncheckedTrackColor = MaterialTheme.colorScheme.primaryContainer
 							)
 						)
 					}
@@ -365,7 +369,7 @@ fun EditTaskScreen(
 								.padding(start = 4.dp),
 							text = stringResource(R.string.repeat),
 							style = h2TextStyle,
-							color = MaterialTheme.colorScheme.onPrimary
+							color = MaterialTheme.colorScheme.onBackground
 						)
 
 						Switch(
@@ -374,9 +378,9 @@ fun EditTaskScreen(
 								onEvent(AddEditScreenEvent.OnUpdateIsRepeated(it))
 							},
 							colors = SwitchDefaults.colors(
-								checkedThumbColor = Blue,
-								checkedTrackColor = MaterialTheme.colorScheme.secondary,
-								uncheckedTrackColor = MaterialTheme.colorScheme.secondary
+								checkedThumbColor = MaterialTheme.colorScheme.primary,
+								checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
+								uncheckedTrackColor = MaterialTheme.colorScheme.primaryContainer
 							)
 						)
 					}
@@ -390,7 +394,7 @@ fun EditTaskScreen(
 				}
 				Divider(
 					modifier = Modifier.padding(bottom = 8.dp),
-					color = MaterialTheme.colorScheme.secondary
+					color = MaterialTheme.colorScheme.primaryContainer
 				)
 				PriorityComponent(defaultSortTask = Priority.entries[task.priority]) {
 					onEvent(AddEditScreenEvent.OnUpdatePriority(it))
@@ -421,7 +425,7 @@ fun EditTaskScreen(
 						}
 					},
 					colors = ButtonDefaults.buttonColors(
-						containerColor = Blue,
+						containerColor = MaterialTheme.colorScheme.primary,
 						contentColor = Color.Black
 					),
 					shape = RoundedCornerShape(16.dp),

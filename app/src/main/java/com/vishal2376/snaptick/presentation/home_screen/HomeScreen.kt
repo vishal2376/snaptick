@@ -67,8 +67,6 @@ import com.vishal2376.snaptick.presentation.home_screen.components.TaskComponent
 import com.vishal2376.snaptick.presentation.main.MainEvent
 import com.vishal2376.snaptick.presentation.main.MainState
 import com.vishal2376.snaptick.presentation.navigation.Routes
-import com.vishal2376.snaptick.ui.theme.Blue
-import com.vishal2376.snaptick.ui.theme.LightGreen
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.ui.theme.Yellow
 import com.vishal2376.snaptick.util.Constants
@@ -150,7 +148,7 @@ fun HomeScreen(
 	ModalNavigationDrawer(
 		drawerState = drawerState,
 		drawerContent = {
-			ModalDrawerSheet(drawerContainerColor = MaterialTheme.colorScheme.primary) {
+			ModalDrawerSheet(drawerContainerColor = MaterialTheme.colorScheme.background) {
 				NavigationDrawerComponent(
 					appState,
 					onMainEvent,
@@ -214,7 +212,7 @@ fun HomeScreen(
 						Text(
 							text = appStreakText,
 							style = durationTextStyle,
-							color = MaterialTheme.colorScheme.onSecondary,
+							color = MaterialTheme.colorScheme.onBackground,
 							fontFamily = fontRobotoMono,
 							fontWeight = FontWeight.Bold
 						)
@@ -232,8 +230,8 @@ fun HomeScreen(
 					onClick = {
 						onNavigate(Routes.AddTaskScreen.name)
 					},
-					containerColor = Blue,
-					contentColor = MaterialTheme.colorScheme.secondary
+					containerColor = MaterialTheme.colorScheme.primary,
+					contentColor = MaterialTheme.colorScheme.onPrimary
 				) {
 					Icon(
 						imageVector = Icons.Default.Add,
@@ -269,7 +267,7 @@ fun HomeScreen(
 						title = stringResource(R.string.completed),
 						desc = "$totalCompletedTasks/$totalTasks Tasks",
 						icon = R.drawable.ic_task_list,
-						backgroundColor = LightGreen,
+						backgroundColor = MaterialTheme.colorScheme.primaryContainer,
 						modifier = Modifier
 							.weight(1f)
 							.graphicsLayer {
@@ -282,7 +280,7 @@ fun HomeScreen(
 						title = stringResource(R.string.free_time),
 						desc = freeTimeText,
 						icon = R.drawable.ic_clock,
-						backgroundColor = Blue,
+						backgroundColor = MaterialTheme.colorScheme.primaryContainer,
 						modifier = Modifier
 							.weight(1f)
 							.graphicsLayer {
@@ -314,14 +312,14 @@ fun HomeScreen(
 							modifier = Modifier.padding(16.dp),
 							text = stringResource(R.string.today_tasks),
 							style = h2TextStyle,
-							color = MaterialTheme.colorScheme.onPrimary,
+							color = MaterialTheme.colorScheme.onBackground,
 						)
 
 						IconButton(onClick = { showSortDialog = true }) {
 							Icon(
 								imageVector = Icons.Default.Sort,
 								contentDescription = null,
-								tint = MaterialTheme.colorScheme.onPrimary
+								tint = MaterialTheme.colorScheme.onBackground
 							)
 						}
 
