@@ -58,7 +58,7 @@ Snaptick is a free daily task planner app designed to help users increase produc
 
 ## Screenshots ([All Designs(Figma)](https://www.figma.com/file/fO6pafK7iAJMZDAtjOy1Mt/Snaptick-App-UI?type=design&node-id=0%3A1&mode=design&t=071Ijr8Yg44PVvmz-1))
 
-![Banner](https://github.com/vishal2376/snaptick/assets/38159691/45cb1cda-a97d-4889-8734-12dee3df9ace)
+[![Banner](https://github.com/vishal2376/snaptick/assets/38159691/45cb1cda-a97d-4889-8734-12dee3df9ace)](https://youtube.com/shorts/iEx2ttL3BH4)
 
 ## Getting Started
 
