@@ -29,6 +29,7 @@ fun FeaturesComponent(modifier: Modifier = Modifier) {
 		FeatureItem(icon = "📝", text = stringResource(R.string.create_and_edit_tasks))
 		FeatureItem(icon = "⏲️", text = stringResource(R.string.pomodoro_timer))
 		FeatureItem(icon = "🔄", text = stringResource(R.string.sort_tasks))
+		FeatureItem(icon = "💾", text = stringResource(R.string.backup_restore_data))
 		FeatureItem(icon = "⏰", text = stringResource(R.string.analyze_free_time))
 		FeatureItem(icon = "😴", text = stringResource(R.string.set_sleep_time))
 		FeatureItem(icon = "🗓️", text = stringResource(R.string.manage_tasks_in_calendar_view))
@@ -43,8 +44,8 @@ fun FeaturesComponent(modifier: Modifier = Modifier) {
 @Composable
 fun FeatureItem(icon: String, text: String) {
 	Row(verticalAlignment = Alignment.CenterVertically) {
-		Text(text = icon, style = infoTextStyle, color = MaterialTheme.colorScheme.onPrimary)
+		Text(text = icon, style = infoTextStyle, color = MaterialTheme.colorScheme.onBackground)
 		Spacer(modifier = Modifier.width(8.dp))
-		Text(text = text, style = h3TextStyle, color = MaterialTheme.colorScheme.onPrimary)
+		Text(text = text, style = h3TextStyle, color = MaterialTheme.colorScheme.onBackground)
 	}
 }

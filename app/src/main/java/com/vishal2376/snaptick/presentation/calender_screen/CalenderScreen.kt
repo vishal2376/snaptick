@@ -56,7 +56,6 @@ import com.vishal2376.snaptick.presentation.home_screen.components.TaskComponent
 import com.vishal2376.snaptick.presentation.main.MainEvent
 import com.vishal2376.snaptick.presentation.main.MainState
 import com.vishal2376.snaptick.presentation.navigation.Routes
-import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.Constants
 import com.vishal2376.snaptick.util.DummyTasks
@@ -166,8 +165,8 @@ fun CalenderScreen(
 						onMainEvent(MainEvent.UpdateCalenderDate(selectedDay))
 						onNavigate(Routes.AddTaskScreen.name)
 					},
-					containerColor = Blue,
-					contentColor = MaterialTheme.colorScheme.secondary
+					containerColor = MaterialTheme.colorScheme.primary,
+					contentColor = MaterialTheme.colorScheme.primaryContainer
 				) {
 					Icon(
 						imageVector = Icons.Default.Add,
@@ -218,7 +217,7 @@ fun CalenderScreen(
 			Divider(
 				modifier = Modifier.padding(vertical = 24.dp),
 				thickness = 2.dp,
-				color = MaterialTheme.colorScheme.secondary
+				color = MaterialTheme.colorScheme.primaryContainer
 			)
 
 			val selectedDayTasks = filterTasksByDate(tasks, selectedDay)

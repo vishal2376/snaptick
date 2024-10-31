@@ -83,8 +83,8 @@ fun FreeTimeScreen(
 
 			val pieChartBgGradient = Brush.verticalGradient(
 				listOf(
-					MaterialTheme.colorScheme.primary,
-					MaterialTheme.colorScheme.secondary,
+					MaterialTheme.colorScheme.background,
+					MaterialTheme.colorScheme.primaryContainer,
 				)
 			)
 			Box(
@@ -103,13 +103,13 @@ fun FreeTimeScreen(
 				Column(horizontalAlignment = Alignment.CenterHorizontally) {
 					Text(
 						text = stringResource(R.string.free_time),
-						color = MaterialTheme.colorScheme.onPrimary,
+						color = MaterialTheme.colorScheme.onBackground,
 						style = h2TextStyle
 					)
 
 					Text(
 						text = freeTimeText,
-						color = MaterialTheme.colorScheme.onPrimary,
+						color = MaterialTheme.colorScheme.onBackground,
 						style = taskTextStyle
 					)
 				}

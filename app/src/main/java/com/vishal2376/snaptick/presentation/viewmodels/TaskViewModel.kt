@@ -27,8 +27,6 @@ import com.vishal2376.snaptick.util.BackupManager
 import com.vishal2376.snaptick.util.Constants
 import com.vishal2376.snaptick.util.SettingsStore
 import com.vishal2376.snaptick.util.openMail
-import com.vishal2376.snaptick.util.openUrl
-import com.vishal2376.snaptick.util.shareApp
 import com.vishal2376.snaptick.util.showToast
 import com.vishal2376.snaptick.util.updateLocale
 import com.vishal2376.snaptick.worker.NotificationWorker
@@ -90,6 +88,13 @@ class TaskViewModel @Inject constructor(
 				}
 			}
 
+			is MainEvent.UpdateDynamicTheme -> {
+				viewModelScope.launch {
+					appState = appState.copy(dynamicTheme = event.isEnabled)
+					SettingsStore(event.context).setDynamicTheme(event.isEnabled)
+				}
+			}
+
 			is MainEvent.UpdateTimePicker -> {
 				viewModelScope.launch {
 					appState = appState.copy(isWheelTimePicker = event.isWheelTimePicker)
@@ -145,15 +150,6 @@ class TaskViewModel @Inject constructor(
 
 					NavDrawerItem.SUGGESTIONS -> {
 						openMail(event.context, event.context.getString(R.string.suggestions))
-					}
-
-					NavDrawerItem.RATE_US -> {
-						val appUrl = Constants.PLAY_STORE_BASE_URL + event.context.packageName
-						openUrl(event.context, appUrl)
-					}
-
-					NavDrawerItem.SHARE_APP -> {
-						shareApp(event.context)
 					}
 				}
 			}
@@ -371,6 +367,12 @@ class TaskViewModel @Inject constructor(
 		viewModelScope.launch {
 			settingsStore.themeKey.collect {
 				appState = appState.copy(theme = AppTheme.entries[it])
+			}
+		}
+
+		viewModelScope.launch {
+			settingsStore.dynamicThemeKey.collect {
+				appState = appState.copy(dynamicTheme = it)
 			}
 		}
 

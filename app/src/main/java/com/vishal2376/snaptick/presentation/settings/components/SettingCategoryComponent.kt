@@ -40,7 +40,7 @@ fun SettingsCategoryComponent(categoryTitle: String, categoryList: List<SettingC
 				modifier = Modifier.padding(start = 8.dp),
 				text = categoryTitle,
 				style = infoDescTextStyle,
-				color = MaterialTheme.colorScheme.onSecondary
+				color = MaterialTheme.colorScheme.onPrimaryContainer
 			)
 		}
 		Column(modifier = Modifier.clip(RoundedCornerShape(8.dp))) {
@@ -51,7 +51,7 @@ fun SettingsCategoryComponent(categoryTitle: String, categoryList: List<SettingC
 					onClick = item.onClick
 				)
 				if (index != categoryList.lastIndex) {
-					Divider(color = MaterialTheme.colorScheme.primary)
+					Divider(color = MaterialTheme.colorScheme.background)
 				}
 			}
 		}
@@ -66,7 +66,7 @@ fun CategoryItemComponent(title: String, resId: Int, onClick: () -> Unit) {
 	Row(modifier = Modifier
 		.fillMaxWidth()
 		.clickable { onClick() }
-		.background(MaterialTheme.colorScheme.secondary)
+		.background(MaterialTheme.colorScheme.primaryContainer)
 		.padding(16.dp, 8.dp),
 		verticalAlignment = Alignment.CenterVertically,
 		horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -75,19 +75,19 @@ fun CategoryItemComponent(title: String, resId: Int, onClick: () -> Unit) {
 			modifier = Modifier.size(20.dp),
 			painter = icon,
 			contentDescription = null,
-			tint = MaterialTheme.colorScheme.onPrimary
+			tint = MaterialTheme.colorScheme.onBackground
 		)
 		Text(
 			modifier = Modifier.weight(1f),
 			text = title,
 			style = settingItemTextStyle,
-			color = MaterialTheme.colorScheme.onPrimary
+			color = MaterialTheme.colorScheme.onBackground
 		)
 		Icon(
 			modifier = Modifier.size(16.dp),
 			imageVector = Icons.Default.ArrowForwardIos,
 			contentDescription = null,
-			tint = MaterialTheme.colorScheme.onPrimary
+			tint = MaterialTheme.colorScheme.onBackground
 		)
 	}
 }

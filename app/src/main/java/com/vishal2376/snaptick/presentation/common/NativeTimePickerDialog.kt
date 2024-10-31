@@ -39,28 +39,28 @@ fun NativeTimePickerDialog(
 		Card(
 			modifier = Modifier
 				.fillMaxWidth()
-				.border(4.dp, MaterialTheme.colorScheme.secondary, RoundedCornerShape(16.dp)),
+				.border(4.dp, MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(16.dp)),
 			shape = RoundedCornerShape(16.dp),
-			colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary)
+			colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
 		) {
 			Column(
 				modifier = Modifier.padding(16.dp),
 			) {
 				TimePicker(
 					state = state, colors = TimePickerDefaults.colors(
-						clockDialColor = MaterialTheme.colorScheme.secondary,
-						selectorColor = Blue,
-						clockDialSelectedContentColor = Black500,
-						timeSelectorUnselectedContainerColor = MaterialTheme.colorScheme.secondary,
-						timeSelectorSelectedContainerColor = Blue,
-						timeSelectorSelectedContentColor = Black500,
-						periodSelectorSelectedContainerColor = Blue,
-						periodSelectorSelectedContentColor = Black500,
-						periodSelectorBorderColor = MaterialTheme.colorScheme.secondary,
-						clockDialUnselectedContentColor = MaterialTheme.colorScheme.onSecondary,
-						timeSelectorUnselectedContentColor = MaterialTheme.colorScheme.onSecondary,
-						periodSelectorUnselectedContentColor = MaterialTheme.colorScheme.onSecondary,
-						periodSelectorUnselectedContainerColor = MaterialTheme.colorScheme.primary,
+						clockDialColor = MaterialTheme.colorScheme.primaryContainer,
+						selectorColor = MaterialTheme.colorScheme.primary,
+						clockDialSelectedContentColor = MaterialTheme.colorScheme.onPrimary,
+						timeSelectorUnselectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+						timeSelectorSelectedContainerColor = MaterialTheme.colorScheme.primary,
+						timeSelectorSelectedContentColor = MaterialTheme.colorScheme.onPrimary,
+						periodSelectorSelectedContainerColor = MaterialTheme.colorScheme.primary,
+						periodSelectorSelectedContentColor = MaterialTheme.colorScheme.onPrimary,
+						periodSelectorBorderColor = MaterialTheme.colorScheme.primaryContainer,
+						clockDialUnselectedContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+						timeSelectorUnselectedContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+						periodSelectorUnselectedContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+						periodSelectorUnselectedContainerColor = MaterialTheme.colorScheme.background,
 					)
 				)
 				Text(
@@ -73,7 +73,7 @@ fun NativeTimePickerDialog(
 						.align(Alignment.End),
 					text = stringResource(R.string.done),
 					style = h3TextStyle,
-					color = Blue
+					color = MaterialTheme.colorScheme.primary
 				)
 			}
 		}

@@ -27,7 +27,6 @@ import com.kizitonwose.calendar.core.DayPosition
 import com.vishal2376.snaptick.presentation.common.infoDescTextStyle
 import com.vishal2376.snaptick.presentation.common.taskDescTextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
-import com.vishal2376.snaptick.ui.theme.Black500
 import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.ui.theme.DarkGray
 import java.time.DayOfWeek
@@ -44,10 +43,10 @@ fun MonthDayComponent(
 	onClick: (LocalDate) -> Unit = {}
 ) {
 	val textColor = if (selected) {
-		Black500
+		MaterialTheme.colorScheme.onPrimary
 	} else {
 		if (day.position == DayPosition.MonthDate)
-			MaterialTheme.colorScheme.onPrimary
+			MaterialTheme.colorScheme.onBackground
 		else
 			DarkGray
 	}
@@ -63,7 +62,7 @@ fun MonthDayComponent(
 			.aspectRatio(1f)
 			.padding(6.dp)
 			.clip(RoundedCornerShape(8.dp))
-			.background(if (selected) Blue else Color.Transparent)
+			.background(if (selected) MaterialTheme.colorScheme.primary else Color.Transparent)
 			.border(
 				if (day.date == LocalDate.now()) 2.dp else (-1).dp,
 				Blue,
@@ -84,7 +83,7 @@ fun MonthDayComponent(
 				modifier = Modifier
 					.size(4.dp)
 					.clip(CircleShape)
-					.background(if (indicator && day.position == DayPosition.MonthDate) Blue else Color.Transparent)
+					.background(if (indicator && day.position == DayPosition.MonthDate) MaterialTheme.colorScheme.primary else Color.Transparent)
 			)
 		}
 	}
@@ -98,7 +97,7 @@ fun DaysOfWeekTitle(daysOfWeek: List<DayOfWeek>) {
 				modifier = Modifier.weight(1f),
 				textAlign = TextAlign.Center,
 				style = infoDescTextStyle,
-				color = MaterialTheme.colorScheme.onSecondary,
+				color = MaterialTheme.colorScheme.onPrimaryContainer,
 				text = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault()),
 			)
 		}

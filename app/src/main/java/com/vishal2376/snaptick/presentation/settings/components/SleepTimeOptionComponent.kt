@@ -36,7 +36,7 @@ fun SleepTimeOptionComponent(defaultSleepTime: LocalTime, onSelect: (LocalTime) 
 		Text(
 			text = stringResource(R.string.set_sleep_time),
 			style = h1TextStyle,
-			color = MaterialTheme.colorScheme.onPrimary,
+			color = MaterialTheme.colorScheme.onBackground,
 		)
 		Text(
 			text = stringResource(
@@ -45,7 +45,7 @@ fun SleepTimeOptionComponent(defaultSleepTime: LocalTime, onSelect: (LocalTime) 
 				LocalTime.of(23, 59).format(dtf)
 			),
 			style = infoDescTextStyle,
-			color = MaterialTheme.colorScheme.onSecondary,
+			color = MaterialTheme.colorScheme.onPrimaryContainer,
 		)
 		Spacer(modifier = Modifier.height(16.dp))
 		WheelTimePicker(
@@ -53,7 +53,7 @@ fun SleepTimeOptionComponent(defaultSleepTime: LocalTime, onSelect: (LocalTime) 
 			startTime = defaultSleepTime,
 			minTime = minSleepTime,
 			maxTime = LocalTime.MAX,
-			textColor = MaterialTheme.colorScheme.onPrimary,
+			textColor = MaterialTheme.colorScheme.onBackground,
 			onSnappedTime = {
 				val sleepTime = LocalTime.of(it.hour, it.minute)
 				onSelect(sleepTime)

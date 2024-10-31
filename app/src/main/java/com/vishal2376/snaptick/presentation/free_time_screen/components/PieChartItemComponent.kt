@@ -49,7 +49,7 @@ fun PieChartItemComponent(task: Task, itemColor: Color, animDelay: Int = 100) {
 				alpha = alphaAnimation.value
 			}
 			.fillMaxWidth()
-			.background(MaterialTheme.colorScheme.secondary, RoundedCornerShape(8.dp))
+			.background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(8.dp))
 			.padding(16.dp, 20.dp)
 	) {
 
@@ -73,13 +73,13 @@ fun PieChartItemComponent(task: Task, itemColor: Color, animDelay: Int = 100) {
 					.basicMarquee(delayMillis = 1000)
 					.weight(1f),
 				style = taskTextStyle,
-				color = MaterialTheme.colorScheme.onPrimary,
+				color = MaterialTheme.colorScheme.onBackground,
 			)
 
 			Text(
 				text = task.getFormattedDuration(),
 				style = taskTextStyle,
-				color = MaterialTheme.colorScheme.onPrimary
+				color = MaterialTheme.colorScheme.onBackground
 			)
 		}
 	}

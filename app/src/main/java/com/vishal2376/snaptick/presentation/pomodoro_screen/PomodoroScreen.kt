@@ -55,7 +55,6 @@ import com.vishal2376.snaptick.presentation.common.SnackbarController
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.presentation.common.timerTextStyle
 import com.vishal2376.snaptick.presentation.pomodoro_screen.components.CustomCircularProgressBar
-import com.vishal2376.snaptick.ui.theme.LightGray
 import com.vishal2376.snaptick.ui.theme.LightGreen
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.DummyTasks
@@ -120,7 +119,10 @@ fun PomodoroScreen(
 	if (totalTime == 0L) {
 		totalTime = task.getDuration()
 		timeLeft = if (task.pomodoroTimer != -1) {
-			SnackbarController.showCustomSnackbar("Resuming Previous Session", actionColor = LightGreen)
+			SnackbarController.showCustomSnackbar(
+				"Resuming Previous Session",
+				actionColor = LightGreen
+			)
 			task.pomodoroTimer.toLong()
 		} else {
 			totalTime
@@ -193,7 +195,7 @@ fun PomodoroScreen(
 					Icon(
 						imageVector = Icons.Default.Check,
 						contentDescription = null,
-						tint = MaterialTheme.colorScheme.onPrimary
+						tint = MaterialTheme.colorScheme.onBackground
 					)
 				}
 			}
@@ -216,7 +218,7 @@ fun PomodoroScreen(
 						task.getDurationTimeStamp(timeLeft)
 					},
 					style = timerTextStyle,
-					color = MaterialTheme.colorScheme.onPrimary
+					color = MaterialTheme.colorScheme.onBackground
 				)
 				val calcProgress = 100f - ((timeLeft.toFloat() / totalTime.toFloat()) * 100f)
 				if (calcProgress >= 99) {
@@ -238,12 +240,12 @@ fun PomodoroScreen(
 						},
 						shape = CircleShape,
 						elevation = FloatingActionButtonDefaults.elevation(4.dp),
-						containerColor = MaterialTheme.colorScheme.secondary,
-						contentColor = LightGray
+						containerColor = MaterialTheme.colorScheme.primaryContainer,
+						contentColor = MaterialTheme.colorScheme.onPrimaryContainer
 					) {
 						Icon(
 							imageVector = if (isPaused) Icons.Default.PlayArrow else Icons.Default.Pause,
-							tint = MaterialTheme.colorScheme.onPrimary,
+							tint = MaterialTheme.colorScheme.onPrimaryContainer,
 							contentDescription = null
 						)
 					}
@@ -254,12 +256,12 @@ fun PomodoroScreen(
 						},
 						shape = CircleShape,
 						elevation = FloatingActionButtonDefaults.elevation(4.dp),
-						containerColor = MaterialTheme.colorScheme.secondary,
-						contentColor = LightGray
+						containerColor = MaterialTheme.colorScheme.primaryContainer,
+						contentColor = MaterialTheme.colorScheme.onPrimaryContainer
 					) {
 						Icon(
 							imageVector = Icons.Default.Refresh,
-							tint = MaterialTheme.colorScheme.onPrimary,
+							tint = MaterialTheme.colorScheme.onPrimaryContainer,
 							contentDescription = null
 						)
 					}

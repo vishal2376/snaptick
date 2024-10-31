@@ -11,6 +11,4 @@ import com.vishal2376.snaptick.R
 enum class NavDrawerItem(val stringId: Int, val icon: ImageVector) {
 	REPORT_BUGS(R.string.report_bugs, Icons.Default.BugReport),
 	SUGGESTIONS(R.string.suggestions, Icons.Default.Chat),
-	RATE_US(R.string.rate_us, Icons.Default.Star),
-	SHARE_APP(R.string.share_app, Icons.Default.Share)
 }

@@ -74,15 +74,15 @@ fun CustomDatePickerDialog(defaultDay: LocalDate = LocalDate.now(), onClose: (Lo
 		Card(
 			modifier = Modifier
 				.fillMaxWidth()
-				.border(4.dp, MaterialTheme.colorScheme.secondary, RoundedCornerShape(16.dp)),
+				.border(4.dp, MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(16.dp)),
 			shape = RoundedCornerShape(16.dp),
-			colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary)
+			colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
 		) {
 			Column {
 				Row(
 					modifier = Modifier
 						.fillMaxWidth()
-						.background(MaterialTheme.colorScheme.secondary)
+						.background(MaterialTheme.colorScheme.primaryContainer)
 						.padding(16.dp),
 					horizontalArrangement = Arrangement.SpaceBetween
 				) {
@@ -165,7 +165,7 @@ fun CustomDatePickerDialog(defaultDay: LocalDate = LocalDate.now(), onClose: (Lo
 							.align(Alignment.End),
 						text = stringResource(R.string.done),
 						style = h3TextStyle,
-						color = Blue
+						color = MaterialTheme.colorScheme.primary
 					)
 				}
 
