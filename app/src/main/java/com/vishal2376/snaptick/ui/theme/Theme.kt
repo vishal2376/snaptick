@@ -1,61 +1,73 @@
 package com.vishal2376.snaptick.ui.theme
 
 import android.app.Activity
+import android.os.Build
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 import com.vishal2376.snaptick.presentation.common.AppTheme
 
 val DarkColorScheme = darkColorScheme(
-	primary = Blue500,
-	secondary = Blue200,
+	primary = Blue,
+	onPrimary = Blue500,
 	background = Blue500,
-	onPrimary = White500,
-	onSecondary = LightGray,
+	onBackground = White500,
+	primaryContainer = Blue200,
+	onPrimaryContainer = LightGray,
 )
 
 val AmoledDarkColorScheme = darkColorScheme(
-	primary = Black500,
-	secondary = Black200,
+	primary = Blue,
+	onPrimary = Blue500,
 	background = Black500,
-	onPrimary = White500,
-	onSecondary = LightGray,
+	onBackground = White500,
+	primaryContainer = Black200,
+	onPrimaryContainer = LightGray,
 )
 
 private val LightColorScheme = lightColorScheme(
-	primary = White500,
-	secondary = White200,
+	primary = Blue,
+	onPrimary = Blue500,
 	background = White500,
-	onPrimary = Black500,
-	onSecondary = DarkGray,
+	onBackground = Black500,
+	primaryContainer = White200,
+	onPrimaryContainer = DarkGray,
 )
 
 
 @Composable
 fun SnaptickTheme(
 	theme: AppTheme = AppTheme.Amoled,
-	dynamicColor: Boolean = false,
+	dynamicColor: Boolean = true,
 	content: @Composable () -> Unit
 ) {
-	val colorScheme = when (theme) {
-//		dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-//			val context = LocalContext.current
-//			if (isSystemInDarkTheme()) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-//		}
-		AppTheme.Light -> LightColorScheme
-		AppTheme.Dark -> DarkColorScheme
-		AppTheme.Amoled -> AmoledDarkColorScheme
+	val colorScheme = when {
+		dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+			val context = LocalContext.current
+			if (theme == AppTheme.Light)
+				dynamicLightColorScheme(context)
+			else
+				dynamicDarkColorScheme(context)
+		}
+
+		theme == AppTheme.Light -> LightColorScheme
+		theme == AppTheme.Dark -> DarkColorScheme
+		theme == AppTheme.Amoled -> AmoledDarkColorScheme
+		else -> DarkColorScheme
 	}
 	val view = LocalView.current
 	if (!view.isInEditMode) {
 		SideEffect {
 			val window = (view.context as Activity).window
-			window.statusBarColor = colorScheme.primary.toArgb()
+			window.statusBarColor = colorScheme.background.toArgb()
 			WindowCompat.getInsetsController(
 				window,
 				view
