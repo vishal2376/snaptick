@@ -42,8 +42,6 @@ import com.vishal2376.snaptick.presentation.common.ShowTimePicker
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.h3TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
-import com.vishal2376.snaptick.ui.theme.Black500
-import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -66,13 +64,16 @@ fun TimePickerOptionComponent(
 	) {
 
 		if (showDialogTimePicker) {
-			NativeTimePickerDialog(selectedTime,is24HourTimeFormatEnabled, onClose = { showDialogTimePicker = false })
+			NativeTimePickerDialog(
+				selectedTime,
+				is24HourTimeFormatEnabled,
+				onClose = { showDialogTimePicker = false })
 		}
 
 		Text(
 			text = stringResource(R.string.choose_time_picker_style),
 			style = h2TextStyle,
-			color = MaterialTheme.colorScheme.onPrimary,
+			color = MaterialTheme.colorScheme.onBackground,
 		)
 		Spacer(modifier = Modifier.height(8.dp))
 		Row(
@@ -96,7 +97,7 @@ fun TimePickerOptionComponent(
 				Icon(
 					imageVector = Icons.Default.AccessTime,
 					contentDescription = null,
-					tint = MaterialTheme.colorScheme.onPrimary,
+					tint = MaterialTheme.colorScheme.onBackground,
 					modifier = Modifier.size(24.dp)
 				)
 
@@ -108,7 +109,7 @@ fun TimePickerOptionComponent(
 				Text(
 					text = selectedTime.format(dtf),
 					style = taskTextStyle,
-					color = MaterialTheme.colorScheme.onPrimary
+					color = MaterialTheme.colorScheme.onBackground
 				)
 			}
 		}
@@ -145,13 +146,14 @@ fun TimePickerOptionComponent(
 			Text(
 				text = stringResource(R.string.enable_24_hour_format),
 				style = h3TextStyle,
-				color = MaterialTheme.colorScheme.onPrimary
+				color = MaterialTheme.colorScheme.onBackground
 			)
 
 			Switch(checked = is24HourTimeFormatEnabled,
 				colors = SwitchDefaults.colors(
-					checkedThumbColor = Blue,
-					checkedTrackColor = MaterialTheme.colorScheme.primary
+					checkedThumbColor = MaterialTheme.colorScheme.primary,
+					checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
+					checkedBorderColor = MaterialTheme.colorScheme.primary
 				),
 				onCheckedChange = {
 					is24HourTimeFormatEnabled = !is24HourTimeFormatEnabled
@@ -172,13 +174,13 @@ fun ToggleOptions(title: String, isSelected: Boolean, onClick: () -> Unit) {
 			modifier = Modifier
 				.clip(RoundedCornerShape(8.dp))
 				.clickable { onClick() }
-				.background(if (isSelected) Blue else MaterialTheme.colorScheme.primary),
+				.background(if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.primaryContainer),
 			contentAlignment = Alignment.Center
 		) {
 			Text(
 				text = title,
 				style = h3TextStyle,
-				color = if (isSelected) Black500 else MaterialTheme.colorScheme.onPrimary,
+				color = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onBackground,
 				modifier = Modifier.padding(24.dp, 8.dp)
 			)
 		}
@@ -194,7 +196,7 @@ fun ToggleOptions(title: String, isSelected: Boolean, onClick: () -> Unit) {
 				modifier = Modifier
 					.width(40.dp * animValue.value)
 					.height(4.dp)
-					.background(Blue, RoundedCornerShape(8.dp))
+					.background(MaterialTheme.colorScheme.primary, RoundedCornerShape(8.dp))
 			)
 		}
 	}

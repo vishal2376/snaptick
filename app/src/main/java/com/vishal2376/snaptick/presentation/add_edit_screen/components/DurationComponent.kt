@@ -87,21 +87,25 @@ fun DurationItemComponent(
 	onClick: () -> Unit
 ) {
 	val bgColor = if (isSelected)
-		MaterialTheme.colorScheme.secondary
+		MaterialTheme.colorScheme.primaryContainer
 	else
-		MaterialTheme.colorScheme.primary
+		MaterialTheme.colorScheme.background
 
 	Box(
 		modifier = modifier
 			.clickable { onClick() }
 			.fillMaxWidth()
 			.background(bgColor, shape)
-			.border(2.dp, MaterialTheme.colorScheme.secondary, shape)
-			.padding(vertical = 16.dp)
-		,
+			.border(2.dp, MaterialTheme.colorScheme.primaryContainer, shape)
+			.padding(vertical = 16.dp),
 		contentAlignment = Alignment.Center
 	) {
-		Text(text = text, color = MaterialTheme.colorScheme.onPrimary, fontFamily = fontRobotoMono, fontSize = 14.sp)
+		Text(
+			text = text,
+			color = MaterialTheme.colorScheme.onBackground,
+			fontFamily = fontRobotoMono,
+			fontSize = 14.sp
+		)
 	}
 }
 

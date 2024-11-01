@@ -45,8 +45,8 @@ fun SortTaskDialogComponent(
 			modifier = Modifier
 				.fillMaxWidth(1f),
 			colors = CardDefaults.cardColors(
-				containerColor = MaterialTheme.colorScheme.secondary,
-				contentColor = MaterialTheme.colorScheme.onPrimary
+				containerColor = MaterialTheme.colorScheme.primaryContainer,
+				contentColor = MaterialTheme.colorScheme.onPrimaryContainer
 			)
 		) {
 			Text(
@@ -78,7 +78,7 @@ fun SortTaskDialogComponent(
 					.align(Alignment.End),
 				text = stringResource(R.string.select),
 				style = h3TextStyle,
-				color = Blue
+				color = MaterialTheme.colorScheme.primary
 			)
 		}
 	}
@@ -93,13 +93,13 @@ fun CustomRadioButton(label: String, isSelected: Boolean, onClick: () -> Unit) {
 			.padding(bottom = 8.dp)
 			.clickable { onClick() }) {
 		RadioButton(
-			colors = RadioButtonDefaults.colors(selectedColor = Blue),
+			colors = RadioButtonDefaults.colors(selectedColor = MaterialTheme.colorScheme.primary),
 			selected = isSelected,
 			onClick = { onClick() })
 		Text(
 			text = label,
 			style = taskTextStyle,
-			color = MaterialTheme.colorScheme.onPrimary
+			color = MaterialTheme.colorScheme.onPrimaryContainer
 		)
 	}
 }

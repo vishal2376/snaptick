@@ -96,21 +96,21 @@ fun AboutScreen(
 				Text(
 					text = stringResource(R.string.app_name),
 					style = h2TextStyle,
-					color = MaterialTheme.colorScheme.onPrimary
+					color = MaterialTheme.colorScheme.onBackground
 				)
 				Text(
 					text = stringResource(R.string.buildVersion, appState.buildVersion),
 					fontFamily = fontRobotoMono,
 					fontSize = 15.sp,
 					fontWeight = FontWeight.Bold,
-					color = MaterialTheme.colorScheme.onPrimary
+					color = MaterialTheme.colorScheme.onBackground
 				)
 			}
-			Divider(color = MaterialTheme.colorScheme.secondary)
+			Divider(color = MaterialTheme.colorScheme.primaryContainer)
 			Text(
 				modifier = Modifier.padding(32.dp, 0.dp),
 				text = stringResource(R.string.app_description),
-				color = MaterialTheme.colorScheme.onSecondary,
+				color = MaterialTheme.colorScheme.onPrimaryContainer,
 				style = h3TextStyle
 			)
 
@@ -127,7 +127,7 @@ fun AboutScreen(
 				textAlign = TextAlign.Center
 			)
 
-			Divider(color = MaterialTheme.colorScheme.secondary)
+			Divider(color = MaterialTheme.colorScheme.primaryContainer)
 			Text(
 				modifier = Modifier.padding(32.dp, 0.dp),
 				text = stringResource(R.string.features),

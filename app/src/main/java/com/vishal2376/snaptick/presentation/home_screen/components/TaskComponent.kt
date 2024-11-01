@@ -90,7 +90,7 @@ fun TaskComponent(
 			modifier = Modifier
 				.fillMaxWidth()
 				.background(
-					MaterialTheme.colorScheme.secondary,
+					MaterialTheme.colorScheme.primaryContainer,
 					RoundedCornerShape(
 						topEnd = 8.dp,
 						bottomEnd = 8.dp
@@ -122,7 +122,7 @@ fun TaskComponent(
 							.size(20.dp)
 							.border(
 								width = 2.dp,
-								color = MaterialTheme.colorScheme.onSecondary,
+								color = MaterialTheme.colorScheme.onPrimaryContainer,
 								shape = CircleShape
 							),
 							contentAlignment = Alignment.Center,
@@ -145,7 +145,7 @@ fun TaskComponent(
 							text = task.title,
 							style = taskTextStyle,
 							fontWeight = FontWeight.Bold,
-							color = MaterialTheme.colorScheme.onPrimary
+							color = MaterialTheme.colorScheme.onBackground
 						)
 						Spacer(modifier = Modifier.height(8.dp))
 						Row(
@@ -156,19 +156,22 @@ fun TaskComponent(
 								painter = painterResource(id = R.drawable.ic_clock),
 								contentDescription = null,
 								modifier = Modifier.size(15.dp),
-								tint = MaterialTheme.colorScheme.onSecondary
+								tint = MaterialTheme.colorScheme.onPrimaryContainer
+
 							)
 							Text(
 								text = task.getFormattedTime(is24HourTimeFormat),
 								style = taskDescTextStyle,
-								color = MaterialTheme.colorScheme.onSecondary
+								color = MaterialTheme.colorScheme.onPrimaryContainer
+
 							)
 							if (task.reminder) {
 								Icon(
 									imageVector = Icons.Default.Notifications,
 									contentDescription = null,
 									modifier = Modifier.size(15.dp),
-									tint = MaterialTheme.colorScheme.onSecondary
+									tint = MaterialTheme.colorScheme.onPrimaryContainer
+
 								)
 							}
 							if (task.isRepeated) {
@@ -176,7 +179,8 @@ fun TaskComponent(
 									imageVector = Icons.Default.Refresh,
 									contentDescription = null,
 									modifier = Modifier.size(15.dp),
-									tint = MaterialTheme.colorScheme.onSecondary
+									tint = MaterialTheme.colorScheme.onPrimaryContainer
+
 								)
 							}
 						}
@@ -190,12 +194,14 @@ fun TaskComponent(
 									imageVector = Icons.Default.CalendarMonth,
 									contentDescription = null,
 									modifier = Modifier.size(15.dp),
-									tint = MaterialTheme.colorScheme.onSecondary
+									tint = MaterialTheme.colorScheme.onPrimaryContainer
+
 								)
 								Text(
 									text = task.getWeekDaysTitle(),
 									style = taskDescTextStyle,
-									color = MaterialTheme.colorScheme.onSecondary
+									color = MaterialTheme.colorScheme.onPrimaryContainer
+
 								)
 							}
 						}
@@ -209,7 +215,7 @@ fun TaskComponent(
 					) {
 						Icon(
 							painter = painterResource(id = R.drawable.ic_timer),
-							tint = MaterialTheme.colorScheme.onSecondary,
+							tint = MaterialTheme.colorScheme.onPrimaryContainer,
 							contentDescription = null
 						)
 					}
@@ -221,7 +227,7 @@ fun TaskComponent(
 					) {
 						Icon(
 							imageVector = Icons.Default.Delete,
-							tint = MaterialTheme.colorScheme.onSecondary,
+							tint = MaterialTheme.colorScheme.onPrimaryContainer,
 							contentDescription = null
 						)
 					}

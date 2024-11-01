@@ -14,14 +14,13 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 
 @Composable
 fun CustomCircularProgressBar(
 	progress: Float = 10f,
 	progressMax: Float = 100f,
-	progressBarColor: Color = Blue,
+	progressBarColor: Color = MaterialTheme.colorScheme.primary,
 	progressBarWidth: Dp = 10.dp,
 	backgroundProgressBarColor: Color = MaterialTheme.colorScheme.secondary,
 	backgroundProgressBarWidth: Dp = 3.dp,

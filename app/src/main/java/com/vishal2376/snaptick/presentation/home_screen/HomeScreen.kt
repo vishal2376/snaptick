@@ -150,7 +150,7 @@ fun HomeScreen(
 	ModalNavigationDrawer(
 		drawerState = drawerState,
 		drawerContent = {
-			ModalDrawerSheet(drawerContainerColor = MaterialTheme.colorScheme.primary) {
+			ModalDrawerSheet(drawerContainerColor = MaterialTheme.colorScheme.background) {
 				NavigationDrawerComponent(
 					appState,
 					onMainEvent,
@@ -214,7 +214,7 @@ fun HomeScreen(
 						Text(
 							text = appStreakText,
 							style = durationTextStyle,
-							color = MaterialTheme.colorScheme.onSecondary,
+							color = MaterialTheme.colorScheme.onBackground,
 							fontFamily = fontRobotoMono,
 							fontWeight = FontWeight.Bold
 						)
@@ -232,8 +232,8 @@ fun HomeScreen(
 					onClick = {
 						onNavigate(Routes.AddTaskScreen.name)
 					},
-					containerColor = Blue,
-					contentColor = MaterialTheme.colorScheme.secondary
+					containerColor = MaterialTheme.colorScheme.primary,
+					contentColor = MaterialTheme.colorScheme.onPrimary
 				) {
 					Icon(
 						imageVector = Icons.Default.Add,
@@ -270,6 +270,7 @@ fun HomeScreen(
 						desc = "$totalCompletedTasks/$totalTasks Tasks",
 						icon = R.drawable.ic_task_list,
 						backgroundColor = LightGreen,
+						dynamicTheme = appState.dynamicTheme,
 						modifier = Modifier
 							.weight(1f)
 							.graphicsLayer {
@@ -283,6 +284,7 @@ fun HomeScreen(
 						desc = freeTimeText,
 						icon = R.drawable.ic_clock,
 						backgroundColor = Blue,
+						dynamicTheme = appState.dynamicTheme,
 						modifier = Modifier
 							.weight(1f)
 							.graphicsLayer {
@@ -314,14 +316,14 @@ fun HomeScreen(
 							modifier = Modifier.padding(16.dp),
 							text = stringResource(R.string.today_tasks),
 							style = h2TextStyle,
-							color = MaterialTheme.colorScheme.onPrimary,
+							color = MaterialTheme.colorScheme.onBackground,
 						)
 
 						IconButton(onClick = { showSortDialog = true }) {
 							Icon(
 								imageVector = Icons.Default.Sort,
 								contentDescription = null,
-								tint = MaterialTheme.colorScheme.onPrimary
+								tint = MaterialTheme.colorScheme.onBackground
 							)
 						}
 

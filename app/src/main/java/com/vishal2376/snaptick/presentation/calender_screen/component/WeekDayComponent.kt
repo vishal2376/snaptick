@@ -22,8 +22,6 @@ import com.kizitonwose.calendar.core.WeekDay
 import com.kizitonwose.calendar.core.WeekDayPosition
 import com.vishal2376.snaptick.presentation.common.infoTextStyle
 import com.vishal2376.snaptick.presentation.common.taskDescTextStyle
-import com.vishal2376.snaptick.ui.theme.Black500
-import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -40,11 +38,11 @@ fun WeekDayComponent(
 	onClick: (LocalDate) -> Unit = {},
 ) {
 	val textColor = if (selected) {
-		Black500
-	} else if (indicator) {
-		Blue
-	} else {
 		MaterialTheme.colorScheme.onPrimary
+	} else if (indicator) {
+		MaterialTheme.colorScheme.primary
+	} else {
+		MaterialTheme.colorScheme.onBackground
 	}
 
 	val configuration = LocalConfiguration.current
@@ -54,10 +52,10 @@ fun WeekDayComponent(
 			.width(screenWidth / 7)
 			.padding(4.dp)
 			.clip(RoundedCornerShape(16.dp))
-			.background(if (selected) Blue else MaterialTheme.colorScheme.secondary)
+			.background(if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.primaryContainer)
 			.border(
 				if (day.date == LocalDate.now()) 2.dp else (-1).dp,
-				Blue,
+				MaterialTheme.colorScheme.primary,
 				RoundedCornerShape(16.dp)
 			)
 			.clickable { onClick(day.date) },

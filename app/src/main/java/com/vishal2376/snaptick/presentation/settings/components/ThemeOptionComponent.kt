@@ -13,6 +13,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Palette
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,9 +30,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.presentation.common.AppTheme
+import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.h3TextStyle
 import com.vishal2376.snaptick.ui.theme.Black200
 import com.vishal2376.snaptick.ui.theme.Black500
@@ -45,9 +54,12 @@ data class ThemeColor(
 @Composable
 fun ThemeOptionComponent(
 	defaultTheme: AppTheme,
-	onSelect: (AppTheme) -> Unit
+	dynamicTheme: Boolean,
+	onSelect: (AppTheme) -> Unit,
+	onChangedDynamicTheme: (Boolean) -> Unit
 ) {
 	var selectedOption by remember { mutableStateOf(defaultTheme) }
+	var isDynamicThemeEnabled by remember { mutableStateOf(dynamicTheme) }
 
 	val themeList = listOf(
 		ThemeColor(White500, White200, Black500),
@@ -55,22 +67,61 @@ fun ThemeOptionComponent(
 		ThemeColor(Black500, Black200, White500)
 	)
 
-	Row(
-		modifier = Modifier
-			.fillMaxWidth()
-			.padding(horizontal = 24.dp),
-		horizontalArrangement = Arrangement.spacedBy(8.dp)
+	Column(
+		modifier = Modifier.fillMaxWidth(),
+		verticalArrangement = Arrangement.spacedBy(8.dp)
 	) {
-		AppTheme.entries.forEach {
-			ThemeItemComponent(
-				title = it.name,
-				theme = themeList[it.ordinal],
-				isSelected = selectedOption == it,
-				modifier = Modifier.weight(1f)
-			) {
-				onSelect(it)
-				selectedOption = it
+		Row(
+			modifier = Modifier
+				.fillMaxWidth()
+				.padding(horizontal = 24.dp),
+			horizontalArrangement = Arrangement.spacedBy(8.dp)
+		) {
+			AppTheme.entries.forEach {
+				ThemeItemComponent(
+					title = it.name,
+					theme = themeList[it.ordinal],
+					isSelected = selectedOption == it,
+					modifier = Modifier.weight(1f)
+				) {
+					onSelect(it)
+					selectedOption = it
+				}
 			}
+		}
+		Row(
+			modifier = Modifier
+				.fillMaxWidth()
+				.padding(24.dp, 0.dp),
+			verticalAlignment = Alignment.CenterVertically
+		) {
+			Icon(
+				imageVector = Icons.Default.Palette,
+				contentDescription = null,
+				tint = MaterialTheme.colorScheme.onBackground
+			)
+			Text(
+				modifier = Modifier
+					.weight(1f)
+					.padding(start = 4.dp),
+				text = stringResource(R.string.material_you),
+				style = h2TextStyle,
+				color = MaterialTheme.colorScheme.onBackground
+			)
+
+			Switch(
+				checked = isDynamicThemeEnabled,
+				onCheckedChange = {
+					onChangedDynamicTheme(it)
+					isDynamicThemeEnabled = it
+				},
+				colors = SwitchDefaults.colors(
+					checkedThumbColor = MaterialTheme.colorScheme.primary,
+					checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
+					uncheckedTrackColor = MaterialTheme.colorScheme.primaryContainer,
+					checkedBorderColor = MaterialTheme.colorScheme.primary
+				)
+			)
 		}
 	}
 }
@@ -126,6 +177,10 @@ fun ThemeItemComponent(
 @Composable
 fun ThemeOptionComponentPreview() {
 	SnaptickTheme {
-		ThemeOptionComponent(defaultTheme = AppTheme.Light, onSelect = {})
+		ThemeOptionComponent(
+			defaultTheme = AppTheme.Light,
+			true,
+			onChangedDynamicTheme = {},
+			onSelect = {})
 	}
 }

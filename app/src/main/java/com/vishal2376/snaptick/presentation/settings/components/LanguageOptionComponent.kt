@@ -20,7 +20,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontVariation.width
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vishal2376.snaptick.R
@@ -28,7 +27,6 @@ import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.presentation.settings.common.TopLanguage
 import com.vishal2376.snaptick.ui.theme.Blue
-import java.util.Locale
 
 @Composable
 fun LanguageOptionComponent(defaultLanguage: String, onSelect: (String) -> Unit) {
@@ -45,7 +43,7 @@ fun LanguageOptionComponent(defaultLanguage: String, onSelect: (String) -> Unit)
 		Text(
 			text = stringResource(R.string.select_language),
 			style = h2TextStyle,
-			color = MaterialTheme.colorScheme.onPrimary,
+			color = MaterialTheme.colorScheme.onBackground,
 		)
 		Spacer(modifier = Modifier.height(8.dp))
 		Column(Modifier.verticalScroll(rememberScrollState())) {
@@ -65,32 +63,18 @@ fun LanguageOptionComponent(defaultLanguage: String, onSelect: (String) -> Unit)
 					Text(
 						text = language.emoji,
 						style = taskTextStyle,
-						color = MaterialTheme.colorScheme.onSecondary
+						color = MaterialTheme.colorScheme.onPrimaryContainer
 					)
 					Spacer(modifier = Modifier.width(8.dp))
 					Text(
 						text = language.name,
 						style = taskTextStyle,
-						color = MaterialTheme.colorScheme.onSecondary
+						color = MaterialTheme.colorScheme.onPrimaryContainer
 					)
 				}
 			}
 		}
 	}
-}
-
-fun countryCodeToEmojiFlag(countryCode: String): String {
-	return countryCode
-		.uppercase(Locale.US)
-		.map { char ->
-			Character.codePointAt("$char", 0) - 0x41 + 0x1F1E6
-		}
-		.map { codePoint ->
-			Character.toChars(codePoint)
-		}
-		.joinToString(separator = "") { charArray ->
-			String(charArray)
-		}
 }
 
 @Preview

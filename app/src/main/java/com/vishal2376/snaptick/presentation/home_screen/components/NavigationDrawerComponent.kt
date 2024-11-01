@@ -74,20 +74,20 @@ fun NavigationDrawerComponent(
 			Text(
 				text = stringResource(R.string.app_name),
 				style = h2TextStyle,
-				color = MaterialTheme.colorScheme.onPrimary
+				color = MaterialTheme.colorScheme.onBackground
 			)
 			Text(
 				text = stringResource(R.string.buildVersion, appState.buildVersion),
 				fontFamily = fontRobotoMono,
 				fontSize = 15.sp,
 				fontWeight = FontWeight.Bold,
-				color = MaterialTheme.colorScheme.onPrimary
+				color = MaterialTheme.colorScheme.onBackground
 			)
 		}
 
 		Divider(
 			modifier = Modifier.padding(top = 24.dp, bottom = 8.dp),
-			color = MaterialTheme.colorScheme.secondary
+			color = MaterialTheme.colorScheme.primaryContainer
 		)
 
 		Column {
@@ -120,7 +120,7 @@ fun NavigationDrawerComponent(
 
 			Divider(
 				modifier = Modifier.padding(vertical = 10.dp),
-				color = MaterialTheme.colorScheme.secondary
+				color = MaterialTheme.colorScheme.primaryContainer
 			)
 
 			NavDrawerItem.entries.forEach {
@@ -149,9 +149,9 @@ fun NavDrawerItemUI(icon: ImageVector, label: String, onClick: () -> Unit) {
 			modifier = Modifier.size(28.dp),
 			imageVector = icon,
 			contentDescription = null,
-			tint = MaterialTheme.colorScheme.onPrimary
+			tint = MaterialTheme.colorScheme.onBackground
 		)
-		Text(text = label, style = infoTextStyle, color = MaterialTheme.colorScheme.onPrimary)
+		Text(text = label, style = infoTextStyle, color = MaterialTheme.colorScheme.onBackground)
 	}
 }
 

@@ -27,7 +27,7 @@ fun ShowTimePicker(
 		WheelTimePicker(
 			timeFormat = if (is24hourFormat) TimeFormat.HOUR_24 else TimeFormat.AM_PM,
 			startTime = time,
-			textColor = MaterialTheme.colorScheme.onPrimary,
+			textColor = MaterialTheme.colorScheme.onBackground,
 			onSnappedTime = onSelect
 		)
 	}
@@ -39,7 +39,7 @@ fun ShowTimePicker(
 		WheelTimePicker(
 			timeFormat = if (is24hourFormat) TimeFormat.HOUR_24 else TimeFormat.AM_PM,
 			startTime = time,
-			textColor = MaterialTheme.colorScheme.onPrimary,
+			textColor = MaterialTheme.colorScheme.onBackground,
 			onSnappedTime = onSelect
 		)
 	}

@@ -76,8 +76,8 @@ fun PriorityItemComponent(
 		verticalArrangement = Arrangement.spacedBy(4.dp),
 		horizontalAlignment = Alignment.CenterHorizontally
 	) {
-		var priorityBackground = MaterialTheme.colorScheme.secondary
-		var textColor = MaterialTheme.colorScheme.onSecondary
+		var priorityBackground = MaterialTheme.colorScheme.primaryContainer
+		var textColor = MaterialTheme.colorScheme.onPrimaryContainer
 
 		if (isSelected) {
 			priorityBackground = backgroundColor
@@ -120,7 +120,7 @@ fun PriorityItemComponent(
 @Preview()
 @Composable
 fun PriorityComponentPreview() {
-	SnaptickTheme{
+	SnaptickTheme {
 		PriorityComponent(Priority.LOW, {})
 	}
 }
