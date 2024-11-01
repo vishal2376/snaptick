@@ -55,17 +55,17 @@ fun WhatsNewDialogComponent(
 		NewItem(
 			"Material You Theme",
 			"Enjoy a dynamic theme that adapts to your wallpaper",
-			""
+			"https://github.com/vishal2376/snaptick/issues/19#issuecomment-2451274281"
 		),
 		NewItem(
 			" Offline Backup Support",
 			"Keep your tasks safe, no internet required. Never lose your progress again!",
-			""
+			"https://github.com/vishal2376/snaptick/issues/30#issuecomment-2451297596"
 		),
 		NewItem(
 			"New Time Format",
 			"Choose your style: 12-hour or 24-hour time format, it's up to you!",
-			""
+			"https://github.com/vishal2376/snaptick/issues/63#issuecomment-2351571657"
 		),
 		NewItem(
 			"Adaptive Icon",
