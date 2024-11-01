@@ -64,6 +64,7 @@ import com.vishal2376.snaptick.presentation.home_screen.components.InfoComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.NavigationDrawerComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.SortTaskDialogComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.TaskComponent
+import com.vishal2376.snaptick.presentation.home_screen.components.WhatsNewDialogComponent
 import com.vishal2376.snaptick.presentation.main.MainEvent
 import com.vishal2376.snaptick.presentation.main.MainState
 import com.vishal2376.snaptick.presentation.navigation.Routes
@@ -103,6 +104,7 @@ fun HomeScreen(
 	// streak
 	val appStreakText = if (appState.streak > 0) appState.streak.toString() else "0"
 	val context = LocalContext.current
+	val packageInfo = context.packageManager.getPackageInfo(LocalContext.current.packageName, 0)
 
 	LaunchedEffect(inCompletedTasks) {
 		appState.totalTaskDuration = totalTaskTime
@@ -252,6 +254,14 @@ fun HomeScreen(
 						showSortDialog = false
 					}
 				)
+
+			if ((appState.showWhatsNew && appState.firstTimeOpened) || appState.buildVersionCode != packageInfo.versionCode) {
+				WhatsNewDialogComponent(appState = appState) {
+					onMainEvent(MainEvent.UpdateFirstTimeOpened(false))
+					onMainEvent(MainEvent.UpdateShowWhatsNew(it, context))
+					onMainEvent(MainEvent.UpdateBuildVersionCode(context, packageInfo.versionCode))
+				}
+			}
 
 			Column(modifier = Modifier.padding(innerPadding)) {
 				Row(

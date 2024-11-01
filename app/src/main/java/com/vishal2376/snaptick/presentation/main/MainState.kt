@@ -9,6 +9,9 @@ import java.util.Locale
 
 data class MainState(
 	val buildVersion: String = "0.0",
+	val buildVersionCode: Int = 1,
+	val firstTimeOpened: Boolean = true,
+	val showWhatsNew: Boolean = true,
 	val theme: AppTheme = AppTheme.Dark,
 	val dynamicTheme: Boolean = false,
 	val sortBy: SortTask = SortTask.BY_START_TIME_ASCENDING,

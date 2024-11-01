@@ -153,6 +153,26 @@ class TaskViewModel @Inject constructor(
 					}
 				}
 			}
+
+			is MainEvent.UpdateShowWhatsNew -> {
+				viewModelScope.launch {
+					appState = appState.copy(showWhatsNew = event.showWhatsNew)
+					SettingsStore(event.context).setShowWhatsNew(event.showWhatsNew)
+				}
+			}
+
+			is MainEvent.UpdateFirstTimeOpened -> {
+				viewModelScope.launch {
+					appState = appState.copy(firstTimeOpened = event.isFirstTimeOpened)
+				}
+			}
+
+			is MainEvent.UpdateBuildVersionCode -> {
+				viewModelScope.launch {
+					appState = appState.copy(buildVersionCode = event.versionCode)
+					SettingsStore(event.context).setBuildVersionCode(event.versionCode)
+				}
+			}
 		}
 	}
 
@@ -419,6 +439,12 @@ class TaskViewModel @Inject constructor(
 		}
 
 		viewModelScope.launch {
+			settingsStore.showWhatsNewKey.collect {
+				appState = appState.copy(showWhatsNew = it)
+			}
+		}
+
+		viewModelScope.launch {
 			settingsStore.lastOpenedKey.collect { lastDateString ->
 				if (lastDateString == "") {
 					settingsStore.setLastOpened(LocalDate.now().toString())
@@ -440,6 +466,12 @@ class TaskViewModel @Inject constructor(
 		val buildVersionCode =
 			context.packageManager.getPackageInfo(context.packageName, 0).versionName
 		appState = appState.copy(buildVersion = buildVersionCode)
+
+		viewModelScope.launch {
+			settingsStore.buildVersionCode.collect {
+				appState = appState.copy(buildVersionCode = it)
+			}
+		}
 	}
 
 }

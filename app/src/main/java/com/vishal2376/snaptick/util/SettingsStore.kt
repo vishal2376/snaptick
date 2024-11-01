@@ -32,6 +32,8 @@ class SettingsStore(val context: Context) {
 		private val LAST_OPENED_KEY = stringPreferencesKey("last_opened_key")
 		private val STREAK_KEY = intPreferencesKey("streak_key")
 		private val SLEEP_TIME_KEY = stringPreferencesKey("sleep_time_key")
+		private val SHOW_WHATS_NEW_KEY = booleanPreferencesKey("show_whats_new_key")
+		private val BUILD_VERSION_CODE = intPreferencesKey("build_version_code")
 
 		private const val DEFAULT_LANGUAGE = "en"
 		private val DEFAULT_THEME = AppTheme.Dark.ordinal
@@ -43,6 +45,8 @@ class SettingsStore(val context: Context) {
 		private val DEFAULT_LAST_OPENED = LocalDate.now().toString()
 		private const val DEFAULT_STREAK = 0
 		private val DEFAULT_SLEEP_TIME_KEY = LocalTime.of(23, 59).toString()
+		private const val DEFAULT_SHOW_WHATS_NEW = true
+		private const val DEFAULT_BUILD_VERSION_CODE = 1
 	}
 
 
@@ -84,6 +88,14 @@ class SettingsStore(val context: Context) {
 
 	val streakKey: Flow<Int> = context.dataStore.data.map { preferences ->
 		preferences[STREAK_KEY] ?: DEFAULT_STREAK
+	}
+
+	val showWhatsNewKey: Flow<Boolean> = context.dataStore.data.map { preferences ->
+		preferences[SHOW_WHATS_NEW_KEY] ?: DEFAULT_SHOW_WHATS_NEW
+	}
+
+	val buildVersionCode: Flow<Int> = context.dataStore.data.map { preferences ->
+		preferences[BUILD_VERSION_CODE] ?: DEFAULT_BUILD_VERSION_CODE
 	}
 
 	suspend fun setTheme(theme: Int) {
@@ -143,6 +155,18 @@ class SettingsStore(val context: Context) {
 	suspend fun setStreak(streak: Int) {
 		context.dataStore.edit { preferences ->
 			preferences[STREAK_KEY] = streak
+		}
+	}
+
+	suspend fun setShowWhatsNew(showWhatsNew: Boolean) {
+		context.dataStore.edit { preferences ->
+			preferences[SHOW_WHATS_NEW_KEY] = showWhatsNew
+		}
+	}
+
+	suspend fun setBuildVersionCode(versionCode: Int) {
+		context.dataStore.edit { preferences ->
+			preferences[BUILD_VERSION_CODE] = versionCode
 		}
 	}
 
