@@ -2,6 +2,61 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.1] - 2024-11-01
+
+### 🚀 Features
+
+- Implement Backup manager #30
+- Integrate Backup & Restore with UI #30
+- What's new Dialog UI
+- Integrate What's new dialog with viewmodel and state
+
+### 🐛 Bug Fixes
+
+- Monochrome icon size using official guidelines #60
+- SortTask is not loading properly
+- Time format sync with task details #63
+- Monochrome icon issue
+- Dynamic colors issue in Info Component #19
+- Empty task text contrast
+
+### 🚜 Refactor
+
+- Remove play store links
+
+### 📚 Documentation
+
+- Update links
+- Remove google play link & add github link
+- Add PRIVACY POLICY.md
+- Add app promo youtube link
+- Add more features
+
+### ⚙️ Miscellaneous Tasks
+
+- Fix hardcoded strings
+- Save/load calender view #62
+- Refactor calenderView in CalenderScreen #62
+- Impl 24hour time format #63
+- Save/load default time format #63
+- Enable landscape mode and impl edgeToEdge
+- Sync time format with user settings #63
+- Enable Dynamic color and modify Color schemes #19
+- Update Dynamic Colors in Home Screen,About Screen,Add/Edit Screen #19
+- Update Dynamic Colors in CalenderScreen #19
+- Update Dynamic Colors in Settings Screen, Pomodoro Screen, ThisWeek Screen #19
+- Save and Load Dynamic Color #19
+- Add links in What's new items
+
+### Add
+
+- Github-repo-stats workflow file
+
+### Upgrade
+
+- KotlinVersion to 1.9.23 & compilerVersion to 1.5.11
+- AppVersion to 3.1
+
 ## [3.0] - 2024-04-04
 
 ### 🚀 Features
@@ -45,6 +100,7 @@ All notable changes to this project will be documented in this file.
 - Add support links
 - Update features + add emoji
 - Fix row issue
+- Add v3.0 changelog
 
 ### ⚙️ Miscellaneous Tasks
 
