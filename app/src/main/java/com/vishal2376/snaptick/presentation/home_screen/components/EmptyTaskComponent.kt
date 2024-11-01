@@ -34,7 +34,7 @@ fun EmptyTaskComponent(modifier: Modifier = Modifier) {
 			Text(
 				text = stringResource(R.string.no_tasks),
 				style = h1TextStyle,
-				color = MaterialTheme.colorScheme.onPrimary
+				color = MaterialTheme.colorScheme.onBackground
 			)
 		}
 	}
