@@ -16,8 +16,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.NotificationsNone
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material3.Button
@@ -44,6 +45,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -87,6 +89,7 @@ fun EditTaskScreen(
 ) {
 	var taskStartTime by remember { mutableStateOf(task.startTime) }
 	var taskEndTime by remember { mutableStateOf(task.endTime) }
+	var isTaskAllDay by remember { mutableStateOf(task.isAllDayTaskEnabled()) }
 	var isTimeUpdated by remember { mutableStateOf(false) }
 	val taskDuration by remember { mutableLongStateOf(task.getDuration() / 60) }
 
@@ -236,7 +239,10 @@ fun EditTaskScreen(
 						.fillMaxWidth()
 						.padding(24.dp, 8.dp)
 				) {
-					Column(horizontalAlignment = Alignment.CenterHorizontally) {
+					Column(
+						modifier = Modifier.alpha(if (isTaskAllDay && !task.reminder) 0.3f else 1f),
+						horizontalAlignment = Alignment.CenterHorizontally
+					) {
 						Text(
 							text = stringResource(R.string.start_time),
 							style = taskTextStyle,
@@ -260,28 +266,30 @@ fun EditTaskScreen(
 							}
 						}
 					}
-					Column(horizontalAlignment = Alignment.CenterHorizontally) {
-						Text(
-							text = stringResource(R.string.end_time),
-							style = taskTextStyle,
-							color = Red
-						)
-						Spacer(modifier = Modifier.height(8.dp))
-						if (appState.isWheelTimePicker) {
-							ShowTimePicker(
-								time = taskEndTime,
-								is24hourFormat = appState.is24hourTimeFormat,
-								isTimeUpdated = isTimeUpdated
-							) { snappedTime ->
-								onEvent(AddEditScreenEvent.OnUpdateEndTime(snappedTime))
-								taskEndTime = snappedTime
-							}
-						} else {
-							ShowNativeTimePicker(
-								time = taskEndTime,
-								is24hourFormat = appState.is24hourTimeFormat
-							) {
-								showDialogEndTimePicker = true
+					if (!isTaskAllDay) {
+						Column(horizontalAlignment = Alignment.CenterHorizontally) {
+							Text(
+								text = stringResource(R.string.end_time),
+								style = taskTextStyle,
+								color = Red
+							)
+							Spacer(modifier = Modifier.height(8.dp))
+							if (appState.isWheelTimePicker) {
+								ShowTimePicker(
+									time = taskEndTime,
+									is24hourFormat = appState.is24hourTimeFormat,
+									isTimeUpdated = isTimeUpdated
+								) { snappedTime ->
+									onEvent(AddEditScreenEvent.OnUpdateEndTime(snappedTime))
+									taskEndTime = snappedTime
+								}
+							} else {
+								ShowNativeTimePicker(
+									time = taskEndTime,
+									is24hourFormat = appState.is24hourTimeFormat
+								) {
+									showDialogEndTimePicker = true
+								}
 							}
 						}
 					}
@@ -289,12 +297,13 @@ fun EditTaskScreen(
 				Row(
 					modifier = Modifier
 						.fillMaxWidth()
+						.alpha(if (isTaskAllDay) 0.2f else 1f)
 						.padding(start = 32.dp, end = 32.dp, top = 8.dp),
 					verticalAlignment = Alignment.CenterVertically,
 					horizontalArrangement = Arrangement.SpaceBetween
 				) {
 					Text(
-						text = stringResource(R.string.start_time),
+						text = stringResource(R.string.duration),
 						style = h2TextStyle,
 						color = MaterialTheme.colorScheme.onBackground
 					)
@@ -307,23 +316,26 @@ fun EditTaskScreen(
 				}
 				DurationComponent(
 					modifier = Modifier
+						.alpha(if (isTaskAllDay) 0.2f else 1f)
 						.padding(horizontal = 24.dp),
 					durationList = appState.durationList,
 					defaultDuration = taskDuration
 				) { duration ->
-					if (duration == 0L) {
-						showDialogCustomDuration = true
-					} else {
+					if (!isTaskAllDay) {
+						if (duration == 0L) {
+							showDialogCustomDuration = true
+						} else {
 
-						onEvent(
-							AddEditScreenEvent.OnUpdateEndTime(
-								task.startTime.plusMinutes(
-									duration
+							onEvent(
+								AddEditScreenEvent.OnUpdateEndTime(
+									task.startTime.plusMinutes(
+										duration
+									)
 								)
 							)
-						)
-						taskEndTime = taskStartTime.plusMinutes(duration)
-						isTimeUpdated = !isTimeUpdated
+							taskEndTime = taskStartTime.plusMinutes(duration)
+							isTimeUpdated = !isTimeUpdated
+						}
 					}
 				}
 
@@ -334,7 +346,40 @@ fun EditTaskScreen(
 							.padding(24.dp, 0.dp),
 						verticalAlignment = Alignment.CenterVertically
 					) {
-						Icon(imageVector = Icons.Default.Notifications, contentDescription = null)
+						Icon(imageVector = Icons.Default.AccessTime, contentDescription = null)
+						Text(
+							modifier = Modifier
+								.weight(1f)
+								.padding(start = 4.dp),
+							text = stringResource(R.string.all_day),
+							style = h2TextStyle,
+							color = MaterialTheme.colorScheme.onBackground
+						)
+
+						Switch(
+							checked = isTaskAllDay,
+							onCheckedChange = {
+								isTaskAllDay = it
+								taskEndTime = taskStartTime
+							},
+							colors = SwitchDefaults.colors(
+								checkedThumbColor = MaterialTheme.colorScheme.primary,
+								checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
+								uncheckedTrackColor = MaterialTheme.colorScheme.primaryContainer
+							)
+						)
+					}
+
+					Row(
+						modifier = Modifier
+							.fillMaxWidth()
+							.padding(24.dp, 0.dp),
+						verticalAlignment = Alignment.CenterVertically
+					) {
+						Icon(
+							imageVector = Icons.Default.NotificationsNone,
+							contentDescription = null
+						)
 						Text(
 							modifier = Modifier
 								.weight(1f)
@@ -410,8 +455,14 @@ fun EditTaskScreen(
 			) {
 				Button(
 					onClick = {
+
+						if (isTaskAllDay) {
+							onEvent(AddEditScreenEvent.OnUpdateEndTime(taskStartTime))
+						}
+
 						val (isValid, errorMessage) = checkValidTask(
 							task = task,
+							isTaskAllDay = isTaskAllDay,
 							totalTasksDuration = appState.totalTaskDuration - task.getDuration(
 								checkPastTask = true
 							)

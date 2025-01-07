@@ -7,6 +7,7 @@ import java.time.LocalTime
 fun checkValidTask(
 	task: Task,
 	totalTasksDuration: Long = 0,
+	isTaskAllDay: Boolean = false,
 	sleepTime: LocalTime = LocalTime.MAX
 ): Pair<Boolean, String> {
 	val maxTime = sleepTime.toSecondOfDay()
@@ -21,7 +22,7 @@ fun checkValidTask(
 		return Pair(false, "Title can't be empty")
 	}
 
-	if (task.getDuration() < Constants.MIN_ALLOWED_DURATION * 60) {
+	if ((task.getDuration() < Constants.MIN_ALLOWED_DURATION * 60) && !isTaskAllDay) {
 		return Pair(false, "Task should be at least ${Constants.MIN_ALLOWED_DURATION} minutes.")
 	}
 

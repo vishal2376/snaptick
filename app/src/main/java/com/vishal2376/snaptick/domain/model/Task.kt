@@ -30,6 +30,10 @@ data class Task(
 	val date: LocalDate = LocalDate.now(),
 	val priority: Int = 0,
 ) {
+	fun isAllDayTaskEnabled(): Boolean {
+		return startTime == endTime
+	}
+
 	fun getRepeatWeekList(): List<Int> {
 		return if (repeatWeekdays.isEmpty())
 			emptyList()

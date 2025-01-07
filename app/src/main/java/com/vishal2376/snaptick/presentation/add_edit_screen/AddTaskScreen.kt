@@ -19,7 +19,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.AccessTime
+import androidx.compose.material.icons.filled.NotificationsNone
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Today
 import androidx.compose.material.icons.rounded.ArrowBack
@@ -47,6 +48,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -110,6 +112,7 @@ fun AddTaskScreen(
 	var taskDate by remember { mutableStateOf(currentDate) }
 	var isTaskReminderOn by remember { mutableStateOf(true) }
 	var isTaskRepeated by remember { mutableStateOf(false) }
+	var isTaskAllDay by remember { mutableStateOf(false) }
 	var repeatedWeekDays by remember { mutableStateOf("") }
 	var taskPriority by remember { mutableStateOf(Priority.LOW) }
 	val taskDuration by remember { mutableLongStateOf(60) }
@@ -275,7 +278,10 @@ fun AddTaskScreen(
 						.fillMaxWidth()
 						.padding(24.dp, 8.dp)
 				) {
-					Column(horizontalAlignment = Alignment.CenterHorizontally) {
+					Column(
+						modifier = Modifier.alpha(if (isTaskAllDay && !isTaskReminderOn) 0.3f else 1f),
+						horizontalAlignment = Alignment.CenterHorizontally
+					) {
 						Text(
 							text = stringResource(R.string.start_time),
 							style = taskTextStyle,
@@ -298,28 +304,30 @@ fun AddTaskScreen(
 							}
 						}
 					}
-					Column(horizontalAlignment = Alignment.CenterHorizontally) {
-						Text(
-							text = stringResource(R.string.end_time),
-							style = taskTextStyle,
-							color = Red
-						)
-						Spacer(modifier = Modifier.height(8.dp))
-						if (appState.isWheelTimePicker) {
+					if (!isTaskAllDay) {
+						Column(horizontalAlignment = Alignment.CenterHorizontally) {
+							Text(
+								text = stringResource(R.string.end_time),
+								style = taskTextStyle,
+								color = Red
+							)
+							Spacer(modifier = Modifier.height(8.dp))
+							if (appState.isWheelTimePicker) {
 
-							ShowTimePicker(
-								time = taskEndTime,
-								is24hourFormat = appState.is24hourTimeFormat,
-								isTimeUpdated = isTimeUpdated
-							) { snappedTime ->
-								taskEndTime = snappedTime
-							}
-						} else {
-							ShowNativeTimePicker(
-								time = taskEndTime,
-								is24hourFormat = appState.is24hourTimeFormat
-							) {
-								showDialogEndTimePicker = true
+								ShowTimePicker(
+									time = taskEndTime,
+									is24hourFormat = appState.is24hourTimeFormat,
+									isTimeUpdated = isTimeUpdated
+								) { snappedTime ->
+									taskEndTime = snappedTime
+								}
+							} else {
+								ShowNativeTimePicker(
+									time = taskEndTime,
+									is24hourFormat = appState.is24hourTimeFormat
+								) {
+									showDialogEndTimePicker = true
+								}
 							}
 						}
 					}
@@ -328,6 +336,7 @@ fun AddTaskScreen(
 				Row(
 					modifier = Modifier
 						.fillMaxWidth()
+						.alpha(if (isTaskAllDay) 0.2f else 1f)
 						.padding(start = 30.dp, end = 32.dp, top = 8.dp),
 					verticalAlignment = Alignment.CenterVertically,
 					horizontalArrangement = Arrangement.SpaceBetween
@@ -347,15 +356,20 @@ fun AddTaskScreen(
 
 				DurationComponent(
 					modifier = Modifier
+						.alpha(if (isTaskAllDay) 0.2f else 1f)
 						.padding(horizontal = 24.dp),
 					durationList = appState.durationList,
 					defaultDuration = taskDuration
 				) { duration ->
-					if (duration == 0L) {
-						showDialogCustomDuration = true
+					if (!isTaskAllDay) {
+						if (duration == 0L) {
+							showDialogCustomDuration = true
+						} else {
+							taskEndTime = taskStartTime.plusMinutes(duration)
+							isTimeUpdated = !isTimeUpdated
+						}
 					} else {
-						taskEndTime = taskStartTime.plusMinutes(duration)
-						isTimeUpdated = !isTimeUpdated
+						showCustomSnackbar(context.getString(R.string.disable_all_day_option))
 					}
 				}
 
@@ -366,7 +380,40 @@ fun AddTaskScreen(
 							.padding(24.dp, 0.dp),
 						verticalAlignment = Alignment.CenterVertically
 					) {
-						Icon(imageVector = Icons.Default.Notifications, contentDescription = null)
+						Icon(imageVector = Icons.Default.AccessTime, contentDescription = null)
+						Text(
+							modifier = Modifier
+								.weight(1f)
+								.padding(start = 4.dp),
+							text = stringResource(R.string.all_day),
+							style = h2TextStyle,
+							color = MaterialTheme.colorScheme.onBackground
+						)
+
+						Switch(
+							checked = isTaskAllDay,
+							onCheckedChange = {
+								isTaskAllDay = it
+								taskEndTime = taskStartTime
+							},
+							colors = SwitchDefaults.colors(
+								checkedThumbColor = MaterialTheme.colorScheme.primary,
+								checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
+								uncheckedTrackColor = MaterialTheme.colorScheme.primaryContainer
+							)
+						)
+					}
+
+					Row(
+						modifier = Modifier
+							.fillMaxWidth()
+							.padding(24.dp, 0.dp),
+						verticalAlignment = Alignment.CenterVertically
+					) {
+						Icon(
+							imageVector = Icons.Default.NotificationsNone,
+							contentDescription = null
+						)
 						Text(
 							modifier = Modifier
 								.weight(1f)
@@ -441,6 +488,11 @@ fun AddTaskScreen(
 			) {
 				Button(
 					onClick = {
+
+						if (isTaskAllDay) {
+							taskEndTime = taskStartTime
+						}
+
 						val task = Task(
 							id = 0,
 							uuid = UUID.randomUUID().toString(),
@@ -458,6 +510,7 @@ fun AddTaskScreen(
 
 						val (isValid, errorMessage) = checkValidTask(
 							task = task,
+							isTaskAllDay = isTaskAllDay,
 							totalTasksDuration = appState.totalTaskDuration
 						)
 
