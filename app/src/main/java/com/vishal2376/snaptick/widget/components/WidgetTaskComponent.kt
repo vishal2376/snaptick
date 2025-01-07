@@ -80,7 +80,11 @@ fun WidgetTaskComponent(
 				)
 				Spacer(modifier = GlanceModifier.width(4.dp))
 				Text(
-					text = task.formattedTime,
+					text = if (task.isAllDayTaskEnabled()) {
+						"All Day"
+					} else {
+						task.getFormattedTime(is24HourFormat = false)
+					},
 					style = TextStyle(
 						color = ColorProvider(color = LightGray),
 						fontSize = 12.sp

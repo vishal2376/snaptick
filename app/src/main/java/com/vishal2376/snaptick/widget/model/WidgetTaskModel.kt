@@ -16,13 +16,17 @@ data class WidgetTaskModel(
 	val endTime: LocalTime = LocalTime.now(),
 	val priority: Int = 0,
 ) {
-	private val timerFormat: DateTimeFormatter
-		get() = DateTimeFormatter.ofPattern("hh:mm a")
 
-	val formattedTime: String
-		get() {
-			val startTimeFormat = timerFormat.format(startTime)
-			val endTimeFormat = timerFormat.format(endTime)
-			return "$startTimeFormat - $endTimeFormat"
+	fun getFormattedTime(is24HourFormat: Boolean = false): String {
+		val dtf = if (is24HourFormat) {
+			DateTimeFormatter.ofPattern("HH:mm")
+		} else {
+			DateTimeFormatter.ofPattern("hh:mm a")
 		}
+		val startTimeFormat = startTime.format(dtf)
+		val endTimeFormat = endTime.format(dtf)
+		return "$startTimeFormat - $endTimeFormat"
+	}
+
+	fun isAllDayTaskEnabled(): Boolean = (startTime == endTime)
 }
