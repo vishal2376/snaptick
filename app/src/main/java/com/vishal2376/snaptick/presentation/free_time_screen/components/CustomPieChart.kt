@@ -55,15 +55,22 @@ fun CustomPieChart(
 				.size(pieChartSize)
 				.rotate(90f * animationProgress.value)
 		) {
-			arcValues.forEachIndexed { index, arcValue ->
-				drawArc(
-					color = pieChartColors[index % totalColors],
-					startAngle = newStartAngle,
-					useCenter = false,
-					sweepAngle = arcValue * animationProgress.value,
+			if (totalSum == 0L) {
+				drawCircle(
+					color = pieChartColors[totalColors - 1],
 					style = Stroke(width = arcWidth.toPx())
 				)
-				newStartAngle += arcValue
+			} else {
+				arcValues.forEachIndexed { index, arcValue ->
+					drawArc(
+						color = pieChartColors[index % totalColors],
+						startAngle = newStartAngle,
+						useCenter = false,
+						sweepAngle = arcValue * animationProgress.value,
+						style = Stroke(width = arcWidth.toPx())
+					)
+					newStartAngle += arcValue
+				}
 			}
 		}
 	}
