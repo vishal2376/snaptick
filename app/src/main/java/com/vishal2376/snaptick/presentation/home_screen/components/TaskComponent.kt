@@ -35,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -44,6 +45,7 @@ import com.vishal2376.snaptick.presentation.common.taskDescTextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.ui.theme.DarkGreen
 import com.vishal2376.snaptick.ui.theme.LightGreen
+import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.ui.theme.priorityColors
 import com.vishal2376.snaptick.util.DummyTasks
 import java.time.LocalDate
@@ -160,7 +162,15 @@ fun TaskComponent(
 
 							)
 							Text(
-								text = task.getFormattedTime(is24HourTimeFormat),
+								text = if (task.isAllDayTaskEnabled()) {
+									if (task.reminder) {
+										task.getFormattedTime(is24HourTimeFormat).split("-")[0]
+									} else {
+										stringResource(R.string.all_day)
+									}
+								} else {
+									task.getFormattedTime(is24HourTimeFormat)
+								},
 								style = taskDescTextStyle,
 								color = MaterialTheme.colorScheme.onPrimaryContainer
 
@@ -208,7 +218,7 @@ fun TaskComponent(
 					}
 
 				}
-				if (!task.isCompleted && task.date.isEqual(LocalDate.now())) {
+				if (!task.isCompleted && task.date.isEqual(LocalDate.now()) && !task.isAllDayTaskEnabled()) {
 					IconButton(
 						onClick = { onPomodoro(task.id) },
 						modifier = Modifier.weight(0.1f)
@@ -242,10 +252,12 @@ fun TaskComponent(
 @Composable
 fun TaskComponentPreview() {
 	val task = DummyTasks.dummyTasks[0]
-	TaskComponent(
-		task = task,
-		{},
-		{},
-		{}
-	)
+	SnaptickTheme {
+		TaskComponent(
+			task = task,
+			{},
+			{},
+			{}
+		)
+	}
 }
