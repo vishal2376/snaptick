@@ -32,6 +32,7 @@ import com.vishal2376.snaptick.util.updateLocale
 import com.vishal2376.snaptick.worker.NotificationWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -283,7 +284,7 @@ class TaskViewModel @Inject constructor(
 			}
 
 			is PomodoroScreenEvent.OnDestroyScreen -> {
-				viewModelScope.launch {
+				viewModelScope.launch(Dispatchers.IO) {
 					task = repository.getTaskById(event.taskId)
 					task = if (task.isValidPomodoroSession(event.remainingTime))
 						task.copy(pomodoroTimer = event.remainingTime.toInt())
