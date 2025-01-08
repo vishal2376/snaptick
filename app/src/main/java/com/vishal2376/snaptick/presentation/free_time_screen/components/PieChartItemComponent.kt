@@ -76,11 +76,13 @@ fun PieChartItemComponent(task: Task, itemColor: Color, animDelay: Int = 100) {
 				color = MaterialTheme.colorScheme.onBackground,
 			)
 
-			Text(
-				text = task.getFormattedDuration(),
-				style = taskTextStyle,
-				color = MaterialTheme.colorScheme.onBackground
-			)
+			if (!task.isAllDayTaskEnabled()) {
+				Text(
+					text = task.getFormattedDuration(),
+					style = taskTextStyle,
+					color = MaterialTheme.colorScheme.onBackground
+				)
+			}
 		}
 	}
 }
