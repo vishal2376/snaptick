@@ -195,6 +195,7 @@ fun TaskComponent(
 							}
 						}
 						if (task.repeatWeekdays.isNotEmpty() && task.isRepeated) {
+							val isDailyTask = task.getRepeatWeekList().size == 7
 							Row(
 								modifier = Modifier.padding(top = 2.dp),
 								horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -208,7 +209,7 @@ fun TaskComponent(
 
 								)
 								Text(
-									text = task.getWeekDaysTitle(),
+									text = if (isDailyTask) stringResource(R.string.every_day) else task.getWeekDaysTitle(),
 									style = taskDescTextStyle,
 									color = MaterialTheme.colorScheme.onPrimaryContainer
 
