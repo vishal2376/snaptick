@@ -19,6 +19,7 @@ import com.vishal2376.snaptick.presentation.about_screen.AboutScreen
 import com.vishal2376.snaptick.presentation.add_edit_screen.AddTaskScreen
 import com.vishal2376.snaptick.presentation.add_edit_screen.EditTaskScreen
 import com.vishal2376.snaptick.presentation.calender_screen.CalenderScreen
+import com.vishal2376.snaptick.presentation.common.NotificationPermissionHandler
 import com.vishal2376.snaptick.presentation.completed_task_screen.CompletedTaskScreen
 import com.vishal2376.snaptick.presentation.free_time_screen.FreeTimeScreen
 import com.vishal2376.snaptick.presentation.home_screen.HomeScreen
@@ -26,6 +27,7 @@ import com.vishal2376.snaptick.presentation.pomodoro_screen.PomodoroScreen
 import com.vishal2376.snaptick.presentation.settings.SettingsScreen
 import com.vishal2376.snaptick.presentation.this_week_task_screen.ThisWeekTaskScreen
 import com.vishal2376.snaptick.presentation.viewmodels.TaskViewModel
+import com.vishal2376.snaptick.util.showToast
 import java.time.LocalDate
 
 @Composable
@@ -44,6 +46,16 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 	}
 
 	val activity = LocalContext.current as MainActivity
+
+	// runtime notification permission
+	NotificationPermissionHandler(
+		onPermissionGranted = {
+			showToast(activity,"Notification Enabled")
+		},
+		onPermissionDenied = {
+			showToast(activity,"Notification Disabled")
+		}
+	)
 
 	NavHost(
 		navController = navController,
