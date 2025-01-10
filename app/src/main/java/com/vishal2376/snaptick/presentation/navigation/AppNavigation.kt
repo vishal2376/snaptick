@@ -49,9 +49,7 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 
 	// runtime notification permission
 	NotificationPermissionHandler(
-		onPermissionGranted = {
-			showToast(activity,"Notification Enabled")
-		},
+		onPermissionGranted = {},
 		onPermissionDenied = {
 			showToast(activity,"Notification Disabled")
 		}
