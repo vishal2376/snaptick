@@ -2,6 +2,42 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.2] - 2025-01-14
+
+### 🚀 Features
+
+- Add All-day option in Add/Edit Screen with validation #23
+- Show different Task Component Status #23
+- Update Task Widget Component #23
+- Show "Every Day" label instead of 7 days in TaskComponent #84
+- Implement Runtime notification for Android 12+ #92
+- Create Media Player listener #34
+- Add Task Add,Delete,Completion Sounds #34
+
+### 🐛 Bug Fixes
+
+- Pie Chart for Zero Duration / All-day Task #23
+- Minor bug
+- Notification permission granted toast
+- Hide What's new dialog until datastore sync completed
+
+### 📚 Documentation
+
+- Update CHANGELOG.md
+- Update features in full_description.txt
+- Dark mode star history
+
+### ⚙️ Miscellaneous Tasks
+
+- Minor changes
+- Hide duration of All-day tasks in FreeTimeScreen #23
+- Add audio files #34
+- Update what's new dialog info
+
+### Upgrade
+
+- AppVersion to 3.2
+
 ## [3.1] - 2024-11-01
 
 ### 🚀 Features
