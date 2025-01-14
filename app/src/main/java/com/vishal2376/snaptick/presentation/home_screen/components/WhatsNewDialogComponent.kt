@@ -53,23 +53,23 @@ fun WhatsNewDialogComponent(
 
 	val newFeatures = listOf(
 		NewItem(
-			"Material You Theme",
-			"Enjoy a dynamic theme that adapts to your wallpaper",
-			"https://github.com/vishal2376/snaptick/issues/19#issuecomment-2451274281"
+			"All-Day Tasks ",
+			"Create tasks without any time constraints",
+			"https://github.com/vishal2376/snaptick/issues/23#issuecomment-2577108949"
 		),
 		NewItem(
-			" Offline Backup Support",
-			"Keep your tasks safe, no internet required. Never lose your progress again!",
-			"https://github.com/vishal2376/snaptick/issues/30#issuecomment-2451297596"
+			"Cool Sound FX",
+			"Major upgrade with new sounds effects",
+			""
 		),
 		NewItem(
-			"New Time Format",
-			"Choose your style: 12-hour or 24-hour time format, it's up to you!",
-			"https://github.com/vishal2376/snaptick/issues/63#issuecomment-2351571657"
+			"Enhanced Labels",
+			"New labels for weekly tasks",
+			"https://github.com/vishal2376/snaptick/issues/84#issuecomment-2577107568"
 		),
 		NewItem(
-			"Adaptive Icon",
-			"Sleek App icon that adapt to your device’s style"
+			"Notification Permission",
+			"Added Runtime permissions for Android 12+"
 		),
 	)
 
