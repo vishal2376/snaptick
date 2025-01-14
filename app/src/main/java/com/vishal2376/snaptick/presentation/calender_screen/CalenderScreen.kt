@@ -59,6 +59,8 @@ import com.vishal2376.snaptick.presentation.navigation.Routes
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.Constants
 import com.vishal2376.snaptick.util.DummyTasks
+import com.vishal2376.snaptick.util.SoundEvent
+import com.vishal2376.snaptick.util.playSound
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.YearMonth
@@ -247,6 +249,7 @@ fun CalenderScreen(
 								},
 								onComplete = {
 									if (task.date >= LocalDate.now()) {
+										playSound(context,SoundEvent.TASK_COMPLETED)
 										onEvent(HomeScreenEvent.OnCompleted(it, !task.isCompleted))
 									}
 								},

@@ -75,7 +75,9 @@ import com.vishal2376.snaptick.ui.theme.Yellow
 import com.vishal2376.snaptick.util.Constants
 import com.vishal2376.snaptick.util.DummyTasks
 import com.vishal2376.snaptick.util.SettingsStore
+import com.vishal2376.snaptick.util.SoundEvent
 import com.vishal2376.snaptick.util.getFreeTime
+import com.vishal2376.snaptick.util.playSound
 import com.vishal2376.snaptick.util.updateLocale
 import kotlinx.coroutines.launch
 
@@ -387,6 +389,7 @@ fun HomeScreen(
 								modifier = Modifier.animateItemPlacement(tween(500))
 							) {
 								SwipeActionBox(item = task, onAction = {
+									playSound(context, SoundEvent.TASK_DELETED)
 									onEvent(HomeScreenEvent.OnSwipeTask(it))
 									showCustomSnackbar(
 										msg = "Task Deleted",
@@ -404,6 +407,7 @@ fun HomeScreen(
 											onNavigate("${Routes.EditTaskScreen.name}/$taskId")
 										},
 										onComplete = {
+											playSound(context, SoundEvent.TASK_COMPLETED)
 											onEvent(HomeScreenEvent.OnCompleted(it, true))
 										},
 										onPomodoro = { taskId ->

@@ -45,6 +45,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -84,8 +85,10 @@ import com.vishal2376.snaptick.ui.theme.LightGreen
 import com.vishal2376.snaptick.ui.theme.Red
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.ui.theme.priorityColors
+import com.vishal2376.snaptick.util.SoundEvent
 import com.vishal2376.snaptick.util.checkValidTask
 import com.vishal2376.snaptick.util.getFormattedDuration
+import com.vishal2376.snaptick.util.playSound
 import kotlinx.coroutines.job
 import java.time.LocalDate
 import java.time.LocalTime
@@ -118,6 +121,7 @@ fun AddTaskScreen(
 	val taskDuration by remember { mutableLongStateOf(60) }
 	var isTimeUpdated by remember { mutableStateOf(false) }
 
+	val scope = rememberCoroutineScope()
 	val context = LocalContext.current
 	val focusRequester = FocusRequester()
 
@@ -515,6 +519,7 @@ fun AddTaskScreen(
 						)
 
 						if (isValid) {
+							playSound(context, SoundEvent.TASK_ADDED)
 							onEvent(AddEditScreenEvent.OnAddTaskClick(task))
 							showCustomSnackbar(
 								context.getString(R.string.tasks_added_successfully),
