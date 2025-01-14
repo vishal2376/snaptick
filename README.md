@@ -85,7 +85,13 @@ We welcome contributions from anyone interested in helping to improve Snaptick! 
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=vishal2376/snaptick&type=Timeline)](https://star-history.com/#vishal2376/snaptick&Timeline)
+<a href="https://star-history.com/#vishal2376/snaptick&Timeline">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=vishal2376/snaptick&type=Timeline&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=vishal2376/snaptick&type=Timeline" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=vishal2376/snaptick&type=Timeline" />
+ </picture>
+</a>
 
 ## License
 
