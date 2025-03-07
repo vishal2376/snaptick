@@ -32,7 +32,6 @@ import com.vishal2376.snaptick.util.updateLocale
 import com.vishal2376.snaptick.worker.NotificationWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -194,9 +193,11 @@ class TaskViewModel @Inject constructor(
 
 			is HomeScreenEvent.OnDeleteTask -> {
 				viewModelScope.launch {
-					task = repository.getTaskById(event.taskId)
-					deletedTask = task
-					repository.deleteTask(task)
+					repository.getTaskById(event.taskId)?.let {
+						task = it
+						deletedTask = task
+						repository.deleteTask(task)
+					}
 				}
 			}
 
@@ -285,20 +286,26 @@ class TaskViewModel @Inject constructor(
 
 			is PomodoroScreenEvent.OnDestroyScreen -> {
 				viewModelScope.launch(Dispatchers.IO) {
-					task = repository.getTaskById(event.taskId)
-					task = if (task.isValidPomodoroSession(event.remainingTime))
-						task.copy(pomodoroTimer = event.remainingTime.toInt())
-					else
-						task.copy(pomodoroTimer = -1)
-					repository.updateTask(task)
+					val fetchedTask = repository.getTaskById(event.taskId)
+					if (fetchedTask != null) {
+						task = if (fetchedTask.isValidPomodoroSession(event.remainingTime))
+							fetchedTask.copy(pomodoroTimer = event.remainingTime.toInt())
+						else
+							fetchedTask.copy(pomodoroTimer = -1)
+
+						repository.updateTask(task)
+					} else {
+						println("TaskViewModel: Task with ID ${event.taskId} not found")
+					}
 				}
 			}
+
 		}
 	}
 
 	private fun getTaskById(id: Int) {
 		viewModelScope.launch(Dispatchers.IO) {
-			task = repository.getTaskById(id)
+			repository.getTaskById(id)?.let { task = it }
 		}
 	}
 
@@ -338,7 +345,7 @@ class TaskViewModel @Inject constructor(
 
 	private fun toggleTaskCompletion(taskId: Int, isCompleted: Boolean) {
 		viewModelScope.launch(Dispatchers.IO) {
-			task = repository.getTaskById(taskId)
+			repository.getTaskById(taskId)?.let { task = it }
 			task = task.copy(isCompleted = isCompleted)
 			repository.updateTask(task)
 			if (isCompleted) {

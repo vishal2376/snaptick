@@ -23,7 +23,7 @@ class TaskRepository(
 		dao.updateTask(task)
 	}
 
-	suspend fun getTaskById(id: Int): Task {
+	suspend fun getTaskById(id: Int): Task? {
 		return dao.getTaskById(id)
 	}
 

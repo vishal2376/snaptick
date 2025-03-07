@@ -34,11 +34,12 @@ class OnTaskClickedCallback : ActionCallback {
 			EntryPoints.get(context.applicationContext, GlanceActionEntryPoint::class.java)
 		val taskRepository = entryPoint.taskRepository()
 
-		val task = taskRepository.getTaskById(taskId)
-		val updatedTask = task.copy(isCompleted = !task.isCompleted)
-		// update the task
-		taskRepository.updateTask(updatedTask)
+		taskRepository.getTaskById(taskId)?.let {
+			val updatedTask = it.copy(isCompleted = !it.isCompleted)
+			// update the task
+			taskRepository.updateTask(updatedTask)
 
-		entryPoint.glanceInterceptor().enqueueWidgetDataWorker()
+			entryPoint.glanceInterceptor().enqueueWidgetDataWorker()
+		}
 	}
 }
