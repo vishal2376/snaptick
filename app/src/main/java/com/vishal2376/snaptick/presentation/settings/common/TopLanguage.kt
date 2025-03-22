@@ -11,6 +11,7 @@ enum class TopLanguage(val languageCode: String, val emoji: String) {
 	JAPANESE("ja", "\uD83C\uDDEF\uD83C\uDDF5"),
 	NORWEGIAN("no", "\uD83C\uDDF3\uD83C\uDDF4"),
 	POLISH("pl", "\uD83C\uDDF5\uD83C\uDDF1"),
+	PERSIAN("fa", "\uD83C\uDDE7\uD83C\uDDEB"),
 	PORTUGUESE("pt", "\uD83C\uDDF5\uD83C\uDDF9"),
 	RUSSIAN("ru", "\uD83C\uDDF7\uD83C\uDDFA"),
 	SPANISH("es", "\uD83C\uDDEA\uD83C\uDDF8"),
