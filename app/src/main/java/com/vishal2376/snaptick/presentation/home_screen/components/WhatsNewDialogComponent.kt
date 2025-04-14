@@ -53,23 +53,24 @@ fun WhatsNewDialogComponent(
 
 	val newFeatures = listOf(
 		NewItem(
-			"All-Day Tasks ",
-			"Create tasks without any time constraints",
-			"https://github.com/vishal2376/snaptick/issues/23#issuecomment-2577108949"
+			"Custom Swipe Action",
+			"Swipe action can be customized",
+			"https://github.com/vishal2376/snaptick/issues/93#issuecomment-2802442282"
 		),
 		NewItem(
-			"Cool Sound FX",
-			"Major upgrade with new sounds effects",
-			""
+			"Open App From Notification",
+			"App can be open directly from notification",
+			"https://github.com/vishal2376/snaptick/issues/104#issuecomment-2802255286"
 		),
 		NewItem(
-			"Enhanced Labels",
-			"New labels for weekly tasks",
-			"https://github.com/vishal2376/snaptick/issues/84#issuecomment-2577107568"
+			"Fix Snackbar Overlap Issue",
+			"No more overlapping with system navigation buttons",
+			"https://github.com/vishal2376/snaptick/issues/94#issue-2873065226"
 		),
 		NewItem(
-			"Notification Permission",
-			"Added Runtime permissions for Android 12+"
+			"Fix App Crash Issue",
+			"No more crash in Pomodoro Timer Screen",
+			"https://github.com/vishal2376/snaptick/issues/101"
 		),
 	)
 
