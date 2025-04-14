@@ -388,17 +388,27 @@ fun HomeScreen(
 							Box(
 								modifier = Modifier.animateItemPlacement(tween(500))
 							) {
-								SwipeActionBox(item = task, onAction = {
-									playSound(context, SoundEvent.TASK_DELETED)
-									onEvent(HomeScreenEvent.OnSwipeTask(it))
-									showCustomSnackbar(
-										msg = "Task Deleted",
-										actionText = "Undo",
-										onClickAction = {
-											onEvent(HomeScreenEvent.OnUndoDelete)
-										})
-								})
-								{
+								SwipeActionBox(
+									item = task,
+									swipeBehavior = appState.swipeBehaviour,
+									onDelete = {
+										playSound(context, SoundEvent.TASK_DELETED)
+										onEvent(HomeScreenEvent.OnSwipeTask(it))
+										showCustomSnackbar(
+											msg = "Task Deleted",
+											actionText = "Undo",
+											onClickAction = { onEvent(HomeScreenEvent.OnUndoDelete) }
+										)
+									},
+									onComplete = {
+										playSound(context, SoundEvent.TASK_COMPLETED)
+										onEvent(HomeScreenEvent.OnCompleted(it.id, true))
+										showCustomSnackbar(
+											msg = "Task Completed",
+											actionColor = LightGreen
+										)
+									}
+								) {
 									TaskComponent(
 										task = task,
 										is24HourTimeFormat = appState.is24hourTimeFormat,

@@ -92,4 +92,8 @@
     <string name="disable_all_day_option">Disable All-Day Option</string>
     <string name="all_day">All Day</string>
     <string name="every_day">Every Day</string>
+    <string name="swipe_action">Swipe Action</string>
+    <string name="choose_swipe_action">Choose Swipe Action</string>
+    <string name="none">None</string>
+    <string name="complete">Complete</string>
 </resources>

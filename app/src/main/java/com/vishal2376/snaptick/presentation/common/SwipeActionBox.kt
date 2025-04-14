@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircleOutline
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.DismissDirection
 import androidx.compose.material3.DismissState
 import androidx.compose.material3.DismissValue
@@ -30,24 +32,33 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.vishal2376.snaptick.ui.theme.Blue500
+import com.vishal2376.snaptick.ui.theme.LightGreen
 import com.vishal2376.snaptick.ui.theme.Red
 import kotlinx.coroutines.delay
+
+enum class SwipeBehavior {
+	NONE,
+	DELETE,
+	COMPLETE
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> SwipeActionBox(
 	item: T,
-	onAction: (T) -> Unit,
-	bgColor: Color = Red,
-	icon: ImageVector = Icons.Default.Delete,
+	onDelete: (T) -> Unit,
+	onComplete: (T) -> Unit,
+	swipeBehavior: SwipeBehavior = SwipeBehavior.DELETE,
 	iconTint: Color = Blue500,
 	animationDuration: Int = 300,
 	content: @Composable (T) -> Unit
 ) {
 	var isActionDone by remember { mutableStateOf(false) }
-	val state = rememberDismissState(initialValue = DismissValue.Default,
+
+	val dismissState = rememberDismissState(
+		initialValue = DismissValue.Default,
 		confirmValueChange = { dismissValue ->
-			if (dismissValue == DismissValue.DismissedToStart) {
+			if (dismissValue == DismissValue.DismissedToStart && swipeBehavior != SwipeBehavior.NONE) {
 				isActionDone = true
 				true
 			} else {
@@ -59,21 +70,54 @@ fun <T> SwipeActionBox(
 	LaunchedEffect(isActionDone) {
 		if (isActionDone) {
 			delay(animationDuration.toLong())
-			onAction(item)
-			state.snapTo(DismissValue.Default)
+			when (swipeBehavior) {
+				SwipeBehavior.DELETE -> {
+					onDelete(item)
+				}
+
+				SwipeBehavior.COMPLETE -> {
+					onComplete(item)
+				}
+
+				else -> {}
+			}
+			dismissState.snapTo(DismissValue.Default)
 		}
+	}
+
+	val bgColor = when (swipeBehavior) {
+		SwipeBehavior.DELETE -> Red
+		SwipeBehavior.COMPLETE -> LightGreen
+		else -> Color.Transparent
+	}
+
+	val icon = when (swipeBehavior) {
+		SwipeBehavior.DELETE -> Icons.Default.Delete
+		SwipeBehavior.COMPLETE -> Icons.Default.CheckCircleOutline
+		else -> Icons.Default.Refresh
 	}
 
 	AnimatedVisibility(
 		visible = !isActionDone,
 		exit = fadeOut(tween(animationDuration))
 	) {
-		SwipeToDismiss(
-			state = state,
-			background = { ActionBackground(dismissState = state, bgColor, icon, iconTint) },
-			dismissContent = { content(item) },
-			directions = setOf(DismissDirection.EndToStart)
-		)
+		if (swipeBehavior == SwipeBehavior.NONE) {
+			content(item)
+		} else {
+			SwipeToDismiss(
+				state = dismissState,
+				background = {
+					ActionBackground(
+						dismissState = dismissState,
+						bgColor = bgColor,
+						icon = icon,
+						iconTint = iconTint
+					)
+				},
+				dismissContent = { content(item) },
+				directions = setOf(DismissDirection.EndToStart)
+			)
+		}
 	}
 }
 

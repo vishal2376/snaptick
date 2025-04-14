@@ -19,6 +19,7 @@ import com.vishal2376.snaptick.presentation.common.AppTheme
 import com.vishal2376.snaptick.presentation.common.CalenderView
 import com.vishal2376.snaptick.presentation.common.NavDrawerItem
 import com.vishal2376.snaptick.presentation.common.SortTask
+import com.vishal2376.snaptick.presentation.common.SwipeBehavior
 import com.vishal2376.snaptick.presentation.home_screen.HomeScreenEvent
 import com.vishal2376.snaptick.presentation.main.MainEvent
 import com.vishal2376.snaptick.presentation.main.MainState
@@ -171,6 +172,13 @@ class TaskViewModel @Inject constructor(
 				viewModelScope.launch {
 					appState = appState.copy(buildVersionCode = event.versionCode)
 					SettingsStore(event.context).setBuildVersionCode(event.versionCode)
+				}
+			}
+
+			is MainEvent.UpdateSwipeBehaviour -> {
+				viewModelScope.launch {
+					appState = appState.copy(swipeBehaviour = event.swipeBehaviour)
+					SettingsStore(event.context).setSwipeBehaviour(event.swipeBehaviour.ordinal)
 				}
 			}
 		}
@@ -449,6 +457,12 @@ class TaskViewModel @Inject constructor(
 		viewModelScope.launch {
 			settingsStore.showWhatsNewKey.collect {
 				appState = appState.copy(showWhatsNew = it)
+			}
+		}
+
+		viewModelScope.launch {
+			settingsStore.swipeBehaviourKey.collect {
+				appState = appState.copy(swipeBehaviour = SwipeBehavior.entries[it])
 			}
 		}
 
