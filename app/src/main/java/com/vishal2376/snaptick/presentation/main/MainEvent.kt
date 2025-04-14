@@ -5,6 +5,7 @@ import com.vishal2376.snaptick.presentation.common.AppTheme
 import com.vishal2376.snaptick.presentation.common.CalenderView
 import com.vishal2376.snaptick.presentation.common.NavDrawerItem
 import com.vishal2376.snaptick.presentation.common.SortTask
+import com.vishal2376.snaptick.presentation.common.SwipeBehavior
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -22,5 +23,8 @@ sealed class MainEvent {
 	data class OnClickNavDrawerItem(val context: Context, val item: NavDrawerItem) : MainEvent()
 	data class UpdateBuildVersionCode(val context: Context, val versionCode: Int) : MainEvent()
 	data class UpdateCalenderView(val calenderView: CalenderView, val context: Context) :
+		MainEvent()
+
+	data class UpdateSwipeBehaviour(val swipeBehaviour: SwipeBehavior, val context: Context) :
 		MainEvent()
 }

@@ -3,6 +3,7 @@ package com.vishal2376.snaptick.presentation.main
 import com.vishal2376.snaptick.presentation.common.AppTheme
 import com.vishal2376.snaptick.presentation.common.CalenderView
 import com.vishal2376.snaptick.presentation.common.SortTask
+import com.vishal2376.snaptick.presentation.common.SwipeBehavior
 import java.time.LocalDate
 import java.time.LocalTime
 import java.util.Locale
@@ -23,5 +24,6 @@ data class MainState(
 	val isWheelTimePicker: Boolean = true,
 	val is24hourTimeFormat: Boolean = false,
 	val calenderView: CalenderView = CalenderView.MONTHLY,
-	val calenderDate: LocalDate? = null
+	val calenderDate: LocalDate? = null,
+	val swipeBehaviour: SwipeBehavior = SwipeBehavior.DELETE
 )

@@ -11,6 +11,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.vishal2376.snaptick.presentation.common.AppTheme
 import com.vishal2376.snaptick.presentation.common.CalenderView
 import com.vishal2376.snaptick.presentation.common.SortTask
+import com.vishal2376.snaptick.presentation.common.SwipeBehavior
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.time.LocalDate
@@ -34,6 +35,7 @@ class SettingsStore(val context: Context) {
 		private val SLEEP_TIME_KEY = stringPreferencesKey("sleep_time_key")
 		private val SHOW_WHATS_NEW_KEY = booleanPreferencesKey("show_whats_new_key")
 		private val BUILD_VERSION_CODE = intPreferencesKey("build_version_code")
+		private val SWIPE_BEHAVIOUR_KEY = intPreferencesKey("swipe_behaviour_key")
 
 		private const val DEFAULT_LANGUAGE = "en"
 		private val DEFAULT_THEME = AppTheme.Dark.ordinal
@@ -47,6 +49,7 @@ class SettingsStore(val context: Context) {
 		private val DEFAULT_SLEEP_TIME_KEY = LocalTime.of(23, 59).toString()
 		private const val DEFAULT_SHOW_WHATS_NEW = true
 		private const val DEFAULT_BUILD_VERSION_CODE = 1
+		private val DEFAULT_SWIPE_BEHAVIOUR = SwipeBehavior.DELETE.ordinal
 	}
 
 
@@ -96,6 +99,10 @@ class SettingsStore(val context: Context) {
 
 	val buildVersionCode: Flow<Int> = context.dataStore.data.map { preferences ->
 		preferences[BUILD_VERSION_CODE] ?: DEFAULT_BUILD_VERSION_CODE
+	}
+
+	val swipeBehaviourKey: Flow<Int> = context.dataStore.data.map { preferences ->
+		preferences[SWIPE_BEHAVIOUR_KEY] ?: DEFAULT_SWIPE_BEHAVIOUR
 	}
 
 	suspend fun setTheme(theme: Int) {
@@ -167,6 +174,12 @@ class SettingsStore(val context: Context) {
 	suspend fun setBuildVersionCode(versionCode: Int) {
 		context.dataStore.edit { preferences ->
 			preferences[BUILD_VERSION_CODE] = versionCode
+		}
+	}
+
+	suspend fun setSwipeBehaviour(swipeBehaviour: Int) {
+		context.dataStore.edit { preferences ->
+			preferences[SWIPE_BEHAVIOUR_KEY] = swipeBehaviour
 		}
 	}
 

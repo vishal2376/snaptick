@@ -41,6 +41,7 @@ import com.vishal2376.snaptick.presentation.settings.common.SettingCategoryItem
 import com.vishal2376.snaptick.presentation.settings.components.LanguageOptionComponent
 import com.vishal2376.snaptick.presentation.settings.components.SettingsCategoryComponent
 import com.vishal2376.snaptick.presentation.settings.components.SleepTimeOptionComponent
+import com.vishal2376.snaptick.presentation.settings.components.SwipeActionOptionComponent
 import com.vishal2376.snaptick.presentation.settings.components.ThemeOptionComponent
 import com.vishal2376.snaptick.presentation.settings.components.TimePickerOptionComponent
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
@@ -94,6 +95,11 @@ fun SettingsScreen(
 			title = stringResource(R.string.time_picker),
 			resId = R.drawable.ic_clock,
 			onClick = { showBottomSheetById = R.string.time_picker }
+		),
+		SettingCategoryItem(
+			title = stringResource(R.string.swipe_action),
+			resId = R.drawable.ic_swipe_left,
+			onClick = { showBottomSheetById = R.string.swipe_action }
 		),
 	)
 
@@ -183,6 +189,14 @@ fun SettingsScreen(
 								},
 								onSelectTimeFormat = {
 									onEvent(MainEvent.UpdateTimeFormat(it, context))
+								})
+						}
+
+						R.string.swipe_action -> {
+							SwipeActionOptionComponent(
+								selected = appState.swipeBehaviour,
+								onSelect = {
+									onEvent(MainEvent.UpdateSwipeBehaviour(it, context))
 								})
 						}
 					}
