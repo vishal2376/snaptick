@@ -8,8 +8,9 @@ Snaptick is a free daily task planner app designed to help users increase produc
 
 <br/>
 
-<a href="https://twitter.com/vishal2376"><img src="https://img.shields.io/badge/twitter-%231DA1F2.svg?&style=for-the-badge&logo=twitter&logoColor=white" /></a>
 
+<a href="https://twitter.com/vishal2376"><img src="https://img.shields.io/badge/twitter-%231DA1F2.svg?&style=for-the-badge&logo=twitter&logoColor=white" /></a>
+<a href="https://t.me/kotlindevscommunity/"><img src="https://img.shields.io/badge/Join Community-blue?style=for-the-badge&logo=telegram&logoColor=white" /></a>
 
 <img src="https://img.shields.io/github/stars/vishal2376/snaptick?style=for-the-badge&logo=powerpages&color=cba6f7&logoColor=D9E0EE&labelColor=302D41"/>
 <img src="https://img.shields.io/github/last-commit/vishal2376/snaptick?style=for-the-badge&logo=github&color=a6da95&logoColor=D9E0EE&labelColor=302D41"/>
