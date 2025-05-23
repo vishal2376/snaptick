@@ -6,7 +6,7 @@ import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.provideContent
 import com.vishal2376.snaptick.presentation.common.AppTheme
 import com.vishal2376.snaptick.util.DummyTasks
-import com.vishal2376.snaptick.widget.presentation.TaskWidget
+import com.vishal2376.snaptick.widget.presentation.SnaptickTaskWidget
 import com.vishal2376.snaptick.widget.ui.theme.SnaptickWidgetTheme
 
 class TaskAppWidget : GlanceAppWidget() {
@@ -14,7 +14,7 @@ class TaskAppWidget : GlanceAppWidget() {
 		provideContent {
 			SnaptickWidgetTheme(theme = AppTheme.Amoled) {
 				val todayTasks = DummyTasks.dummyTasks
-				TaskWidget(todayTasks)
+				SnaptickTaskWidget(todayTasks)
 			}
 		}
 	}
