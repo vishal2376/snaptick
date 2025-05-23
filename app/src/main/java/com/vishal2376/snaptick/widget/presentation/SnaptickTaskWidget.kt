@@ -2,7 +2,6 @@ package com.vishal2376.snaptick.widget.presentation
 
 import android.widget.Toast
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.glance.ColorFilter
@@ -22,7 +21,6 @@ import androidx.glance.layout.Box
 import androidx.glance.layout.Column
 import androidx.glance.layout.Row
 import androidx.glance.layout.Spacer
-import androidx.glance.layout.fillMaxHeight
 import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.height
@@ -35,9 +33,6 @@ import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
-import com.vishal2376.snaptick.ui.theme.LightGray
-import com.vishal2376.snaptick.ui.theme.Red
-import com.vishal2376.snaptick.ui.theme.Yellow
 import com.vishal2376.snaptick.widget.presentation.components.EmptyTaskWidgetComponent
 import com.vishal2376.snaptick.widget.presentation.components.TaskWidgetComponent
 
