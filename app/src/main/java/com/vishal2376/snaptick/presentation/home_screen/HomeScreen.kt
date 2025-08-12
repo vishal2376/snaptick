@@ -433,6 +433,10 @@ fun HomeScreen(
 										onPomodoro = { taskId ->
 											onNavigate("${Routes.PomodoroScreen.name}/$taskId")
 										},
+										onPostpone = { taskId ->
+											onTaskAction(TaskListAction.PostponeTask(taskId))
+											showCustomSnackbar(msg = "Task postponed to tomorrow")
+										},
 										animDelay = if (firstPaintDone) -1
 										else index.coerceAtMost(SnaptickMotion.MAX_STAGGERED_ITEMS) * 110
 									)
