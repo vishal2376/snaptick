@@ -1,5 +1,6 @@
 package com.vishal2376.snaptick.presentation.settings.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -49,7 +50,12 @@ fun LanguageOptionComponent(defaultLanguage: String, onSelect: (String) -> Unit)
 		Column(Modifier.verticalScroll(rememberScrollState())) {
 			TopLanguage.entries.forEach { language ->
 				Row(
-					modifier = Modifier.fillMaxWidth(),
+					modifier = Modifier
+						.fillMaxWidth()
+						.clickable {
+							selectedLanguage = language
+							onSelect(selectedLanguage.languageCode)
+						},
 					verticalAlignment = Alignment.CenterVertically
 				) {
 					RadioButton(
@@ -61,13 +67,7 @@ fun LanguageOptionComponent(defaultLanguage: String, onSelect: (String) -> Unit)
 						colors = RadioButtonDefaults.colors(selectedColor = Blue)
 					)
 					Text(
-						text = language.emoji,
-						style = taskTextStyle,
-						color = MaterialTheme.colorScheme.onPrimaryContainer
-					)
-					Spacer(modifier = Modifier.width(8.dp))
-					Text(
-						text = language.name,
+						text = "${language.emoji}  ${language.endonym}",
 						style = taskTextStyle,
 						color = MaterialTheme.colorScheme.onPrimaryContainer
 					)

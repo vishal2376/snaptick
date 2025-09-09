@@ -47,6 +47,7 @@ import com.vishal2376.snaptick.presentation.settings.components.TimePickerOption
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.Constants
 import com.vishal2376.snaptick.util.openUrl
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -170,6 +171,10 @@ fun SettingsScreen(
 
 						R.string.language -> {
 							LanguageOptionComponent(defaultLanguage = appState.language) {
+								scope.launch {
+									sheetState.hide()
+									showBottomSheetById = 0
+								}
 								onEvent(MainEvent.UpdateLanguage(it, context))
 							}
 						}
