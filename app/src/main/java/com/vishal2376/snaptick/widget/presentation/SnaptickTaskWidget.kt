@@ -1,6 +1,7 @@
 package com.vishal2376.snaptick.widget.presentation
 
-import android.widget.Toast
+import android.content.Context
+import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -11,7 +12,10 @@ import androidx.glance.GlanceTheme
 import androidx.glance.Image
 import androidx.glance.ImageProvider
 import androidx.glance.LocalContext
+import androidx.glance.action.actionParametersOf
 import androidx.glance.action.clickable
+import androidx.glance.appwidget.action.actionRunCallback
+import androidx.glance.appwidget.action.actionStartActivity
 import androidx.glance.appwidget.cornerRadius
 import androidx.glance.appwidget.lazy.LazyColumn
 import androidx.glance.appwidget.lazy.items
@@ -31,15 +35,21 @@ import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
+import com.vishal2376.snaptick.MainActivity
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
+import com.vishal2376.snaptick.presentation.navigation.Routes
+import com.vishal2376.snaptick.widget.action.RefreshWidgetAction
+import com.vishal2376.snaptick.widget.action.ToggleTaskAction
 import com.vishal2376.snaptick.widget.presentation.components.EmptyTaskWidgetComponent
 import com.vishal2376.snaptick.widget.presentation.components.TaskWidgetComponent
 
 @Composable
 @GlanceComposable
-fun SnaptickTaskWidget(tasks: List<Task>) {
-
+fun SnaptickTaskWidget(
+	tasks: List<Task>,
+	is24HourFormat: Boolean
+) {
 	val context = LocalContext.current
 
 	Box(
@@ -50,7 +60,9 @@ fun SnaptickTaskWidget(tasks: List<Task>) {
 			.padding(16.dp)
 	) {
 		if (tasks.isEmpty()) {
-			EmptyTaskWidgetComponent { }
+			EmptyTaskWidgetComponent(
+				onAddClick = { getAddTaskIntent(context) }
+			)
 		} else {
 			Column {
 				Row(
@@ -64,30 +76,37 @@ fun SnaptickTaskWidget(tasks: List<Task>) {
 							fontSize = 20.sp,
 							fontWeight = FontWeight.Bold,
 						),
-						modifier = GlanceModifier.defaultWeight()
+						modifier = GlanceModifier
+							.defaultWeight()
+							.clickable(actionStartActivity(getOpenAppIntent(context)))
 					)
 					Row {
-						CustomIconButton(R.drawable.ic_refresh) {
-							// TODO: Refresh Widget
-							Toast.makeText(context, "Widget Refreshed", Toast.LENGTH_SHORT).show()
-						}
+						CustomIconButton(
+							icon = R.drawable.ic_refresh,
+							onClick = actionRunCallback<RefreshWidgetAction>()
+						)
 						Spacer(modifier = GlanceModifier.width(8.dp))
 						CustomIconButton(
 							icon = R.drawable.ic_add,
 							tint = GlanceTheme.colors.onPrimary,
 							bgColor = GlanceTheme.colors.primary,
-						) {
-							// TODO: Add new task
-						}
+							onClick = actionStartActivity(getAddTaskIntent(context))
+						)
 					}
 				}
 
 				Spacer(modifier = GlanceModifier.height(16.dp))
 
 				LazyColumn(modifier = GlanceModifier.fillMaxWidth()) {
-					items(tasks) { task ->
+					items(tasks, itemId = { it.id.toLong() }) { task ->
 						Column {
-							TaskWidgetComponent(task, {})
+							TaskWidgetComponent(
+								task = task,
+								is24HourFormat = is24HourFormat,
+								onToggle = actionRunCallback<ToggleTaskAction>(
+									parameters = actionParametersOf(ToggleTaskAction.TaskIdKey to task.id)
+								)
+							)
 							Spacer(modifier = GlanceModifier.height(8.dp))
 						}
 					}
@@ -97,12 +116,34 @@ fun SnaptickTaskWidget(tasks: List<Task>) {
 	}
 }
 
+/**
+ * Creates an intent to open the app's add task screen.
+ */
+private fun getAddTaskIntent(context: Context): Intent {
+	return Intent(context, MainActivity::class.java).apply {
+		flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+		putExtra(EXTRA_NAVIGATE_TO, Routes.AddTaskScreen.name)
+	}
+}
+
+/**
+ * Creates an intent to simply open the app (home screen).
+ */
+private fun getOpenAppIntent(context: Context): Intent {
+	return Intent(context, MainActivity::class.java).apply {
+		flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+	}
+}
+
+/** Intent extra key for navigation destination */
+const val EXTRA_NAVIGATE_TO = "navigate_to"
+
 @Composable
 private fun CustomIconButton(
 	icon: Int,
 	tint: ColorProvider = GlanceTheme.colors.onBackground,
 	bgColor: ColorProvider = GlanceTheme.colors.primaryContainer,
-	onClick: () -> Unit,
+	onClick: androidx.glance.action.Action,
 ) {
 	Box(
 		modifier = GlanceModifier.padding(8.dp)
@@ -118,3 +159,4 @@ private fun CustomIconButton(
 		)
 	}
 }
+

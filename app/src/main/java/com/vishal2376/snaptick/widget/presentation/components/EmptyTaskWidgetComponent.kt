@@ -1,5 +1,6 @@
 package com.vishal2376.snaptick.widget.presentation.components
 
+import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -8,6 +9,7 @@ import androidx.glance.GlanceComposable
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
 import androidx.glance.LocalContext
+import androidx.glance.appwidget.action.actionStartActivity
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Column
 import androidx.glance.layout.Spacer
@@ -21,9 +23,8 @@ import com.vishal2376.snaptick.R
 @Composable
 @GlanceComposable
 fun EmptyTaskWidgetComponent(
-	onClick: () -> Unit,
+	onAddClick: () -> Intent,
 ) {
-
 	val context = LocalContext.current
 
 	Column(
@@ -50,7 +51,7 @@ fun EmptyTaskWidgetComponent(
 				fontSize = 14.sp,
 				fontWeight = FontWeight.Bold
 			),
-			onClick = { onClick() }
+			onClick = actionStartActivity(onAddClick())
 		)
 	}
 }

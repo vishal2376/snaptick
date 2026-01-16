@@ -10,6 +10,7 @@ import androidx.glance.GlanceTheme
 import androidx.glance.Image
 import androidx.glance.ImageProvider
 import androidx.glance.LocalContext
+import androidx.glance.action.Action
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.cornerRadius
 import androidx.glance.background
@@ -34,7 +35,11 @@ import com.vishal2376.snaptick.ui.theme.Yellow
 
 
 @Composable
-fun TaskWidgetComponent(task: Task, onClick: () -> Unit) {
+fun TaskWidgetComponent(
+	task: Task,
+	is24HourFormat: Boolean,
+	onToggle: Action
+) {
 	val context = LocalContext.current
 	val taskPriorityColor = remember(task) {
 		when (task.priority) {
@@ -70,7 +75,7 @@ fun TaskWidgetComponent(task: Task, onClick: () -> Unit) {
 				contentDescription = null,
 				modifier = GlanceModifier
 					.size(35.dp)
-					.clickable(onClick)
+					.clickable(onToggle)
 					.cornerRadius(50.dp)
 					.padding(8.dp),
 			)
@@ -96,7 +101,7 @@ fun TaskWidgetComponent(task: Task, onClick: () -> Unit) {
 						text = if (task.isAllDayTaskEnabled()) {
 							context.getString(R.string.all_day)
 						} else {
-							task.getFormattedTime(is24HourFormat = false)
+							task.getFormattedTime(is24HourFormat = is24HourFormat)
 						},
 						style = TextStyle(
 							color = GlanceTheme.colors.onPrimaryContainer,
