@@ -13,14 +13,20 @@ class TaskRepository(
 ) {
 	suspend fun insertTask(task: Task) {
 		dao.insertTask(task)
+		// Update widget when a task is added
+		interactor.enqueueWidgetDataWorker()
 	}
 
 	suspend fun deleteTask(task: Task) {
 		dao.deleteTask(task)
+		// Update widget when a task is deleted
+		interactor.enqueueWidgetDataWorker()
 	}
 
 	suspend fun updateTask(task: Task) {
 		dao.updateTask(task)
+		// Update widget when a task is updated (e.g., marked complete)
+		interactor.enqueueWidgetDataWorker()
 	}
 
 	suspend fun getTaskById(id: Int): Task? {
@@ -29,6 +35,8 @@ class TaskRepository(
 
 	suspend fun deleteAllTasks() {
 		dao.deleteAllTasks()
+		// Update widget when all tasks are deleted
+		interactor.enqueueWidgetDataWorker()
 	}
 
 	fun getTasksByDate(selectedDate: LocalDate): Flow<List<Task>> {
@@ -51,5 +59,4 @@ class TaskRepository(
 			interactor.enqueueWidgetDataWorker()
 		}
 	}
-
 }

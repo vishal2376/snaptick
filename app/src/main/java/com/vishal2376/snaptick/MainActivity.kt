@@ -14,6 +14,7 @@ import com.vishal2376.snaptick.presentation.navigation.AppNavigation
 import com.vishal2376.snaptick.presentation.viewmodels.TaskViewModel
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.NotificationHelper
+import com.vishal2376.snaptick.widget.presentation.EXTRA_NAVIGATE_TO
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,6 +25,9 @@ class MainActivity : ComponentActivity() {
 	lateinit var backupPickerLauncher: ActivityResultLauncher<Intent>
 	lateinit var restorePickerLauncher: ActivityResultLauncher<Intent>
 
+	/** Navigation destination from widget intent */
+	var widgetNavigateTo: String? = null
+		private set
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		// init splash screen
@@ -31,6 +35,9 @@ class MainActivity : ComponentActivity() {
 
 		super.onCreate(savedInstanceState)
 		enableEdgeToEdge()
+
+		// Handle widget navigation intent
+		handleWidgetIntent(intent)
 
 		// create notification channel
 		notificationHelper = NotificationHelper(applicationContext)
@@ -67,9 +74,21 @@ class MainActivity : ComponentActivity() {
 				theme = taskViewModel.appState.theme,
 				dynamicColor = taskViewModel.appState.dynamicTheme
 			) {
-				AppNavigation(taskViewModel = taskViewModel)
+				AppNavigation(
+					taskViewModel = taskViewModel,
+					startDestination = widgetNavigateTo
+				)
 				CustomSnackBar()
 			}
 		}
+	}
+
+	override fun onNewIntent(intent: Intent) {
+		super.onNewIntent(intent)
+		handleWidgetIntent(intent)
+	}
+
+	private fun handleWidgetIntent(intent: Intent?) {
+		widgetNavigateTo = intent?.getStringExtra(EXTRA_NAVIGATE_TO)
 	}
 }

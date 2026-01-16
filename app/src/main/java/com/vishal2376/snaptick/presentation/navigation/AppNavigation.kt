@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.EaseOut
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.Lifecycle
@@ -31,7 +32,10 @@ import com.vishal2376.snaptick.util.showToast
 import java.time.LocalDate
 
 @Composable
-fun AppNavigation(taskViewModel: TaskViewModel) {
+fun AppNavigation(
+	taskViewModel: TaskViewModel,
+	startDestination: String? = null
+) {
 	val navController = rememberNavController()
 	val todayTasks by taskViewModel.todayTaskList.collectAsStateWithLifecycle(initialValue = emptyList())
 	val allTasks by taskViewModel.taskList.collectAsStateWithLifecycle(initialValue = emptyList())
@@ -55,9 +59,12 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 		}
 	)
 
+	// Determine the start destination - use widget deep link if provided
+	val actualStartDestination = startDestination ?: Routes.HomeScreen.name
+
 	NavHost(
 		navController = navController,
-		startDestination = Routes.HomeScreen.name
+		startDestination = actualStartDestination
 	) {
 		composable(route = Routes.HomeScreen.name) {
 			HomeScreen(
@@ -137,8 +144,13 @@ fun AppNavigation(taskViewModel: TaskViewModel) {
 				onEvent = taskViewModel::onEvent,
 				onMainEvent = taskViewModel::onEvent,
 				onBack = {
-					if (navController.isValidBackStack) {
+					if (navController.previousBackStackEntry != null) {
 						navController.popBackStack()
+					} else {
+						// If no backstack (opened from widget), go to Home and clear backstack
+						navController.navigate(Routes.HomeScreen.name) {
+							popUpTo(0) { inclusive = true }
+						}
 					}
 				})
 		}

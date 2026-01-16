@@ -2,23 +2,25 @@ package com.vishal2376.snaptick.widget.interactor
 
 import android.content.Context
 import com.vishal2376.snaptick.domain.interactor.AppWidgetInteractor
-import com.vishal2376.snaptick.widget.worker.WidgetTaskUpdateDataWorker
+import com.vishal2376.snaptick.widget.worker.WidgetUpdateWorker
 
+/**
+ * Implementation of AppWidgetInteractor that uses the new WidgetUpdateWorker.
+ * This replaces the old implementation from widget_old package.
+ */
 class AppWidgetInteractorImpl(
 	private val context: Context
 ) : AppWidgetInteractor {
 
 	override fun enqueueWidgetDataWorker() =
-		WidgetTaskUpdateDataWorker.enqueueWorker(context)
+		WidgetUpdateWorker.enqueueWorker(context)
 
 	override fun cancelWidgetDateWorker() =
-		WidgetTaskUpdateDataWorker.cancelWorker(context)
-
+		WidgetUpdateWorker.cancelWorker(context)
 
 	override fun enqueuePeriodicWidgetUpdateWorker() =
-		WidgetTaskUpdateDataWorker.enqueuePeriodicWorker(context)
+		WidgetUpdateWorker.enqueuePeriodicWorker(context)
 
 	override fun cancelPeriodicWidgetUpdateWorker() =
-		WidgetTaskUpdateDataWorker.cancelPeriodicWorker(context)
-
+		WidgetUpdateWorker.cancelPeriodicWorker(context)
 }
