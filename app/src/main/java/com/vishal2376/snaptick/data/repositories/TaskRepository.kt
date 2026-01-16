@@ -1,5 +1,6 @@
 package com.vishal2376.snaptick.data.repositories
 
+import com.vishal2376.snaptick.data.calendar.CalendarSyncManager
 import com.vishal2376.snaptick.data.local.TaskDao
 import com.vishal2376.snaptick.domain.interactor.AppWidgetInteractor
 import com.vishal2376.snaptick.domain.model.Task
@@ -9,24 +10,33 @@ import java.time.LocalDate
 
 class TaskRepository(
 	private val dao: TaskDao,
-	private val interactor: AppWidgetInteractor
+	private val interactor: AppWidgetInteractor,
+	private val calendarSyncManager: CalendarSyncManager
 ) {
-	suspend fun insertTask(task: Task) {
-		dao.insertTask(task)
+	suspend fun insertTask(task: Task): Task {
+		// Sync to calendar first (if enabled) to get eventId
+		val syncedTask = calendarSyncManager.syncTaskToCalendar(task)
+		dao.insertTask(syncedTask)
 		// Update widget when a task is added
 		interactor.enqueueWidgetDataWorker()
+		return syncedTask
 	}
 
 	suspend fun deleteTask(task: Task) {
+		// Delete calendar event first
+		calendarSyncManager.deleteCalendarEvent(task)
 		dao.deleteTask(task)
 		// Update widget when a task is deleted
 		interactor.enqueueWidgetDataWorker()
 	}
 
-	suspend fun updateTask(task: Task) {
-		dao.updateTask(task)
+	suspend fun updateTask(task: Task): Task {
+		// Sync to calendar (will update existing event or create new one)
+		val syncedTask = calendarSyncManager.syncTaskToCalendar(task)
+		dao.updateTask(syncedTask)
 		// Update widget when a task is updated (e.g., marked complete)
 		interactor.enqueueWidgetDataWorker()
+		return syncedTask
 	}
 
 	suspend fun getTaskById(id: Int): Task? {
@@ -34,6 +44,8 @@ class TaskRepository(
 	}
 
 	suspend fun deleteAllTasks() {
+		// Note: We don't delete calendar events for bulk delete
+		// User can manually manage calendar
 		dao.deleteAllTasks()
 		// Update widget when all tasks are deleted
 		interactor.enqueueWidgetDataWorker()

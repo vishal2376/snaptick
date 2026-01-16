@@ -8,7 +8,7 @@ import com.vishal2376.snaptick.domain.model.Task
 
 @Database(
 	entities = [Task::class],
-	version = 2,
+	version = 3,
 )
 abstract class TaskDatabase : RoomDatabase() {
 	abstract fun taskDao(): TaskDao
@@ -29,7 +29,7 @@ abstract class TaskDatabase : RoomDatabase() {
 					"local_db"
 				)
 					.fallbackToDestructiveMigration()
-					.addMigrations(MIGRATION_1_2)
+					.addMigrations(MIGRATION_1_2, MIGRATION_2_3)
 					.build()
 				INSTANCE = instance
 				instance

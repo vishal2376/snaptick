@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.vishal2376.snaptick.presentation.common.AppTheme
@@ -50,6 +51,13 @@ class SettingsStore(val context: Context) {
 		private const val DEFAULT_SHOW_WHATS_NEW = true
 		private const val DEFAULT_BUILD_VERSION_CODE = 1
 		private val DEFAULT_SWIPE_BEHAVIOUR = SwipeBehavior.DELETE.ordinal
+
+		// Calendar sync settings
+		private val CALENDAR_SYNC_ENABLED_KEY = booleanPreferencesKey("calendar_sync_enabled")
+		private val SELECTED_CALENDAR_ID_KEY = longPreferencesKey("selected_calendar_id")
+		private val TWO_WAY_SYNC_ENABLED_KEY = booleanPreferencesKey("two_way_sync_enabled")
+		private const val DEFAULT_CALENDAR_SYNC_ENABLED = false
+		private const val DEFAULT_TWO_WAY_SYNC_ENABLED = false
 	}
 
 
@@ -183,5 +191,39 @@ class SettingsStore(val context: Context) {
 		}
 	}
 
+	// Calendar sync settings
+	val calendarSyncEnabledKey: Flow<Boolean> = context.dataStore.data.map { preferences ->
+		preferences[CALENDAR_SYNC_ENABLED_KEY] ?: DEFAULT_CALENDAR_SYNC_ENABLED
+	}
+
+	val selectedCalendarIdKey: Flow<Long?> = context.dataStore.data.map { preferences ->
+		preferences[SELECTED_CALENDAR_ID_KEY]
+	}
+
+	val twoWaySyncEnabledKey: Flow<Boolean> = context.dataStore.data.map { preferences ->
+		preferences[TWO_WAY_SYNC_ENABLED_KEY] ?: DEFAULT_TWO_WAY_SYNC_ENABLED
+	}
+
+	suspend fun setCalendarSyncEnabled(enabled: Boolean) {
+		context.dataStore.edit { preferences ->
+			preferences[CALENDAR_SYNC_ENABLED_KEY] = enabled
+		}
+	}
+
+	suspend fun setSelectedCalendarId(calendarId: Long?) {
+		context.dataStore.edit { preferences ->
+			if (calendarId != null) {
+				preferences[SELECTED_CALENDAR_ID_KEY] = calendarId
+			} else {
+				preferences.remove(SELECTED_CALENDAR_ID_KEY)
+			}
+		}
+	}
+
+	suspend fun setTwoWaySyncEnabled(enabled: Boolean) {
+		context.dataStore.edit { preferences ->
+			preferences[TWO_WAY_SYNC_ENABLED_KEY] = enabled
+		}
+	}
 }
 

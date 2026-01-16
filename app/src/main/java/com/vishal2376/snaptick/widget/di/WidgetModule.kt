@@ -1,6 +1,7 @@
 package com.vishal2376.snaptick.widget.di
 
 import android.content.Context
+import com.vishal2376.snaptick.data.calendar.CalendarSyncManager
 import com.vishal2376.snaptick.domain.interactor.AppWidgetInteractor
 import com.vishal2376.snaptick.util.SettingsStore
 import com.vishal2376.snaptick.widget.interactor.AppWidgetInteractorImpl
@@ -30,5 +31,12 @@ object WidgetModule {
 	fun providesAppWidgetInteractor(
 		@ApplicationContext context: Context
 	): AppWidgetInteractor = AppWidgetInteractorImpl(context)
+
+	@Provides
+	@Singleton
+	fun providesCalendarSyncManager(
+		@ApplicationContext context: Context,
+		settingsStore: SettingsStore
+	): CalendarSyncManager = CalendarSyncManager(context, settingsStore)
 }
 

@@ -96,4 +96,13 @@
     <string name="choose_swipe_action">Choose Swipe Action</string>
     <string name="none">None</string>
     <string name="complete">Complete</string>
+
+    <!-- Calendar Sync -->
+    <string name="calendar_sync">Calendar Sync</string>
+    <string name="sync_with_calendar">Sync with Calendar</string>
+    <string name="sync_tasks_to_device_calendar">Sync tasks to device calendar</string>
+    <string name="select_calendar">Select Calendar</string>
+    <string name="none_selected">None selected</string>
+    <string name="two_way_sync">Two-Way Sync</string>
+    <string name="import_events_from_calendar">Import events from calendar as tasks</string>
 </resources>

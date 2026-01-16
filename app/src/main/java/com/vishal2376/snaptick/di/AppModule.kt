@@ -2,7 +2,9 @@ package com.vishal2376.snaptick.di
 
 import android.content.Context
 import androidx.room.Room
+import com.vishal2376.snaptick.data.calendar.CalendarSyncManager
 import com.vishal2376.snaptick.data.local.MIGRATION_1_2
+import com.vishal2376.snaptick.data.local.MIGRATION_2_3
 import com.vishal2376.snaptick.data.local.TaskDao
 import com.vishal2376.snaptick.data.local.TaskDatabase
 import com.vishal2376.snaptick.data.repositories.TaskRepository
@@ -23,7 +25,7 @@ object AppModule {
 	fun providesLocalDatabase(@ApplicationContext context: Context): TaskDatabase {
 		return Room.databaseBuilder(context, TaskDatabase::class.java, "local_db")
 			.fallbackToDestructiveMigration()
-			.addMigrations(MIGRATION_1_2)
+			.addMigrations(MIGRATION_1_2, MIGRATION_2_3)
 			.build()
 	}
 
@@ -37,9 +39,10 @@ object AppModule {
 	@Singleton
 	fun providesTaskRepository(
 		dao: TaskDao,
-		widgetInteract: AppWidgetInteractor
+		widgetInteract: AppWidgetInteractor,
+		calendarSyncManager: CalendarSyncManager
 	): TaskRepository {
-		return TaskRepository(dao, widgetInteract)
+		return TaskRepository(dao, widgetInteract, calendarSyncManager)
 	}
 
 }

@@ -14,3 +14,10 @@ val MIGRATION_1_2 = object : Migration(1, 2) {
 		db.execSQL("UPDATE task_table SET pomodoroTimer = -1")
 	}
 }
+
+val MIGRATION_2_3 = object : Migration(2, 3) {
+	override fun migrate(db: SupportSQLiteDatabase) {
+		// Add calendarEventId column for calendar sync
+		db.execSQL("ALTER TABLE task_table ADD COLUMN calendarEventId INTEGER DEFAULT NULL")
+	}
+}
