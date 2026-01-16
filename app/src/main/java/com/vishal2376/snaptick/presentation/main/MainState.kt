@@ -25,5 +25,10 @@ data class MainState(
 	val is24hourTimeFormat: Boolean = false,
 	val calenderView: CalenderView = CalenderView.MONTHLY,
 	val calenderDate: LocalDate? = null,
-	val swipeBehaviour: SwipeBehavior = SwipeBehavior.DELETE
+	val swipeBehaviour: SwipeBehavior = SwipeBehavior.DELETE,
+	// Calendar Sync
+	val calendarSyncEnabled: Boolean = false,
+	val selectedCalendarId: Long? = null,
+	val selectedCalendarName: String? = null,
+	val twoWaySyncEnabled: Boolean = false
 )

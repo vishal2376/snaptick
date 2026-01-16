@@ -27,4 +27,9 @@ sealed class MainEvent {
 
 	data class UpdateSwipeBehaviour(val swipeBehaviour: SwipeBehavior, val context: Context) :
 		MainEvent()
+
+	// Calendar Sync Events
+	data class UpdateCalendarSyncEnabled(val enabled: Boolean, val context: Context) : MainEvent()
+	data class UpdateSelectedCalendar(val calendarId: Long, val calendarName: String, val context: Context) : MainEvent()
+	data class UpdateTwoWaySyncEnabled(val enabled: Boolean, val context: Context) : MainEvent()
 }

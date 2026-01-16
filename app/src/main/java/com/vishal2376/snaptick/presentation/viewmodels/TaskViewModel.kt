@@ -181,6 +181,30 @@ class TaskViewModel @Inject constructor(
 					SettingsStore(event.context).setSwipeBehaviour(event.swipeBehaviour.ordinal)
 				}
 			}
+
+			is MainEvent.UpdateCalendarSyncEnabled -> {
+				viewModelScope.launch {
+					appState = appState.copy(calendarSyncEnabled = event.enabled)
+					SettingsStore(event.context).setCalendarSyncEnabled(event.enabled)
+				}
+			}
+
+			is MainEvent.UpdateSelectedCalendar -> {
+				viewModelScope.launch {
+					appState = appState.copy(
+						selectedCalendarId = event.calendarId,
+						selectedCalendarName = event.calendarName
+					)
+					SettingsStore(event.context).setSelectedCalendarId(event.calendarId)
+				}
+			}
+
+			is MainEvent.UpdateTwoWaySyncEnabled -> {
+				viewModelScope.launch {
+					appState = appState.copy(twoWaySyncEnabled = event.enabled)
+					SettingsStore(event.context).setTwoWaySyncEnabled(event.enabled)
+				}
+			}
 		}
 	}
 
@@ -492,6 +516,25 @@ class TaskViewModel @Inject constructor(
 		viewModelScope.launch {
 			settingsStore.buildVersionCode.collect {
 				appState = appState.copy(buildVersionCode = it)
+			}
+		}
+
+		// Load calendar sync settings
+		viewModelScope.launch {
+			settingsStore.calendarSyncEnabledKey.collect {
+				appState = appState.copy(calendarSyncEnabled = it)
+			}
+		}
+
+		viewModelScope.launch {
+			settingsStore.selectedCalendarIdKey.collect {
+				appState = appState.copy(selectedCalendarId = it)
+			}
+		}
+
+		viewModelScope.launch {
+			settingsStore.twoWaySyncEnabledKey.collect {
+				appState = appState.copy(twoWaySyncEnabled = it)
 			}
 		}
 	}

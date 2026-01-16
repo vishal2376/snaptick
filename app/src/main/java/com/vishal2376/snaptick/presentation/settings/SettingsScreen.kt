@@ -44,6 +44,9 @@ import com.vishal2376.snaptick.presentation.settings.components.SleepTimeOptionC
 import com.vishal2376.snaptick.presentation.settings.components.SwipeActionOptionComponent
 import com.vishal2376.snaptick.presentation.settings.components.ThemeOptionComponent
 import com.vishal2376.snaptick.presentation.settings.components.TimePickerOptionComponent
+import com.vishal2376.snaptick.presentation.settings.components.CalendarSyncOptionComponent
+import com.vishal2376.snaptick.presentation.settings.components.CalendarSyncState
+import com.vishal2376.snaptick.data.calendar.CalendarHelper
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.Constants
 import com.vishal2376.snaptick.util.openUrl
@@ -100,6 +103,11 @@ fun SettingsScreen(
 			title = stringResource(R.string.swipe_action),
 			resId = R.drawable.ic_swipe_left,
 			onClick = { showBottomSheetById = R.string.swipe_action }
+		),
+		SettingCategoryItem(
+			title = stringResource(R.string.calendar_sync),
+			resId = R.drawable.ic_clock,
+			onClick = { showBottomSheetById = R.string.calendar_sync }
 		),
 	)
 
@@ -198,6 +206,37 @@ fun SettingsScreen(
 								onSelect = {
 									onEvent(MainEvent.UpdateSwipeBehaviour(it, context))
 								})
+						}
+
+						R.string.calendar_sync -> {
+							val calendars = remember {
+								try {
+									CalendarHelper(context).getCalendars()
+								} catch (e: SecurityException) {
+									emptyList()
+								}
+							}
+							CalendarSyncOptionComponent(
+								state = CalendarSyncState(
+									isEnabled = appState.calendarSyncEnabled,
+									selectedCalendarId = appState.selectedCalendarId,
+									selectedCalendarName = appState.selectedCalendarName,
+									availableCalendars = calendars,
+									twoWaySyncEnabled = appState.twoWaySyncEnabled
+								),
+								onSyncEnabledChange = { enabled ->
+									onEvent(MainEvent.UpdateCalendarSyncEnabled(enabled, context))
+								},
+								onCalendarSelected = { id, name ->
+									onEvent(MainEvent.UpdateSelectedCalendar(id, name, context))
+								},
+								onTwoWaySyncChange = { enabled ->
+									onEvent(MainEvent.UpdateTwoWaySyncEnabled(enabled, context))
+								},
+								onRequestPermission = {
+									// TODO: Request calendar permissions
+								}
+							)
 						}
 					}
 				}
