@@ -1,4 +1,4 @@
-package com.vishal2376.snaptick
+package com.nullstudiosapp.snaptick
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
 	fun useAppContext() {
 		// Context of the app under test.
 		val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-		assertEquals("com.vishal2376.snaptick", appContext.packageName)
+		assertEquals("com.nullstudiosapp.snaptick", appContext.packageName)
 	}
 }

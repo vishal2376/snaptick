@@ -7,15 +7,15 @@ plugins {
 }
 
 android {
-	namespace = "com.vishal2376.snaptick"
+	namespace = "com.nullstudiosapp.snaptick"
 	compileSdk = 34
 
 	defaultConfig {
-		applicationId = "com.vishal2376.snaptick"
+		applicationId = "com.nullstudiosapp.snaptick"
 		minSdk = 26
 		targetSdk = 34
-		versionCode = 11
-		versionName = "3.3"
+		versionCode = 1
+		versionName = "1.0"
 
 		testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 		vectorDrawables {
