@@ -83,10 +83,9 @@ fun CalendarSyncOptionComponent(
 			Switch(
 				checked = state.isEnabled,
 				onCheckedChange = { enabled ->
+					onSyncEnabledChange(enabled)
 					if (enabled && state.availableCalendars.isEmpty()) {
 						onRequestPermission()
-					} else {
-						onSyncEnabledChange(enabled)
 					}
 				}
 			)

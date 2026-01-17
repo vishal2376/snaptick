@@ -1,5 +1,6 @@
 package com.vishal2376.snaptick.presentation.settings
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,6 +23,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -32,24 +34,29 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vishal2376.snaptick.R
+import com.vishal2376.snaptick.data.calendar.CalendarHelper
 import com.vishal2376.snaptick.presentation.common.AppTheme
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.infoDescTextStyle
 import com.vishal2376.snaptick.presentation.main.MainEvent
 import com.vishal2376.snaptick.presentation.main.MainState
 import com.vishal2376.snaptick.presentation.settings.common.SettingCategoryItem
+import com.vishal2376.snaptick.presentation.settings.components.CalendarSyncOptionComponent
+import com.vishal2376.snaptick.presentation.settings.components.CalendarSyncState
 import com.vishal2376.snaptick.presentation.settings.components.LanguageOptionComponent
 import com.vishal2376.snaptick.presentation.settings.components.SettingsCategoryComponent
 import com.vishal2376.snaptick.presentation.settings.components.SleepTimeOptionComponent
 import com.vishal2376.snaptick.presentation.settings.components.SwipeActionOptionComponent
 import com.vishal2376.snaptick.presentation.settings.components.ThemeOptionComponent
 import com.vishal2376.snaptick.presentation.settings.components.TimePickerOptionComponent
-import com.vishal2376.snaptick.presentation.settings.components.CalendarSyncOptionComponent
-import com.vishal2376.snaptick.presentation.settings.components.CalendarSyncState
-import com.vishal2376.snaptick.data.calendar.CalendarHelper
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.Constants
 import com.vishal2376.snaptick.util.openUrl
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -63,6 +70,28 @@ fun SettingsScreen(
 	val sheetState = rememberModalBottomSheetState()
 	val scope = rememberCoroutineScope()
 	var showBottomSheetById by remember { mutableIntStateOf(0) }
+	
+	// Calendar list state that can be refreshed after permission grant
+	var availableCalendars by remember { 
+		mutableStateOf(
+			try {
+				CalendarHelper(context).getCalendars()
+			} catch (e: SecurityException) {
+				emptyList()
+			}
+		)
+	}
+	
+	// Permission launcher for calendar access
+	val calendarPermissionLauncher = rememberLauncherForActivityResult(
+		contract = ActivityResultContracts.RequestMultiplePermissions()
+	) { permissions ->
+		val allGranted = permissions.values.all { it }
+		if (allGranted) {
+			// Refresh calendars list after permission granted
+			availableCalendars = CalendarHelper(context).getCalendars()
+		}
+	}
 
 	val settingsAbout = listOf(
 		SettingCategoryItem(title = stringResource(R.string.about),
@@ -209,35 +238,34 @@ fun SettingsScreen(
 						}
 
 						R.string.calendar_sync -> {
-							val calendars = remember {
-								try {
-									CalendarHelper(context).getCalendars()
-								} catch (e: SecurityException) {
-									emptyList()
+									CalendarSyncOptionComponent(
+										state = CalendarSyncState(
+											isEnabled = appState.calendarSyncEnabled,
+											selectedCalendarId = appState.selectedCalendarId,
+											selectedCalendarName = appState.selectedCalendarName,
+											availableCalendars = availableCalendars,
+											twoWaySyncEnabled = appState.twoWaySyncEnabled
+										),
+										onSyncEnabledChange = { enabled ->
+											onEvent(MainEvent.UpdateCalendarSyncEnabled(enabled, context))
+										},
+										onCalendarSelected = { id, name ->
+											onEvent(MainEvent.UpdateSelectedCalendar(id, name, context))
+										},
+										onTwoWaySyncChange = { enabled ->
+											onEvent(MainEvent.UpdateTwoWaySyncEnabled(enabled, context))
+										},
+										onRequestPermission = {
+											// Request calendar permissions
+											calendarPermissionLauncher.launch(
+												arrayOf(
+													Manifest.permission.READ_CALENDAR,
+													Manifest.permission.WRITE_CALENDAR
+												)
+											)
+										}
+									)
 								}
-							}
-							CalendarSyncOptionComponent(
-								state = CalendarSyncState(
-									isEnabled = appState.calendarSyncEnabled,
-									selectedCalendarId = appState.selectedCalendarId,
-									selectedCalendarName = appState.selectedCalendarName,
-									availableCalendars = calendars,
-									twoWaySyncEnabled = appState.twoWaySyncEnabled
-								),
-								onSyncEnabledChange = { enabled ->
-									onEvent(MainEvent.UpdateCalendarSyncEnabled(enabled, context))
-								},
-								onCalendarSelected = { id, name ->
-									onEvent(MainEvent.UpdateSelectedCalendar(id, name, context))
-								},
-								onTwoWaySyncChange = { enabled ->
-									onEvent(MainEvent.UpdateTwoWaySyncEnabled(enabled, context))
-								},
-								onRequestPermission = {
-									// TODO: Request calendar permissions
-								}
-							)
-						}
 					}
 				}
 			}
