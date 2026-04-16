@@ -124,6 +124,9 @@ dependencies {
 	implementation("androidx.glance:glance-appwidget:1.1.1")
 	implementation("androidx.glance:glance-material3:1.1.1")
 
+	//noinspection Aligned16KB
+	implementation("net.zetetic:android-database-sqlcipher:4.5.4")
+
 
 	testImplementation("junit:junit:4.13.2")
 	androidTestImplementation("androidx.test.ext:junit:1.1.5")
