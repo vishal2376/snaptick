@@ -43,6 +43,8 @@ import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.common.taskDescTextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
+import com.vishal2376.snaptick.presentation.common.utils.formatTaskTime
+import com.vishal2376.snaptick.presentation.common.utils.formatWeekDays
 import com.vishal2376.snaptick.ui.theme.DarkGreen
 import com.vishal2376.snaptick.ui.theme.LightGreen
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
@@ -164,12 +166,12 @@ fun TaskComponent(
 							Text(
 								text = if (task.isAllDayTaskEnabled()) {
 									if (task.reminder) {
-										task.getFormattedTime(is24HourTimeFormat).split("-")[0]
+										formatTaskTime(task, is24HourTimeFormat).split("-")[0]
 									} else {
 										stringResource(R.string.all_day)
 									}
 								} else {
-									task.getFormattedTime(is24HourTimeFormat)
+									formatTaskTime(task, is24HourTimeFormat)
 								},
 								style = taskDescTextStyle,
 								color = MaterialTheme.colorScheme.onPrimaryContainer
@@ -209,7 +211,7 @@ fun TaskComponent(
 
 								)
 								Text(
-									text = if (isDailyTask) stringResource(R.string.every_day) else task.getWeekDaysTitle(),
+									text = if (isDailyTask) stringResource(R.string.every_day) else formatWeekDays(task.getRepeatWeekList()),
 									style = taskDescTextStyle,
 									color = MaterialTheme.colorScheme.onPrimaryContainer
 
@@ -252,7 +254,7 @@ fun TaskComponent(
 @Preview
 @Composable
 fun TaskComponentPreview() {
-	val task = DummyTasks.dummyTasks[0]
+	val task = DummyTasks.dummyTasks()[0]
 	SnaptickTheme {
 		TaskComponent(
 			task = task,

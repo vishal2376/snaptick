@@ -3,6 +3,7 @@ package com.vishal2376.snaptick.util
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.vishal2376.snaptick.domain.model.BackupData
@@ -10,10 +11,11 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.LocalTime
 import javax.inject.Inject
 import javax.inject.Singleton
+
+private const val TAG = "BackupManager"
 
 @Singleton
 class BackupManager @Inject constructor(
@@ -35,7 +37,7 @@ class BackupManager @Inject constructor(
 				}
 				true
 			} catch (e: Exception) {
-				e.printStackTrace()
+				Log.e(TAG, "createBackup failed for uri=$uri", e)
 				false
 			}
 		}
@@ -49,7 +51,7 @@ class BackupManager @Inject constructor(
 					gson.fromJson(jsonData, BackupData::class.java)
 				}
 			} catch (e: Exception) {
-				e.printStackTrace()
+				Log.e(TAG, "loadBackup failed for uri=$uri", e)
 				null
 			}
 		}

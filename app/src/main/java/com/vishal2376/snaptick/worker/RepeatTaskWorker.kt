@@ -9,6 +9,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import com.vishal2376.snaptick.data.repositories.TaskRepository
+import com.vishal2376.snaptick.presentation.common.utils.formatTaskTime
 import com.vishal2376.snaptick.util.Constants
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -48,7 +49,7 @@ class RepeatTaskWorker @AssistedInject constructor(
 						if (delaySec > 0 || startTimeSec < 60) {
 							val data = Data.Builder().putString(Constants.TASK_UUID, task.uuid)
 								.putString(Constants.TASK_TITLE, task.title)
-								.putString(Constants.TASK_TIME, task.getFormattedTime())
+								.putString(Constants.TASK_TIME, formatTaskTime(task))
 								.build()
 
 							// new notification request

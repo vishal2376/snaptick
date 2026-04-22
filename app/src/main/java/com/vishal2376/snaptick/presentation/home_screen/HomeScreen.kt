@@ -441,7 +441,7 @@ fun HomeScreen(
 @Composable
 fun HomeScreenPreview() {
 	SnaptickTheme {
-		val tasks = DummyTasks.dummyTasks
+		val tasks = DummyTasks.dummyTasks()
 		HomeScreen(tasks = tasks, MainState(), {}, {}, {}, {}, {})
 	}
 }

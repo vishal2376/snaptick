@@ -23,6 +23,7 @@ import com.vishal2376.snaptick.presentation.common.SwipeBehavior
 import com.vishal2376.snaptick.presentation.home_screen.HomeScreenEvent
 import com.vishal2376.snaptick.presentation.main.MainEvent
 import com.vishal2376.snaptick.presentation.main.MainState
+import com.vishal2376.snaptick.presentation.common.utils.formatTaskTime
 import com.vishal2376.snaptick.presentation.pomodoro_screen.PomodoroScreenEvent
 import com.vishal2376.snaptick.util.BackupManager
 import com.vishal2376.snaptick.util.Constants
@@ -379,7 +380,7 @@ class TaskViewModel @Inject constructor(
 			if (delaySec > 0) {
 				val data = Data.Builder().putString(Constants.TASK_UUID, task.uuid)
 					.putString(Constants.TASK_TITLE, task.title)
-					.putString(Constants.TASK_TIME, task.getFormattedTime())
+					.putString(Constants.TASK_TIME, formatTaskTime(task))
 					.build()
 
 				// new notification request

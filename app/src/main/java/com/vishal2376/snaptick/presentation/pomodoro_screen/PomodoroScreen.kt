@@ -54,6 +54,7 @@ import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.common.SnackbarController
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.presentation.common.timerTextStyle
+import com.vishal2376.snaptick.presentation.common.utils.formatDurationTimestamp
 import com.vishal2376.snaptick.presentation.pomodoro_screen.components.CustomCircularProgressBar
 import com.vishal2376.snaptick.ui.theme.LightGreen
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
@@ -215,7 +216,7 @@ fun PomodoroScreen(
 					text = if (isTimerCompleted) {
 						stringResource(R.string.completed)
 					} else {
-						task.getDurationTimeStamp(timeLeft)
+						formatDurationTimestamp(timeLeft)
 					},
 					style = timerTextStyle,
 					color = MaterialTheme.colorScheme.onBackground
@@ -276,7 +277,7 @@ fun PomodoroScreen(
 @Composable
 fun PomodoroScreenPreview() {
 	SnaptickTheme {
-		val task = DummyTasks.dummyTasks[0]
+		val task = DummyTasks.dummyTasks()[0]
 		PomodoroScreen(task, {}, {})
 	}
 }

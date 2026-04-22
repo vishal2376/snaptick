@@ -20,8 +20,8 @@ import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.infoDescTextStyle
 import com.vishal2376.snaptick.presentation.common.taskDescTextStyle
+import com.vishal2376.snaptick.presentation.common.utils.Formatters
 import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 
 @Composable
 fun SleepTimeOptionComponent(defaultSleepTime: LocalTime, onSelect: (LocalTime) -> Unit) {
@@ -31,7 +31,7 @@ fun SleepTimeOptionComponent(defaultSleepTime: LocalTime, onSelect: (LocalTime) 
 		verticalArrangement = Arrangement.spacedBy(8.dp)
 	) {
 		val minSleepTime = LocalTime.of(21, 0)
-		val dtf = DateTimeFormatter.ofPattern("hh:mm a")
+		val dtf = Formatters.time12h
 
 		Text(
 			text = stringResource(R.string.set_sleep_time),

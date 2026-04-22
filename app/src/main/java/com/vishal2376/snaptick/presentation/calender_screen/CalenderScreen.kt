@@ -283,7 +283,7 @@ fun CalenderScreen(
 @Composable
 fun CalenderScreenPreview() {
 	SnaptickTheme {
-		val tasks = DummyTasks.dummyTasks
+		val tasks = DummyTasks.dummyTasks()
 		CalenderScreen(tasks, MainState(), {}, {}, {}, {})
 	}
 }

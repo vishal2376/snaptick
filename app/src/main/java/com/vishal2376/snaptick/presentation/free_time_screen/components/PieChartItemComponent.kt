@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
+import com.vishal2376.snaptick.presentation.common.utils.formatDuration
 import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.util.DummyTasks
 import kotlinx.coroutines.delay
@@ -78,7 +79,7 @@ fun PieChartItemComponent(task: Task, itemColor: Color, animDelay: Int = 100) {
 
 			if (!task.isAllDayTaskEnabled()) {
 				Text(
-					text = task.getFormattedDuration(),
+					text = formatDuration(task),
 					style = taskTextStyle,
 					color = MaterialTheme.colorScheme.onBackground
 				)
@@ -90,6 +91,6 @@ fun PieChartItemComponent(task: Task, itemColor: Color, animDelay: Int = 100) {
 @Preview
 @Composable
 fun PieChartItemComponentPreview() {
-	val task = DummyTasks.dummyTasks[0]
+	val task = DummyTasks.dummyTasks()[0]
 	PieChartItemComponent(task, Blue)
 }

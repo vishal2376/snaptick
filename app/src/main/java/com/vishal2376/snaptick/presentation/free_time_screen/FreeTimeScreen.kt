@@ -138,7 +138,7 @@ fun FreeTimeScreen(
 @Preview
 @Composable
 fun FreeTimeScreenPreview() {
-	val tasks = DummyTasks.dummyTasks
+	val tasks = DummyTasks.dummyTasks()
 	SnaptickTheme {
 		FreeTimeScreen(tasks = tasks, MainState(), {})
 	}

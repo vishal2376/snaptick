@@ -22,13 +22,11 @@ import com.kizitonwose.calendar.core.WeekDay
 import com.kizitonwose.calendar.core.WeekDayPosition
 import com.vishal2376.snaptick.presentation.common.infoTextStyle
 import com.vishal2376.snaptick.presentation.common.taskDescTextStyle
+import com.vishal2376.snaptick.presentation.common.utils.Formatters
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.Locale
-
-private val dateFormatter = DateTimeFormatter.ofPattern("dd")
 
 @Composable
 fun WeekDayComponent(
@@ -67,7 +65,7 @@ fun WeekDayComponent(
 			verticalArrangement = Arrangement.Center
 		) {
 			Text(
-				text = dateFormatter.format(day.date),
+				text = Formatters.dayOfMonth.format(day.date),
 				style = infoTextStyle,
 				color = textColor
 			)

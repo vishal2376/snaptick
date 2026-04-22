@@ -28,6 +28,7 @@ import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
 import com.vishal2376.snaptick.R
+import com.vishal2376.snaptick.presentation.common.utils.formatTaskTime
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.ui.theme.LightGray
 import com.vishal2376.snaptick.ui.theme.Red
@@ -101,7 +102,7 @@ fun TaskWidgetComponent(
 						text = if (task.isAllDayTaskEnabled()) {
 							context.getString(R.string.all_day)
 						} else {
-							task.getFormattedTime(is24HourFormat = is24HourFormat)
+							formatTaskTime(task, is24HourFormat = is24HourFormat)
 						},
 						style = TextStyle(
 							color = GlanceTheme.colors.onPrimaryContainer,

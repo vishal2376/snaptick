@@ -41,12 +41,12 @@ import com.vishal2376.snaptick.presentation.calender_screen.component.MonthDayCo
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.h3TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
+import com.vishal2376.snaptick.presentation.common.utils.Formatters
 import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.YearMonth
-import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.Locale
 
@@ -68,7 +68,7 @@ fun CustomDatePickerDialog(defaultDay: LocalDate = LocalDate.now(), onClose: (Lo
 		firstDayOfWeek = firstDayOfWeek
 	)
 
-	val dtf = DateTimeFormatter.ofPattern("d MMMM, yyyy")
+	val dtf = Formatters.dayMonthYear
 
 	Dialog(onDismissRequest = { onClose(LocalDate.now()) }) {
 		Card(

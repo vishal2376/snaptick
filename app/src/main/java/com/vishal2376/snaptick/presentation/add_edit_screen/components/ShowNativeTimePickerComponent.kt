@@ -19,8 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
+import com.vishal2376.snaptick.presentation.common.utils.Formatters
 import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 
 @Composable
 fun ShowNativeTimePicker(time: LocalTime, is24hourFormat: Boolean = false, onClick: () -> Unit) {
@@ -40,10 +40,7 @@ fun ShowNativeTimePicker(time: LocalTime, is24hourFormat: Boolean = false, onCli
 				tint = MaterialTheme.colorScheme.onBackground,
 				modifier = Modifier.size(24.dp)
 			)
-			val dtf = if (is24hourFormat)
-				DateTimeFormatter.ofPattern("HH : mm")
-			else
-				DateTimeFormatter.ofPattern("hh : mm a")
+			val dtf = if (is24hourFormat) Formatters.timePicker24h else Formatters.timePicker12h
 
 			Text(
 				text = time.format(dtf),

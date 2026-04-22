@@ -36,10 +36,10 @@ import com.vishal2376.snaptick.presentation.common.ShowTimePicker
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.h3TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
+import com.vishal2376.snaptick.presentation.common.utils.Formatters
 import com.vishal2376.snaptick.presentation.settings.common.ToggleOptions
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 
 @Composable
 fun TimePickerOptionComponent(
@@ -96,11 +96,7 @@ fun TimePickerOptionComponent(
 					modifier = Modifier.size(24.dp)
 				)
 
-				val dtf = if (is24HourTimeFormatEnabled) {
-					DateTimeFormatter.ofPattern("HH : mm")
-				} else {
-					DateTimeFormatter.ofPattern("hh : mm a")
-				}
+				val dtf = if (is24HourTimeFormatEnabled) Formatters.timePicker24h else Formatters.timePicker12h
 				Text(
 					text = selectedTime.format(dtf),
 					style = taskTextStyle,

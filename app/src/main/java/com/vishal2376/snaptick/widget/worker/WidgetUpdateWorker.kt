@@ -12,6 +12,7 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
+import com.vishal2376.snaptick.BuildConfig
 import com.vishal2376.snaptick.data.repositories.TaskRepository
 import com.vishal2376.snaptick.presentation.common.AppTheme
 import com.vishal2376.snaptick.util.SettingsStore
@@ -44,7 +45,7 @@ class WidgetUpdateWorker @AssistedInject constructor(
 
 	override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
 		try {
-			Log.d(TAG, "Starting widget data sync")
+			if (BuildConfig.DEBUG) Log.d(TAG, "Starting widget data sync")
 
 			// Fetch today's tasks
 			val allTasks = taskRepository.getTodayTasks().first()
@@ -59,7 +60,7 @@ class WidgetUpdateWorker @AssistedInject constructor(
 				}
 			}.filter { !it.isCompleted }
 
-			Log.d(TAG, "Found ${incompleteTasks.size} incomplete tasks for today")
+			if (BuildConfig.DEBUG) Log.d(TAG, "Found ${incompleteTasks.size} incomplete tasks for today")
 
 			// Fetch settings
 			val is24HourFormat = settingsStore.timeFormatKey.first()
@@ -67,7 +68,7 @@ class WidgetUpdateWorker @AssistedInject constructor(
 			val theme = AppTheme.entries.getOrElse(themeOrdinal) { AppTheme.Amoled }
 			val useDynamicTheme = settingsStore.dynamicThemeKey.first()
 
-			Log.d(
+			if (BuildConfig.DEBUG) Log.d(
 				TAG,
 				"Settings - is24h: $is24HourFormat, theme: $theme, dynamicTheme: $useDynamicTheme"
 			)
@@ -86,7 +87,7 @@ class WidgetUpdateWorker @AssistedInject constructor(
 			// Trigger widget update
 			TaskAppWidget().updateAll(context)
 
-			Log.d(TAG, "Widget data sync completed successfully")
+			if (BuildConfig.DEBUG) Log.d(TAG, "Widget data sync completed successfully")
 
 			Result.success(
 				workDataOf(

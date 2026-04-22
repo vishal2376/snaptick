@@ -70,6 +70,7 @@ import com.vishal2376.snaptick.presentation.common.SnackbarController.showCustom
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
+import com.vishal2376.snaptick.presentation.common.utils.formatDuration
 import com.vishal2376.snaptick.presentation.main.MainState
 import com.vishal2376.snaptick.ui.theme.DarkGreen
 import com.vishal2376.snaptick.ui.theme.LightGreen
@@ -309,7 +310,7 @@ fun EditTaskScreen(
 					)
 
 					Text(
-						text = task.getFormattedDuration(),
+						text = formatDuration(task),
 						style = taskTextStyle,
 						color = MaterialTheme.colorScheme.onBackground
 					)
@@ -498,7 +499,7 @@ fun EditTaskScreen(
 @Composable
 fun EditTaskScreenPreview() {
 	SnaptickTheme {
-		val task = DummyTasks.dummyTasks[0]
+		val task = DummyTasks.dummyTasks()[0]
 		EditTaskScreen(task, MainState(), {}, {})
 	}
 }

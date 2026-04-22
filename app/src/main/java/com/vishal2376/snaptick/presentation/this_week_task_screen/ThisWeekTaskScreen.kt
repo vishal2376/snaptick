@@ -155,7 +155,7 @@ fun ThisWeekTaskScreen(
 @Composable
 fun ThisWeekTaskScreenPreview() {
 	SnaptickTheme {
-		val tasks = DummyTasks.dummyTasks
+		val tasks = DummyTasks.dummyTasks()
 		ThisWeekTaskScreen(
 			tasks = tasks, appState = MainState(), {}, {}, {})
 	}

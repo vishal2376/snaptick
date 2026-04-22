@@ -34,26 +34,6 @@ fun showToast(context: Context, message: String, duration: Int = Toast.LENGTH_LO
 	Toast.makeText(context, message, duration).show()
 }
 
-
-fun getFormattedDuration(
-	startTime: LocalTime,
-	endTime: LocalTime
-): String {
-	val taskDuration = endTime.toSecondOfDay() - startTime.toSecondOfDay()
-
-	val hours = taskDuration / 3600
-	val minutes = (taskDuration % 3600) / 60
-
-	val hoursString = if (hours == 1) "hour" else "hours"
-
-	return when {
-		hours > 0 && minutes > 0 -> String.format("%dh %02dm", hours, minutes)
-		hours > 0 -> String.format("%d $hoursString", hours)
-		else -> String.format("%dmin", minutes)
-	}
-
-}
-
 fun getFreeTime(totalDuration: Long, sleepTime: LocalTime): String {
 	val maxTime = sleepTime.toSecondOfDay()
 	val currentTime = LocalTime.now().toSecondOfDay()

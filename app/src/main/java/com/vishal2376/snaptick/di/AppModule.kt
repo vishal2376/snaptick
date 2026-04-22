@@ -6,7 +6,6 @@ import com.vishal2376.snaptick.data.local.MIGRATION_1_2
 import com.vishal2376.snaptick.data.local.TaskDao
 import com.vishal2376.snaptick.data.local.TaskDatabase
 import com.vishal2376.snaptick.data.repositories.TaskRepository
-import com.vishal2376.snaptick.domain.interactor.AppWidgetInteractor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -37,9 +36,9 @@ object AppModule {
 	@Singleton
 	fun providesTaskRepository(
 		dao: TaskDao,
-		widgetInteract: AppWidgetInteractor
+		@ApplicationContext context: Context
 	): TaskRepository {
-		return TaskRepository(dao, widgetInteract)
+		return TaskRepository(dao, context)
 	}
 
 }

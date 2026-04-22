@@ -87,12 +87,12 @@ import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.ui.theme.priorityColors
 import com.vishal2376.snaptick.util.SoundEvent
 import com.vishal2376.snaptick.util.checkValidTask
-import com.vishal2376.snaptick.util.getFormattedDuration
+import com.vishal2376.snaptick.presentation.common.utils.Formatters
+import com.vishal2376.snaptick.presentation.common.utils.formatDuration
 import com.vishal2376.snaptick.util.playSound
 import kotlinx.coroutines.job
 import java.time.LocalDate
 import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -162,7 +162,7 @@ fun AddTaskScreen(
 					verticalAlignment = Alignment.CenterVertically,
 					horizontalArrangement = Arrangement.spacedBy(8.dp)
 				) {
-					val dtf = DateTimeFormatter.ofPattern("d MMMM")
+					val dtf = Formatters.dayMonth
 					Icon(imageVector = Icons.Default.Today, contentDescription = null)
 					Text(
 						text = taskDate.format(dtf),
@@ -352,7 +352,7 @@ fun AddTaskScreen(
 					)
 
 					Text(
-						text = getFormattedDuration(taskStartTime, taskEndTime),
+						text = formatDuration(taskStartTime, taskEndTime),
 						style = taskTextStyle,
 						color = MaterialTheme.colorScheme.onBackground
 					)
