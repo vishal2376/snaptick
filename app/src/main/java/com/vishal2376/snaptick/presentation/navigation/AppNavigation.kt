@@ -32,8 +32,8 @@ import com.vishal2376.snaptick.presentation.main.viewmodel.MainViewModel
 import com.vishal2376.snaptick.presentation.pomodoro_screen.PomodoroScreen
 import com.vishal2376.snaptick.presentation.pomodoro_screen.viewmodel.PomodoroViewModel
 import com.vishal2376.snaptick.presentation.settings.SettingsScreen
+import com.vishal2376.snaptick.presentation.task_list.viewmodel.TaskListViewModel
 import com.vishal2376.snaptick.presentation.this_week_task_screen.ThisWeekTaskScreen
-import com.vishal2376.snaptick.presentation.viewmodels.TaskViewModel
 import com.vishal2376.snaptick.util.openMail
 import com.vishal2376.snaptick.util.showToast
 import java.time.LocalDate
@@ -41,22 +41,10 @@ import java.time.LocalDate
 @Composable
 fun AppNavigation(
 	mainViewModel: MainViewModel,
-	taskViewModel: TaskViewModel,
 	startDestination: String? = null
 ) {
 	val navController = rememberNavController()
 	val mainState by mainViewModel.state.collectAsStateWithLifecycle()
-	val todayTasks by taskViewModel.todayTaskList.collectAsStateWithLifecycle(initialValue = emptyList())
-	val allTasks by taskViewModel.taskList.collectAsStateWithLifecycle(initialValue = emptyList())
-
-	val dayOfWeek = LocalDate.now().dayOfWeek.value - 1
-	val updatedTodayTasks = todayTasks.filter { task ->
-		if (task.isRepeated) {
-			task.getRepeatWeekList().contains(dayOfWeek)
-		} else {
-			true
-		}
-	}
 
 	val activity = LocalContext.current as MainActivity
 
@@ -83,14 +71,18 @@ fun AppNavigation(
 		startDestination = actualStartDestination
 	) {
 		composable(route = Routes.HomeScreen.name) {
+			val taskListViewModel: TaskListViewModel = hiltViewModel()
+			val todayTasks by taskListViewModel.todayTasks.collectAsStateWithLifecycle(initialValue = emptyList())
+			val dayOfWeek = LocalDate.now().dayOfWeek.value - 1
+			val updatedTodayTasks = todayTasks.filter { task ->
+				if (task.isRepeated) task.getRepeatWeekList().contains(dayOfWeek) else true
+			}
 			HomeScreen(
 				tasks = updatedTodayTasks,
 				appState = mainState,
 				onAction = mainViewModel::onAction,
-				onEvent = taskViewModel::onEvent,
-				onNavigate = { route ->
-					navController.navigate(route = route)
-				},
+				onTaskAction = taskListViewModel::onAction,
+				onNavigate = { route -> navController.navigate(route = route) },
 				onBackupData = {
 					activity.backupPickerLauncher.launch(activity.backupManager.getBackupFilePickerIntent())
 				},
@@ -101,10 +93,16 @@ fun AppNavigation(
 		}
 
 		composable(route = Routes.CompletedTaskScreen.name) {
+			val taskListViewModel: TaskListViewModel = hiltViewModel()
+			val todayTasks by taskListViewModel.todayTasks.collectAsStateWithLifecycle(initialValue = emptyList())
+			val dayOfWeek = LocalDate.now().dayOfWeek.value - 1
+			val updatedTodayTasks = todayTasks.filter { task ->
+				if (task.isRepeated) task.getRepeatWeekList().contains(dayOfWeek) else true
+			}
 			CompletedTaskScreen(
 				tasks = updatedTodayTasks,
 				appState = mainState,
-				onEvent = taskViewModel::onEvent,
+				onTaskAction = taskListViewModel::onAction,
 				onBack = {
 					if (navController.isValidBackStack) {
 						navController.popBackStack()
@@ -113,13 +111,14 @@ fun AppNavigation(
 		}
 
 		composable(route = Routes.ThisWeekTaskScreen.name) {
+			val taskListViewModel: TaskListViewModel = hiltViewModel()
+			val allTasks by taskListViewModel.allTasks.collectAsStateWithLifecycle(initialValue = emptyList())
 			ThisWeekTaskScreen(
 				tasks = allTasks,
 				appState = mainState,
 				onEditTask = { id ->
 					navController.navigate(route = "${Routes.EditTaskScreen.name}/$id")
 				},
-				onEvent = taskViewModel::onEvent,
 				onBack = {
 					if (navController.isValidBackStack) {
 						navController.popBackStack()
@@ -128,10 +127,12 @@ fun AppNavigation(
 		}
 
 		composable(route = Routes.CalenderScreen.name) {
+			val taskListViewModel: TaskListViewModel = hiltViewModel()
+			val allTasks by taskListViewModel.allTasks.collectAsStateWithLifecycle(initialValue = emptyList())
 			CalenderScreen(
 				tasks = allTasks,
 				appState = mainState,
-				onEvent = taskViewModel::onEvent,
+				onTaskAction = taskListViewModel::onAction,
 				onAction = mainViewModel::onAction,
 				onBack = {
 					if (navController.isValidBackStack) {
@@ -144,6 +145,12 @@ fun AppNavigation(
 		}
 
 		composable(route = Routes.FreeTimeScreen.name) {
+			val taskListViewModel: TaskListViewModel = hiltViewModel()
+			val todayTasks by taskListViewModel.todayTasks.collectAsStateWithLifecycle(initialValue = emptyList())
+			val dayOfWeek = LocalDate.now().dayOfWeek.value - 1
+			val updatedTodayTasks = todayTasks.filter { task ->
+				if (task.isRepeated) task.getRepeatWeekList().contains(dayOfWeek) else true
+			}
 			FreeTimeScreen(
 				tasks = updatedTodayTasks,
 				appState = mainState,

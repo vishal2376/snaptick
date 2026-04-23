@@ -50,7 +50,7 @@ import com.vishal2376.snaptick.presentation.common.CalenderView
 import com.vishal2376.snaptick.presentation.common.SnackbarController.showCustomSnackbar
 import com.vishal2376.snaptick.presentation.common.filterTasksByDate
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
-import com.vishal2376.snaptick.presentation.home_screen.HomeScreenEvent
+import com.vishal2376.snaptick.presentation.task_list.action.TaskListAction
 import com.vishal2376.snaptick.presentation.home_screen.components.EmptyTaskComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.TaskComponent
 import com.vishal2376.snaptick.presentation.main.action.MainAction
@@ -72,7 +72,7 @@ import java.util.Locale
 fun CalenderScreen(
 	tasks: List<Task>,
 	appState: MainState,
-	onEvent: (HomeScreenEvent) -> Unit,
+	onTaskAction: (TaskListAction) -> Unit,
 	onAction: (MainAction) -> Unit,
 	onNavigate: (route: String) -> Unit,
 	onBack: () -> Unit
@@ -243,27 +243,25 @@ fun CalenderScreen(
 								is24HourTimeFormat = appState.is24hourTimeFormat,
 								onEdit = { taskId ->
 									if (task.date >= LocalDate.now()) {
-										onEvent(HomeScreenEvent.OnEditTask(taskId))
 										onNavigate("${Routes.EditTaskScreen.name}/$taskId")
 									}
 								},
 								onComplete = {
 									if (task.date >= LocalDate.now()) {
 										playSound(context,SoundEvent.TASK_COMPLETED)
-										onEvent(HomeScreenEvent.OnCompleted(it, !task.isCompleted))
+										onTaskAction(TaskListAction.ToggleCompletion(it, !task.isCompleted))
 									}
 								},
 								onPomodoro = { taskId ->
-									onEvent(HomeScreenEvent.OnPomodoro(taskId))
 									onNavigate("${Routes.PomodoroScreen.name}/$taskId")
 								},
 								onDelete = {
-									onEvent(HomeScreenEvent.OnDeleteTask(it))
+									onTaskAction(TaskListAction.DeleteTask(it))
 									showCustomSnackbar(
 										msg = "Task Deleted",
 										actionText = "Undo",
 										onClickAction = {
-											onEvent(HomeScreenEvent.OnUndoDelete)
+											onTaskAction(TaskListAction.UndoDelete)
 										})
 								},
 								animDelay = index * Constants.LIST_ANIMATION_DELAY

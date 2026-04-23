@@ -16,7 +16,6 @@ import com.vishal2376.snaptick.presentation.common.CustomSnackBar
 import com.vishal2376.snaptick.presentation.main.action.MainAction
 import com.vishal2376.snaptick.presentation.main.viewmodel.MainViewModel
 import com.vishal2376.snaptick.presentation.navigation.AppNavigation
-import com.vishal2376.snaptick.presentation.viewmodels.TaskViewModel
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.BackupManager
 import com.vishal2376.snaptick.util.NotificationHelper
@@ -27,7 +26,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-	private val taskViewModel by viewModels<TaskViewModel>()
 	private val mainViewModel by viewModels<MainViewModel>()
 
 	@Inject
@@ -80,7 +78,6 @@ class MainActivity : ComponentActivity() {
 			) {
 				AppNavigation(
 					mainViewModel = mainViewModel,
-					taskViewModel = taskViewModel,
 					startDestination = widgetNavigateTo
 				)
 				CustomSnackBar()

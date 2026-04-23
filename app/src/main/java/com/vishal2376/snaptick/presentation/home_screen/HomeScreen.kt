@@ -67,6 +67,7 @@ import com.vishal2376.snaptick.presentation.home_screen.components.TaskComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.WhatsNewDialogComponent
 import com.vishal2376.snaptick.presentation.main.action.MainAction
 import com.vishal2376.snaptick.presentation.main.state.MainState
+import com.vishal2376.snaptick.presentation.task_list.action.TaskListAction
 import com.vishal2376.snaptick.presentation.navigation.Routes
 import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.ui.theme.LightGreen
@@ -91,7 +92,7 @@ fun HomeScreen(
 	tasks: List<Task>,
 	appState: MainState,
 	onAction: (MainAction) -> Unit,
-	onEvent: (HomeScreenEvent) -> Unit,
+	onTaskAction: (TaskListAction) -> Unit,
 	onNavigate: (String) -> Unit,
 	onBackupData: () -> Unit,
 	onRestoreData: () -> Unit
@@ -393,16 +394,16 @@ fun HomeScreen(
 									swipeBehavior = appState.swipeBehaviour,
 									onDelete = {
 										playSound(context, SoundEvent.TASK_DELETED)
-										onEvent(HomeScreenEvent.OnSwipeTask(it))
+										onTaskAction(TaskListAction.SwipeTask(it))
 										showCustomSnackbar(
 											msg = "Task Deleted",
 											actionText = "Undo",
-											onClickAction = { onEvent(HomeScreenEvent.OnUndoDelete) }
+											onClickAction = { onTaskAction(TaskListAction.UndoDelete) }
 										)
 									},
 									onComplete = {
 										playSound(context, SoundEvent.TASK_COMPLETED)
-										onEvent(HomeScreenEvent.OnCompleted(it.id, true))
+										onTaskAction(TaskListAction.ToggleCompletion(it.id, true))
 										showCustomSnackbar(
 											msg = "Task Completed",
 											actionColor = LightGreen
@@ -413,15 +414,13 @@ fun HomeScreen(
 										task = task,
 										is24HourTimeFormat = appState.is24hourTimeFormat,
 										onEdit = { taskId ->
-											onEvent(HomeScreenEvent.OnEditTask(taskId))
 											onNavigate("${Routes.EditTaskScreen.name}/$taskId")
 										},
 										onComplete = {
 											playSound(context, SoundEvent.TASK_COMPLETED)
-											onEvent(HomeScreenEvent.OnCompleted(it, true))
+											onTaskAction(TaskListAction.ToggleCompletion(it, true))
 										},
 										onPomodoro = { taskId ->
-											onEvent(HomeScreenEvent.OnPomodoro(taskId))
 											onNavigate("${Routes.PomodoroScreen.name}/$taskId")
 										},
 										animDelay = index * Constants.LIST_ANIMATION_DELAY

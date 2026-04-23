@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
-import com.vishal2376.snaptick.presentation.home_screen.HomeScreenEvent
+import com.vishal2376.snaptick.presentation.task_list.action.TaskListAction
 import com.vishal2376.snaptick.presentation.home_screen.components.EmptyTaskComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.TaskComponent
 import com.vishal2376.snaptick.presentation.main.state.MainState
@@ -44,7 +44,7 @@ import com.vishal2376.snaptick.util.DummyTasks
 fun CompletedTaskScreen(
 	tasks: List<Task>,
 	appState: MainState,
-	onEvent: (HomeScreenEvent) -> Unit,
+	onTaskAction: (TaskListAction) -> Unit,
 	onBack: () -> Unit
 ) {
 
@@ -98,12 +98,7 @@ fun CompletedTaskScreen(
 								is24HourTimeFormat = appState.is24hourTimeFormat,
 								onEdit = {},
 								onComplete = {
-									onEvent(
-										HomeScreenEvent.OnCompleted(
-											it,
-											false
-										)
-									)
+									onTaskAction(TaskListAction.ToggleCompletion(it, false))
 								},
 								onPomodoro = {},
 								animDelay = index * Constants.LIST_ANIMATION_DELAY
