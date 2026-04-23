@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.vishal2376.snaptick.data.repositories.TaskRepository
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.home_screen.HomeScreenEvent
-import com.vishal2376.snaptick.presentation.pomodoro_screen.PomodoroScreenEvent
 import com.vishal2376.snaptick.util.TaskReminderScheduler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -83,30 +82,6 @@ class TaskViewModel @Inject constructor(
 					}
 				}
 			}
-		}
-	}
-
-	// Pomodoro Screen Events
-	fun onEvent(event: PomodoroScreenEvent) {
-		when (event) {
-			is PomodoroScreenEvent.OnCompleted -> {
-				toggleTaskCompletion(event.taskId, event.isCompleted)
-			}
-
-			is PomodoroScreenEvent.OnDestroyScreen -> {
-				viewModelScope.launch(Dispatchers.IO) {
-					val fetchedTask = repository.getTaskById(event.taskId)
-					if (fetchedTask != null) {
-						task = if (fetchedTask.isValidPomodoroSession(event.remainingTime))
-							fetchedTask.copy(pomodoroTimer = event.remainingTime.toInt())
-						else
-							fetchedTask.copy(pomodoroTimer = -1)
-
-						repository.updateTask(task)
-					}
-				}
-			}
-
 		}
 	}
 

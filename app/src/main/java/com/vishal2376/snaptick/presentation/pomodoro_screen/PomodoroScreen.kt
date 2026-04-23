@@ -36,128 +36,77 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableLongStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vishal2376.snaptick.R
-import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.common.SnackbarController
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.presentation.common.timerTextStyle
 import com.vishal2376.snaptick.presentation.common.utils.formatDurationTimestamp
+import com.vishal2376.snaptick.presentation.pomodoro_screen.action.PomodoroAction
 import com.vishal2376.snaptick.presentation.pomodoro_screen.components.CustomCircularProgressBar
+import com.vishal2376.snaptick.presentation.pomodoro_screen.events.PomodoroEvent
+import com.vishal2376.snaptick.presentation.pomodoro_screen.state.PomodoroState
 import com.vishal2376.snaptick.ui.theme.LightGreen
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
-import com.vishal2376.snaptick.util.DummyTasks
-import com.vishal2376.snaptick.util.vibrateDevice
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PomodoroScreen(
-	task: Task,
-	onEvent: (PomodoroScreenEvent) -> Unit,
+	state: PomodoroState,
+	events: Flow<PomodoroEvent>,
+	onAction: (PomodoroAction) -> Unit,
 	onBack: () -> Unit
 ) {
-	val context = LocalContext.current
 	val currentView = LocalView.current
 
-	var isTimerCompleted by remember { mutableStateOf(false) }
-	var totalTime by remember { mutableLongStateOf(0L) }
-	var timeLeft by remember { mutableLongStateOf(0L) }
-	var isPaused by remember { mutableStateOf(false) }
-	var isReset by remember { mutableStateOf(false) }
-
-	// keep screen on
 	DisposableEffect(Unit) {
 		currentView.keepScreenOn = true
-		onDispose {
-			currentView.keepScreenOn = false
+		onDispose { currentView.keepScreenOn = false }
+	}
+
+	LaunchedEffect(state.isPaused) {
+		currentView.keepScreenOn = !state.isPaused
+	}
+
+	LaunchedEffect(Unit) {
+		events.collect { event ->
+			when (event) {
+				is PomodoroEvent.ResumingPreviousSession -> SnackbarController.showCustomSnackbar(
+					"Resuming Previous Session",
+					actionColor = LightGreen
+				)
+				is PomodoroEvent.TaskMarkedCompleted -> onBack()
+				is PomodoroEvent.TimerCompleted -> {}
+			}
 		}
 	}
 
-	// empty progress bar animation
 	val progressBarAnim = remember { Animatable(100f) }
-	LaunchedEffect(key1 = Unit) {
-		progressBarAnim.animateTo(
-			1f,
-			tween(1000)
-		)
+	LaunchedEffect(Unit) {
+		progressBarAnim.animateTo(1f, tween(1000))
 	}
 
-	//flicker animation + toggle keep screen on
 	val alphaValue = remember { Animatable(1f) }
-	LaunchedEffect(isPaused) {
-		currentView.keepScreenOn = !isPaused
-
-		if (isPaused && (timeLeft != totalTime)) {
+	LaunchedEffect(state.isPaused, state.totalTime, state.timeLeft) {
+		if (state.isPaused && state.timeLeft != state.totalTime && state.totalTime > 0) {
 			alphaValue.animateTo(
 				targetValue = 0.2f,
 				animationSpec = infiniteRepeatable(
-					tween(
-						1000,
-						easing = LinearEasing
-					),
+					tween(1000, easing = LinearEasing),
 					repeatMode = RepeatMode.Reverse
 				)
 			)
 		} else {
 			alphaValue.snapTo(1f)
-		}
-	}
-
-	// timer logic
-	if (totalTime == 0L) {
-		totalTime = task.getDuration()
-		timeLeft = if (task.pomodoroTimer != -1) {
-			SnackbarController.showCustomSnackbar(
-				"Resuming Previous Session",
-				actionColor = LightGreen
-			)
-			task.pomodoroTimer.toLong()
-		} else {
-			totalTime
-		}
-	}
-
-	LaunchedEffect(isReset) {
-		if (isReset) {
-			isPaused = true
-			timeLeft = totalTime
-			alphaValue.snapTo(1f)
-		}
-	}
-
-	LaunchedEffect(
-		key1 = timeLeft,
-		key2 = isPaused
-	) {
-		while (timeLeft > 0 && !isPaused) {
-			delay(1000L)
-			timeLeft--
-		}
-
-		if (isTimerCompleted) {
-			vibrateDevice(context)
-		}
-	}
-
-	// reset timer onDestroy Screen
-	DisposableEffect(Unit) {
-		onDispose {
-			onEvent(PomodoroScreenEvent.OnDestroyScreen(task.id, timeLeft))
-			totalTime = 0L
-			timeLeft = 0L
 		}
 	}
 
@@ -171,7 +120,7 @@ fun PomodoroScreen(
 					modifier = Modifier
 						.fillMaxWidth()
 						.wrapContentSize(Alignment.Center),
-					text = task.title,
+					text = state.taskTitle,
 					style = taskTextStyle
 				)
 			},
@@ -184,15 +133,7 @@ fun PomodoroScreen(
 				}
 			},
 			actions = {
-				IconButton(onClick = {
-					onEvent(
-						PomodoroScreenEvent.OnCompleted(
-							taskId = task.id,
-							isCompleted = true
-						)
-					)
-					onBack()
-				}) {
+				IconButton(onClick = { onAction(PomodoroAction.MarkCompleted) }) {
 					Icon(
 						imageVector = Icons.Default.Check,
 						contentDescription = null,
@@ -213,48 +154,44 @@ fun PomodoroScreen(
 			Box(contentAlignment = Alignment.Center) {
 				Text(
 					modifier = Modifier.alpha(alphaValue.value),
-					text = if (isTimerCompleted) {
+					text = if (state.isCompleted) {
 						stringResource(R.string.completed)
 					} else {
-						formatDurationTimestamp(timeLeft)
+						formatDurationTimestamp(state.timeLeft)
 					},
 					style = timerTextStyle,
 					color = MaterialTheme.colorScheme.onBackground
 				)
-				val calcProgress = 100f - ((timeLeft.toFloat() / totalTime.toFloat()) * 100f)
-				if (calcProgress >= 99) {
-					isTimerCompleted = true
-				}
-				if (!isTimerCompleted) {
-					CustomCircularProgressBar(progress = if (progressBarAnim.value <= 1f) calcProgress else progressBarAnim.value)
+				val calcProgress = if (state.totalTime > 0) {
+					100f - ((state.timeLeft.toFloat() / state.totalTime.toFloat()) * 100f)
+				} else 0f
+				if (!state.isCompleted) {
+					CustomCircularProgressBar(
+						progress = if (progressBarAnim.value <= 1f) calcProgress else progressBarAnim.value
+					)
 				}
 			}
 
 			Spacer(modifier = Modifier.height(64.dp))
 
-			AnimatedVisibility(!isTimerCompleted) {
+			AnimatedVisibility(!state.isCompleted) {
 				Row(horizontalArrangement = Arrangement.spacedBy(24.dp)) {
 					FloatingActionButton(
-						onClick = {
-							isPaused = !isPaused
-							isReset = false
-						},
+						onClick = { onAction(PomodoroAction.TogglePause) },
 						shape = CircleShape,
 						elevation = FloatingActionButtonDefaults.elevation(4.dp),
 						containerColor = MaterialTheme.colorScheme.primaryContainer,
 						contentColor = MaterialTheme.colorScheme.onPrimaryContainer
 					) {
 						Icon(
-							imageVector = if (isPaused) Icons.Default.PlayArrow else Icons.Default.Pause,
+							imageVector = if (state.isPaused) Icons.Default.PlayArrow else Icons.Default.Pause,
 							tint = MaterialTheme.colorScheme.onPrimaryContainer,
 							contentDescription = null
 						)
 					}
 
 					FloatingActionButton(
-						onClick = {
-							isReset = true
-						},
+						onClick = { onAction(PomodoroAction.Reset) },
 						shape = CircleShape,
 						elevation = FloatingActionButtonDefaults.elevation(4.dp),
 						containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -277,7 +214,11 @@ fun PomodoroScreen(
 @Composable
 fun PomodoroScreenPreview() {
 	SnaptickTheme {
-		val task = DummyTasks.dummyTasks()[0]
-		PomodoroScreen(task, {}, {})
+		PomodoroScreen(
+			state = PomodoroState(taskTitle = "Sample", totalTime = 1800L, timeLeft = 900L),
+			events = emptyFlow(),
+			onAction = {},
+			onBack = {}
+		)
 	}
 }

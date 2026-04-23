@@ -30,6 +30,7 @@ import com.vishal2376.snaptick.presentation.home_screen.HomeScreen
 import com.vishal2376.snaptick.presentation.main.events.MainEvent
 import com.vishal2376.snaptick.presentation.main.viewmodel.MainViewModel
 import com.vishal2376.snaptick.presentation.pomodoro_screen.PomodoroScreen
+import com.vishal2376.snaptick.presentation.pomodoro_screen.viewmodel.PomodoroViewModel
 import com.vishal2376.snaptick.presentation.settings.SettingsScreen
 import com.vishal2376.snaptick.presentation.this_week_task_screen.ThisWeekTaskScreen
 import com.vishal2376.snaptick.presentation.viewmodels.TaskViewModel
@@ -200,16 +201,18 @@ fun AppNavigation(
 				type = NavType.IntType
 				defaultValue = -1
 			})
-		) { navBackStackEntry ->
-			navBackStackEntry.arguments?.getInt("id").let { id ->
-				PomodoroScreen(task = taskViewModel.task,
-					onEvent = taskViewModel::onEvent,
-					onBack = {
-						if (navController.isValidBackStack) {
-							navController.popBackStack()
-						}
-					})
-			}
+		) {
+			val pomodoroViewModel: PomodoroViewModel = hiltViewModel()
+			val pomodoroState by pomodoroViewModel.state.collectAsStateWithLifecycle()
+			PomodoroScreen(
+				state = pomodoroState,
+				events = pomodoroViewModel.events,
+				onAction = pomodoroViewModel::onAction,
+				onBack = {
+					if (navController.isValidBackStack) {
+						navController.popBackStack()
+					}
+				})
 		}
 
 		composable(route = Routes.SettingsScreen.name,
