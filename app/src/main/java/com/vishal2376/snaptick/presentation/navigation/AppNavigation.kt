@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -20,6 +21,7 @@ import com.vishal2376.snaptick.MainActivity
 import com.vishal2376.snaptick.presentation.about_screen.AboutScreen
 import com.vishal2376.snaptick.presentation.add_edit_screen.AddTaskScreen
 import com.vishal2376.snaptick.presentation.add_edit_screen.EditTaskScreen
+import com.vishal2376.snaptick.presentation.add_edit_screen.viewmodel.AddEditViewModel
 import com.vishal2376.snaptick.presentation.calender_screen.CalenderScreen
 import com.vishal2376.snaptick.presentation.common.NotificationPermissionHandler
 import com.vishal2376.snaptick.presentation.completed_task_screen.CompletedTaskScreen
@@ -152,10 +154,14 @@ fun AppNavigation(
 		}
 
 		composable(route = Routes.AddTaskScreen.name) {
+			val addEditViewModel: AddEditViewModel = hiltViewModel()
+			val addEditState by addEditViewModel.state.collectAsStateWithLifecycle()
 			AddTaskScreen(
+				state = addEditState,
+				events = addEditViewModel.events,
 				appState = mainState,
-				onEvent = taskViewModel::onEvent,
-				onAction = mainViewModel::onAction,
+				onAction = addEditViewModel::onAction,
+				onMainAction = mainViewModel::onAction,
 				onBack = {
 					if (navController.previousBackStackEntry != null) {
 						navController.popBackStack()
@@ -173,17 +179,19 @@ fun AppNavigation(
 				type = NavType.IntType
 				defaultValue = -1
 			})
-		) { navBackStackEntry ->
-			navBackStackEntry.arguments?.getInt("id").let { id ->
-				EditTaskScreen(task = taskViewModel.task,
-					appState = mainState,
-					onEvent = taskViewModel::onEvent,
-					onBack = {
-						if (navController.isValidBackStack) {
-							navController.popBackStack()
-						}
-					})
-			}
+		) {
+			val addEditViewModel: AddEditViewModel = hiltViewModel()
+			val addEditState by addEditViewModel.state.collectAsStateWithLifecycle()
+			EditTaskScreen(
+				state = addEditState,
+				events = addEditViewModel.events,
+				appState = mainState,
+				onAction = addEditViewModel::onAction,
+				onBack = {
+					if (navController.isValidBackStack) {
+						navController.popBackStack()
+					}
+				})
 		}
 
 		composable(

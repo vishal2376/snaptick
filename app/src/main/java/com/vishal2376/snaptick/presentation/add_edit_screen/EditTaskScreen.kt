@@ -39,7 +39,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -55,16 +54,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vishal2376.snaptick.R
-import com.vishal2376.snaptick.domain.model.Task
+import com.vishal2376.snaptick.presentation.add_edit_screen.action.AddEditAction
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.ConfirmDeleteDialog
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.CustomDurationDialogComponent
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.DurationComponent
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.PriorityComponent
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.ShowNativeTimePicker
 import com.vishal2376.snaptick.presentation.add_edit_screen.components.WeekDaysComponent
+import com.vishal2376.snaptick.presentation.add_edit_screen.events.AddEditEvent
+import com.vishal2376.snaptick.presentation.add_edit_screen.state.AddEditState
 import com.vishal2376.snaptick.presentation.common.AppTheme
 import com.vishal2376.snaptick.presentation.common.NativeTimePickerDialog
-import com.vishal2376.snaptick.presentation.common.Priority
 import com.vishal2376.snaptick.presentation.common.ShowTimePicker
 import com.vishal2376.snaptick.presentation.common.SnackbarController.showCustomSnackbar
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
@@ -77,32 +77,36 @@ import com.vishal2376.snaptick.ui.theme.LightGreen
 import com.vishal2376.snaptick.ui.theme.Red
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.ui.theme.priorityColors
-import com.vishal2376.snaptick.util.DummyTasks
 import com.vishal2376.snaptick.util.checkValidTask
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditTaskScreen(
-	task: Task,
+	state: AddEditState,
+	events: Flow<AddEditEvent>,
 	appState: MainState,
-	onEvent: (AddEditScreenEvent) -> Unit,
+	onAction: (AddEditAction) -> Unit,
 	onBack: () -> Unit
 ) {
-	var taskStartTime by remember { mutableStateOf(task.startTime) }
-	var taskEndTime by remember { mutableStateOf(task.endTime) }
-	var isTaskAllDay by remember { mutableStateOf(task.isAllDayTaskEnabled()) }
-	var isTimeUpdated by remember { mutableStateOf(false) }
-	val taskDuration by remember { mutableLongStateOf(task.getDuration() / 60) }
-
 	var showDialogConfirmDelete by remember { mutableStateOf(false) }
 	var showDialogCustomDuration by remember { mutableStateOf(false) }
 	var showDialogStartTimePicker by remember { mutableStateOf(false) }
 	var showDialogEndTimePicker by remember { mutableStateOf(false) }
 
-	LaunchedEffect(isTimeUpdated)
-	{
-		if (isTimeUpdated) {
-			onEvent(AddEditScreenEvent.ResetPomodoroTimer)
+	LaunchedEffect(state.timeUpdateTick) {
+		if (state.timeUpdateTick > 0) {
+			onAction(AddEditAction.ResetPomodoroTimer)
+		}
+	}
+
+	LaunchedEffect(Unit) {
+		events.collect { event ->
+			when (event) {
+				is AddEditEvent.TaskUpdated, is AddEditEvent.TaskDeleted -> onBack()
+				else -> {}
+			}
 		}
 	}
 
@@ -138,47 +142,40 @@ fun EditTaskScreen(
 
 		if (showDialogStartTimePicker) {
 			NativeTimePickerDialog(
-				time = taskStartTime,
+				time = state.startTime,
 				is24hourFormat = appState.is24hourTimeFormat
 			) {
-				onEvent(AddEditScreenEvent.OnUpdateStartTime(it))
-				taskStartTime = it
+				onAction(AddEditAction.UpdateStartTime(it))
 				showDialogStartTimePicker = false
 			}
 		}
 
 		if (showDialogEndTimePicker) {
 			NativeTimePickerDialog(
-				time = taskEndTime,
+				time = state.endTime,
 				is24hourFormat = appState.is24hourTimeFormat
 			) {
-				onEvent(AddEditScreenEvent.OnUpdateEndTime(it))
-				taskEndTime = it
+				onAction(AddEditAction.UpdateEndTime(it))
 				showDialogEndTimePicker = false
 			}
 		}
 
-		// confirm delete dialog
 		if (showDialogConfirmDelete) {
 			ConfirmDeleteDialog(
 				onClose = { showDialogConfirmDelete = false },
 				onDelete = {
-					onEvent(AddEditScreenEvent.OnDeleteTaskClick(task))
+					onAction(AddEditAction.DeleteTask)
 					showDialogConfirmDelete = false
-					onBack()
 				}
 			)
 		}
 
-		// confirm custom duration dialog
 		if (showDialogCustomDuration) {
 			CustomDurationDialogComponent(
 				onClose = { showDialogCustomDuration = false },
 				onSelect = { time ->
 					val duration = time.toSecondOfDay() / 60L
-					onEvent(AddEditScreenEvent.OnUpdateEndTime(task.startTime.plusMinutes(duration)))
-					taskEndTime = taskStartTime.plusMinutes(duration)
-					isTimeUpdated = !isTimeUpdated
+					onAction(AddEditAction.UpdateDurationMinutes(duration))
 				}
 			)
 		}
@@ -201,10 +198,10 @@ fun EditTaskScreen(
 					modifier = Modifier
 						.fillMaxWidth()
 						.padding(32.dp, 8.dp)
-						.background(priorityColors[task.priority], RoundedCornerShape(8.dp))
+						.background(priorityColors[state.priority.ordinal], RoundedCornerShape(8.dp))
 				) {
 					TextField(
-						value = task.title,
+						value = state.title,
 						singleLine = true,
 						colors = TextFieldDefaults.colors(
 							focusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -215,9 +212,7 @@ fun EditTaskScreen(
 							cursorColor = MaterialTheme.colorScheme.onBackground
 						),
 						textStyle = taskTextStyle,
-						onValueChange = {
-							onEvent(AddEditScreenEvent.OnUpdateTitle(it))
-						},
+						onValueChange = { onAction(AddEditAction.UpdateTitle(it)) },
 						placeholder = {
 							Text(
 								text = stringResource(id = R.string.what_would_you_like_to_do),
@@ -241,7 +236,7 @@ fun EditTaskScreen(
 						.padding(24.dp, 8.dp)
 				) {
 					Column(
-						modifier = Modifier.alpha(if (isTaskAllDay && !task.reminder) 0.3f else 1f),
+						modifier = Modifier.alpha(if (state.isAllDay && !state.reminder) 0.3f else 1f),
 						horizontalAlignment = Alignment.CenterHorizontally
 					) {
 						Text(
@@ -252,22 +247,21 @@ fun EditTaskScreen(
 						Spacer(modifier = Modifier.height(8.dp))
 						if (appState.isWheelTimePicker) {
 							ShowTimePicker(
-								time = taskStartTime,
+								time = state.startTime,
 								is24hourFormat = appState.is24hourTimeFormat
 							) { snappedTime ->
-								onEvent(AddEditScreenEvent.OnUpdateStartTime(snappedTime))
-								taskStartTime = snappedTime
+								onAction(AddEditAction.UpdateStartTime(snappedTime))
 							}
 						} else {
 							ShowNativeTimePicker(
-								time = taskStartTime,
+								time = state.startTime,
 								is24hourFormat = appState.is24hourTimeFormat
 							) {
 								showDialogStartTimePicker = true
 							}
 						}
 					}
-					if (!isTaskAllDay) {
+					if (!state.isAllDay) {
 						Column(horizontalAlignment = Alignment.CenterHorizontally) {
 							Text(
 								text = stringResource(R.string.end_time),
@@ -277,16 +271,15 @@ fun EditTaskScreen(
 							Spacer(modifier = Modifier.height(8.dp))
 							if (appState.isWheelTimePicker) {
 								ShowTimePicker(
-									time = taskEndTime,
+									time = state.endTime,
 									is24hourFormat = appState.is24hourTimeFormat,
-									isTimeUpdated = isTimeUpdated
+									isTimeUpdated = state.timeUpdateTick % 2 == 1
 								) { snappedTime ->
-									onEvent(AddEditScreenEvent.OnUpdateEndTime(snappedTime))
-									taskEndTime = snappedTime
+									onAction(AddEditAction.UpdateEndTime(snappedTime))
 								}
 							} else {
 								ShowNativeTimePicker(
-									time = taskEndTime,
+									time = state.endTime,
 									is24hourFormat = appState.is24hourTimeFormat
 								) {
 									showDialogEndTimePicker = true
@@ -298,7 +291,7 @@ fun EditTaskScreen(
 				Row(
 					modifier = Modifier
 						.fillMaxWidth()
-						.alpha(if (isTaskAllDay) 0.2f else 1f)
+						.alpha(if (state.isAllDay) 0.2f else 1f)
 						.padding(start = 32.dp, end = 32.dp, top = 8.dp),
 					verticalAlignment = Alignment.CenterVertically,
 					horizontalArrangement = Arrangement.SpaceBetween
@@ -310,32 +303,23 @@ fun EditTaskScreen(
 					)
 
 					Text(
-						text = formatDuration(task),
+						text = formatDuration(state.startTime, state.endTime),
 						style = taskTextStyle,
 						color = MaterialTheme.colorScheme.onBackground
 					)
 				}
 				DurationComponent(
 					modifier = Modifier
-						.alpha(if (isTaskAllDay) 0.2f else 1f)
+						.alpha(if (state.isAllDay) 0.2f else 1f)
 						.padding(horizontal = 24.dp),
 					durationList = appState.durationList,
-					defaultDuration = taskDuration
+					defaultDuration = state.duration
 				) { duration ->
-					if (!isTaskAllDay) {
+					if (!state.isAllDay) {
 						if (duration == 0L) {
 							showDialogCustomDuration = true
 						} else {
-
-							onEvent(
-								AddEditScreenEvent.OnUpdateEndTime(
-									task.startTime.plusMinutes(
-										duration
-									)
-								)
-							)
-							taskEndTime = taskStartTime.plusMinutes(duration)
-							isTimeUpdated = !isTimeUpdated
+							onAction(AddEditAction.UpdateDurationMinutes(duration))
 						}
 					}
 				}
@@ -358,11 +342,8 @@ fun EditTaskScreen(
 						)
 
 						Switch(
-							checked = isTaskAllDay,
-							onCheckedChange = {
-								isTaskAllDay = it
-								taskEndTime = taskStartTime
-							},
+							checked = state.isAllDay,
+							onCheckedChange = { onAction(AddEditAction.UpdateAllDay(it)) },
 							colors = SwitchDefaults.colors(
 								checkedThumbColor = MaterialTheme.colorScheme.primary,
 								checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
@@ -391,10 +372,8 @@ fun EditTaskScreen(
 						)
 
 						Switch(
-							checked = task.reminder,
-							onCheckedChange = {
-								onEvent(AddEditScreenEvent.OnUpdateReminder(it))
-							},
+							checked = state.reminder,
+							onCheckedChange = { onAction(AddEditAction.UpdateReminder(it)) },
 							colors = SwitchDefaults.colors(
 								checkedThumbColor = MaterialTheme.colorScheme.primary,
 								checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
@@ -419,10 +398,8 @@ fun EditTaskScreen(
 						)
 
 						Switch(
-							checked = task.isRepeated,
-							onCheckedChange = {
-								onEvent(AddEditScreenEvent.OnUpdateIsRepeated(it))
-							},
+							checked = state.isRepeated,
+							onCheckedChange = { onAction(AddEditAction.UpdateRepeated(it)) },
 							colors = SwitchDefaults.colors(
 								checkedThumbColor = MaterialTheme.colorScheme.primary,
 								checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
@@ -431,10 +408,12 @@ fun EditTaskScreen(
 						)
 					}
 
-					AnimatedVisibility(visible = task.isRepeated) {
+					AnimatedVisibility(visible = state.isRepeated) {
+						val repeatDays = if (state.repeatWeekdays.isEmpty()) emptyList()
+						else state.repeatWeekdays.split(",").map { it.toInt() }
 						WeekDaysComponent(
-							defaultRepeatedDays = task.getRepeatWeekList(),
-							onChange = { onEvent(AddEditScreenEvent.OnUpdateRepeatWeekDays(it)) }
+							defaultRepeatedDays = repeatDays,
+							onChange = { onAction(AddEditAction.UpdateRepeatWeekDays(it)) }
 						)
 					}
 				}
@@ -442,8 +421,8 @@ fun EditTaskScreen(
 					modifier = Modifier.padding(bottom = 8.dp),
 					color = MaterialTheme.colorScheme.primaryContainer
 				)
-				PriorityComponent(defaultSortTask = Priority.entries[task.priority]) {
-					onEvent(AddEditScreenEvent.OnUpdatePriority(it))
+				PriorityComponent(defaultSortTask = state.priority) {
+					onAction(AddEditAction.UpdatePriority(it))
 				}
 			}
 
@@ -456,22 +435,17 @@ fun EditTaskScreen(
 			) {
 				Button(
 					onClick = {
-
-						if (isTaskAllDay) {
-							onEvent(AddEditScreenEvent.OnUpdateEndTime(taskStartTime))
-						}
-
+						val task = state.toTask()
 						val (isValid, errorMessage) = checkValidTask(
 							task = task,
-							isTaskAllDay = isTaskAllDay,
+							isTaskAllDay = state.isAllDay,
 							totalTasksDuration = appState.totalTaskDuration - task.getDuration(
 								checkPastTask = true
 							)
 						)
 
 						if (isValid) {
-							onEvent(AddEditScreenEvent.OnUpdateTask)
-							onBack()
+							onAction(AddEditAction.UpdateTask)
 						} else {
 							showCustomSnackbar(errorMessage)
 						}
@@ -499,7 +473,12 @@ fun EditTaskScreen(
 @Composable
 fun EditTaskScreenPreview() {
 	SnaptickTheme {
-		val task = DummyTasks.dummyTasks()[0]
-		EditTaskScreen(task, MainState(), {}, {})
+		EditTaskScreen(
+			state = AddEditState(),
+			events = emptyFlow(),
+			appState = MainState(),
+			onAction = {},
+			onBack = {}
+		)
 	}
 }
