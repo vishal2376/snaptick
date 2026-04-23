@@ -148,6 +148,7 @@ dependencies {
 	androidTestImplementation("com.google.dagger:hilt-android-testing:2.49")
 	kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.49")
 	androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+	androidTestImplementation("com.google.guava:guava:32.0.1-android")
 
 	debugImplementation("androidx.compose.ui:ui-tooling")
 	debugImplementation("androidx.compose.ui:ui-test-manifest")
