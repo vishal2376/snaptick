@@ -23,7 +23,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -58,7 +57,6 @@ fun SettingsScreen(
 ) {
 	val context = LocalContext.current
 	val sheetState = rememberModalBottomSheetState()
-	val scope = rememberCoroutineScope()
 	var showBottomSheetById by remember { mutableIntStateOf(0) }
 
 	val settingsAbout = listOf(

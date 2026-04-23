@@ -84,8 +84,7 @@ fun NativeTimePickerDialog(
 @Preview
 @Composable
 fun NativeTimePickerDialogPreview() {
-	val state = rememberTimePickerState()
 	SnaptickTheme {
-		NativeTimePickerDialog(LocalTime.now(),false, {})
+		NativeTimePickerDialog(LocalTime.now(), false, {})
 	}
 }
