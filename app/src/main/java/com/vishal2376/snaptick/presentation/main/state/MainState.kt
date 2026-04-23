@@ -1,4 +1,4 @@
-package com.vishal2376.snaptick.presentation.main
+package com.vishal2376.snaptick.presentation.main.state
 
 import com.vishal2376.snaptick.presentation.common.AppTheme
 import com.vishal2376.snaptick.presentation.common.CalenderView
@@ -16,7 +16,7 @@ data class MainState(
 	val theme: AppTheme = AppTheme.Dark,
 	val dynamicTheme: Boolean = false,
 	val sortBy: SortTask = SortTask.BY_START_TIME_ASCENDING,
-	var totalTaskDuration: Long = 0,
+	val totalTaskDuration: Long = 0,
 	val durationList: List<Long> = listOf(30, 60, 90, 0),
 	val streak: Int = -1,
 	val sleepTime: LocalTime = LocalTime.of(23, 59),

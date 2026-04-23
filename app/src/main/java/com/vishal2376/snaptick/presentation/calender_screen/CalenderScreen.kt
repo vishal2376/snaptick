@@ -53,8 +53,8 @@ import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.home_screen.HomeScreenEvent
 import com.vishal2376.snaptick.presentation.home_screen.components.EmptyTaskComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.TaskComponent
-import com.vishal2376.snaptick.presentation.main.MainEvent
-import com.vishal2376.snaptick.presentation.main.MainState
+import com.vishal2376.snaptick.presentation.main.action.MainAction
+import com.vishal2376.snaptick.presentation.main.state.MainState
 import com.vishal2376.snaptick.presentation.navigation.Routes
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.Constants
@@ -73,7 +73,7 @@ fun CalenderScreen(
 	tasks: List<Task>,
 	appState: MainState,
 	onEvent: (HomeScreenEvent) -> Unit,
-	onMainEvent: (MainEvent) -> Unit,
+	onAction: (MainAction) -> Unit,
 	onNavigate: (route: String) -> Unit,
 	onBack: () -> Unit
 ) {
@@ -151,7 +151,7 @@ fun CalenderScreen(
 					else
 						CalenderView.WEEKLY
 
-					onMainEvent(MainEvent.UpdateCalenderView(calenderView, context))
+					onAction(MainAction.UpdateCalenderView(calenderView))
 				}) {
 					val currentIcon =
 						if (calenderView == CalenderView.WEEKLY) Icons.Default.CalendarMonth else Icons.Default.ViewWeek
@@ -164,7 +164,7 @@ fun CalenderScreen(
 			if (selectedDay >= LocalDate.now()) {
 				FloatingActionButton(
 					onClick = {
-						onMainEvent(MainEvent.UpdateCalenderDate(selectedDay))
+						onAction(MainAction.UpdateCalenderDate(selectedDay))
 						onNavigate(Routes.AddTaskScreen.name)
 					},
 					containerColor = MaterialTheme.colorScheme.primary,

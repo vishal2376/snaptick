@@ -65,8 +65,8 @@ import com.vishal2376.snaptick.presentation.home_screen.components.NavigationDra
 import com.vishal2376.snaptick.presentation.home_screen.components.SortTaskDialogComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.TaskComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.WhatsNewDialogComponent
-import com.vishal2376.snaptick.presentation.main.MainEvent
-import com.vishal2376.snaptick.presentation.main.MainState
+import com.vishal2376.snaptick.presentation.main.action.MainAction
+import com.vishal2376.snaptick.presentation.main.state.MainState
 import com.vishal2376.snaptick.presentation.navigation.Routes
 import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.ui.theme.LightGreen
@@ -90,7 +90,7 @@ import kotlinx.coroutines.launch
 fun HomeScreen(
 	tasks: List<Task>,
 	appState: MainState,
-	onMainEvent: (MainEvent) -> Unit,
+	onAction: (MainAction) -> Unit,
 	onEvent: (HomeScreenEvent) -> Unit,
 	onNavigate: (String) -> Unit,
 	onBackupData: () -> Unit,
@@ -109,7 +109,7 @@ fun HomeScreen(
 	val packageInfo = context.packageManager.getPackageInfo(LocalContext.current.packageName, 0)
 
 	LaunchedEffect(inCompletedTasks) {
-		appState.totalTaskDuration = totalTaskTime
+		onAction(MainAction.UpdateTotalTaskDuration(totalTaskTime))
 	}
 
 	LaunchedEffect(Unit) {
@@ -157,7 +157,7 @@ fun HomeScreen(
 			ModalDrawerSheet(drawerContainerColor = MaterialTheme.colorScheme.background) {
 				NavigationDrawerComponent(
 					appState,
-					onMainEvent,
+					onAction,
 					onClickThisWeek = {
 						onNavigate(Routes.ThisWeekTaskScreen.name)
 						scope.launch {
@@ -252,16 +252,16 @@ fun HomeScreen(
 					defaultSortTask = appState.sortBy,
 					onClose = { showSortDialog = false },
 					onSelect = {
-						onMainEvent(MainEvent.UpdateSortByTask(it, context = context))
+						onAction(MainAction.UpdateSortByTask(it))
 						showSortDialog = false
 					}
 				)
 
 			if ((appState.showWhatsNew && appState.firstTimeOpened) || appState.buildVersionCode != packageInfo.versionCode) {
 				WhatsNewDialogComponent(appState = appState) {
-					onMainEvent(MainEvent.UpdateFirstTimeOpened(false))
-					onMainEvent(MainEvent.UpdateShowWhatsNew(it, context))
-					onMainEvent(MainEvent.UpdateBuildVersionCode(context, packageInfo.versionCode))
+					onAction(MainAction.UpdateFirstTimeOpened(false))
+					onAction(MainAction.UpdateShowWhatsNew(it))
+					onAction(MainAction.UpdateBuildVersionCode(packageInfo.versionCode))
 				}
 			}
 

@@ -26,7 +26,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -39,20 +38,18 @@ import com.vishal2376.snaptick.presentation.common.NavDrawerItem
 import com.vishal2376.snaptick.presentation.common.fontRobotoMono
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.infoTextStyle
-import com.vishal2376.snaptick.presentation.main.MainEvent
-import com.vishal2376.snaptick.presentation.main.MainState
+import com.vishal2376.snaptick.presentation.main.action.MainAction
+import com.vishal2376.snaptick.presentation.main.state.MainState
 
 @Composable
 fun NavigationDrawerComponent(
 	appState: MainState,
-	onMainEvent: (MainEvent) -> Unit,
+	onAction: (MainAction) -> Unit,
 	onClickThisWeek: () -> Unit,
 	onClickSettings: () -> Unit,
 	onClickBackup: () -> Unit,
 	onClickRestore: () -> Unit
 ) {
-
-	val context = LocalContext.current
 
 	Column(
 		horizontalAlignment = Alignment.CenterHorizontally,
@@ -125,7 +122,7 @@ fun NavigationDrawerComponent(
 
 			NavDrawerItem.entries.forEach {
 				NavDrawerItemUI(icon = it.icon, label = stringResource(id = it.stringId)) {
-					onMainEvent(MainEvent.OnClickNavDrawerItem(context, it))
+					onAction(MainAction.OnClickNavDrawerItem(it))
 				}
 				Spacer(modifier = Modifier.height(8.dp))
 			}

@@ -78,8 +78,8 @@ import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.common.h3TextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
-import com.vishal2376.snaptick.presentation.main.MainEvent
-import com.vishal2376.snaptick.presentation.main.MainState
+import com.vishal2376.snaptick.presentation.main.action.MainAction
+import com.vishal2376.snaptick.presentation.main.state.MainState
 import com.vishal2376.snaptick.ui.theme.DarkGreen
 import com.vishal2376.snaptick.ui.theme.LightGreen
 import com.vishal2376.snaptick.ui.theme.Red
@@ -100,13 +100,13 @@ import java.util.UUID
 fun AddTaskScreen(
 	appState: MainState,
 	onEvent: (AddEditScreenEvent) -> Unit,
-	onMainEvent: (MainEvent) -> Unit,
+	onAction: (MainAction) -> Unit,
 	onBack: () -> Unit
 ) {
 
 	val currentTime = LocalTime.now()
 	val currentDate = appState.calenderDate ?: LocalDate.now()
-	onMainEvent(MainEvent.UpdateCalenderDate(null))
+	onAction(MainAction.UpdateCalenderDate(null))
 
 
 	var taskTitle by remember { mutableStateOf("") }

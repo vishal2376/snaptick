@@ -1,0 +1,154 @@
+package com.vishal2376.snaptick.presentation.main.viewmodel
+
+import android.content.Context
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.vishal2376.snaptick.R
+import com.vishal2376.snaptick.data.repositories.TaskRepository
+import com.vishal2376.snaptick.domain.model.BackupData
+import com.vishal2376.snaptick.presentation.common.AppTheme
+import com.vishal2376.snaptick.presentation.common.CalenderView
+import com.vishal2376.snaptick.presentation.common.NavDrawerItem
+import com.vishal2376.snaptick.presentation.common.SortTask
+import com.vishal2376.snaptick.presentation.common.SwipeBehavior
+import com.vishal2376.snaptick.presentation.main.action.MainAction
+import com.vishal2376.snaptick.presentation.main.events.MainEvent
+import com.vishal2376.snaptick.presentation.main.state.MainState
+import com.vishal2376.snaptick.util.BackupManager
+import com.vishal2376.snaptick.util.SettingsStore
+import com.vishal2376.snaptick.util.updateLocale
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.LocalTime
+import javax.inject.Inject
+
+@HiltViewModel
+class MainViewModel @Inject constructor(
+	@ApplicationContext private val context: Context,
+	private val settingsStore: SettingsStore,
+	private val backupManager: BackupManager,
+	private val repository: TaskRepository,
+) : ViewModel() {
+
+	private val _state = MutableStateFlow(MainState())
+	val state: StateFlow<MainState> = _state.asStateFlow()
+
+	private val _events = MutableSharedFlow<MainEvent>(extraBufferCapacity = 1)
+	val events = _events.asSharedFlow()
+
+	val backupData: StateFlow<BackupData> = repository.getAllTasks()
+		.map { BackupData(it) }
+		.stateIn(viewModelScope, SharingStarted.Eagerly, BackupData())
+
+	init {
+		loadPersistedState()
+		loadBuildVersion()
+	}
+
+	fun onAction(action: MainAction) {
+		when (action) {
+			is MainAction.UpdateAppTheme -> persist { _state.update { s -> s.copy(theme = action.theme) }; settingsStore.setTheme(action.theme.ordinal) }
+			is MainAction.UpdateDynamicTheme -> persist { _state.update { s -> s.copy(dynamicTheme = action.isEnabled) }; settingsStore.setDynamicTheme(action.isEnabled) }
+			is MainAction.UpdateTimePicker -> persist { _state.update { s -> s.copy(isWheelTimePicker = action.isWheelTimePicker) }; settingsStore.setTimePicker(action.isWheelTimePicker) }
+			is MainAction.UpdateTimeFormat -> persist { _state.update { s -> s.copy(is24hourTimeFormat = action.is24Hour) }; settingsStore.setTimeFormat(action.is24Hour) }
+			is MainAction.UpdateSleepTime -> persist { _state.update { s -> s.copy(sleepTime = action.sleepTime) }; settingsStore.setSleepTime(action.sleepTime.toString()) }
+			is MainAction.UpdateLanguage -> persist {
+				_state.update { s -> s.copy(language = action.language) }
+				updateLocale(context, action.language)
+				settingsStore.setLanguage(action.language)
+			}
+			is MainAction.UpdateSortByTask -> persist { _state.update { s -> s.copy(sortBy = action.sortTask) }; settingsStore.setSortTask(action.sortTask.ordinal) }
+			is MainAction.UpdateCalenderView -> persist { _state.update { s -> s.copy(calenderView = action.calenderView) }; settingsStore.setCalenderView(action.calenderView.ordinal) }
+			is MainAction.UpdateCalenderDate -> _state.update { it.copy(calenderDate = action.date) }
+			is MainAction.UpdateShowWhatsNew -> persist { _state.update { s -> s.copy(showWhatsNew = action.show) }; settingsStore.setShowWhatsNew(action.show) }
+			is MainAction.UpdateFirstTimeOpened -> _state.update { it.copy(firstTimeOpened = action.isFirstTimeOpened) }
+			is MainAction.UpdateBuildVersionCode -> persist { _state.update { s -> s.copy(buildVersionCode = action.versionCode) }; settingsStore.setBuildVersionCode(action.versionCode) }
+			is MainAction.UpdateSwipeBehaviour -> persist { _state.update { s -> s.copy(swipeBehaviour = action.swipeBehaviour) }; settingsStore.setSwipeBehaviour(action.swipeBehaviour.ordinal) }
+			is MainAction.UpdateTotalTaskDuration -> _state.update { it.copy(totalTaskDuration = action.durationSeconds) }
+			is MainAction.OnClickNavDrawerItem -> handleNavDrawerClick(action.item)
+			is MainAction.CreateBackup -> createBackup(action.uri, action.backupData)
+			is MainAction.LoadBackup -> loadBackup(action.uri)
+		}
+	}
+
+	private fun handleNavDrawerClick(item: NavDrawerItem) {
+		val subject = when (item) {
+			NavDrawerItem.REPORT_BUGS -> context.getString(R.string.report_bug)
+			NavDrawerItem.SUGGESTIONS -> context.getString(R.string.suggestions)
+		}
+		viewModelScope.launch { _events.emit(MainEvent.OpenMail(subject)) }
+	}
+
+	private fun createBackup(uri: android.net.Uri, backupData: BackupData) {
+		viewModelScope.launch {
+			val success = backupManager.createBackup(uri, backupData)
+			_events.emit(MainEvent.ShowToast(if (success) "Backup created successfully" else "Failed to create backup"))
+		}
+	}
+
+	private fun loadBackup(uri: android.net.Uri) {
+		viewModelScope.launch {
+			val data = backupManager.loadBackup(uri)
+			if (data == null) {
+				_events.emit(MainEvent.ShowToast("Failed to restore backup"))
+			} else {
+				repository.deleteAllTasks()
+				for (task in data.tasks) repository.insertTask(task)
+				_events.emit(MainEvent.ShowToast("Backup Restored"))
+			}
+		}
+	}
+
+	private fun persist(block: suspend () -> Unit) {
+		viewModelScope.launch { block() }
+	}
+
+	private fun loadBuildVersion() {
+		val versionName = context.packageManager
+			.getPackageInfo(context.packageName, 0).versionName ?: "0.0"
+		_state.update { it.copy(buildVersion = versionName) }
+	}
+
+	private fun loadPersistedState() {
+		viewModelScope.launch { settingsStore.themeKey.collect { ordinal -> _state.update { it.copy(theme = AppTheme.entries[ordinal]) } } }
+		viewModelScope.launch { settingsStore.dynamicThemeKey.collect { v -> _state.update { it.copy(dynamicTheme = v) } } }
+		viewModelScope.launch { settingsStore.timePickerKey.collect { v -> _state.update { it.copy(isWheelTimePicker = v) } } }
+		viewModelScope.launch { settingsStore.streakKey.collect { v -> _state.update { it.copy(streak = v) } } }
+		viewModelScope.launch { settingsStore.sleepTimeKey.collect { v -> _state.update { it.copy(sleepTime = LocalTime.parse(v)) } } }
+		viewModelScope.launch { settingsStore.languageKey.collect { v -> _state.update { it.copy(language = v) } } }
+		viewModelScope.launch { settingsStore.calenderViewKey.collect { v -> _state.update { it.copy(calenderView = CalenderView.entries[v]) } } }
+		viewModelScope.launch { settingsStore.timeFormatKey.collect { v -> _state.update { it.copy(is24hourTimeFormat = v) } } }
+		viewModelScope.launch { settingsStore.sortTaskKey.collect { v -> _state.update { it.copy(sortBy = SortTask.entries[v]) } } }
+		viewModelScope.launch { settingsStore.showWhatsNewKey.collect { v -> _state.update { it.copy(showWhatsNew = v) } } }
+		viewModelScope.launch { settingsStore.swipeBehaviourKey.collect { v -> _state.update { it.copy(swipeBehaviour = SwipeBehavior.entries[v]) } } }
+		viewModelScope.launch { settingsStore.buildVersionCode.collect { v -> _state.update { it.copy(buildVersionCode = v) } } }
+		viewModelScope.launch {
+			settingsStore.lastOpenedKey.collect { lastDateString ->
+				if (lastDateString == "") {
+					settingsStore.setLastOpened(LocalDate.now().toString())
+				} else {
+					val lastDate = LocalDate.parse(lastDateString)
+					val isToday = lastDate.isEqual(LocalDate.now())
+					val isYesterday = lastDate.isEqual(LocalDate.now().minusDays(1))
+					if (!isToday) {
+						val currentStreak = _state.value.streak
+						val newStreak = if (isYesterday) currentStreak + 1 else 0
+						settingsStore.setStreak(newStreak)
+						settingsStore.setLastOpened(LocalDate.now().toString())
+					}
+				}
+			}
+		}
+	}
+}

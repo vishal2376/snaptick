@@ -35,8 +35,8 @@ import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.presentation.common.AppTheme
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.infoDescTextStyle
-import com.vishal2376.snaptick.presentation.main.MainEvent
-import com.vishal2376.snaptick.presentation.main.MainState
+import com.vishal2376.snaptick.presentation.main.action.MainAction
+import com.vishal2376.snaptick.presentation.main.state.MainState
 import com.vishal2376.snaptick.presentation.settings.common.SettingCategoryItem
 import com.vishal2376.snaptick.presentation.settings.components.LanguageOptionComponent
 import com.vishal2376.snaptick.presentation.settings.components.SettingsCategoryComponent
@@ -52,7 +52,7 @@ import com.vishal2376.snaptick.util.openUrl
 @Composable
 fun SettingsScreen(
 	appState: MainState,
-	onEvent: (MainEvent) -> Unit,
+	onAction: (MainAction) -> Unit,
 	onClickAbout: () -> Unit,
 	onBack: () -> Unit
 ) {
@@ -161,22 +161,22 @@ fun SettingsScreen(
 								defaultTheme = appState.theme,
 								dynamicTheme = appState.dynamicTheme,
 								onChangedDynamicTheme = {
-									onEvent(MainEvent.UpdateDynamicTheme(it, context))
+									onAction(MainAction.UpdateDynamicTheme(it))
 								},
 								onSelect = {
-									onEvent(MainEvent.UpdateAppTheme(it, context))
+									onAction(MainAction.UpdateAppTheme(it))
 								})
 						}
 
 						R.string.language -> {
 							LanguageOptionComponent(defaultLanguage = appState.language) {
-								onEvent(MainEvent.UpdateLanguage(it, context))
+								onAction(MainAction.UpdateLanguage(it))
 							}
 						}
 
 						R.string.sleep_time -> {
 							SleepTimeOptionComponent(defaultSleepTime = appState.sleepTime) {
-								onEvent(MainEvent.UpdateSleepTime(it, context))
+								onAction(MainAction.UpdateSleepTime(it))
 							}
 						}
 
@@ -185,10 +185,10 @@ fun SettingsScreen(
 								isWheelTimePicker = appState.isWheelTimePicker,
 								is24HourTimeFormat = appState.is24hourTimeFormat,
 								onSelect = {
-									onEvent(MainEvent.UpdateTimePicker(it, context))
+									onAction(MainAction.UpdateTimePicker(it))
 								},
 								onSelectTimeFormat = {
-									onEvent(MainEvent.UpdateTimeFormat(it, context))
+									onAction(MainAction.UpdateTimeFormat(it))
 								})
 						}
 
@@ -196,7 +196,7 @@ fun SettingsScreen(
 							SwipeActionOptionComponent(
 								selected = appState.swipeBehaviour,
 								onSelect = {
-									onEvent(MainEvent.UpdateSwipeBehaviour(it, context))
+									onAction(MainAction.UpdateSwipeBehaviour(it))
 								})
 						}
 					}

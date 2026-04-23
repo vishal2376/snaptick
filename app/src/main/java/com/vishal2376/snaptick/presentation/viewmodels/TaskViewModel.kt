@@ -1,7 +1,5 @@
 package com.vishal2376.snaptick.presentation.viewmodels
 
-import android.content.Context
-import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -10,27 +8,13 @@ import androidx.lifecycle.viewModelScope
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
-import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.data.repositories.TaskRepository
-import com.vishal2376.snaptick.domain.model.BackupData
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.add_edit_screen.AddEditScreenEvent
-import com.vishal2376.snaptick.presentation.common.AppTheme
-import com.vishal2376.snaptick.presentation.common.CalenderView
-import com.vishal2376.snaptick.presentation.common.NavDrawerItem
-import com.vishal2376.snaptick.presentation.common.SortTask
-import com.vishal2376.snaptick.presentation.common.SwipeBehavior
-import com.vishal2376.snaptick.presentation.home_screen.HomeScreenEvent
-import com.vishal2376.snaptick.presentation.main.MainEvent
-import com.vishal2376.snaptick.presentation.main.MainState
 import com.vishal2376.snaptick.presentation.common.utils.formatTaskTime
+import com.vishal2376.snaptick.presentation.home_screen.HomeScreenEvent
 import com.vishal2376.snaptick.presentation.pomodoro_screen.PomodoroScreenEvent
-import com.vishal2376.snaptick.util.BackupManager
 import com.vishal2376.snaptick.util.Constants
-import com.vishal2376.snaptick.util.SettingsStore
-import com.vishal2376.snaptick.util.openMail
-import com.vishal2376.snaptick.util.showToast
-import com.vishal2376.snaptick.util.updateLocale
 import com.vishal2376.snaptick.worker.NotificationWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -45,10 +29,8 @@ import javax.inject.Inject
 @HiltViewModel
 class TaskViewModel @Inject constructor(
 	private val repository: TaskRepository,
-	val backupManager: BackupManager
 ) : ViewModel() {
 
-	var appState by mutableStateOf(MainState())
 	private var deletedTask: Task? = null
 	var task: Task by mutableStateOf(
 		Task(
@@ -70,120 +52,6 @@ class TaskViewModel @Inject constructor(
 
 	var taskList = repository.getAllTasks()
 	var todayTaskList = repository.getTodayTasks()
-	val backupData = mutableStateOf(BackupData())
-
-	init {
-		viewModelScope.launch {
-			repository.getAllTasks().collect {
-				backupData.value = BackupData(it)
-			}
-		}
-	}
-
-	// Main App Events
-	fun onEvent(event: MainEvent) {
-		when (event) {
-			is MainEvent.UpdateAppTheme -> {
-				viewModelScope.launch {
-					appState = appState.copy(theme = event.theme)
-					SettingsStore(event.context).setTheme(event.theme.ordinal)
-				}
-			}
-
-			is MainEvent.UpdateDynamicTheme -> {
-				viewModelScope.launch {
-					appState = appState.copy(dynamicTheme = event.isEnabled)
-					SettingsStore(event.context).setDynamicTheme(event.isEnabled)
-				}
-			}
-
-			is MainEvent.UpdateTimePicker -> {
-				viewModelScope.launch {
-					appState = appState.copy(isWheelTimePicker = event.isWheelTimePicker)
-					SettingsStore(event.context).setTimePicker(event.isWheelTimePicker)
-				}
-			}
-
-			is MainEvent.UpdateTimeFormat -> {
-				viewModelScope.launch {
-					appState = appState.copy(is24hourTimeFormat = event.isTimeFormat)
-					SettingsStore(event.context).setTimeFormat(event.isTimeFormat)
-				}
-			}
-
-			is MainEvent.UpdateSleepTime -> {
-				viewModelScope.launch {
-					appState = appState.copy(sleepTime = event.sleepTime)
-					SettingsStore(event.context).setSleepTime(event.sleepTime.toString())
-				}
-			}
-
-			is MainEvent.UpdateLanguage -> {
-				viewModelScope.launch {
-					appState = appState.copy(language = event.language)
-					updateLocale(event.context, event.language)
-					SettingsStore(event.context).setLanguage(event.language)
-				}
-			}
-
-			is MainEvent.UpdateSortByTask -> {
-				viewModelScope.launch {
-					appState = appState.copy(sortBy = event.sortTask)
-					SettingsStore(event.context).setSortTask(event.sortTask.ordinal)
-				}
-			}
-
-			is MainEvent.UpdateCalenderView -> {
-				viewModelScope.launch {
-					appState = appState.copy(calenderView = event.calenderView)
-					SettingsStore(event.context).setCalenderView(event.calenderView.ordinal)
-				}
-			}
-
-			is MainEvent.UpdateCalenderDate -> {
-				appState = appState.copy(calenderDate = event.date)
-			}
-
-			is MainEvent.OnClickNavDrawerItem -> {
-				when (event.item) {
-					NavDrawerItem.REPORT_BUGS -> {
-						openMail(event.context, event.context.getString(R.string.report_bug))
-					}
-
-					NavDrawerItem.SUGGESTIONS -> {
-						openMail(event.context, event.context.getString(R.string.suggestions))
-					}
-				}
-			}
-
-			is MainEvent.UpdateShowWhatsNew -> {
-				viewModelScope.launch {
-					appState = appState.copy(showWhatsNew = event.showWhatsNew)
-					SettingsStore(event.context).setShowWhatsNew(event.showWhatsNew)
-				}
-			}
-
-			is MainEvent.UpdateFirstTimeOpened -> {
-				viewModelScope.launch {
-					appState = appState.copy(firstTimeOpened = event.isFirstTimeOpened)
-				}
-			}
-
-			is MainEvent.UpdateBuildVersionCode -> {
-				viewModelScope.launch {
-					appState = appState.copy(buildVersionCode = event.versionCode)
-					SettingsStore(event.context).setBuildVersionCode(event.versionCode)
-				}
-			}
-
-			is MainEvent.UpdateSwipeBehaviour -> {
-				viewModelScope.launch {
-					appState = appState.copy(swipeBehaviour = event.swipeBehaviour)
-					SettingsStore(event.context).setSwipeBehaviour(event.swipeBehaviour.ordinal)
-				}
-			}
-		}
-	}
 
 	// Home Screen Events
 	fun onEvent(event: HomeScreenEvent) {
@@ -318,32 +186,6 @@ class TaskViewModel @Inject constructor(
 		}
 	}
 
-	fun createBackup(uri: Uri, backupData: BackupData, context: Context) {
-		viewModelScope.launch {
-			val success = backupManager.createBackup(uri, backupData)
-			if (success) {
-				showToast(context, "Backup created successfully")
-			} else {
-				showToast(context, "Failed to create backup")
-			}
-		}
-	}
-
-	fun loadBackup(uri: Uri, context: Context) {
-		viewModelScope.launch {
-			val backupData = backupManager.loadBackup(uri)
-			if (backupData == null) {
-				showToast(context, "Failed to restore backup")
-			} else {
-				repository.deleteAllTasks()
-				for (task in backupData.tasks) {
-					repository.insertTask(task)
-				}
-				showToast(context, "Backup Restored")
-			}
-		}
-	}
-
 	private fun deleteTask(task: Task) {
 		viewModelScope.launch(Dispatchers.IO) {
 			deletedTask = task
@@ -397,104 +239,4 @@ class TaskViewModel @Inject constructor(
 	private fun cancelNotification(taskUUID: String) {
 		WorkManager.getInstance().cancelAllWorkByTag(taskUUID)
 	}
-
-	fun loadAppState(context: Context) {
-		val settingsStore = SettingsStore(context)
-
-		viewModelScope.launch {
-			settingsStore.themeKey.collect {
-				appState = appState.copy(theme = AppTheme.entries[it])
-			}
-		}
-
-		viewModelScope.launch {
-			settingsStore.dynamicThemeKey.collect {
-				appState = appState.copy(dynamicTheme = it)
-			}
-		}
-
-		viewModelScope.launch {
-			settingsStore.timePickerKey.collect {
-				appState = appState.copy(isWheelTimePicker = it)
-			}
-		}
-
-		viewModelScope.launch {
-			settingsStore.streakKey.collect {
-				appState = appState.copy(streak = it)
-			}
-		}
-
-		viewModelScope.launch {
-			settingsStore.sleepTimeKey.collect {
-				appState = appState.copy(sleepTime = LocalTime.parse(it))
-			}
-		}
-
-		viewModelScope.launch {
-			settingsStore.languageKey.collect { language ->
-				appState = appState.copy(language = language)
-			}
-		}
-
-		viewModelScope.launch {
-			settingsStore.calenderViewKey.collect {
-				appState = appState.copy(calenderView = CalenderView.entries[it])
-			}
-		}
-
-		viewModelScope.launch {
-			settingsStore.timeFormatKey.collect {
-				appState = appState.copy(is24hourTimeFormat = it)
-			}
-		}
-
-		viewModelScope.launch {
-			settingsStore.sortTaskKey.collect {
-				appState = appState.copy(sortBy = SortTask.entries[it])
-			}
-		}
-
-		viewModelScope.launch {
-			settingsStore.showWhatsNewKey.collect {
-				appState = appState.copy(showWhatsNew = it)
-			}
-		}
-
-		viewModelScope.launch {
-			settingsStore.swipeBehaviourKey.collect {
-				appState = appState.copy(swipeBehaviour = SwipeBehavior.entries[it])
-			}
-		}
-
-		viewModelScope.launch {
-			settingsStore.lastOpenedKey.collect { lastDateString ->
-				if (lastDateString == "") {
-					settingsStore.setLastOpened(LocalDate.now().toString())
-				} else {
-					val lastDate = LocalDate.parse(lastDateString)
-					val isToday = lastDate.isEqual(LocalDate.now())
-					val isYesterday = lastDate.isEqual(LocalDate.now().minusDays(1))
-
-					if (!isToday) {
-						val newStreak = if (isYesterday) appState.streak + 1 else 0
-						settingsStore.setStreak(newStreak)
-						settingsStore.setLastOpened(LocalDate.now().toString())
-					}
-				}
-			}
-		}
-
-		//load build version
-		val buildVersionCode =
-			context.packageManager.getPackageInfo(context.packageName, 0).versionName
-		appState = appState.copy(buildVersion = buildVersionCode)
-
-		viewModelScope.launch {
-			settingsStore.buildVersionCode.collect {
-				appState = appState.copy(buildVersionCode = it)
-			}
-		}
-	}
-
 }

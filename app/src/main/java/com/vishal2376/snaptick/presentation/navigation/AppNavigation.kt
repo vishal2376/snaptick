@@ -1,5 +1,6 @@
 package com.vishal2376.snaptick.presentation.navigation
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.EaseOut
 import androidx.compose.animation.core.tween
@@ -24,19 +25,24 @@ import com.vishal2376.snaptick.presentation.common.NotificationPermissionHandler
 import com.vishal2376.snaptick.presentation.completed_task_screen.CompletedTaskScreen
 import com.vishal2376.snaptick.presentation.free_time_screen.FreeTimeScreen
 import com.vishal2376.snaptick.presentation.home_screen.HomeScreen
+import com.vishal2376.snaptick.presentation.main.events.MainEvent
+import com.vishal2376.snaptick.presentation.main.viewmodel.MainViewModel
 import com.vishal2376.snaptick.presentation.pomodoro_screen.PomodoroScreen
 import com.vishal2376.snaptick.presentation.settings.SettingsScreen
 import com.vishal2376.snaptick.presentation.this_week_task_screen.ThisWeekTaskScreen
 import com.vishal2376.snaptick.presentation.viewmodels.TaskViewModel
+import com.vishal2376.snaptick.util.openMail
 import com.vishal2376.snaptick.util.showToast
 import java.time.LocalDate
 
 @Composable
 fun AppNavigation(
+	mainViewModel: MainViewModel,
 	taskViewModel: TaskViewModel,
 	startDestination: String? = null
 ) {
 	val navController = rememberNavController()
+	val mainState by mainViewModel.state.collectAsStateWithLifecycle()
 	val todayTasks by taskViewModel.todayTaskList.collectAsStateWithLifecycle(initialValue = emptyList())
 	val allTasks by taskViewModel.taskList.collectAsStateWithLifecycle(initialValue = emptyList())
 
@@ -51,15 +57,22 @@ fun AppNavigation(
 
 	val activity = LocalContext.current as MainActivity
 
-	// runtime notification permission
+	LaunchedEffect(Unit) {
+		mainViewModel.events.collect { event ->
+			when (event) {
+				is MainEvent.ShowToast -> showToast(activity, event.message, Toast.LENGTH_SHORT)
+				is MainEvent.OpenMail -> openMail(activity, event.subject)
+			}
+		}
+	}
+
 	NotificationPermissionHandler(
 		onPermissionGranted = {},
 		onPermissionDenied = {
-			showToast(activity,"Notification Disabled")
+			showToast(activity, "Notification Disabled")
 		}
 	)
 
-	// Determine the start destination - use widget deep link if provided
 	val actualStartDestination = startDestination ?: Routes.HomeScreen.name
 
 	NavHost(
@@ -69,17 +82,17 @@ fun AppNavigation(
 		composable(route = Routes.HomeScreen.name) {
 			HomeScreen(
 				tasks = updatedTodayTasks,
-				appState = taskViewModel.appState,
-				onMainEvent = taskViewModel::onEvent,
+				appState = mainState,
+				onAction = mainViewModel::onAction,
 				onEvent = taskViewModel::onEvent,
 				onNavigate = { route ->
 					navController.navigate(route = route)
 				},
 				onBackupData = {
-					activity.backupPickerLauncher.launch(taskViewModel.backupManager.getBackupFilePickerIntent())
+					activity.backupPickerLauncher.launch(activity.backupManager.getBackupFilePickerIntent())
 				},
 				onRestoreData = {
-					activity.restorePickerLauncher.launch(taskViewModel.backupManager.getLoadBackupFilePickerIntent())
+					activity.restorePickerLauncher.launch(activity.backupManager.getLoadBackupFilePickerIntent())
 				}
 			)
 		}
@@ -87,7 +100,7 @@ fun AppNavigation(
 		composable(route = Routes.CompletedTaskScreen.name) {
 			CompletedTaskScreen(
 				tasks = updatedTodayTasks,
-				appState = taskViewModel.appState,
+				appState = mainState,
 				onEvent = taskViewModel::onEvent,
 				onBack = {
 					if (navController.isValidBackStack) {
@@ -99,7 +112,7 @@ fun AppNavigation(
 		composable(route = Routes.ThisWeekTaskScreen.name) {
 			ThisWeekTaskScreen(
 				tasks = allTasks,
-				appState = taskViewModel.appState,
+				appState = mainState,
 				onEditTask = { id ->
 					navController.navigate(route = "${Routes.EditTaskScreen.name}/$id")
 				},
@@ -114,9 +127,9 @@ fun AppNavigation(
 		composable(route = Routes.CalenderScreen.name) {
 			CalenderScreen(
 				tasks = allTasks,
-				appState = taskViewModel.appState,
+				appState = mainState,
 				onEvent = taskViewModel::onEvent,
-				onMainEvent = taskViewModel::onEvent,
+				onAction = mainViewModel::onAction,
 				onBack = {
 					if (navController.isValidBackStack) {
 						navController.popBackStack()
@@ -130,7 +143,7 @@ fun AppNavigation(
 		composable(route = Routes.FreeTimeScreen.name) {
 			FreeTimeScreen(
 				tasks = updatedTodayTasks,
-				appState = taskViewModel.appState,
+				appState = mainState,
 				onBack = {
 					if (navController.isValidBackStack) {
 						navController.popBackStack()
@@ -140,14 +153,13 @@ fun AppNavigation(
 
 		composable(route = Routes.AddTaskScreen.name) {
 			AddTaskScreen(
-				appState = taskViewModel.appState,
+				appState = mainState,
 				onEvent = taskViewModel::onEvent,
-				onMainEvent = taskViewModel::onEvent,
+				onAction = mainViewModel::onAction,
 				onBack = {
 					if (navController.previousBackStackEntry != null) {
 						navController.popBackStack()
 					} else {
-						// If no backstack (opened from widget), go to Home and clear backstack
 						navController.navigate(Routes.HomeScreen.name) {
 							popUpTo(0) { inclusive = true }
 						}
@@ -164,7 +176,7 @@ fun AppNavigation(
 		) { navBackStackEntry ->
 			navBackStackEntry.arguments?.getInt("id").let { id ->
 				EditTaskScreen(task = taskViewModel.task,
-					appState = taskViewModel.appState,
+					appState = mainState,
 					onEvent = taskViewModel::onEvent,
 					onBack = {
 						if (navController.isValidBackStack) {
@@ -200,8 +212,8 @@ fun AppNavigation(
 				)
 			}) {
 			SettingsScreen(
-				appState = taskViewModel.appState,
-				onEvent = taskViewModel::onEvent,
+				appState = mainState,
+				onAction = mainViewModel::onAction,
 				onClickAbout = {
 					navController.navigate(route = Routes.AboutScreen.name)
 				},
@@ -215,7 +227,7 @@ fun AppNavigation(
 
 		composable(route = Routes.AboutScreen.name) {
 			AboutScreen(
-				appState = taskViewModel.appState,
+				appState = mainState,
 				onBack = {
 					if (navController.isValidBackStack) {
 						navController.popBackStack()
@@ -228,4 +240,3 @@ fun AppNavigation(
 
 val NavHostController.isValidBackStack
 	get() = this.currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED
-
