@@ -1,7 +1,10 @@
 package com.vishal2376.snaptick.presentation.add_edit_screen
 
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.filter
+import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
@@ -32,8 +35,8 @@ class AddTaskScreenTest {
 				onBack = {}
 			)
 		}
-		composeRule.onNodeWithText("What would you like to do?").assertIsDisplayed()
-		composeRule.onNodeWithText("What would you like to do?").performTextInput("Run")
+		composeRule.onNodeWithText("What would you like to do ?").assertIsDisplayed()
+		composeRule.onNodeWithText("What would you like to do ?").performTextInput("Run")
 		assertTrue(dispatched.any { it is AddEditAction.UpdateTitle && it.title == "Run" })
 	}
 
@@ -49,7 +52,8 @@ class AddTaskScreenTest {
 				onBack = {}
 			)
 		}
-		composeRule.onNodeWithText("Add Task").performClick()
+		// two nodes have "Add Task": top-bar title + button. Pick the clickable one.
+		composeRule.onAllNodesWithText("Add Task").filter(hasClickAction())[0].performClick()
 		assertTrue(dispatched.any { it === AddEditAction.SaveTask })
 	}
 }
