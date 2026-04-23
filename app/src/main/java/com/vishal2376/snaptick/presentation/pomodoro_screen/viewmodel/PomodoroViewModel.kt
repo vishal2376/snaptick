@@ -21,7 +21,11 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -45,7 +49,7 @@ class PomodoroViewModel @Inject constructor(
 	init {
 		val taskId = savedStateHandle.get<Int>("id") ?: -1
 		if (taskId > 0) {
-			viewModelScope.launch(Dispatchers.IO) {
+			viewModelScope.launch {
 				val task = repository.getTaskById(taskId) ?: return@launch
 				currentTask = task
 				val total = task.getDuration()
@@ -81,13 +85,16 @@ class PomodoroViewModel @Inject constructor(
 	private fun startTicker() {
 		tickerJob?.cancel()
 		tickerJob = viewModelScope.launch {
-			while (true) {
-				val s = _state.value
-				if (!s.isPaused && s.timeLeft > 0 && !s.isCompleted) {
-					delay(1000L)
-					val next = _state.value
-					if (!next.isPaused && next.timeLeft > 0) {
-						val newLeft = next.timeLeft - 1
+			_state
+				.map { it.isPaused || it.isCompleted || it.timeLeft <= 0 }
+				.distinctUntilChanged()
+				.collectLatest { stopped ->
+					if (stopped) return@collectLatest
+					while (isActive) {
+						delay(1000L)
+						val cur = _state.value
+						if (cur.isPaused || cur.isCompleted || cur.timeLeft <= 0) return@collectLatest
+						val newLeft = cur.timeLeft - 1
 						_state.update {
 							it.copy(
 								timeLeft = newLeft,
@@ -99,16 +106,13 @@ class PomodoroViewModel @Inject constructor(
 							_events.emit(PomodoroEvent.TimerCompleted)
 						}
 					}
-				} else {
-					delay(200L)
 				}
-			}
 		}
 	}
 
 	private fun markCompleted() {
 		val task = currentTask ?: return
-		viewModelScope.launch(Dispatchers.IO) {
+		viewModelScope.launch {
 			val updated = task.copy(isCompleted = true, pomodoroTimer = -1)
 			repository.updateTask(updated)
 			reminderScheduler.cancel(task.uuid)

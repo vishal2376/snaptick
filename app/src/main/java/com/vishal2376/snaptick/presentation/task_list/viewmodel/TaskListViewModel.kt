@@ -8,7 +8,6 @@ import com.vishal2376.snaptick.presentation.task_list.action.TaskListAction
 import com.vishal2376.snaptick.presentation.task_list.events.TaskListEvent
 import com.vishal2376.snaptick.util.TaskReminderScheduler
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -36,14 +35,14 @@ class TaskListViewModel @Inject constructor(
 				deletedTask = action.task
 				deleteTask(action.task)
 			}
-			is TaskListAction.DeleteTask -> viewModelScope.launch(Dispatchers.IO) {
+			is TaskListAction.DeleteTask -> viewModelScope.launch {
 				repository.getTaskById(action.taskId)?.let {
 					deletedTask = it
 					reminderScheduler.cancel(it.uuid)
 					repository.deleteTask(it)
 				}
 			}
-			is TaskListAction.UndoDelete -> viewModelScope.launch(Dispatchers.IO) {
+			is TaskListAction.UndoDelete -> viewModelScope.launch {
 				deletedTask?.let { task ->
 					repository.insertTask(task)
 					reminderScheduler.schedule(task)
@@ -53,14 +52,14 @@ class TaskListViewModel @Inject constructor(
 	}
 
 	private fun deleteTask(task: Task) {
-		viewModelScope.launch(Dispatchers.IO) {
+		viewModelScope.launch {
 			reminderScheduler.cancel(task.uuid)
 			repository.deleteTask(task)
 		}
 	}
 
 	private fun toggleCompletion(taskId: Int, isCompleted: Boolean) {
-		viewModelScope.launch(Dispatchers.IO) {
+		viewModelScope.launch {
 			val task = repository.getTaskById(taskId) ?: return@launch
 			val updated = task.copy(isCompleted = isCompleted)
 			repository.updateTask(updated)
