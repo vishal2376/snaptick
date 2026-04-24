@@ -5,8 +5,8 @@ Snapshot of the automated test suite on branch `test/automation-coverage`.
 | Layer                 | Suites | Tests  | Status |
 |-----------------------|:------:|:------:|:------:|
 | JVM unit tests        |   8    |   52   |   ✅    |
-| Instrumentation tests |   9    |   21   |   ✅    |
-| **Total**             | **17** | **73** | **✅**  |
+| Instrumentation tests |  10    |   23   |   ✅    |
+| **Total**             | **18** | **75** | **✅**  |
 
 Run: `JAVA_HOME=<jdk17> ./gradlew :app:testDebugUnitTest :app:connectedDebugAndroidTest`
 
@@ -45,6 +45,7 @@ Helpers:
 | 7 | `SettingsScreenTest`        | `presentation.settings.SettingsScreen` (Compose)                   |   2   | About row invokes `onClickAbout` callback, "Settings" title renders                                                                                                        |
 | 8 | `WidgetUpdateWorkerTest`    | `widget.worker.WidgetUpdateWorker` + in-memory Room + real `SettingsStore` + `TestListenableWorkerBuilder` with hand-rolled `WorkerFactory` | 1 | Seeds 2 incomplete + 1 completed task for today, runs worker, reads `WidgetStateDefinition` DataStore, asserts only the incomplete titles survive |
 | 9 | `RepeatTaskWorkerTest`      | `worker.RepeatTaskWorker` + in-memory Room + `TestListenableWorkerBuilder` | 2 | Repeated task whose `repeatWeekdays` includes today: original row flipped to `isRepeated=false`, new row created for today with `isRepeated=true`. Repeated task with weekdays not including today: no today row created |
+| 10 | `MigrationTest`            | `data.local.MIGRATION_1_2` via `MigrationTestHelper` + v1/v2 schemas in `app/schemas/` | 2 | v1 rows with legacy `isRepeat` column are copied forward as `isRepeated` with all other fields intact. After migration the database reopens cleanly via Room and DAO queries return the migrated rows |
 
 ---
 
@@ -58,14 +59,20 @@ Helpers:
 | `MainViewModel.loadPersistedState` streak branch                 | Depends on wall-clock date transitions; would need an injected `Clock`.                                                                                                    |
 | Release ProGuard/R8                                              | No release-config verification tests — build check, not a runtime test.                                                                                                    |
 
-### Bug surfaced while writing tests
+### Fix shipped: correct `MIGRATION_1_2`
 
-`MIGRATION_1_2` (`data/local/Migration.kt`) is broken against the v1 schema snapshot (`app/schemas/.../1.json`):
+The migration was originally broken: it tried to `ALTER TABLE ADD COLUMN` columns that already existed in v1, and never renamed the `isRepeat` → `isRepeated` column. On real v1 installs this threw `SQLITE_ERROR: duplicate column name`, and `fallbackToDestructiveMigration()` silently wiped the user's tasks on upgrade.
 
-1. v1 schema already has `repeatWeekdays` and `pomodoroTimer` columns. The migration's `ALTER TABLE task_table ADD COLUMN repeatWeekdays` fails with `SQLITE_ERROR: duplicate column name`.
-2. v1 column is named `isRepeat`; v2 renamed it to `isRepeated`. The migration does not handle the rename.
+`data/local/Migration.kt` now uses the classic create-new-table + copy + drop + rename pattern (safe on `minSdk=26`, which predates `ALTER TABLE RENAME COLUMN`):
 
-In production the failure is masked by `fallbackToDestructiveMigration()` in `di/AppModule.kt` and `data/local/TaskDatabase.kt` — Room silently wipes the DB when the migration throws, so existing users lose data on upgrade. A proper migration + matching `MigrationTest` belongs in a dedicated follow-up fix.
+```
+CREATE TABLE task_table_new (...)        -- v2 shape with `isRepeated`
+INSERT INTO task_table_new (...) SELECT ..., isRepeat, ... FROM task_table
+DROP TABLE task_table
+ALTER TABLE task_table_new RENAME TO task_table
+```
+
+`MigrationTest` seeds a v1 DB using the legacy `isRepeat` column, runs the migration, and asserts the rename + data preservation. `fallbackToDestructiveMigration()` is kept as a safety net for future unknown schema drift, but the v1 → v2 path is now deterministic and does not wipe data.
 
 ---
 
