@@ -41,7 +41,7 @@ fun PieChartItemComponent(task: Task, itemColor: Color, animDelay: Int = 100) {
 
 	LaunchedEffect(animDelay) {
 		delay(animDelay.toLong())
-		alphaAnimation.animateTo(targetValue = 1f, animationSpec = tween(1000))
+		alphaAnimation.animateTo(targetValue = 1f, animationSpec = tween(220))
 	}
 
 	Box(
