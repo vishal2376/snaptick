@@ -87,7 +87,11 @@ fun CustomSnackBar() {
 
 	var isDismiss by remember { mutableStateOf(false) }
 	var offsetX by remember { mutableFloatStateOf(0f) }
-	val offsetXState by animateFloatAsState(targetValue = offsetX, label = "")
+	val offsetXState by animateFloatAsState(
+		targetValue = offsetX,
+		animationSpec = com.vishal2376.snaptick.presentation.common.animation.SnaptickMotion.gentleSpring,
+		label = ""
+	)
 	val configuration = LocalConfiguration.current
 	val deviceWidthPixels = configuration.screenWidthDp.absoluteValue * LocalDensity.current.density
 

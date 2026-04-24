@@ -1,7 +1,7 @@
 package com.vishal2376.snaptick.presentation.settings.common
 
 import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.tween
+import com.vishal2376.snaptick.presentation.common.animation.SnaptickMotion
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -52,7 +52,7 @@ fun ToggleOptions(
 			val animValue = remember { Animatable(initialValue = 0f) }
 
 			LaunchedEffect(Unit) {
-				animValue.animateTo(1f, tween(300))
+				animValue.animateTo(1f, SnaptickMotion.snappySpring)
 			}
 
 			Box(

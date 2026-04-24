@@ -2,6 +2,7 @@ package com.vishal2376.snaptick.presentation.home_screen.components
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
+import com.vishal2376.snaptick.presentation.common.animation.SnaptickMotion
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
@@ -67,7 +68,14 @@ fun TaskComponent(
 	val alphaAnimation = remember { Animatable(initialValue = 0f) }
 
 	LaunchedEffect(animDelay) {
-		alphaAnimation.animateTo(targetValue = 1f, animationSpec = tween(1000, animDelay))
+		// Cap staggered delay so 50+ item lists don't animate for seconds on low-end devices.
+		val cappedDelay = animDelay.coerceAtMost(
+			SnaptickMotion.MAX_STAGGERED_ITEMS * 40
+		)
+		alphaAnimation.animateTo(
+			targetValue = 1f,
+			animationSpec = tween(durationMillis = 220, delayMillis = cappedDelay)
+		)
 	}
 
 	Box(
