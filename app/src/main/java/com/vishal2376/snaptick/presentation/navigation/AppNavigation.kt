@@ -53,6 +53,19 @@ fun AppNavigation(
 			when (event) {
 				is MainEvent.ShowToast -> showToast(activity, event.message, Toast.LENGTH_SHORT)
 				is MainEvent.OpenMail -> openMail(activity, event.subject)
+				is MainEvent.CalendarSyncComplete ->
+					showToast(activity, "Calendar sync complete", Toast.LENGTH_SHORT)
+				is MainEvent.ImportComplete ->
+					showToast(activity, "Imported ${event.count} tasks", Toast.LENGTH_SHORT)
+				is MainEvent.ImportFailed ->
+					showToast(activity, event.message, Toast.LENGTH_LONG)
+				is MainEvent.CalendarPermissionRequired ->
+					activity.calendarPermissionLauncher.launch(
+						arrayOf(
+							android.Manifest.permission.READ_CALENDAR,
+							android.Manifest.permission.WRITE_CALENDAR
+						)
+					)
 			}
 		}
 	}

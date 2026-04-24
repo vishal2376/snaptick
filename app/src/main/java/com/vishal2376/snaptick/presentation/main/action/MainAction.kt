@@ -28,4 +28,8 @@ sealed interface MainAction {
 	data class OnClickNavDrawerItem(val item: NavDrawerItem) : MainAction
 	data class CreateBackup(val uri: Uri, val backupData: BackupData) : MainAction
 	data class LoadBackup(val uri: Uri) : MainAction
+	data class SetCalendarSyncEnabled(val enabled: Boolean) : MainAction
+	data class SetCalendarSyncTarget(val calendarId: Long) : MainAction
+	data class ImportTasks(val tasks: List<com.vishal2376.snaptick.domain.model.Task>) : MainAction
+	data object SyncAllTasksNow : MainAction
 }

@@ -4,6 +4,9 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vishal2376.snaptick.R
+import com.vishal2376.snaptick.data.calendar.CalendarImporter
+import com.vishal2376.snaptick.data.calendar.CalendarInfo
+import com.vishal2376.snaptick.data.calendar.CalendarRepository
 import com.vishal2376.snaptick.data.repositories.TaskRepository
 import com.vishal2376.snaptick.domain.model.BackupData
 import com.vishal2376.snaptick.presentation.common.AppTheme
@@ -39,6 +42,8 @@ class MainViewModel @Inject constructor(
 	private val settingsStore: SettingsStore,
 	private val backupManager: BackupManager,
 	private val repository: TaskRepository,
+	private val calendarRepository: CalendarRepository,
+	private val calendarImporter: CalendarImporter,
 ) : ViewModel() {
 
 	private val _state = MutableStateFlow(MainState())
@@ -79,6 +84,36 @@ class MainViewModel @Inject constructor(
 			is MainAction.OnClickNavDrawerItem -> handleNavDrawerClick(action.item)
 			is MainAction.CreateBackup -> createBackup(action.uri, action.backupData)
 			is MainAction.LoadBackup -> loadBackup(action.uri)
+			is MainAction.SetCalendarSyncEnabled -> persist {
+				if (action.enabled && !calendarRepository.hasWritePermission()) {
+					_events.emit(MainEvent.CalendarPermissionRequired)
+					return@persist
+				}
+				_state.update { s -> s.copy(calendarSyncEnabled = action.enabled) }
+				settingsStore.setCalendarSyncEnabled(action.enabled)
+			}
+			is MainAction.SetCalendarSyncTarget -> persist {
+				_state.update { s -> s.copy(calendarSyncCalendarId = action.calendarId) }
+				settingsStore.setCalendarSyncCalendarId(action.calendarId)
+			}
+			is MainAction.ImportTasks -> importTasks(action.tasks)
+			is MainAction.SyncAllTasksNow -> viewModelScope.launch {
+				repository.syncAllTasksNow()
+				_events.emit(MainEvent.CalendarSyncComplete(0))
+			}
+		}
+	}
+
+	suspend fun loadWritableCalendars(): List<CalendarInfo> = calendarRepository.getWritableCalendars()
+
+	private fun importTasks(tasks: List<com.vishal2376.snaptick.domain.model.Task>) {
+		viewModelScope.launch {
+			try {
+				tasks.forEach { repository.insertTask(it) }
+				_events.emit(MainEvent.ImportComplete(tasks.size))
+			} catch (e: Exception) {
+				_events.emit(MainEvent.ImportFailed(e.message ?: "Import failed"))
+			}
 		}
 	}
 
@@ -133,6 +168,8 @@ class MainViewModel @Inject constructor(
 		viewModelScope.launch { settingsStore.showWhatsNewKey.collect { v -> _state.update { it.copy(showWhatsNew = v) } } }
 		viewModelScope.launch { settingsStore.swipeBehaviourKey.collect { v -> _state.update { it.copy(swipeBehaviour = SwipeBehavior.entries[v]) } } }
 		viewModelScope.launch { settingsStore.buildVersionCode.collect { v -> _state.update { it.copy(buildVersionCode = v) } } }
+		viewModelScope.launch { settingsStore.calendarSyncEnabledKey.collect { v -> _state.update { it.copy(calendarSyncEnabled = v) } } }
+		viewModelScope.launch { settingsStore.calendarSyncCalendarIdKey.collect { v -> _state.update { it.copy(calendarSyncCalendarId = v) } } }
 		viewModelScope.launch {
 			settingsStore.lastOpenedKey.collect { lastDateString ->
 				if (lastDateString == "") {

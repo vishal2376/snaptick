@@ -34,10 +34,15 @@ class MainActivity : ComponentActivity() {
 	private lateinit var notificationHelper: NotificationHelper
 	lateinit var backupPickerLauncher: ActivityResultLauncher<Intent>
 	lateinit var restorePickerLauncher: ActivityResultLauncher<Intent>
+	lateinit var calendarPermissionLauncher: ActivityResultLauncher<Array<String>>
+	lateinit var icsPickerLauncher: ActivityResultLauncher<Intent>
 
 	/** Navigation destination from widget intent */
 	var widgetNavigateTo: String? = null
 		private set
+
+	/** Most recently picked `.ics` file URI; consumed by the import sheet. */
+	var lastPickedIcsUri: Uri? = null
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		installSplashScreen()
@@ -66,6 +71,23 @@ class MainActivity : ComponentActivity() {
 				if (result.resultCode == RESULT_OK) {
 					result.data?.data?.let { uri: Uri ->
 						mainViewModel.onAction(MainAction.LoadBackup(uri))
+					}
+				}
+			}
+
+		calendarPermissionLauncher =
+			registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { grants ->
+				val granted = grants.values.all { it }
+				if (granted) {
+					mainViewModel.onAction(MainAction.SetCalendarSyncEnabled(true))
+				}
+			}
+
+		icsPickerLauncher =
+			registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+				if (result.resultCode == RESULT_OK) {
+					result.data?.data?.let { uri: Uri ->
+						lastPickedIcsUri = uri
 					}
 				}
 			}
