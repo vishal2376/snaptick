@@ -42,9 +42,9 @@ class MigrationTest {
 			)
 		}
 
-		helper.runMigrationsAndValidate(dbName, 2, true, MIGRATION_1_2).use { db ->
+		helper.runMigrationsAndValidate(dbName, 3, true, MIGRATION_1_2, MIGRATION_2_3).use { db ->
 			val cursor = db.query(
-				"SELECT id, uuid, title, isCompleted, isRepeated, repeatWeekdays, pomodoroTimer, priority FROM task_table ORDER BY id"
+				"SELECT id, uuid, title, isCompleted, isRepeated, repeatWeekdays, pomodoroTimer, priority, calendarEventId FROM task_table ORDER BY id"
 			)
 			cursor.use {
 				assertTrue("row 1 exists", it.moveToNext())
@@ -75,7 +75,7 @@ class MigrationTest {
 	}
 
 	@Test fun afterMigration_roomCanOpenDatabaseNormally() = runBlocking {
-		// Seed a v1 DB, migrate, then re-open via Room and confirm DAO queries work.
+		// Seed a v1 DB, migrate through 1→2→3, then re-open via Room and confirm DAO queries work.
 		helper.createDatabase(dbName, 1).use { db ->
 			db.execSQL(
 				"""
@@ -85,11 +85,11 @@ class MigrationTest {
 				""".trimIndent()
 			)
 		}
-		helper.runMigrationsAndValidate(dbName, 2, true, MIGRATION_1_2).close()
+		helper.runMigrationsAndValidate(dbName, 3, true, MIGRATION_1_2, MIGRATION_2_3).close()
 
 		val ctx = ApplicationProvider.getApplicationContext<android.content.Context>()
 		val room = Room.databaseBuilder(ctx, TaskDatabase::class.java, dbName)
-			.addMigrations(MIGRATION_1_2)
+			.addMigrations(MIGRATION_1_2, MIGRATION_2_3)
 			.build()
 		try {
 			val row = room.taskDao().getAllTasks().first().single()

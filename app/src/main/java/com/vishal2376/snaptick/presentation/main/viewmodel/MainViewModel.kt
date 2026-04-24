@@ -97,9 +97,25 @@ class MainViewModel @Inject constructor(
 				settingsStore.setCalendarSyncCalendarId(action.calendarId)
 			}
 			is MainAction.ImportTasks -> importTasks(action.tasks)
+			is MainAction.ParseIcsFile -> parseIcsFile(action.uri)
+			is MainAction.ClearImportPreview -> _state.update { it.copy(importPreview = emptyList()) }
 			is MainAction.SyncAllTasksNow -> viewModelScope.launch {
 				repository.syncAllTasksNow()
 				_events.emit(MainEvent.CalendarSyncComplete(0))
+			}
+		}
+	}
+
+	private fun parseIcsFile(uri: android.net.Uri) {
+		viewModelScope.launch {
+			try {
+				val tasks = context.contentResolver.openInputStream(uri)?.use { stream ->
+					calendarImporter.previewFromIcs(stream.reader())
+				}.orEmpty()
+				_state.update { it.copy(importPreview = tasks) }
+				if (tasks.isEmpty()) _events.emit(MainEvent.ImportFailed("No events found in file"))
+			} catch (e: Exception) {
+				_events.emit(MainEvent.ImportFailed(e.message ?: "Failed to read .ics file"))
 			}
 		}
 	}

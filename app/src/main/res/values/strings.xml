@@ -96,4 +96,16 @@
     <string name="choose_swipe_action">Choose Swipe Action</string>
     <string name="none">None</string>
     <string name="complete">Complete</string>
+    <string name="calendar_sync">Calendar Sync</string>
+    <string name="sync_tasks_to_device_calendar">Sync tasks to device calendar</string>
+    <string name="pick_calendar">Pick calendar</string>
+    <string name="no_calendar_selected">No calendar selected</string>
+    <string name="import_events">Import events</string>
+    <string name="sync_all_tasks_now">Sync all tasks now</string>
+    <string name="from_device_calendar">From device calendar</string>
+    <string name="from_ics_file">From .ics file</string>
+    <string name="pick_ics_file">Pick .ics file</string>
+    <string name="import_selected">Import selected</string>
+    <string name="calendar_permission_required">Calendar permission is required</string>
+    <string name="no_writable_calendars_found">No writable calendars found</string>
 </resources>

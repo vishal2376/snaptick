@@ -252,7 +252,8 @@ fun AppNavigation(
 					if (navController.isValidBackStack) {
 						navController.popBackStack()
 					}
-				}
+				},
+				mainViewModel = mainViewModel,
 			)
 		}
 

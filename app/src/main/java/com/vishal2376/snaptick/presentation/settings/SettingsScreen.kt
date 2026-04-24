@@ -22,6 +22,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -37,12 +38,18 @@ import com.vishal2376.snaptick.presentation.common.infoDescTextStyle
 import com.vishal2376.snaptick.presentation.main.action.MainAction
 import com.vishal2376.snaptick.presentation.main.state.MainState
 import com.vishal2376.snaptick.presentation.settings.common.SettingCategoryItem
+import com.vishal2376.snaptick.MainActivity
+import com.vishal2376.snaptick.data.calendar.CalendarInfo
+import com.vishal2376.snaptick.presentation.main.viewmodel.MainViewModel
+import com.vishal2376.snaptick.presentation.settings.components.CalendarSyncOptionComponent
+import com.vishal2376.snaptick.presentation.settings.components.EventImportOptionComponent
 import com.vishal2376.snaptick.presentation.settings.components.LanguageOptionComponent
 import com.vishal2376.snaptick.presentation.settings.components.SettingsCategoryComponent
 import com.vishal2376.snaptick.presentation.settings.components.SleepTimeOptionComponent
 import com.vishal2376.snaptick.presentation.settings.components.SwipeActionOptionComponent
 import com.vishal2376.snaptick.presentation.settings.components.ThemeOptionComponent
 import com.vishal2376.snaptick.presentation.settings.components.TimePickerOptionComponent
+import android.content.Intent
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.Constants
 import com.vishal2376.snaptick.util.openUrl
@@ -53,11 +60,19 @@ fun SettingsScreen(
 	appState: MainState,
 	onAction: (MainAction) -> Unit,
 	onClickAbout: () -> Unit,
-	onBack: () -> Unit
+	onBack: () -> Unit,
+	mainViewModel: MainViewModel? = null,
 ) {
 	val context = LocalContext.current
 	val sheetState = rememberModalBottomSheetState()
 	var showBottomSheetById by remember { mutableIntStateOf(0) }
+	var writableCalendars by remember { mutableStateOf<List<CalendarInfo>>(emptyList()) }
+
+	androidx.compose.runtime.LaunchedEffect(showBottomSheetById) {
+		if (showBottomSheetById == R.string.calendar_sync && mainViewModel != null) {
+			writableCalendars = mainViewModel.loadWritableCalendars()
+		}
+	}
 
 	val settingsAbout = listOf(
 		SettingCategoryItem(title = stringResource(R.string.about),
@@ -98,6 +113,19 @@ fun SettingsScreen(
 			title = stringResource(R.string.swipe_action),
 			resId = R.drawable.ic_swipe_left,
 			onClick = { showBottomSheetById = R.string.swipe_action }
+		),
+	)
+
+	val settingsCalendar = listOf(
+		SettingCategoryItem(
+			title = stringResource(R.string.sync_tasks_to_device_calendar),
+			resId = R.drawable.ic_calendar_sync,
+			onClick = { showBottomSheetById = R.string.calendar_sync }
+		),
+		SettingCategoryItem(
+			title = stringResource(R.string.import_events),
+			resId = R.drawable.ic_import,
+			onClick = { showBottomSheetById = R.string.import_events }
 		),
 	)
 
@@ -197,6 +225,38 @@ fun SettingsScreen(
 									onAction(MainAction.UpdateSwipeBehaviour(it))
 								})
 						}
+
+						R.string.calendar_sync -> {
+							CalendarSyncOptionComponent(
+								enabled = appState.calendarSyncEnabled,
+								selectedCalendarId = appState.calendarSyncCalendarId,
+								writableCalendars = writableCalendars,
+								onEnabledChange = { onAction(MainAction.SetCalendarSyncEnabled(it)) },
+								onCalendarSelected = { onAction(MainAction.SetCalendarSyncTarget(it)) },
+								onSyncAllNow = { onAction(MainAction.SyncAllTasksNow) },
+							)
+						}
+
+						R.string.import_events -> {
+							val activity = context as? MainActivity
+							EventImportOptionComponent(
+								previewTasks = appState.importPreview,
+								onPickIcsFile = {
+									activity?.icsPickerLauncher?.launch(
+										Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+											addCategory(Intent.CATEGORY_OPENABLE)
+											type = "*/*"
+											putExtra(
+												Intent.EXTRA_MIME_TYPES,
+												arrayOf("text/calendar", "application/octet-stream")
+											)
+										}
+									)
+								},
+								onImport = { picked -> onAction(MainAction.ImportTasks(picked)) },
+								onClearPreview = { onAction(MainAction.ClearImportPreview) },
+							)
+						}
 					}
 				}
 			}
@@ -220,6 +280,10 @@ fun SettingsScreen(
 				SettingsCategoryComponent(
 					categoryTitle = stringResource(R.string.general_settings),
 					categoryList = settingsGeneral
+				)
+				SettingsCategoryComponent(
+					categoryTitle = stringResource(R.string.calendar_sync),
+					categoryList = settingsCalendar
 				)
 				SettingsCategoryComponent(
 					categoryTitle = stringResource(R.string.follow_developer),

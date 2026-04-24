@@ -28,4 +28,5 @@ data class MainState(
 	val swipeBehaviour: SwipeBehavior = SwipeBehavior.DELETE,
 	val calendarSyncEnabled: Boolean = false,
 	val calendarSyncCalendarId: Long? = null,
+	val importPreview: List<com.vishal2376.snaptick.domain.model.Task> = emptyList(),
 )

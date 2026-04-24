@@ -52,7 +52,14 @@ class MainViewModelTest {
 		repoFake = TaskRepositoryFake()
 	}
 
-	private fun buildVm() = MainViewModel(context, store.store, backupManager, repoFake.repo)
+	private fun buildVm() = MainViewModel(
+		context,
+		store.store,
+		backupManager,
+		repoFake.repo,
+		mockk(relaxed = true),
+		mockk(relaxed = true),
+	)
 
 	@Test fun `UpdateAppTheme updates state and persists`() = runTest {
 		val vm = buildVm()
