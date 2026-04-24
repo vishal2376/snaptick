@@ -68,6 +68,9 @@ android {
 	testOptions {
 		unitTests.isReturnDefaultValues = true
 	}
+
+	// Expose Room schemas to androidTest for MigrationTestHelper.
+	sourceSets.getByName("androidTest").assets.srcDirs("$projectDir/schemas")
 }
 
 
