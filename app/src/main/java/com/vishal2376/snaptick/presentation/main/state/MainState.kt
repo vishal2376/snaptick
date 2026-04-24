@@ -13,7 +13,7 @@ data class MainState(
 	val buildVersionCode: Int = 1,
 	val firstTimeOpened: Boolean = true,
 	val showWhatsNew: Boolean = false,
-	val theme: AppTheme = AppTheme.Dark,
+	val theme: AppTheme = AppTheme.Amoled,
 	val dynamicTheme: Boolean = false,
 	val sortBy: SortTask = SortTask.BY_START_TIME_ASCENDING,
 	val totalTaskDuration: Long = 0,

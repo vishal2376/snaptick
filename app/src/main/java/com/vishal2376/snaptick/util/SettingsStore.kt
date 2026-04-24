@@ -38,7 +38,7 @@ class SettingsStore(val context: Context) {
 		private val SWIPE_BEHAVIOUR_KEY = intPreferencesKey("swipe_behaviour_key")
 
 		private const val DEFAULT_LANGUAGE = "en"
-		private val DEFAULT_THEME = AppTheme.Dark.ordinal
+		private val DEFAULT_THEME = AppTheme.Amoled.ordinal
 		private const val DEFAULT_DYNAMIC_THEME = false
 		private const val DEFAULT_TIME_PICKER_KEY = true
 		private const val DEFAULT_TIME_FORMAT = false
