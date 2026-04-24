@@ -51,3 +51,15 @@ val MIGRATION_1_2 = object : Migration(1, 2) {
 		db.execSQL("ALTER TABLE `task_table_new` RENAME TO `task_table`")
 	}
 }
+
+/**
+ * v2 → v3 migration. Adds a nullable `calendarEventId` column that links a task
+ * to an event row in the device's CalendarContract provider. Pre-existing rows
+ * get `NULL`, meaning "not mirrored yet"; the CalendarPusher will populate them
+ * on the next push.
+ */
+val MIGRATION_2_3 = object : Migration(2, 3) {
+	override fun migrate(db: SupportSQLiteDatabase) {
+		db.execSQL("ALTER TABLE `task_table` ADD COLUMN `calendarEventId` INTEGER DEFAULT NULL")
+	}
+}

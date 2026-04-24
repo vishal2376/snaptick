@@ -27,6 +27,7 @@ data class Task(
 	val pomodoroTimer: Int = -1,
 	val date: LocalDate = LocalDate.now(),
 	val priority: Int = 0,
+	val calendarEventId: Long? = null,
 ) {
 	fun isAllDayTaskEnabled(): Boolean {
 		return startTime == endTime
