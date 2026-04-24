@@ -10,8 +10,11 @@ import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
 import androidx.work.testing.TestListenableWorkerBuilder
 import androidx.work.testing.WorkManagerTestInitHelper
+import com.vishal2376.snaptick.data.calendar.CalendarPusher
+import com.vishal2376.snaptick.data.calendar.CalendarRepository
 import com.vishal2376.snaptick.data.local.TaskDatabase
 import com.vishal2376.snaptick.data.repositories.TaskRepository
+import com.vishal2376.snaptick.util.SettingsStore
 import com.vishal2376.snaptick.domain.model.Task
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -38,7 +41,9 @@ class RepeatTaskWorkerTest {
 		db = Room.inMemoryDatabaseBuilder(context, TaskDatabase::class.java)
 			.allowMainThreadQueries()
 			.build()
-		repo = TaskRepository(db.taskDao(), context)
+		val settings = SettingsStore(context)
+		val pusher = CalendarPusher(CalendarRepository(context), db.taskDao(), settings)
+		repo = TaskRepository(db.taskDao(), context, pusher)
 	}
 
 	@After fun tearDown() { db.close() }

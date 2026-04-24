@@ -23,8 +23,14 @@ interface TaskDao {
 	@Query("SELECT * FROM task_table WHERE id=:id")
 	suspend fun getTaskById(id: Int): Task
 
+	@Query("SELECT * FROM task_table WHERE uuid=:uuid LIMIT 1")
+	suspend fun getTaskByUuid(uuid: String): Task?
+
 	@Query("SELECT * FROM task_table")
 	fun getAllTasks(): Flow<List<Task>>
+
+	@Query("SELECT * FROM task_table")
+	suspend fun getAllTasksSnapshot(): List<Task>
 
 	@Query("SELECT * FROM task_table WHERE date = :selectedDate")
 	fun getTasksByDate(selectedDate: String): Flow<List<Task>>

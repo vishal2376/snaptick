@@ -36,6 +36,8 @@ class SettingsStore(val context: Context) {
 		private val SHOW_WHATS_NEW_KEY = booleanPreferencesKey("show_whats_new_key")
 		private val BUILD_VERSION_CODE = intPreferencesKey("build_version_code")
 		private val SWIPE_BEHAVIOUR_KEY = intPreferencesKey("swipe_behaviour_key")
+		private val CALENDAR_SYNC_ENABLED_KEY = booleanPreferencesKey("calendar_sync_enabled_key")
+		private val CALENDAR_SYNC_CALENDAR_ID_KEY = stringPreferencesKey("calendar_sync_calendar_id_key")
 
 		private const val DEFAULT_LANGUAGE = "en"
 		private val DEFAULT_THEME = AppTheme.Dark.ordinal
@@ -50,6 +52,8 @@ class SettingsStore(val context: Context) {
 		private const val DEFAULT_SHOW_WHATS_NEW = true
 		private const val DEFAULT_BUILD_VERSION_CODE = 1
 		private val DEFAULT_SWIPE_BEHAVIOUR = SwipeBehavior.DELETE.ordinal
+		private const val DEFAULT_CALENDAR_SYNC_ENABLED = false
+		private const val DEFAULT_CALENDAR_SYNC_CALENDAR_ID = ""
 	}
 
 
@@ -103,6 +107,16 @@ class SettingsStore(val context: Context) {
 
 	val swipeBehaviourKey: Flow<Int> = context.dataStore.data.map { preferences ->
 		preferences[SWIPE_BEHAVIOUR_KEY] ?: DEFAULT_SWIPE_BEHAVIOUR
+	}
+
+	val calendarSyncEnabledKey: Flow<Boolean> = context.dataStore.data.map { preferences ->
+		preferences[CALENDAR_SYNC_ENABLED_KEY] ?: DEFAULT_CALENDAR_SYNC_ENABLED
+	}
+
+	val calendarSyncCalendarIdKey: Flow<Long?> = context.dataStore.data.map { preferences ->
+		preferences[CALENDAR_SYNC_CALENDAR_ID_KEY]
+			?.takeIf { it.isNotBlank() }
+			?.toLongOrNull()
 	}
 
 	suspend fun setTheme(theme: Int) {
@@ -180,6 +194,17 @@ class SettingsStore(val context: Context) {
 	suspend fun setSwipeBehaviour(swipeBehaviour: Int) {
 		context.dataStore.edit { preferences ->
 			preferences[SWIPE_BEHAVIOUR_KEY] = swipeBehaviour
+		}
+	}
+
+	suspend fun setCalendarSyncEnabled(enabled: Boolean) {
+		context.dataStore.edit { it[CALENDAR_SYNC_ENABLED_KEY] = enabled }
+	}
+
+	suspend fun setCalendarSyncCalendarId(id: Long?) {
+		context.dataStore.edit {
+			if (id == null) it.remove(CALENDAR_SYNC_CALENDAR_ID_KEY)
+			else it[CALENDAR_SYNC_CALENDAR_ID_KEY] = id.toString()
 		}
 	}
 

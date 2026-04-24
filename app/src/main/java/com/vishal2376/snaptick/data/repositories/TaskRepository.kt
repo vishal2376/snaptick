@@ -1,6 +1,7 @@
 package com.vishal2376.snaptick.data.repositories
 
 import android.content.Context
+import com.vishal2376.snaptick.data.calendar.CalendarPusher
 import com.vishal2376.snaptick.data.local.TaskDao
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.widget.worker.WidgetUpdateWorker
@@ -10,20 +11,25 @@ import java.time.LocalDate
 
 class TaskRepository(
 	private val dao: TaskDao,
-	private val context: Context
+	private val context: Context,
+	private val calendarPusher: CalendarPusher,
 ) {
 	suspend fun insertTask(task: Task) {
 		dao.insertTask(task)
+		val saved = dao.getTaskByUuid(task.uuid) ?: task
+		calendarPusher.pushInsert(saved)
 		WidgetUpdateWorker.enqueueWorker(context)
 	}
 
 	suspend fun deleteTask(task: Task) {
 		dao.deleteTask(task)
+		calendarPusher.pushDelete(task)
 		WidgetUpdateWorker.enqueueWorker(context)
 	}
 
 	suspend fun updateTask(task: Task) {
 		dao.updateTask(task)
+		calendarPusher.pushUpdate(task)
 		WidgetUpdateWorker.enqueueWorker(context)
 	}
 
@@ -53,5 +59,12 @@ class TaskRepository(
 		return dao.getAllTasks().onEach {
 			WidgetUpdateWorker.enqueueWorker(context)
 		}
+	}
+
+	/** Pushes every task that doesn't yet have a calendar event id to the
+	 *  selected device calendar. Cheap no-op when sync is disabled. */
+	suspend fun syncAllTasksNow() {
+		val all = dao.getAllTasksSnapshot()
+		calendarPusher.pushAllUnmirrored(all)
 	}
 }
