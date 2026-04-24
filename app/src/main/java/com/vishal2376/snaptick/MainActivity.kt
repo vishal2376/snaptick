@@ -19,6 +19,7 @@ import com.vishal2376.snaptick.presentation.navigation.AppNavigation
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.BackupManager
 import com.vishal2376.snaptick.util.NotificationHelper
+import com.vishal2376.snaptick.util.SplashThemeMirror
 import com.vishal2376.snaptick.widget.presentation.EXTRA_NAVIGATE_TO
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -45,6 +46,7 @@ class MainActivity : ComponentActivity() {
 	var lastPickedIcsUri: Uri? = null
 
 	override fun onCreate(savedInstanceState: Bundle?) {
+		setTheme(SplashThemeMirror.startingThemeRes(this))
 		installSplashScreen()
 
 		super.onCreate(savedInstanceState)

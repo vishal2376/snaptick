@@ -19,6 +19,7 @@ import com.vishal2376.snaptick.presentation.main.events.MainEvent
 import com.vishal2376.snaptick.presentation.main.state.MainState
 import com.vishal2376.snaptick.util.BackupManager
 import com.vishal2376.snaptick.util.SettingsStore
+import com.vishal2376.snaptick.util.SplashThemeMirror
 import com.vishal2376.snaptick.util.updateLocale
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -63,7 +64,11 @@ class MainViewModel @Inject constructor(
 
 	fun onAction(action: MainAction) {
 		when (action) {
-			is MainAction.UpdateAppTheme -> persist { _state.update { s -> s.copy(theme = action.theme) }; settingsStore.setTheme(action.theme.ordinal) }
+			is MainAction.UpdateAppTheme -> persist {
+				_state.update { s -> s.copy(theme = action.theme) }
+				settingsStore.setTheme(action.theme.ordinal)
+				SplashThemeMirror.write(context, action.theme)
+			}
 			is MainAction.UpdateDynamicTheme -> persist { _state.update { s -> s.copy(dynamicTheme = action.isEnabled) }; settingsStore.setDynamicTheme(action.isEnabled) }
 			is MainAction.UpdateTimePicker -> persist { _state.update { s -> s.copy(isWheelTimePicker = action.isWheelTimePicker) }; settingsStore.setTimePicker(action.isWheelTimePicker) }
 			is MainAction.UpdateTimeFormat -> persist { _state.update { s -> s.copy(is24hourTimeFormat = action.is24Hour) }; settingsStore.setTimeFormat(action.is24Hour) }
