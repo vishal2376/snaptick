@@ -26,4 +26,9 @@
     <color name="yellow">#FFFF9737</color>
     <color name="red">#FFEB8080</color>
 
+    <!-- Splash backgrounds per theme -->
+    <color name="splash_bg_amoled">#FF000000</color>
+    <color name="splash_bg_dark">#FF161A30</color>
+    <color name="splash_bg_light">#FFFBFBFB</color>
+
 </resources>
