@@ -28,6 +28,7 @@ import com.vishal2376.snaptick.presentation.completed_task_screen.CompletedTaskS
 import com.vishal2376.snaptick.presentation.free_time_screen.FreeTimeScreen
 import com.vishal2376.snaptick.presentation.home_screen.HomeScreen
 import com.vishal2376.snaptick.presentation.main.events.MainEvent
+import com.vishal2376.snaptick.presentation.onboarding.OnboardingScreen
 import com.vishal2376.snaptick.presentation.main.viewmodel.MainViewModel
 import com.vishal2376.snaptick.presentation.pomodoro_screen.PomodoroScreen
 import com.vishal2376.snaptick.presentation.pomodoro_screen.viewmodel.PomodoroViewModel
@@ -77,7 +78,11 @@ fun AppNavigation(
 		}
 	)
 
-	val actualStartDestination = startDestination ?: Routes.HomeScreen.name
+	val actualStartDestination = when {
+		startDestination != null -> startDestination
+		!mainState.onboardingCompleted -> Routes.Onboarding.name
+		else -> Routes.HomeScreen.name
+	}
 
 	NavHost(
 		navController = navController,
@@ -265,6 +270,30 @@ fun AppNavigation(
 						navController.popBackStack()
 					}
 				}
+			)
+		}
+
+		composable(route = Routes.Onboarding.name) {
+			OnboardingScreen(
+				state = mainState,
+				onAction = mainViewModel::onAction,
+				onRestoreBackup = {
+					activity.restorePickerLauncher.launch(activity.backupManager.getLoadBackupFilePickerIntent())
+				},
+				onToggleCalendarSync = { enabled ->
+					mainViewModel.onAction(
+						com.vishal2376.snaptick.presentation.main.action.MainAction
+							.SetCalendarSyncEnabled(enabled)
+					)
+				},
+				onFinish = {
+					mainViewModel.onAction(
+						com.vishal2376.snaptick.presentation.main.action.MainAction.CompleteOnboarding
+					)
+					navController.navigate(Routes.HomeScreen.name) {
+						popUpTo(Routes.Onboarding.name) { inclusive = true }
+					}
+				},
 			)
 		}
 	}

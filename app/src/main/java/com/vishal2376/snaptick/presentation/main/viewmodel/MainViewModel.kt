@@ -103,6 +103,10 @@ class MainViewModel @Inject constructor(
 				repository.syncAllTasksNow()
 				_events.emit(MainEvent.CalendarSyncComplete(0))
 			}
+			is MainAction.CompleteOnboarding -> persist {
+				_state.update { it.copy(onboardingCompleted = true) }
+				settingsStore.setOnboardingCompleted(true)
+			}
 		}
 	}
 
@@ -186,6 +190,7 @@ class MainViewModel @Inject constructor(
 		viewModelScope.launch { settingsStore.buildVersionCode.collect { v -> _state.update { it.copy(buildVersionCode = v) } } }
 		viewModelScope.launch { settingsStore.calendarSyncEnabledKey.collect { v -> _state.update { it.copy(calendarSyncEnabled = v) } } }
 		viewModelScope.launch { settingsStore.calendarSyncCalendarIdKey.collect { v -> _state.update { it.copy(calendarSyncCalendarId = v) } } }
+		viewModelScope.launch { settingsStore.onboardingCompletedKey.collect { v -> _state.update { it.copy(onboardingCompleted = v) } } }
 		viewModelScope.launch {
 			settingsStore.lastOpenedKey.collect { lastDateString ->
 				if (lastDateString == "") {

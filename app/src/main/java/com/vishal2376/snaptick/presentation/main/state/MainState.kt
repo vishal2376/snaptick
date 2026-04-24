@@ -29,4 +29,5 @@ data class MainState(
 	val calendarSyncEnabled: Boolean = false,
 	val calendarSyncCalendarId: Long? = null,
 	val importPreview: List<com.vishal2376.snaptick.domain.model.Task> = emptyList(),
+	val onboardingCompleted: Boolean = true,
 )

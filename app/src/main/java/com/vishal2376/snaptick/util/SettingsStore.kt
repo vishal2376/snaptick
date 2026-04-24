@@ -38,6 +38,7 @@ class SettingsStore(val context: Context) {
 		private val SWIPE_BEHAVIOUR_KEY = intPreferencesKey("swipe_behaviour_key")
 		private val CALENDAR_SYNC_ENABLED_KEY = booleanPreferencesKey("calendar_sync_enabled_key")
 		private val CALENDAR_SYNC_CALENDAR_ID_KEY = stringPreferencesKey("calendar_sync_calendar_id_key")
+		private val ONBOARDING_COMPLETED_KEY = booleanPreferencesKey("onboarding_completed_key")
 
 		private const val DEFAULT_LANGUAGE = "en"
 		private val DEFAULT_THEME = AppTheme.Dark.ordinal
@@ -54,6 +55,7 @@ class SettingsStore(val context: Context) {
 		private val DEFAULT_SWIPE_BEHAVIOUR = SwipeBehavior.DELETE.ordinal
 		private const val DEFAULT_CALENDAR_SYNC_ENABLED = false
 		private const val DEFAULT_CALENDAR_SYNC_CALENDAR_ID = ""
+		private const val DEFAULT_ONBOARDING_COMPLETED = false
 	}
 
 
@@ -117,6 +119,10 @@ class SettingsStore(val context: Context) {
 		preferences[CALENDAR_SYNC_CALENDAR_ID_KEY]
 			?.takeIf { it.isNotBlank() }
 			?.toLongOrNull()
+	}
+
+	val onboardingCompletedKey: Flow<Boolean> = context.dataStore.data.map { preferences ->
+		preferences[ONBOARDING_COMPLETED_KEY] ?: DEFAULT_ONBOARDING_COMPLETED
 	}
 
 	suspend fun setTheme(theme: Int) {
@@ -206,6 +212,10 @@ class SettingsStore(val context: Context) {
 			if (id == null) it.remove(CALENDAR_SYNC_CALENDAR_ID_KEY)
 			else it[CALENDAR_SYNC_CALENDAR_ID_KEY] = id.toString()
 		}
+	}
+
+	suspend fun setOnboardingCompleted(completed: Boolean) {
+		context.dataStore.edit { it[ONBOARDING_COMPLETED_KEY] = completed }
 	}
 
 }

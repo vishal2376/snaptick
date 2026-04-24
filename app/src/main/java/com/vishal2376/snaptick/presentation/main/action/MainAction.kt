@@ -34,4 +34,5 @@ sealed interface MainAction {
 	data class ParseIcsFile(val uri: Uri) : MainAction
 	data object ClearImportPreview : MainAction
 	data object SyncAllTasksNow : MainAction
+	data object CompleteOnboarding : MainAction
 }
