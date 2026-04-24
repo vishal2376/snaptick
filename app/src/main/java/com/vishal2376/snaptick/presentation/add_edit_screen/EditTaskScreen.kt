@@ -421,7 +421,7 @@ fun EditTaskScreen(
 					modifier = Modifier.padding(bottom = 8.dp),
 					color = MaterialTheme.colorScheme.primaryContainer
 				)
-				PriorityComponent(defaultSortTask = state.priority) {
+				PriorityComponent(selected = state.priority) {
 					onAction(AddEditAction.UpdatePriority(it))
 				}
 			}

@@ -468,7 +468,7 @@ fun AddTaskScreen(
 					modifier = Modifier.padding(bottom = 8.dp),
 					color = MaterialTheme.colorScheme.primaryContainer
 				)
-				PriorityComponent {
+				PriorityComponent(selected = state.priority) {
 					onAction(AddEditAction.UpdatePriority(it))
 				}
 			}

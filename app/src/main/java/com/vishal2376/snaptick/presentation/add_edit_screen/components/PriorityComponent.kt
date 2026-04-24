@@ -17,10 +17,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,14 +31,9 @@ import com.vishal2376.snaptick.ui.theme.priorityColors
 
 @Composable
 fun PriorityComponent(
-	defaultSortTask: Priority = Priority.LOW,
+	selected: Priority = Priority.LOW,
 	onSelect: (Priority) -> Unit
 ) {
-
-	var selectedOption by remember {
-		mutableStateOf(defaultSortTask)
-	}
-
 	Row(
 		modifier = Modifier
 			.fillMaxWidth()
@@ -52,11 +44,10 @@ fun PriorityComponent(
 			PriorityItemComponent(
 				title = it.displayText,
 				backgroundColor = priorityColors[it.ordinal],
-				isSelected = selectedOption == it,
+				isSelected = selected == it,
 				modifier = Modifier.weight(1f)
 			) {
 				onSelect(it)
-				selectedOption = it
 			}
 		}
 	}
