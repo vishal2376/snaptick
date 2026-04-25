@@ -23,14 +23,38 @@ android {
 		}
 	}
 
+	signingConfigs {
+		create("release") {
+			// Env vars (CI) take precedence over local ~/.gradle/gradle.properties.
+			fun signingProp(name: String): String? {
+				return (System.getenv(name) ?: project.findProperty(name) as String?)
+					?.takeIf { it.isNotBlank() }
+			}
+
+			val ksPath = signingProp("SNAPTICK_KEYSTORE_FILE")
+			val ksPassword = signingProp("SNAPTICK_KEYSTORE_PASSWORD")
+			val kAlias = signingProp("SNAPTICK_KEY_ALIAS")
+			val kPassword = signingProp("SNAPTICK_KEY_PASSWORD")
+
+			val ksFile = ksPath?.let { file(it) }?.takeIf { it.exists() }
+			if (ksFile != null && ksPassword != null && kAlias != null && kPassword != null) {
+				storeFile = ksFile
+				storePassword = ksPassword
+				keyAlias = kAlias
+				keyPassword = kPassword
+			}
+			// Otherwise fields stay null. The fail-fast block below catches it.
+		}
+	}
+
 	buildTypes {
 		release {
-			isMinifyEnabled = false
+			isMinifyEnabled = true
 			proguardFiles(
 				getDefaultProguardFile("proguard-android-optimize.txt"),
 				"proguard-rules.pro"
 			)
-			signingConfig = signingConfigs.getByName("debug")
+			signingConfig = signingConfigs.getByName("release")
 		}
 
 		debug {
@@ -71,6 +95,34 @@ android {
 
 	// Expose Room schemas to androidTest for MigrationTestHelper.
 	sourceSets.getByName("androidTest").assets.srcDirs("$projectDir/schemas")
+}
+
+// Fail fast on misconfigured release builds. Catches:
+// - Forgotten env vars in CI.
+// - Local clones that don't have ~/.gradle/gradle.properties set.
+// - Anyone trying to ship a release APK signed with the public Android debug key.
+//
+// Hooked into gradle.taskGraph.whenReady so the guard fires BEFORE any release
+// task (including R8 / minify / package) starts, instead of after they've
+// already burned a couple of minutes of CPU.
+gradle.taskGraph.whenReady {
+	val isReleaseBuild = allTasks.any {
+		it.path.startsWith(":app:assembleRelease") ||
+			it.path.startsWith(":app:bundleRelease") ||
+			it.path == ":app:packageRelease"
+	}
+	if (!isReleaseBuild) return@whenReady
+
+	val sc = android.signingConfigs.getByName("release")
+	val storeFile = sc.storeFile
+	val alias = sc.keyAlias
+	require(storeFile != null && storeFile.exists()) {
+		"Release keystore not configured. Set SNAPTICK_KEYSTORE_FILE in " +
+			"~/.gradle/gradle.properties (local) or as an env var (CI)."
+	}
+	require(alias != null && alias != "androiddebugkey") {
+		"Refusing to sign release with the public Android debug key alias."
+	}
 }
 
 

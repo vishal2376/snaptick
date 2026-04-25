@@ -14,3 +14,10 @@
 .cxx
 local.properties
 release/
+
+# Signing keystores - never commit. Real keystore lives outside the repo;
+# CI receives it via base64-encoded GitHub secret. These patterns are
+# defense-in-depth in case a contributor copies one in by accident.
+*.jks
+*.keystore
+keystore.properties

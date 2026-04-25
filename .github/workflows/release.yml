@@ -1,0 +1,135 @@
+name: Release Build
+
+# Snaptick is distributed exclusively via GitHub Releases. This workflow:
+# 1. Decodes the signing keystore from a base64-encoded repository secret.
+# 2. Runs unit tests.
+# 3. Builds and signs a release APK using the production keystore.
+# 4. Verifies the signing certificate is NOT the public Android debug key.
+# 5. Computes a SHA-256 of the APK so users can verify their download.
+# 6. Attaches the APK + checksum to the GitHub Release for the tag.
+# 7. Wipes the decoded keystore from the runner before the job ends.
+#
+# Required repository secrets (Settings → Secrets and variables → Actions):
+#   SNAPTICK_KEYSTORE_BASE64    - `base64 -i your-release.jks` output
+#   SNAPTICK_KEYSTORE_PASSWORD  - keystore password
+#   SNAPTICK_KEY_ALIAS          - key alias
+#   SNAPTICK_KEY_PASSWORD       - key password
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:  # manual trigger from the Actions tab
+
+permissions:
+  contents: write  # needed to attach files to the GitHub Release
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Decode keystore from secret
+        env:
+          KEYSTORE_BASE64: ${{ secrets.SNAPTICK_KEYSTORE_BASE64 }}
+        run: |
+          if [ -z "$KEYSTORE_BASE64" ]; then
+            echo "::error::SNAPTICK_KEYSTORE_BASE64 secret is empty or missing."
+            exit 1
+          fi
+          mkdir -p "$RUNNER_TEMP/keystore"
+          echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/keystore/release.jks"
+          # Sanity check: decoded file must exist and be non-empty.
+          test -s "$RUNNER_TEMP/keystore/release.jks" \
+            || (echo "::error::Decoded keystore is empty." && exit 1)
+
+      - name: Run unit tests
+        run: ./gradlew :app:testDebugUnitTest
+
+      - name: Assemble signed release APK
+        env:
+          SNAPTICK_KEYSTORE_FILE: ${{ runner.temp }}/keystore/release.jks
+          SNAPTICK_KEYSTORE_PASSWORD: ${{ secrets.SNAPTICK_KEYSTORE_PASSWORD }}
+          SNAPTICK_KEY_ALIAS: ${{ secrets.SNAPTICK_KEY_ALIAS }}
+          SNAPTICK_KEY_PASSWORD: ${{ secrets.SNAPTICK_KEY_PASSWORD }}
+        run: ./gradlew :app:assembleRelease
+
+      - name: Verify signing identity is NOT the public debug key
+        run: |
+          APK=$(find app/build/outputs/apk/release -name "*.apk" | head -n1)
+          if [ -z "$APK" ]; then
+            echo "::error::No release APK produced."
+            exit 1
+          fi
+          echo "Verifying $APK"
+          BUILD_TOOLS=$(ls "$ANDROID_HOME/build-tools" | sort -V | tail -n1)
+          "$ANDROID_HOME/build-tools/$BUILD_TOOLS/apksigner" verify --verbose "$APK"
+
+          # Public Android debug certificate's SHA-1 fingerprint. If the APK
+          # we just built has this SHA-1, our keystore wiring failed and we
+          # accidentally signed with the debug cert. Abort.
+          DEBUG_CERT_SHA1="61ED377E85D386A8DFEE6B864BD85B0BFAA5AF81"
+          ACTUAL_SHA1=$(keytool -printcert -jarfile "$APK" \
+            | grep "SHA1:" \
+            | head -1 \
+            | awk '{print $2}' \
+            | tr -d ':')
+          if [ "$ACTUAL_SHA1" = "$DEBUG_CERT_SHA1" ]; then
+            echo "::error::APK is signed with the public Android debug key. Aborting."
+            exit 1
+          fi
+          echo "Signing cert SHA-1: $ACTUAL_SHA1 (not the debug key)"
+
+      - name: Compute APK SHA-256 for release notes
+        id: hash
+        run: |
+          APK=$(find app/build/outputs/apk/release -name "*.apk" | head -n1)
+          SHA=$(sha256sum "$APK" | awk '{print $1}')
+          echo "apk_path=$APK" >> "$GITHUB_OUTPUT"
+          echo "apk_sha256=$SHA" >> "$GITHUB_OUTPUT"
+          echo "Release APK SHA-256: $SHA"
+
+      - name: Upload APK as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: snaptick-release-apk
+          path: app/build/outputs/apk/release/*.apk
+          retention-days: 7
+
+      - name: Attach APK to GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: app/build/outputs/apk/release/*.apk
+          body: |
+            ## Verifying your download
+
+            ```
+            sha256sum snaptick-${{ github.ref_name }}.apk
+            # Expected: ${{ steps.hash.outputs.apk_sha256 }}
+            ```
+
+            Built from commit `${{ github.sha }}` by GitHub Actions. The signing
+            certificate's SHA-1 must match the keystore fingerprint published
+            in the project README under "Verifying builds".
+
+      - name: Wipe decoded keystore
+        if: always()
+        run: |
+          if command -v shred >/dev/null 2>&1; then
+            shred -u "$RUNNER_TEMP/keystore/release.jks" 2>/dev/null || true
+          fi
+          rm -f "$RUNNER_TEMP/keystore/release.jks"
+          rmdir "$RUNNER_TEMP/keystore" 2>/dev/null || true
