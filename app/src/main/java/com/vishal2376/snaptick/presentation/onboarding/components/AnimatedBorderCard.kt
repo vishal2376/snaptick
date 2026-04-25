@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 
 /**
  * Rounded card with a static primary border when [selected]. No breathing or
- * traveling segment animation — calm Material 3 wallpaper-picker style. Border
+ * traveling segment animation. Calm Material 3 wallpaper-picker style. Border
  * width and color animate via colorAsState for smooth transitions.
  */
 @Composable

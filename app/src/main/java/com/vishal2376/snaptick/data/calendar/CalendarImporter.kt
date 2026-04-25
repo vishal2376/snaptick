@@ -13,7 +13,7 @@ import javax.inject.Singleton
 /**
  * One-shot conversion layer. Turns device-calendar events (via [CalendarRepository])
  * and iCalendar `.ics` files into Snaptick [Task]s. Never writes back to the
- * device calendar — the user imports explicitly and is expected to edit the
+ * device calendar. The user imports explicitly and is expected to edit the
  * resulting tasks as they would any manually-added task.
  */
 @Singleton

@@ -31,6 +31,6 @@ object SnaptickMotion {
 		tween(durationMillis = 220, easing = FastOutSlowInEasing)
 
 	/** Cap per-item entrance stagger on long lists. Everything past this
-	 *  index appears instantly — saves CPU on low-end devices. */
+	 *  index appears instantly. Saves CPU on low-end devices. */
 	const val MAX_STAGGERED_ITEMS = 10
 }

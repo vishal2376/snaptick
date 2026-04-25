@@ -7,12 +7,12 @@ import com.vishal2376.snaptick.presentation.common.AppTheme
 
 /**
  * `DataStore` is asynchronous, but the splash screen theme has to be applied
- * before `installSplashScreen()` — a synchronous call site. We keep a tiny
+ * before `installSplashScreen()` (a synchronous call site). We keep a tiny
  * `SharedPreferences` mirror of the current theme ordinal that `MainViewModel`
  * writes on every theme update; `MainActivity` reads it in <1 ms before the
  * splash theme is chosen.
  *
- * First install has no mirror entry, so we default to Amoled — matches the
+ * First install has no mirror entry, so we default to Amoled, which matches the
  * "first launch = dark amoled" requirement.
  */
 object SplashThemeMirror {

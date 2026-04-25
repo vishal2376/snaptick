@@ -35,7 +35,7 @@ class CalendarPusher @Inject constructor(
 		if (existing != null && calendarRepository.updateEvent(existing, task.toEvent(target))) {
 			return
 		}
-		// No existing link (or update failed because row was deleted externally) — insert.
+		// No existing link (or update failed because row was deleted externally). Insert fresh.
 		val eventId = calendarRepository.insertEvent(task.toEvent(target)) ?: return
 		persistEventId(task.uuid, eventId)
 	}
