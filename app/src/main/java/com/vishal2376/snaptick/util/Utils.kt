@@ -64,7 +64,16 @@ fun openMail(context: Context, title: String) {
 	context.startActivity(Intent.createChooser(intent, intentTitle))
 }
 
+private val ALLOWED_URL_SCHEMES: Set<String> = setOf("https")
+
+/**
+ * Opens [urlString] in the user's default browser. Only `https://` URIs are
+ * accepted; everything else (file://, intent://, content://, custom schemes)
+ * is silently dropped to keep this helper from being abused as a generic
+ * deeplink launcher if a future feature ever feeds a dynamic URL through it.
+ */
 fun openUrl(context: Context, urlString: String) {
-	val intent = Intent(Intent.ACTION_VIEW, Uri.parse(urlString))
-	context.startActivity(intent)
+	val uri = runCatching { Uri.parse(urlString) }.getOrNull() ?: return
+	if (uri.scheme?.lowercase() !in ALLOWED_URL_SCHEMES) return
+	context.startActivity(Intent(Intent.ACTION_VIEW, uri))
 }

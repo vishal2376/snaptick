@@ -20,6 +20,7 @@ import com.vishal2376.snaptick.presentation.common.CustomSnackBar
 import com.vishal2376.snaptick.presentation.main.action.MainAction
 import com.vishal2376.snaptick.presentation.main.viewmodel.MainViewModel
 import com.vishal2376.snaptick.presentation.navigation.AppNavigation
+import com.vishal2376.snaptick.presentation.navigation.Routes
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.BackupManager
 import com.vishal2376.snaptick.util.NotificationHelper
@@ -143,6 +144,20 @@ class MainActivity : ComponentActivity() {
 	}
 
 	private fun handleWidgetIntent(intent: Intent?) {
-		widgetNavigateTo = intent?.getStringExtra(EXTRA_NAVIGATE_TO)
+		val raw = intent?.getStringExtra(EXTRA_NAVIGATE_TO)
+		// Only the routes the widget is supposed to be able to deeplink into.
+		// Anything else (including null) leaves widgetNavigateTo unset so
+		// AppNavigation falls through to its default start destination.
+		// Without this allowlist, any app on the device could craft an
+		// `Intent(MAIN).putExtra("navigate_to", ...)` and either crash NavHost
+		// (unknown route) or open a screen that the widget surface was never
+		// meant to expose.
+		widgetNavigateTo = if (raw != null && raw in WIDGET_ALLOWED_ROUTES) raw else null
+	}
+
+	companion object {
+		private val WIDGET_ALLOWED_ROUTES: Set<String> = setOf(
+			Routes.AddTaskScreen.name,
+		)
 	}
 }
