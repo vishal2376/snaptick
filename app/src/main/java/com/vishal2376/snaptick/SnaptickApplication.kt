@@ -40,7 +40,7 @@ class SnaptickApplication : Application(), Configuration.Provider {
 		// no personal email; CI / local dev injects it via the `acraEmail` Gradle
 		// property. When unset (forks, contributor builds), ACRA stays off.
 		val acraEmail = BuildConfig.ACRA_EMAIL
-		if (acraEmail.isBlank()) return
+		if (!shouldInitAcra(acraEmail)) return
 
 		ACRA.init(
 			this, CoreConfigurationBuilder()
@@ -107,5 +107,14 @@ class SnaptickApplication : Application(), Configuration.Provider {
 
 	companion object {
 		private const val UNIQUE_BACKFILL_WORK_NAME = "snaptick.reminder-backfill"
+
+		/**
+		 * Decides whether to wire up ACRA for this build. We refuse to init when
+		 * no destination email is configured (typical for forks and contributor
+		 * builds) so crash reports never go to a hardcoded address that the
+		 * operator of this build doesn't own. Extracted as an internal helper so
+		 * unit tests can pin the contract.
+		 */
+		internal fun shouldInitAcra(email: String): Boolean = email.isNotBlank()
 	}
 }

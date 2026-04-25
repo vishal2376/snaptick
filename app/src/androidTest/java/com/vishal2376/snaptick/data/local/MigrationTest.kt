@@ -100,6 +100,40 @@ class MigrationTest {
 		}
 	}
 
+	@Test fun migrate3To4_taskCompletionDao_roundTripsAfterMigration() = runBlocking {
+		// Migrate a v3 db forward, then re-open via Room and exercise the DAO
+		// just like production does: insert, read back, delete.
+		helper.createDatabase(dbName, 3).close()
+		helper.runMigrationsAndValidate(dbName, 4, true, MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4).close()
+
+		val ctx = ApplicationProvider.getApplicationContext<android.content.Context>()
+		val room = Room.databaseBuilder(ctx, TaskDatabase::class.java, dbName)
+			.addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
+			.build()
+		try {
+			val dao = room.taskCompletionDao()
+			assertFalse(dao.isCompleted("u1", "2026-04-25"))
+
+			dao.insert(TaskCompletion(uuid = "u1", date = "2026-04-25"))
+			assertTrue(dao.isCompleted("u1", "2026-04-25"))
+
+			// Composite key: same uuid different date is independent.
+			assertFalse(dao.isCompleted("u1", "2026-04-26"))
+
+			dao.delete("u1", "2026-04-25")
+			assertFalse(dao.isCompleted("u1", "2026-04-25"))
+
+			// deleteAllForTask wipes every date for the uuid.
+			dao.insert(TaskCompletion("u2", "2026-04-25"))
+			dao.insert(TaskCompletion("u2", "2026-04-26"))
+			dao.deleteAllForTask("u2")
+			assertFalse(dao.isCompleted("u2", "2026-04-25"))
+			assertFalse(dao.isCompleted("u2", "2026-04-26"))
+		} finally {
+			room.close()
+		}
+	}
+
 	@Test fun migrate3To4_createsEmptyTaskCompletionsTable() {
 		// Seed a v3 DB with a task, then migrate forward.
 		helper.createDatabase(dbName, 3).use { db ->
