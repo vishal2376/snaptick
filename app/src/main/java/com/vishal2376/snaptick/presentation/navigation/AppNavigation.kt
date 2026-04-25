@@ -27,6 +27,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.vishal2376.snaptick.MainActivity
 import com.vishal2376.snaptick.presentation.about_screen.AboutScreen
+import com.vishal2376.snaptick.presentation.common.BackupRestoreConfirmDialog
 import com.vishal2376.snaptick.presentation.add_edit_screen.AddTaskScreen
 import com.vishal2376.snaptick.presentation.add_edit_screen.EditTaskScreen
 import com.vishal2376.snaptick.presentation.add_edit_screen.viewmodel.AddEditViewModel
@@ -70,6 +71,11 @@ fun AppNavigation(
 					showToast(activity, "Found ${event.count} events", Toast.LENGTH_SHORT)
 				is MainEvent.ImportFailed ->
 					showToast(activity, event.message, Toast.LENGTH_LONG)
+				is MainEvent.BackupPreviewReady -> {
+					// Dialog rendering is driven by mainState.pendingRestore;
+					// no toast needed. The event exists so callers can react to
+					// the parse-success moment if they want (e.g., haptic).
+				}
 				is MainEvent.CalendarPermissionRequired ->
 					activity.calendarPermissionLauncher.launch(
 						arrayOf(
@@ -88,6 +94,15 @@ fun AppNavigation(
 				.background(MaterialTheme.colorScheme.background)
 		)
 		return
+	}
+
+	mainState.pendingRestore?.let { pending ->
+		BackupRestoreConfirmDialog(
+			taskCount = pending.taskCount,
+			droppedCount = pending.droppedCount,
+			onConfirm = { mainViewModel.onAction(MainAction.ConfirmRestore) },
+			onDismiss = { mainViewModel.onAction(MainAction.CancelRestore) },
+		)
 	}
 
 	val actualStartDestination = when {

@@ -1,5 +1,6 @@
 package com.vishal2376.snaptick.presentation.main.state
 
+import com.vishal2376.snaptick.domain.model.BackupData
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.common.AppTheme
 import com.vishal2376.snaptick.presentation.common.CalenderView
@@ -32,4 +33,16 @@ data class MainState(
 	val importPreview: List<Task> = emptyList(),
 	val onboardingCompleted: Boolean = true,
 	val bootResolved: Boolean = false,
+	/**
+	 * Set when the user picks a backup .json. UI renders a confirmation dialog
+	 * with the parsed task count. Cleared by ConfirmRestore (after wipe+insert)
+	 * or CancelRestore.
+	 */
+	val pendingRestore: PendingRestore? = null,
+)
+
+data class PendingRestore(
+	val data: BackupData,
+	val taskCount: Int,
+	val droppedCount: Int,
 )

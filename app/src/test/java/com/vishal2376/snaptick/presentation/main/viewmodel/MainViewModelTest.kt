@@ -16,6 +16,7 @@ import com.vishal2376.snaptick.util.MainDispatcherRule
 import com.vishal2376.snaptick.util.SettingsStoreFake
 import com.vishal2376.snaptick.util.TaskRepositoryFake
 import io.mockk.coEvery
+import io.mockk.coJustRun
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
@@ -23,6 +24,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -103,16 +105,64 @@ class MainViewModelTest {
 		}
 	}
 
-	@Test fun `LoadBackup null emits failure ShowToast`() = runTest {
+	@Test fun `PreviewBackup with null backup emits read-failure ShowToast`() = runTest {
 		val uri = mockk<Uri>()
 		coEvery { backupManager.loadBackup(uri) } returns null
 
 		val vm = buildVm()
 		advanceUntilIdle()
 		vm.events.test {
-			vm.onAction(MainAction.LoadBackup(uri))
+			vm.onAction(MainAction.PreviewBackup(uri))
 			val event = awaitItem()
-			assertEquals(MainEvent.ShowToast("Failed to restore backup"), event)
+			assertEquals(MainEvent.ShowToast("Failed to read backup file"), event)
 		}
+	}
+
+	@Test fun `PreviewBackup stages pendingRestore and emits BackupPreviewReady`() = runTest {
+		val uri = mockk<Uri>()
+		val data = BackupData(emptyList())
+		coEvery { backupManager.loadBackup(uri) } returns data
+
+		val vm = buildVm()
+		advanceUntilIdle()
+		vm.events.test {
+			vm.onAction(MainAction.PreviewBackup(uri))
+			val event = awaitItem()
+			assertEquals(MainEvent.BackupPreviewReady(taskCount = 0, droppedCount = 0), event)
+		}
+		// Stage 1 must NOT have wiped the DB.
+		coVerify(exactly = 0) { repoFake.repo.deleteAllTasks() }
+	}
+
+	@Test fun `ConfirmRestore wipes DB and inserts staged tasks`() = runTest {
+		val uri = mockk<Uri>()
+		val data = BackupData(emptyList())
+		coEvery { backupManager.loadBackup(uri) } returns data
+		coJustRun { repoFake.repo.deleteAllTasks() }
+
+		val vm = buildVm()
+		advanceUntilIdle()
+		vm.onAction(MainAction.PreviewBackup(uri))
+		advanceUntilIdle()
+		vm.onAction(MainAction.ConfirmRestore)
+		advanceUntilIdle()
+
+		coVerify(exactly = 1) { repoFake.repo.deleteAllTasks() }
+	}
+
+	@Test fun `CancelRestore clears pendingRestore without DB writes`() = runTest {
+		val uri = mockk<Uri>()
+		val data = BackupData(emptyList())
+		coEvery { backupManager.loadBackup(uri) } returns data
+
+		val vm = buildVm()
+		advanceUntilIdle()
+		vm.onAction(MainAction.PreviewBackup(uri))
+		advanceUntilIdle()
+		vm.onAction(MainAction.CancelRestore)
+		advanceUntilIdle()
+
+		assertNull(vm.state.value.pendingRestore)
+		coVerify(exactly = 0) { repoFake.repo.deleteAllTasks() }
 	}
 }

@@ -28,6 +28,19 @@ sealed interface MainAction {
 	data class UpdateTotalTaskDuration(val durationSeconds: Long) : MainAction
 	data class OnClickNavDrawerItem(val item: NavDrawerItem) : MainAction
 	data class CreateBackup(val uri: Uri, val backupData: BackupData) : MainAction
+	/**
+	 * Stage 1 of restore: parse the picked file, validate, populate
+	 * MainState.pendingRestore. UI shows a confirm dialog. NO db writes yet.
+	 */
+	data class PreviewBackup(val uri: Uri) : MainAction
+	/** Stage 2: user confirmed in the preview dialog; wipe + insert. */
+	data object ConfirmRestore : MainAction
+	/** Stage 2 alt: user dismissed the dialog; drop the pending preview. */
+	data object CancelRestore : MainAction
+	@Deprecated(
+		"Restore is now two-stage. Dispatch PreviewBackup followed by ConfirmRestore.",
+		ReplaceWith("MainAction.PreviewBackup(uri)")
+	)
 	data class LoadBackup(val uri: Uri) : MainAction
 	data class SetCalendarSyncEnabled(val enabled: Boolean) : MainAction
 	data class SetCalendarSyncTarget(val calendarId: Long) : MainAction

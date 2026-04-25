@@ -19,6 +19,7 @@ import com.vishal2376.snaptick.presentation.common.SwipeBehavior
 import com.vishal2376.snaptick.presentation.main.action.MainAction
 import com.vishal2376.snaptick.presentation.main.events.MainEvent
 import com.vishal2376.snaptick.presentation.main.state.MainState
+import com.vishal2376.snaptick.presentation.main.state.PendingRestore
 import com.vishal2376.snaptick.util.BackupManager
 import com.vishal2376.snaptick.util.SettingsStore
 import com.vishal2376.snaptick.util.SplashThemeMirror
@@ -40,6 +41,7 @@ import java.time.LocalTime
 import javax.inject.Inject
 
 private const val MAX_ICS_BYTES: Long = 8L * 1024 * 1024  // 8 MiB
+private const val MAX_BACKUP_TASKS = 10_000
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
@@ -92,7 +94,10 @@ class MainViewModel @Inject constructor(
 			is MainAction.UpdateTotalTaskDuration -> _state.update { it.copy(totalTaskDuration = action.durationSeconds) }
 			is MainAction.OnClickNavDrawerItem -> handleNavDrawerClick(action.item)
 			is MainAction.CreateBackup -> createBackup(action.uri, action.backupData)
-			is MainAction.LoadBackup -> loadBackup(action.uri)
+			is MainAction.PreviewBackup -> previewBackup(action.uri)
+			is MainAction.ConfirmRestore -> confirmRestore()
+			is MainAction.CancelRestore -> _state.update { it.copy(pendingRestore = null) }
+			is MainAction.LoadBackup -> previewBackup(action.uri)
 			is MainAction.SetCalendarSyncEnabled -> persist {
 				if (action.enabled && !calendarRepository.hasWritePermission()) {
 					_events.emit(MainEvent.CalendarPermissionRequired)
@@ -205,15 +210,69 @@ class MainViewModel @Inject constructor(
 		}
 	}
 
-	private fun loadBackup(uri: Uri) {
+	/**
+	 * Stage 1 of the two-stage restore. Reads + validates the backup, stages it
+	 * onto MainState.pendingRestore, and emits BackupPreviewReady so the UI can
+	 * surface a confirmation dialog. NO database mutation here. Stage 2
+	 * (`confirmRestore`) is what actually wipes and reinserts.
+	 */
+	private fun previewBackup(uri: Uri) {
 		viewModelScope.launch {
 			val data = backupManager.loadBackup(uri)
 			if (data == null) {
-				_events.emit(MainEvent.ShowToast("Failed to restore backup"))
-			} else {
+				_events.emit(MainEvent.ShowToast("Failed to read backup file"))
+				return@launch
+			}
+			if (data.tasks.size > MAX_BACKUP_TASKS) {
+				_events.emit(MainEvent.ImportFailed("Backup too large (max $MAX_BACKUP_TASKS tasks)"))
+				return@launch
+			}
+			// Drop tasks whose date/time fields can't round-trip through their
+			// Java-time parsers. Gson tolerates malformed strings here, but Room
+			// would crash later. Better to drop with a warning than wipe the DB
+			// then fail mid-insert.
+			val validTasks = data.tasks.filter { task ->
+				runCatching {
+					task.startTime.toString()
+					task.endTime.toString()
+					task.date.toString()
+				}.isSuccess
+			}
+			val droppedCount = data.tasks.size - validTasks.size
+			val pending = PendingRestore(
+				data = data.copy(tasks = validTasks),
+				taskCount = validTasks.size,
+				droppedCount = droppedCount,
+			)
+			_state.update { it.copy(pendingRestore = pending) }
+			_events.emit(MainEvent.BackupPreviewReady(validTasks.size, droppedCount))
+		}
+	}
+
+	/**
+	 * Stage 2: user confirmed. Wipe the DB and insert the staged tasks. Clears
+	 * `pendingRestore` whether the operation succeeds or fails so the dialog
+	 * never sticks.
+	 */
+	private fun confirmRestore() {
+		viewModelScope.launch {
+			val pending = _state.value.pendingRestore
+			if (pending == null) {
+				_events.emit(MainEvent.ShowToast("Nothing to restore"))
+				return@launch
+			}
+			try {
 				repository.deleteAllTasks()
-				for (task in data.tasks) repository.insertTask(task)
-				_events.emit(MainEvent.ShowToast("Backup Restored"))
+				for (task in pending.data.tasks) repository.insertTask(task)
+				val msg = if (pending.droppedCount > 0)
+					"Restored ${pending.taskCount} tasks (${pending.droppedCount} skipped)"
+				else
+					"Restored ${pending.taskCount} tasks"
+				_events.emit(MainEvent.ShowToast(msg))
+			} catch (e: Exception) {
+				_events.emit(MainEvent.ShowToast("Restore failed: ${e.message ?: "unknown error"}"))
+			} finally {
+				_state.update { it.copy(pendingRestore = null) }
 			}
 		}
 	}
