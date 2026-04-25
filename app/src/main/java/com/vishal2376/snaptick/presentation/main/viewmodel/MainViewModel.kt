@@ -105,6 +105,15 @@ class MainViewModel @Inject constructor(
 				}
 				_state.update { s -> s.copy(calendarSyncEnabled = action.enabled) }
 				settingsStore.setCalendarSyncEnabled(action.enabled)
+				// On disable, walk every previously-pushed task and remove its
+				// device calendar event so we don't leave orphaned entries in
+				// the user's Google Calendar.
+				if (!action.enabled) {
+					val deleted = repository.deletePushedCalendarEvents()
+					if (deleted > 0) {
+						_events.emit(MainEvent.ShowToast("Removed $deleted synced events"))
+					}
+				}
 			}
 			is MainAction.SetCalendarSyncTarget -> persist {
 				_state.update { s -> s.copy(calendarSyncCalendarId = action.calendarId) }

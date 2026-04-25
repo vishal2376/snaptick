@@ -37,7 +37,7 @@ class BackupManager @Inject constructor(
 				}
 				true
 			} catch (e: Exception) {
-				Log.e(TAG, "createBackup failed for uri=$uri", e)
+				Log.e(TAG, "Backup write failed", e)
 				false
 			}
 		}
@@ -51,7 +51,7 @@ class BackupManager @Inject constructor(
 					gson.fromJson(jsonData, BackupData::class.java)
 				}
 			} catch (e: Exception) {
-				Log.e(TAG, "loadBackup failed for uri=$uri", e)
+				Log.e(TAG, "Backup read failed", e)
 				null
 			}
 		}

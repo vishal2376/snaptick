@@ -117,6 +117,17 @@ class TaskRepository(
 		calendarPusher.pushAllUnmirrored(all)
 	}
 
+	/**
+	 * Removes every device-calendar event Snaptick has ever pushed and clears
+	 * each task's `calendarEventId`. Called when the user turns calendar sync
+	 * off so previously-mirrored events don't keep living in their Google
+	 * Calendar. Returns the number of events actually deleted.
+	 */
+	suspend fun deletePushedCalendarEvents(): Int {
+		val all = dao.getAllTasksSnapshot()
+		return calendarPusher.deleteAllPushedEvents(all)
+	}
+
 	/** Used by the boot-recovery worker to re-arm every active reminder. */
 	suspend fun rescheduleAllReminders() {
 		val all = dao.getAllTasksSnapshot().filter { it.reminder && !it.isCompleted }

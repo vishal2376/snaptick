@@ -60,6 +60,29 @@ class CalendarPusher @Inject constructor(
 			}
 	}
 
+	/**
+	 * Deletes every device-calendar event we ever pushed and clears each
+	 * task's `calendarEventId` column. Called when the user turns sync off so
+	 * we don't leave orphaned events lingering in their Google Calendar.
+	 *
+	 * Runs even when the sync flag is already off, because the user could
+	 * disable sync mid-flight (we still need to clean up what's already there).
+	 *
+	 * Returns the number of events that were actually deleted (best-effort).
+	 */
+	suspend fun deleteAllPushedEvents(tasks: List<Task>): Int {
+		var deleted = 0
+		tasks.filter { it.calendarEventId != null }.forEach { task ->
+			val eventId = task.calendarEventId ?: return@forEach
+			if (calendarRepository.deleteEvent(eventId)) deleted++
+			val latest = taskDao.getTaskByUuid(task.uuid) ?: return@forEach
+			if (latest.calendarEventId != null) {
+				taskDao.updateTask(latest.copy(calendarEventId = null))
+			}
+		}
+		return deleted
+	}
+
 	private suspend fun targetCalendarOrNull(): Long? {
 		if (!settings.calendarSyncEnabledKey.first()) return null
 		return settings.calendarSyncCalendarIdKey.first()

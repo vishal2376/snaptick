@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.Log
+import com.vishal2376.snaptick.BuildConfig
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.common.utils.formatTaskTime
 import com.vishal2376.snaptick.receiver.ReminderReceiver
@@ -70,7 +71,9 @@ class ReminderScheduler @Inject constructor(
 					pendingIntent
 				)
 			} else {
-				Log.w(TAG, "Exact alarm denied; falling back to inexact for taskId=${task.id}")
+				if (BuildConfig.DEBUG) {
+					Log.w(TAG, "Exact alarm denied; falling back to inexact")
+				}
 				alarmManager.setAndAllowWhileIdle(
 					AlarmManager.RTC_WAKEUP,
 					fireAt,
@@ -78,7 +81,7 @@ class ReminderScheduler @Inject constructor(
 				)
 			}
 		} catch (e: SecurityException) {
-			Log.e(TAG, "Failed to schedule alarm for taskId=${task.id}", e)
+			Log.e(TAG, "Failed to schedule alarm", e)
 		}
 	}
 

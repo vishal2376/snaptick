@@ -9,6 +9,7 @@ import android.content.Intent
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.vishal2376.snaptick.BuildConfig
 import com.vishal2376.snaptick.MainActivity
 import com.vishal2376.snaptick.R
 
@@ -23,7 +24,9 @@ class NotificationHelper(private val context: Context) {
 
 	fun showNotification(taskId: Int, taskTitle: String, taskTime: String) {
 		if (!NotificationManagerCompat.from(context).areNotificationsEnabled()) {
-			Log.w("NotificationHelper", "Notifications disabled; skipping taskId=$taskId")
+			if (BuildConfig.DEBUG) {
+				Log.w("NotificationHelper", "Notifications disabled; skipping reminder")
+			}
 			return
 		}
 
@@ -50,7 +53,7 @@ class NotificationHelper(private val context: Context) {
 		try {
 			notificationManager.notify(taskId, notificationBuilder.build())
 		} catch (e: SecurityException) {
-			Log.e("NotificationHelper", "notify() denied for taskId=$taskId", e)
+			Log.e("NotificationHelper", "notify() denied", e)
 		}
 	}
 
