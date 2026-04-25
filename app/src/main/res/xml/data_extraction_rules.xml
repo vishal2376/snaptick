@@ -1,19 +1,25 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-   Sample data extraction rules file; uncomment and customize as necessary.
-   See https://developer.android.com/about/versions/12/backup-restore#xml-changes
-   for details.
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   Auto-Backup rules for Android 12+ (API 31+).
+
+   cloud-backup: blocks the user's task data from auto-uploading to Google
+   Drive backup. Snaptick has its own JSON export/import flow under Settings;
+   that's the supported way to migrate data across devices.
+
+   device-transfer: still allows the same task data to be copied directly
+   between two phones during the system "Switch to a new phone" wizard, since
+   that's a user-initiated, locally-scoped transfer (no cloud round-trip).
 -->
 <data-extraction-rules>
     <cloud-backup>
-        <!-- TODO: Use <include> and <exclude> to control what is backed up.
-        <include .../>
-        <exclude .../>
-        -->
+        <exclude domain="database" path="local_db" />
+        <exclude domain="database" path="local_db-shm" />
+        <exclude domain="database" path="local_db-wal" />
+        <exclude domain="file" path="datastore/" />
+        <exclude domain="sharedpref" path="snaptick_splash_prefs.xml" />
     </cloud-backup>
-    <!--
     <device-transfer>
-        <include .../>
-        <exclude .../>
+        <include domain="database" path="local_db" />
+        <include domain="file" path="datastore/" />
     </device-transfer>
-    -->
 </data-extraction-rules>

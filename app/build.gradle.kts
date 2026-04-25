@@ -21,6 +21,13 @@ android {
 		vectorDrawables {
 			useSupportLibrary = true
 		}
+
+		// ACRA mail destination is read from a Gradle property so the source
+		// repo doesn't carry a personal email address. Set `acraEmail` in
+		// ~/.gradle/gradle.properties (local dev) or as a CI secret env var.
+		// If unset, ACRA init is skipped at runtime - crash reports go nowhere.
+		val acraEmail: String = (project.findProperty("acraEmail") as String?) ?: ""
+		buildConfigField("String", "ACRA_EMAIL", "\"$acraEmail\"")
 	}
 
 	signingConfigs {
