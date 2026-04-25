@@ -20,6 +20,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -68,7 +69,7 @@ fun SettingsScreen(
 	var showBottomSheetById by remember { mutableIntStateOf(0) }
 	var writableCalendars by remember { mutableStateOf<List<CalendarInfo>>(emptyList()) }
 
-	androidx.compose.runtime.LaunchedEffect(showBottomSheetById) {
+	LaunchedEffect(showBottomSheetById) {
 		if (showBottomSheetById == R.string.calendar_sync && mainViewModel != null) {
 			writableCalendars = mainViewModel.loadWritableCalendars()
 		}

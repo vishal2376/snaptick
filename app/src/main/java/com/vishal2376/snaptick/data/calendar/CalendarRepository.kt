@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.time.ZoneOffset
 import java.util.TimeZone
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -92,10 +93,7 @@ class CalendarRepository @Inject constructor(
 		val values = ContentValues().apply {
 			put(CalendarContract.Events.CALENDAR_ID, event.calendarId)
 			put(CalendarContract.Events.TITLE, event.title)
-			put(CalendarContract.Events.DTSTART, event.start.toEpochMillis())
-			put(CalendarContract.Events.DTEND, event.end.toEpochMillis())
-			put(CalendarContract.Events.EVENT_TIMEZONE, event.timezone)
-			put(CalendarContract.Events.ALL_DAY, if (event.allDay) 1 else 0)
+			applyTimingFields(event)
 			event.description?.let { put(CalendarContract.Events.DESCRIPTION, it) }
 		}
 		return try {
@@ -111,16 +109,47 @@ class CalendarRepository @Inject constructor(
 		val uri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, eventId)
 		val values = ContentValues().apply {
 			put(CalendarContract.Events.TITLE, event.title)
-			put(CalendarContract.Events.DTSTART, event.start.toEpochMillis())
-			put(CalendarContract.Events.DTEND, event.end.toEpochMillis())
-			put(CalendarContract.Events.EVENT_TIMEZONE, event.timezone)
-			put(CalendarContract.Events.ALL_DAY, if (event.allDay) 1 else 0)
+			applyTimingFields(event)
 			event.description?.let { put(CalendarContract.Events.DESCRIPTION, it) }
 		}
 		return try {
 			resolver.update(uri, values, null, null) > 0
 		} catch (e: SecurityException) {
 			false
+		}
+	}
+
+	/**
+	 * Writes timing fields the way Google / Exchange sync adapters expect.
+	 *
+	 * - All-day events: `EVENT_TIMEZONE` MUST be `UTC` and `DTSTART` / `DTEND`
+	 *   must be midnight in UTC, otherwise Google Calendar marks the event as
+	 *   a sync error after it reaches the server.
+	 * - Timed events: write a non-null `EVENT_END_TIMEZONE` so providers stop
+	 *   complaining about a missing end-zone.
+	 * - `DTEND` for timed events is forced to be at least one minute after
+	 *   `DTSTART` so providers do not reject zero-length events.
+	 */
+	private fun ContentValues.applyTimingFields(event: CalendarEvent) {
+		put(CalendarContract.Events.ALL_DAY, if (event.allDay) 1 else 0)
+		if (event.allDay) {
+			val startUtc = event.start.toLocalDate().atStartOfDay(ZoneOffset.UTC)
+				.toInstant().toEpochMilli()
+			val endUtc = event.end.toLocalDate().atStartOfDay(ZoneOffset.UTC)
+				.toInstant().toEpochMilli()
+			val safeEnd = if (endUtc <= startUtc) startUtc + 86_400_000L else endUtc
+			put(CalendarContract.Events.DTSTART, startUtc)
+			put(CalendarContract.Events.DTEND, safeEnd)
+			put(CalendarContract.Events.EVENT_TIMEZONE, "UTC")
+			put(CalendarContract.Events.EVENT_END_TIMEZONE, "UTC")
+		} else {
+			val startMs = event.start.toEpochMillis()
+			val endMs = event.end.toEpochMillis()
+			val safeEnd = if (endMs <= startMs) startMs + 60_000L else endMs
+			put(CalendarContract.Events.DTSTART, startMs)
+			put(CalendarContract.Events.DTEND, safeEnd)
+			put(CalendarContract.Events.EVENT_TIMEZONE, event.timezone)
+			put(CalendarContract.Events.EVENT_END_TIMEZONE, event.timezone)
 		}
 	}
 

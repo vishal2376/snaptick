@@ -1,13 +1,20 @@
 package com.vishal2376.snaptick.presentation.onboarding.pages
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.scaleIn
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -24,6 +31,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ChevronRight
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
@@ -39,6 +47,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -48,16 +58,30 @@ import com.vishal2376.snaptick.presentation.common.h3TextStyle
 import com.vishal2376.snaptick.presentation.common.infoDescTextStyle
 import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.ui.theme.LightGreen
+import com.vishal2376.snaptick.ui.theme.Red
 import com.vishal2376.snaptick.ui.theme.Yellow
 import kotlinx.coroutines.delay
 
 @Composable
 fun RestoreAndSyncPage(
 	calendarSyncEnabled: Boolean,
+	notificationsEnabled: Boolean,
 	onRestoreClick: () -> Unit,
 	onPickIcsClick: () -> Unit,
 	onCalendarSyncToggle: (Boolean) -> Unit,
+	onEnableNotifications: () -> Unit,
 ) {
+	val haptic = LocalHapticFeedback.current
+
+	// Permission grant flash: track previous state, fire pulse on false→true
+	var notifFlashTrigger by remember { mutableStateOf(0) }
+	LaunchedEffect(notificationsEnabled) {
+		if (notificationsEnabled) {
+			haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+			notifFlashTrigger++
+		}
+	}
+
 	Column(
 		modifier = Modifier
 			.fillMaxSize()
@@ -88,7 +112,10 @@ fun RestoreAndSyncPage(
 				accent = Blue,
 				title = "Restore from backup",
 				subtitle = "Pick a Snaptick .json backup to load every task and setting.",
-				onClick = onRestoreClick
+				onClick = {
+					haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+					onRestoreClick()
+				}
 			)
 		}
 		Spacer(Modifier.height(12.dp))
@@ -99,7 +126,10 @@ fun RestoreAndSyncPage(
 				accent = Yellow,
 				title = "Import .ics file",
 				subtitle = "One-tap import from any calendar export. Adds events as tasks.",
-				onClick = onPickIcsClick
+				onClick = {
+					haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+					onPickIcsClick()
+				}
 			)
 		}
 		Spacer(Modifier.height(12.dp))
@@ -113,18 +143,40 @@ fun RestoreAndSyncPage(
 				trailing = {
 					Switch(
 						checked = calendarSyncEnabled,
-						onCheckedChange = onCalendarSyncToggle,
+						onCheckedChange = {
+							haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+							onCalendarSyncToggle(it)
+						},
 						colors = SwitchDefaults.colors(
 							checkedThumbColor = MaterialTheme.colorScheme.onPrimary,
 							checkedTrackColor = MaterialTheme.colorScheme.primary
 						)
 					)
 				},
-				onClick = { onCalendarSyncToggle(!calendarSyncEnabled) }
+				onClick = {
+					haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+					onCalendarSyncToggle(!calendarSyncEnabled)
+				}
 			)
 		}
 
-		Spacer(Modifier.height(20.dp))
+		AnimatedVisibility(visible = !notificationsEnabled) {
+			Column {
+				Spacer(Modifier.height(20.dp))
+				LabeledDivider(label = "Permission required")
+				Spacer(Modifier.height(14.dp))
+				NotificationActionCard(
+					notificationsEnabled = notificationsEnabled,
+					flashTrigger = notifFlashTrigger,
+					onEnable = {
+						haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+						onEnableNotifications()
+					}
+				)
+			}
+		}
+
+		Spacer(Modifier.height(16.dp))
 		Text(
 			text = "You can change these anytime from Settings.",
 			style = infoDescTextStyle,
@@ -224,6 +276,94 @@ private fun ActionCard(
 			)
 		}
 		trailing()
+	}
+}
+
+@Composable
+private fun LabeledDivider(label: String) {
+	Row(
+		modifier = Modifier.fillMaxWidth(),
+		verticalAlignment = Alignment.CenterVertically
+	) {
+		Divider(
+			modifier = Modifier.weight(1f),
+			color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.18f),
+			thickness = 1.dp
+		)
+		Text(
+			text = label,
+			style = infoDescTextStyle,
+			color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f),
+			modifier = Modifier.padding(horizontal = 12.dp)
+		)
+		Divider(
+			modifier = Modifier.weight(1f),
+			color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.18f),
+			thickness = 1.dp
+		)
+	}
+}
+
+@Composable
+private fun NotificationActionCard(
+	notificationsEnabled: Boolean,
+	flashTrigger: Int,
+	onEnable: () -> Unit,
+) {
+	val flashAlpha = remember { Animatable(0f) }
+	LaunchedEffect(flashTrigger) {
+		if (flashTrigger > 0) {
+			flashAlpha.snapTo(0.45f)
+			flashAlpha.animateTo(0f, tween(durationMillis = 700))
+		}
+	}
+
+	val breathTransition = rememberInfiniteTransition(label = "notif-breath")
+	val breathAlpha by breathTransition.animateFloat(
+		initialValue = 0.35f,
+		targetValue = 0.95f,
+		animationSpec = infiniteRepeatable(
+			animation = tween(durationMillis = 1400, easing = FastOutSlowInEasing),
+			repeatMode = RepeatMode.Reverse
+		),
+		label = "notif-breath-alpha"
+	)
+	val borderAlpha = if (notificationsEnabled) 0.25f else breathAlpha
+
+	Box(
+		modifier = Modifier
+			.fillMaxWidth()
+			.border(
+				width = 2.dp,
+				color = Red.copy(alpha = borderAlpha),
+				shape = RoundedCornerShape(18.dp)
+			)
+	) {
+		ActionCard(
+			iconRes = R.drawable.ic_clock,
+			accent = Red,
+			title = "Enable notifications",
+			subtitle = "Required for reminders and Pomodoro timer to work properly.",
+			trailing = {
+				Switch(
+					checked = notificationsEnabled,
+					onCheckedChange = { if (it) onEnable() },
+					colors = SwitchDefaults.colors(
+						checkedThumbColor = MaterialTheme.colorScheme.onPrimary,
+						checkedTrackColor = MaterialTheme.colorScheme.primary
+					)
+				)
+			},
+			onClick = { if (!notificationsEnabled) onEnable() }
+		)
+		Box(
+			modifier = Modifier
+				.matchParentSize()
+				.background(
+					LightGreen.copy(alpha = flashAlpha.value),
+					RoundedCornerShape(18.dp)
+				)
+		)
 	}
 }
 

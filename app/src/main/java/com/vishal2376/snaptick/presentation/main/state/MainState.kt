@@ -1,5 +1,6 @@
 package com.vishal2376.snaptick.presentation.main.state
 
+import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.common.AppTheme
 import com.vishal2376.snaptick.presentation.common.CalenderView
 import com.vishal2376.snaptick.presentation.common.SortTask
@@ -28,6 +29,7 @@ data class MainState(
 	val swipeBehaviour: SwipeBehavior = SwipeBehavior.DELETE,
 	val calendarSyncEnabled: Boolean = false,
 	val calendarSyncCalendarId: Long? = null,
-	val importPreview: List<com.vishal2376.snaptick.domain.model.Task> = emptyList(),
+	val importPreview: List<Task> = emptyList(),
 	val onboardingCompleted: Boolean = true,
+	val bootResolved: Boolean = false,
 )

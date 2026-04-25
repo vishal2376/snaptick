@@ -1,6 +1,8 @@
 package com.vishal2376.snaptick.presentation.onboarding.pages
 
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -34,12 +36,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.presentation.common.AppTheme
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.tween
 import com.vishal2376.snaptick.presentation.common.animation.SnaptickMotion
 import com.vishal2376.snaptick.presentation.common.h3TextStyle
 import com.vishal2376.snaptick.presentation.common.infoDescTextStyle
-import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.ui.theme.DarkGreen
 import com.vishal2376.snaptick.ui.theme.LightGreen
@@ -97,35 +96,41 @@ fun WelcomePage(currentTheme: AppTheme) {
 		horizontalAlignment = Alignment.CenterHorizontally,
 		verticalArrangement = Arrangement.Center
 	) {
-		Image(
-			painter = painterResource(
-				if (currentTheme == AppTheme.Amoled) R.drawable.app_logo_amoled
-				else R.drawable.app_logo
-			),
-			contentDescription = null,
-			modifier = Modifier.size(80.dp)
-		)
+		Staggered(index = 0) {
+			Image(
+				painter = painterResource(
+					if (currentTheme == AppTheme.Amoled) R.drawable.app_logo_amoled
+					else R.drawable.app_logo
+				),
+				contentDescription = null,
+				modifier = Modifier.size(80.dp)
+			)
+		}
 		Spacer(Modifier.height(14.dp))
-		Text(
-			text = stringResource(R.string.app_name),
-			style = h3TextStyle.copy(fontSize = 28.sp),
-			color = MaterialTheme.colorScheme.onBackground
-		)
+		Staggered(index = 1) {
+			Text(
+				text = stringResource(R.string.app_name),
+				style = h3TextStyle.copy(fontSize = 28.sp),
+				color = MaterialTheme.colorScheme.onBackground
+			)
+		}
 		Spacer(Modifier.height(6.dp))
-		Text(
-			modifier = Modifier
-				.fillMaxWidth()
-				.padding(horizontal = 12.dp),
-			text = stringResource(R.string.app_description),
-			style = infoDescTextStyle,
-			color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.85f),
-			textAlign = TextAlign.Center
-		)
+		Staggered(index = 2) {
+			Text(
+				modifier = Modifier
+					.fillMaxWidth()
+					.padding(horizontal = 12.dp),
+				text = stringResource(R.string.app_description),
+				style = infoDescTextStyle,
+				color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.85f),
+				textAlign = TextAlign.Center
+			)
+		}
 		Spacer(Modifier.height(24.dp))
 
 		features.forEachIndexed { index, feature ->
 			FeatureRow(
-				index = index,
+				index = index + 3,
 				iconRes = feature.iconRes,
 				title = stringResource(feature.titleRes),
 				subtitle = feature.subtitle,
@@ -133,6 +138,38 @@ fun WelcomePage(currentTheme: AppTheme) {
 			)
 			if (index != features.lastIndex) Spacer(Modifier.height(10.dp))
 		}
+	}
+}
+
+@Composable
+private fun Staggered(
+	index: Int,
+	content: @Composable () -> Unit,
+) {
+	val alpha = remember { Animatable(0f) }
+	val translate = remember { Animatable(28f) }
+	val density = LocalDensity.current
+
+	LaunchedEffect(Unit) {
+		val delayMs = index.coerceAtMost(SnaptickMotion.MAX_STAGGERED_ITEMS) * 110L
+		if (delayMs > 0) delay(delayMs)
+		coroutineScope {
+			launch {
+				alpha.animateTo(1f, tween(520, easing = FastOutSlowInEasing))
+			}
+			launch {
+				translate.animateTo(0f, tween(560, easing = FastOutSlowInEasing))
+			}
+		}
+	}
+
+	Box(
+		modifier = Modifier.graphicsLayer {
+			this.alpha = alpha.value
+			this.translationY = with(density) { translate.value.dp.toPx() }
+		}
+	) {
+		content()
 	}
 }
 
@@ -149,8 +186,8 @@ private fun FeatureRow(
 	val density = LocalDensity.current
 
 	LaunchedEffect(Unit) {
-		val delayMs = (index.coerceAtMost(SnaptickMotion.MAX_STAGGERED_ITEMS) * 110L)
-		delay(delayMs)
+		val delayMs = index.coerceAtMost(SnaptickMotion.MAX_STAGGERED_ITEMS) * 110L
+		if (delayMs > 0) delay(delayMs)
 		coroutineScope {
 			launch {
 				alpha.animateTo(

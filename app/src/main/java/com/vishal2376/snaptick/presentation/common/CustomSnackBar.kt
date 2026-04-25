@@ -41,6 +41,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.vishal2376.snaptick.presentation.common.animation.SnaptickMotion
 import com.vishal2376.snaptick.ui.theme.DarkGreen
 import com.vishal2376.snaptick.ui.theme.Red
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
@@ -89,7 +90,7 @@ fun CustomSnackBar() {
 	var offsetX by remember { mutableFloatStateOf(0f) }
 	val offsetXState by animateFloatAsState(
 		targetValue = offsetX,
-		animationSpec = com.vishal2376.snaptick.presentation.common.animation.SnaptickMotion.gentleSpring,
+		animationSpec = SnaptickMotion.gentleSpring,
 		label = ""
 	)
 	val configuration = LocalConfiguration.current

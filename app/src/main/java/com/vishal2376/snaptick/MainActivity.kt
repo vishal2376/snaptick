@@ -1,7 +1,10 @@
 package com.vishal2376.snaptick
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,6 +13,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.vishal2376.snaptick.presentation.common.CustomSnackBar
@@ -36,6 +40,7 @@ class MainActivity : ComponentActivity() {
 	lateinit var backupPickerLauncher: ActivityResultLauncher<Intent>
 	lateinit var restorePickerLauncher: ActivityResultLauncher<Intent>
 	lateinit var calendarPermissionLauncher: ActivityResultLauncher<Array<String>>
+	lateinit var notificationPermissionLauncher: ActivityResultLauncher<String>
 	lateinit var icsPickerLauncher: ActivityResultLauncher<Intent>
 
 	/** Navigation destination from widget intent */
@@ -47,6 +52,9 @@ class MainActivity : ComponentActivity() {
 
 	/** When true, next .ics pick auto-imports all events instead of showing preview. */
 	var pendingIcsAutoImport: Boolean = false
+
+	/** Compose-observable notification-permission state. */
+	val notificationGrantedState = mutableStateOf(false)
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		setTheme(SplashThemeMirror.startingThemeRes(this))
@@ -87,6 +95,17 @@ class MainActivity : ComponentActivity() {
 					mainViewModel.onAction(MainAction.SetCalendarSyncEnabled(true))
 				}
 			}
+
+		notificationPermissionLauncher =
+			registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+				notificationGrantedState.value = granted
+			}
+
+		notificationGrantedState.value =
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+				checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) ==
+						PackageManager.PERMISSION_GRANTED
+			} else true
 
 		icsPickerLauncher =
 			registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->

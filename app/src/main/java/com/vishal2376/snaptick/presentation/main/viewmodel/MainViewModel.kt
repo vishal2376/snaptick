@@ -1,6 +1,7 @@
 package com.vishal2376.snaptick.presentation.main.viewmodel
 
 import android.content.Context
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vishal2376.snaptick.R
@@ -9,6 +10,7 @@ import com.vishal2376.snaptick.data.calendar.CalendarInfo
 import com.vishal2376.snaptick.data.calendar.CalendarRepository
 import com.vishal2376.snaptick.data.repositories.TaskRepository
 import com.vishal2376.snaptick.domain.model.BackupData
+import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.common.AppTheme
 import com.vishal2376.snaptick.presentation.common.CalenderView
 import com.vishal2376.snaptick.presentation.common.NavDrawerItem
@@ -116,7 +118,7 @@ class MainViewModel @Inject constructor(
 		}
 	}
 
-	private fun parseIcsFile(uri: android.net.Uri) {
+	private fun parseIcsFile(uri: Uri) {
 		viewModelScope.launch {
 			try {
 				val tasks = context.contentResolver.openInputStream(uri)?.use { stream ->
@@ -134,7 +136,7 @@ class MainViewModel @Inject constructor(
 		}
 	}
 
-	private fun importIcsFile(uri: android.net.Uri) {
+	private fun importIcsFile(uri: Uri) {
 		viewModelScope.launch {
 			try {
 				val tasks = context.contentResolver.openInputStream(uri)?.use { stream ->
@@ -154,7 +156,7 @@ class MainViewModel @Inject constructor(
 
 	suspend fun loadWritableCalendars(): List<CalendarInfo> = calendarRepository.getWritableCalendars()
 
-	private fun importTasks(tasks: List<com.vishal2376.snaptick.domain.model.Task>) {
+	private fun importTasks(tasks: List<Task>) {
 		viewModelScope.launch {
 			try {
 				tasks.forEach { repository.insertTask(it) }
@@ -173,14 +175,14 @@ class MainViewModel @Inject constructor(
 		viewModelScope.launch { _events.emit(MainEvent.OpenMail(subject)) }
 	}
 
-	private fun createBackup(uri: android.net.Uri, backupData: BackupData) {
+	private fun createBackup(uri: Uri, backupData: BackupData) {
 		viewModelScope.launch {
 			val success = backupManager.createBackup(uri, backupData)
 			_events.emit(MainEvent.ShowToast(if (success) "Backup created successfully" else "Failed to create backup"))
 		}
 	}
 
-	private fun loadBackup(uri: android.net.Uri) {
+	private fun loadBackup(uri: Uri) {
 		viewModelScope.launch {
 			val data = backupManager.loadBackup(uri)
 			if (data == null) {
@@ -218,7 +220,16 @@ class MainViewModel @Inject constructor(
 		viewModelScope.launch { settingsStore.buildVersionCode.collect { v -> _state.update { it.copy(buildVersionCode = v) } } }
 		viewModelScope.launch { settingsStore.calendarSyncEnabledKey.collect { v -> _state.update { it.copy(calendarSyncEnabled = v) } } }
 		viewModelScope.launch { settingsStore.calendarSyncCalendarIdKey.collect { v -> _state.update { it.copy(calendarSyncCalendarId = v) } } }
-		viewModelScope.launch { settingsStore.onboardingCompletedKey.collect { v -> _state.update { it.copy(onboardingCompleted = v) } } }
+		viewModelScope.launch {
+			settingsStore.onboardingCompletedKey.collect { v ->
+				_state.update {
+					it.copy(
+						onboardingCompleted = v,
+						bootResolved = true
+					)
+				}
+			}
+		}
 		viewModelScope.launch {
 			settingsStore.lastOpenedKey.collect { lastDateString ->
 				if (lastDateString == "") {

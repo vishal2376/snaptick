@@ -1,10 +1,13 @@
 package com.vishal2376.snaptick.presentation.calender_screen
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.VisibilityThreshold
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -36,6 +39,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.kizitonwose.calendar.compose.HorizontalCalendar
 import com.kizitonwose.calendar.compose.WeekCalendar
@@ -50,12 +54,12 @@ import com.vishal2376.snaptick.presentation.common.CalenderView
 import com.vishal2376.snaptick.presentation.common.SnackbarController.showCustomSnackbar
 import com.vishal2376.snaptick.presentation.common.filterTasksByDate
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
-import com.vishal2376.snaptick.presentation.task_list.action.TaskListAction
 import com.vishal2376.snaptick.presentation.home_screen.components.EmptyTaskComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.TaskComponent
 import com.vishal2376.snaptick.presentation.main.action.MainAction
 import com.vishal2376.snaptick.presentation.main.state.MainState
 import com.vishal2376.snaptick.presentation.navigation.Routes
+import com.vishal2376.snaptick.presentation.task_list.action.TaskListAction
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
 import com.vishal2376.snaptick.util.Constants
 import com.vishal2376.snaptick.util.DummyTasks
@@ -229,14 +233,21 @@ fun CalenderScreen(
 				LazyColumn(
 					modifier = Modifier
 						.fillMaxSize()
-						.padding(16.dp, 0.dp)
+						.padding(16.dp, 0.dp),
+					contentPadding = PaddingValues(vertical = 12.dp)
 				) {
 					itemsIndexed(items = selectedDayTasks,
 						key = { index, task ->
 							task.id
 						}) { index, task ->
 						Box(
-							modifier = Modifier.animateItemPlacement(tween(500))
+							modifier = Modifier.animateItemPlacement(
+								spring(
+									dampingRatio = 0.6f,
+									stiffness = Spring.StiffnessMediumLow,
+									visibilityThreshold = IntOffset.VisibilityThreshold
+								)
+							)
 						) {
 							TaskComponent(
 								task = task,

@@ -1,12 +1,20 @@
 package com.vishal2376.snaptick.presentation.navigation
 
+import android.Manifest
+import android.content.Intent
+import android.os.Build
 import android.widget.Toast
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.EaseOut
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -23,13 +31,13 @@ import com.vishal2376.snaptick.presentation.add_edit_screen.AddTaskScreen
 import com.vishal2376.snaptick.presentation.add_edit_screen.EditTaskScreen
 import com.vishal2376.snaptick.presentation.add_edit_screen.viewmodel.AddEditViewModel
 import com.vishal2376.snaptick.presentation.calender_screen.CalenderScreen
-import com.vishal2376.snaptick.presentation.common.NotificationPermissionHandler
 import com.vishal2376.snaptick.presentation.completed_task_screen.CompletedTaskScreen
 import com.vishal2376.snaptick.presentation.free_time_screen.FreeTimeScreen
 import com.vishal2376.snaptick.presentation.home_screen.HomeScreen
+import com.vishal2376.snaptick.presentation.main.action.MainAction
 import com.vishal2376.snaptick.presentation.main.events.MainEvent
-import com.vishal2376.snaptick.presentation.onboarding.OnboardingScreen
 import com.vishal2376.snaptick.presentation.main.viewmodel.MainViewModel
+import com.vishal2376.snaptick.presentation.onboarding.OnboardingScreen
 import com.vishal2376.snaptick.presentation.pomodoro_screen.PomodoroScreen
 import com.vishal2376.snaptick.presentation.pomodoro_screen.viewmodel.PomodoroViewModel
 import com.vishal2376.snaptick.presentation.settings.SettingsScreen
@@ -65,20 +73,22 @@ fun AppNavigation(
 				is MainEvent.CalendarPermissionRequired ->
 					activity.calendarPermissionLauncher.launch(
 						arrayOf(
-							android.Manifest.permission.READ_CALENDAR,
-							android.Manifest.permission.WRITE_CALENDAR
+							Manifest.permission.READ_CALENDAR,
+							Manifest.permission.WRITE_CALENDAR
 						)
 					)
 			}
 		}
 	}
 
-	NotificationPermissionHandler(
-		onPermissionGranted = {},
-		onPermissionDenied = {
-			showToast(activity, "Notification Disabled")
-		}
-	)
+	if (!mainState.bootResolved) {
+		Box(
+			modifier = Modifier
+				.fillMaxSize()
+				.background(MaterialTheme.colorScheme.background)
+		)
+		return
+	}
 
 	val actualStartDestination = when {
 		startDestination != null -> startDestination
@@ -285,26 +295,31 @@ fun AppNavigation(
 				onPickIcsFile = {
 					activity.pendingIcsAutoImport = true
 					activity.icsPickerLauncher.launch(
-						android.content.Intent(android.content.Intent.ACTION_OPEN_DOCUMENT).apply {
-							addCategory(android.content.Intent.CATEGORY_OPENABLE)
+						Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+							addCategory(Intent.CATEGORY_OPENABLE)
 							type = "*/*"
 							putExtra(
-								android.content.Intent.EXTRA_MIME_TYPES,
+								Intent.EXTRA_MIME_TYPES,
 								arrayOf("text/calendar", "application/octet-stream")
 							)
 						}
 					)
 				},
 				onToggleCalendarSync = { enabled ->
-					mainViewModel.onAction(
-						com.vishal2376.snaptick.presentation.main.action.MainAction
-							.SetCalendarSyncEnabled(enabled)
-					)
+					mainViewModel.onAction(MainAction.SetCalendarSyncEnabled(enabled))
+				},
+				notificationsEnabled = activity.notificationGrantedState.value,
+				onEnableNotifications = {
+					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+						activity.notificationPermissionLauncher.launch(
+							Manifest.permission.POST_NOTIFICATIONS
+						)
+					} else {
+						activity.notificationGrantedState.value = true
+					}
 				},
 				onFinish = {
-					mainViewModel.onAction(
-						com.vishal2376.snaptick.presentation.main.action.MainAction.CompleteOnboarding
-					)
+					mainViewModel.onAction(MainAction.CompleteOnboarding)
 					navController.navigate(Routes.HomeScreen.name) {
 						popUpTo(Routes.Onboarding.name) { inclusive = true }
 					}

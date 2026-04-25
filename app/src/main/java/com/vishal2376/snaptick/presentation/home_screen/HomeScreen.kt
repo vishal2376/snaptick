@@ -1,11 +1,15 @@
 package com.vishal2376.snaptick.presentation.home_screen
 
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.VisibilityThreshold
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -49,6 +53,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
@@ -67,8 +72,8 @@ import com.vishal2376.snaptick.presentation.home_screen.components.TaskComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.WhatsNewDialogComponent
 import com.vishal2376.snaptick.presentation.main.action.MainAction
 import com.vishal2376.snaptick.presentation.main.state.MainState
-import com.vishal2376.snaptick.presentation.task_list.action.TaskListAction
 import com.vishal2376.snaptick.presentation.navigation.Routes
+import com.vishal2376.snaptick.presentation.task_list.action.TaskListAction
 import com.vishal2376.snaptick.ui.theme.Blue
 import com.vishal2376.snaptick.ui.theme.LightGreen
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
@@ -379,7 +384,8 @@ fun HomeScreen(
 							.padding(
 								16.dp,
 								0.dp
-							)
+							),
+						contentPadding = PaddingValues(vertical = 12.dp)
 					) {
 
 						itemsIndexed(items = sortedTasks,
@@ -387,7 +393,13 @@ fun HomeScreen(
 								task.id
 							}) { index, task ->
 							Box(
-								modifier = Modifier.animateItemPlacement(tween(500))
+								modifier = Modifier.animateItemPlacement(
+									spring(
+										dampingRatio = 0.6f,
+										stiffness = Spring.StiffnessMediumLow,
+										visibilityThreshold = IntOffset.VisibilityThreshold
+									)
+								)
 							) {
 								SwipeActionBox(
 									item = task,

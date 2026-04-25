@@ -1,8 +1,14 @@
 package com.vishal2376.snaptick.presentation.onboarding
 
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -24,6 +30,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import android.os.Build
+import android.view.HapticFeedbackConstants
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -31,8 +39,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.flow.drop
 import com.vishal2376.snaptick.presentation.common.AppTheme
@@ -54,6 +67,8 @@ fun OnboardingScreen(
 	onRestoreBackup: () -> Unit,
 	onPickIcsFile: () -> Unit,
 	onToggleCalendarSync: (Boolean) -> Unit,
+	notificationsEnabled: Boolean,
+	onEnableNotifications: () -> Unit,
 	onFinish: () -> Unit,
 ) {
 	val pagerState = rememberPagerState(pageCount = { TOTAL_PAGES })
@@ -63,7 +78,9 @@ fun OnboardingScreen(
 	LaunchedEffect(pagerState) {
 		snapshotFlow { pagerState.currentPage }
 			.drop(1)
-			.collect { haptic.performHapticFeedback(HapticFeedbackType.LongPress) }
+			.collect {
+				haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+			}
 	}
 
 	Column(
@@ -99,9 +116,11 @@ fun OnboardingScreen(
 				)
 				2 -> RestoreAndSyncPage(
 					calendarSyncEnabled = state.calendarSyncEnabled,
+					notificationsEnabled = notificationsEnabled,
 					onRestoreClick = onRestoreBackup,
 					onPickIcsClick = onPickIcsFile,
-					onCalendarSyncToggle = onToggleCalendarSync
+					onCalendarSyncToggle = onToggleCalendarSync,
+					onEnableNotifications = onEnableNotifications,
 				)
 			}
 		}
@@ -136,18 +155,56 @@ fun OnboardingScreen(
 			}
 		}
 
-		// CTA
+		// CTA - always visible
+		val isLastPage = pagerState.currentPage == TOTAL_PAGES - 1
+		val view = LocalView.current
+
+		val shimmerTransition = rememberInfiniteTransition(label = "cta-shimmer")
+		val shimmerProgress by shimmerTransition.animateFloat(
+			initialValue = -0.4f,
+			targetValue = 1.4f,
+			animationSpec = infiniteRepeatable(
+				animation = tween(durationMillis = 1800, easing = LinearEasing),
+				repeatMode = RepeatMode.Restart
+			),
+			label = "cta-shimmer-progress"
+		)
+
 		Button(
 			onClick = {
-				if (pagerState.currentPage < TOTAL_PAGES - 1) {
-					scope.launch { pagerState.animateScrollToPage(pagerState.currentPage + 1) }
-				} else {
+				if (isLastPage) {
+					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+						view.performHapticFeedback(HapticFeedbackConstants.CONFIRM)
+					} else {
+						haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+					}
 					onFinish()
+				} else {
+					haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+					scope.launch { pagerState.animateScrollToPage(pagerState.currentPage + 1) }
 				}
 			},
 			modifier = Modifier
 				.fillMaxWidth()
-				.padding(24.dp),
+				.padding(24.dp)
+				.drawWithCache {
+					onDrawWithContent {
+						drawContent()
+						if (isLastPage) {
+							val sweep = size.width * shimmerProgress
+							val brush = Brush.linearGradient(
+								colors = listOf(
+									Color.Transparent,
+									Color.White.copy(alpha = 0.32f),
+									Color.Transparent
+								),
+								start = Offset(sweep - size.width * 0.25f, 0f),
+								end = Offset(sweep + size.width * 0.25f, size.height)
+							)
+							drawRect(brush)
+						}
+					}
+				},
 			colors = ButtonDefaults.buttonColors(
 				containerColor = MaterialTheme.colorScheme.primary,
 				contentColor = MaterialTheme.colorScheme.onPrimary
@@ -155,7 +212,7 @@ fun OnboardingScreen(
 			shape = RoundedCornerShape(16.dp)
 		) {
 			Text(
-				text = if (pagerState.currentPage < TOTAL_PAGES - 1) "Next" else "Get started",
+				text = if (isLastPage) "Get started" else "Next",
 				style = taskTextStyle,
 				modifier = Modifier.padding(6.dp)
 			)
