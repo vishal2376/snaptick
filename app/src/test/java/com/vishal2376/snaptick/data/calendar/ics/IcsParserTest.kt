@@ -94,4 +94,30 @@ class IcsParserTest {
 		val e = IcsParser.parse(StringReader(ics)).single()
 		assertEquals("Very longtitle continuation", e.summary)
 	}
+
+	@Test fun caps_event_count_at_MAX_EVENTS_and_marks_truncated() {
+		val one = """
+			BEGIN:VEVENT
+			UID:%d
+			SUMMARY:Bulk
+			DTSTART:20260101T100000
+			DTEND:20260101T110000
+			END:VEVENT
+		""".trimIndent() + "\n"
+		val builder = StringBuilder()
+		repeat(IcsParser.MAX_EVENTS + 50) { builder.append(one.format(it)) }
+		val result = IcsParser.parseStream(StringReader(builder.toString()))
+		assertEquals(IcsParser.MAX_EVENTS, result.events.size)
+		assertTrue(result.truncated)
+	}
+
+	@Test fun drops_pathologically_long_lines_instead_of_OOM() {
+		// 100 KiB SUMMARY line - way past the per-line cap. Parser should drop it
+		// silently, leaving the event without a SUMMARY which buildEvent then
+		// rejects.
+		val giant = "X".repeat(100 * 1024)
+		val ics = "BEGIN:VEVENT\nUID:1\nSUMMARY:$giant\nDTSTART:20260101T100000\nDTEND:20260101T110000\nEND:VEVENT\n"
+		val events = IcsParser.parse(StringReader(ics))
+		assertEquals(0, events.size)
+	}
 }

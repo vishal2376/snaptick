@@ -39,6 +39,8 @@ import java.time.LocalDate
 import java.time.LocalTime
 import javax.inject.Inject
 
+private const val MAX_ICS_BYTES: Long = 8L * 1024 * 1024  // 8 MiB
+
 @HiltViewModel
 class MainViewModel @Inject constructor(
 	@ApplicationContext private val context: Context,
@@ -120,6 +122,7 @@ class MainViewModel @Inject constructor(
 
 	private fun parseIcsFile(uri: Uri) {
 		viewModelScope.launch {
+			if (!isIcsSizeAcceptable(uri)) return@launch
 			try {
 				val tasks = context.contentResolver.openInputStream(uri)?.use { stream ->
 					calendarImporter.previewFromIcs(stream.reader())
@@ -138,6 +141,7 @@ class MainViewModel @Inject constructor(
 
 	private fun importIcsFile(uri: Uri) {
 		viewModelScope.launch {
+			if (!isIcsSizeAcceptable(uri)) return@launch
 			try {
 				val tasks = context.contentResolver.openInputStream(uri)?.use { stream ->
 					calendarImporter.previewFromIcs(stream.reader())
@@ -152,6 +156,25 @@ class MainViewModel @Inject constructor(
 				_events.emit(MainEvent.ImportFailed(e.message ?: "Failed to import .ics file"))
 			}
 		}
+	}
+
+	/**
+	 * Pre-flights the picked URI's size before we read it. Files above
+	 * [MAX_ICS_BYTES] are rejected outright so a hostile .ics can't OOM the
+	 * app process.
+	 */
+	private suspend fun isIcsSizeAcceptable(uri: Uri): Boolean {
+		val sizeBytes = runCatching {
+			context.contentResolver.openAssetFileDescriptor(uri, "r")?.use { it.length }
+		}.getOrNull() ?: -1L
+		if (sizeBytes in 1L..MAX_ICS_BYTES) return true
+		if (sizeBytes > MAX_ICS_BYTES) {
+			_events.emit(MainEvent.ImportFailed("File too large (max 8 MB)"))
+			return false
+		}
+		// sizeBytes < 0 means the provider didn't expose a length. Allow it; the
+		// IcsParser caps event count and per-line length defensively.
+		return true
 	}
 
 	suspend fun loadWritableCalendars(): List<CalendarInfo> = calendarRepository.getWritableCalendars()
