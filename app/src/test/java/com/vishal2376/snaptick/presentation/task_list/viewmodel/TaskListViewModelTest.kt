@@ -4,14 +4,12 @@ import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.task_list.action.TaskListAction
 import com.vishal2376.snaptick.util.MainDispatcherRule
 import com.vishal2376.snaptick.util.TaskRepositoryFake
-import com.vishal2376.snaptick.util.TaskReminderScheduler
-import io.mockk.justRun
-import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.coVerify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -25,37 +23,47 @@ class TaskListViewModelTest {
 	@get:Rule val mainRule = MainDispatcherRule()
 
 	private lateinit var repoFake: TaskRepositoryFake
-	private lateinit var scheduler: TaskReminderScheduler
 	private lateinit var vm: TaskListViewModel
 
-	private fun task(id: Int, completed: Boolean = false, reminder: Boolean = true) = Task(
+	private fun task(
+		id: Int,
+		completed: Boolean = false,
+		reminder: Boolean = true,
+		repeated: Boolean = false,
+	) = Task(
 		id = id, uuid = "u$id", title = "T$id",
-		isCompleted = completed, reminder = reminder,
+		isCompleted = completed, reminder = reminder, isRepeated = repeated,
+		repeatWeekdays = if (repeated) "0,1,2,3,4,5,6" else "",
 		startTime = LocalTime.of(9, 0), endTime = LocalTime.of(10, 0),
 		date = LocalDate.now()
 	)
 
 	@Before fun setUp() {
 		repoFake = TaskRepositoryFake()
-		scheduler = mockk(relaxed = true)
-		justRun { scheduler.schedule(any()) }
-		justRun { scheduler.cancel(any()) }
-		vm = TaskListViewModel(repoFake.repo, scheduler)
+		vm = TaskListViewModel(repoFake.repo)
 	}
 
-	@Test fun `ToggleCompletion true updates task and cancels reminder`() = runTest {
+	@Test fun `ToggleCompletion on one-off updates isCompleted via updateTask`() = runTest {
 		repoFake.seed(listOf(task(1)))
 		vm.onAction(TaskListAction.ToggleCompletion(taskId = 1, isCompleted = true))
 		advanceUntilIdle()
 		assertTrue(repoFake.current().single().isCompleted)
-		verify { scheduler.cancel("u1") }
 	}
 
-	@Test fun `ToggleCompletion false schedules reminder`() = runTest {
-		repoFake.seed(listOf(task(1, completed = true)))
+	@Test fun `ToggleCompletion on repeat task writes per-date completion not isCompleted`() = runTest {
+		repoFake.seed(listOf(task(1, repeated = true)))
+		vm.onAction(TaskListAction.ToggleCompletion(taskId = 1, isCompleted = true))
+		advanceUntilIdle()
+		// Template's isCompleted MUST stay false; per-date flag goes elsewhere.
+		assertFalse(repoFake.current().single().isCompleted)
+		coVerify { repoFake.repo.markCompletedForDate("u1", LocalDate.now()) }
+	}
+
+	@Test fun `ToggleCompletion off on repeat clears the date completion`() = runTest {
+		repoFake.seed(listOf(task(1, repeated = true)))
 		vm.onAction(TaskListAction.ToggleCompletion(taskId = 1, isCompleted = false))
 		advanceUntilIdle()
-		verify { scheduler.schedule(match { it.id == 1 && !it.isCompleted }) }
+		coVerify { repoFake.repo.unmarkCompletedForDate("u1", LocalDate.now()) }
 	}
 
 	@Test fun `SwipeTask deletes and UndoDelete restores`() = runTest {
@@ -67,8 +75,6 @@ class TaskListViewModelTest {
 		vm.onAction(TaskListAction.UndoDelete)
 		advanceUntilIdle()
 		assertEquals(1, repoFake.current().size)
-		verify { scheduler.cancel("u1") }
-		verify { scheduler.schedule(match { it.id == 1 }) }
 	}
 
 	@Test fun `DeleteTask for missing id is no-op`() = runTest {

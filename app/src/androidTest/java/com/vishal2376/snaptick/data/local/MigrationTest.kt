@@ -42,7 +42,7 @@ class MigrationTest {
 			)
 		}
 
-		helper.runMigrationsAndValidate(dbName, 3, true, MIGRATION_1_2, MIGRATION_2_3).use { db ->
+		helper.runMigrationsAndValidate(dbName, 4, true, MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4).use { db ->
 			val cursor = db.query(
 				"SELECT id, uuid, title, isCompleted, isRepeated, repeatWeekdays, pomodoroTimer, priority, calendarEventId FROM task_table ORDER BY id"
 			)
@@ -85,11 +85,11 @@ class MigrationTest {
 				""".trimIndent()
 			)
 		}
-		helper.runMigrationsAndValidate(dbName, 3, true, MIGRATION_1_2, MIGRATION_2_3).close()
+		helper.runMigrationsAndValidate(dbName, 4, true, MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4).close()
 
 		val ctx = ApplicationProvider.getApplicationContext<android.content.Context>()
 		val room = Room.databaseBuilder(ctx, TaskDatabase::class.java, dbName)
-			.addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+			.addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
 			.build()
 		try {
 			val row = room.taskDao().getAllTasks().first().single()
@@ -97,6 +97,40 @@ class MigrationTest {
 			assertFalse(row.isRepeated)
 		} finally {
 			room.close()
+		}
+	}
+
+	@Test fun migrate3To4_createsEmptyTaskCompletionsTable() {
+		// Seed a v3 DB with a task, then migrate forward.
+		helper.createDatabase(dbName, 3).use { db ->
+			db.execSQL(
+				"""
+				INSERT INTO task_table
+					(id, uuid, title, isCompleted, startTime, endTime, reminder, isRepeated, repeatWeekdays, pomodoroTimer, date, priority, calendarEventId)
+				VALUES (1, 'u1', 'Run', 0, '06:00', '07:00', 1, 1, '0,2,4', -1, '2026-04-25', 1, NULL)
+				""".trimIndent()
+			)
+		}
+
+		helper.runMigrationsAndValidate(dbName, 4, true, MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4).use { db ->
+			// Existing task row preserved.
+			db.query("SELECT id, title FROM task_table").use {
+				assertTrue(it.moveToNext())
+				assertEquals(1, it.getInt(0))
+				assertEquals("Run", it.getString(1))
+			}
+			// New table exists and is empty.
+			db.query("SELECT COUNT(*) FROM task_completions").use {
+				assertTrue(it.moveToNext())
+				assertEquals(0, it.getInt(0))
+			}
+			// Composite primary key check: insert + duplicate insert.
+			db.execSQL("INSERT INTO task_completions(uuid, date) VALUES('u1','2026-04-25')")
+			db.execSQL("INSERT OR IGNORE INTO task_completions(uuid, date) VALUES('u1','2026-04-25')")
+			db.query("SELECT COUNT(*) FROM task_completions").use {
+				assertTrue(it.moveToNext())
+				assertEquals(1, it.getInt(0))
+			}
 		}
 	}
 }

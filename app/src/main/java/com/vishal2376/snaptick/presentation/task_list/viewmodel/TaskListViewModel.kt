@@ -6,21 +6,30 @@ import com.vishal2376.snaptick.data.repositories.TaskRepository
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.task_list.action.TaskListAction
 import com.vishal2376.snaptick.presentation.task_list.events.TaskListEvent
-import com.vishal2376.snaptick.util.TaskReminderScheduler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
 
+/**
+ * Owns the today/all task lists and the toggle/delete/undo intents emitted
+ * from the home, calendar, this-week, completed, and free-time screens.
+ *
+ * Reminder scheduling is handled inside [TaskRepository] now; this VM no
+ * longer talks to the scheduler directly. For repeating tasks, completion
+ * writes a (uuid, today) row to `task_completions` instead of mutating the
+ * template's `isCompleted` flag, so the same template stays armed for
+ * future occurrences.
+ */
 @HiltViewModel
 class TaskListViewModel @Inject constructor(
 	private val repository: TaskRepository,
-	private val reminderScheduler: TaskReminderScheduler,
 ) : ViewModel() {
 
-	val todayTasks: Flow<List<Task>> = repository.getTodayTasks()
+	val todayTasks: Flow<List<Task>> = repository.getTodayTasksWithCompletions()
 	val allTasks: Flow<List<Task>> = repository.getAllTasks()
 
 	private val _events = MutableSharedFlow<TaskListEvent>(extraBufferCapacity = 1)
@@ -38,33 +47,29 @@ class TaskListViewModel @Inject constructor(
 			is TaskListAction.DeleteTask -> viewModelScope.launch {
 				repository.getTaskById(action.taskId)?.let {
 					deletedTask = it
-					reminderScheduler.cancel(it.uuid)
 					repository.deleteTask(it)
 				}
 			}
 			is TaskListAction.UndoDelete -> viewModelScope.launch {
-				deletedTask?.let { task ->
-					repository.insertTask(task)
-					reminderScheduler.schedule(task)
-				}
+				deletedTask?.let { task -> repository.insertTask(task) }
 			}
 		}
 	}
 
 	private fun deleteTask(task: Task) {
-		viewModelScope.launch {
-			reminderScheduler.cancel(task.uuid)
-			repository.deleteTask(task)
-		}
+		viewModelScope.launch { repository.deleteTask(task) }
 	}
 
 	private fun toggleCompletion(taskId: Int, isCompleted: Boolean) {
 		viewModelScope.launch {
 			val task = repository.getTaskById(taskId) ?: return@launch
-			val updated = task.copy(isCompleted = isCompleted)
-			repository.updateTask(updated)
-			if (isCompleted) reminderScheduler.cancel(updated.uuid)
-			else reminderScheduler.schedule(updated)
+			if (task.isRepeated) {
+				val today = LocalDate.now()
+				if (isCompleted) repository.markCompletedForDate(task.uuid, today)
+				else repository.unmarkCompletedForDate(task.uuid, today)
+			} else {
+				repository.updateTask(task.copy(isCompleted = isCompleted))
+			}
 		}
 	}
 }

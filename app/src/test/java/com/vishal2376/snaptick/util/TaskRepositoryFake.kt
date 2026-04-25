@@ -43,9 +43,14 @@ class TaskRepositoryFake {
 			tasks.map { list -> list.filter { it.date == LocalDate.now() } }
 		}
 		every { repo.getAllTasks() } returns tasks
+		every { repo.getTodayTasksWithCompletions() } answers {
+			tasks.map { list -> list.filter { it.date == LocalDate.now() } }
+		}
 		every { repo.getLastRepeatedTasks() } answers {
 			tasks.value.filter { it.isRepeated && it.date < LocalDate.now() }
 		}
+		coJustRun { repo.markCompletedForDate(any(), any()) }
+		coJustRun { repo.unmarkCompletedForDate(any(), any()) }
 	}
 
 	fun seed(items: List<Task>) {

@@ -8,10 +8,6 @@ import com.vishal2376.snaptick.presentation.add_edit_screen.events.AddEditEvent
 import com.vishal2376.snaptick.presentation.common.Priority
 import com.vishal2376.snaptick.util.MainDispatcherRule
 import com.vishal2376.snaptick.util.TaskRepositoryFake
-import com.vishal2376.snaptick.util.TaskReminderScheduler
-import io.mockk.justRun
-import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -29,16 +25,12 @@ class AddEditViewModelTest {
 	@get:Rule val mainRule = MainDispatcherRule()
 
 	private lateinit var repoFake: TaskRepositoryFake
-	private lateinit var scheduler: TaskReminderScheduler
 
 	private fun buildVm(savedStateHandle: SavedStateHandle = SavedStateHandle(mapOf("id" to -1))): AddEditViewModel =
-		AddEditViewModel(repoFake.repo, scheduler, savedStateHandle)
+		AddEditViewModel(repoFake.repo, savedStateHandle)
 
 	@Before fun setUp() {
 		repoFake = TaskRepositoryFake()
-		scheduler = mockk(relaxed = true)
-		justRun { scheduler.schedule(any()) }
-		justRun { scheduler.cancel(any()) }
 	}
 
 	@Test fun `id -1 starts with blank state`() = runTest {
@@ -94,7 +86,6 @@ class AddEditViewModelTest {
 		}
 		advanceUntilIdle()
 		assertEquals(1, repoFake.current().size)
-		verify { scheduler.schedule(match { it.title == "Run" }) }
 	}
 
 	@Test fun `UpdateTask with reminder off cancels and emits TaskUpdated`() = runTest {
@@ -109,7 +100,6 @@ class AddEditViewModelTest {
 		}
 		advanceUntilIdle()
 		assertEquals("Y", repoFake.current().single().title)
-		verify { scheduler.cancel("u7") }
 	}
 
 	@Test fun `DeleteTask removes and emits TaskDeleted`() = runTest {
@@ -123,7 +113,6 @@ class AddEditViewModelTest {
 		}
 		advanceUntilIdle()
 		assertEquals(emptyList<Task>(), repoFake.current())
-		verify { scheduler.cancel("u3") }
 	}
 
 	@Test fun `UpdatePriority sets state priority`() = runTest {

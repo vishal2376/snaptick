@@ -6,7 +6,9 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
+import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.vishal2376.snaptick.MainActivity
 import com.vishal2376.snaptick.R
 
@@ -20,6 +22,11 @@ class NotificationHelper(private val context: Context) {
 		context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
 	fun showNotification(taskId: Int, taskTitle: String, taskTime: String) {
+		if (!NotificationManagerCompat.from(context).areNotificationsEnabled()) {
+			Log.w("NotificationHelper", "Notifications disabled; skipping taskId=$taskId")
+			return
+		}
+
 		val intent = Intent(context, MainActivity::class.java).apply {
 			flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
 		}
@@ -40,7 +47,11 @@ class NotificationHelper(private val context: Context) {
 			.setContentIntent(pendingIntent)
 			.setAutoCancel(true)
 
-		notificationManager.notify(taskId, notificationBuilder.build())
+		try {
+			notificationManager.notify(taskId, notificationBuilder.build())
+		} catch (e: SecurityException) {
+			Log.e("NotificationHelper", "notify() denied for taskId=$taskId", e)
+		}
 	}
 
 	fun createNotificationChannel() {

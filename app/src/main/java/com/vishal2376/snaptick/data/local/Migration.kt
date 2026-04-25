@@ -63,3 +63,22 @@ val MIGRATION_2_3 = object : Migration(2, 3) {
 		db.execSQL("ALTER TABLE `task_table` ADD COLUMN `calendarEventId` INTEGER DEFAULT NULL")
 	}
 }
+
+/**
+ * v3 → v4 migration. Adds the `task_completions` table that backs per-occurrence
+ * completion for repeating tasks. The `Task.isCompleted` column stays as-is and
+ * keeps owning one-off task completion. Existing rows are untouched.
+ */
+val MIGRATION_3_4 = object : Migration(3, 4) {
+	override fun migrate(db: SupportSQLiteDatabase) {
+		db.execSQL(
+			"""
+			CREATE TABLE IF NOT EXISTS `task_completions` (
+				`uuid` TEXT NOT NULL,
+				`date` TEXT NOT NULL,
+				PRIMARY KEY(`uuid`, `date`)
+			)
+			""".trimIndent()
+		)
+	}
+}

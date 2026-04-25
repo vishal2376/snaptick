@@ -8,9 +8,7 @@ import com.vishal2376.snaptick.presentation.pomodoro_screen.action.PomodoroActio
 import com.vishal2376.snaptick.presentation.pomodoro_screen.events.PomodoroEvent
 import com.vishal2376.snaptick.util.MainDispatcherRule
 import com.vishal2376.snaptick.util.TaskRepositoryFake
-import com.vishal2376.snaptick.util.TaskReminderScheduler
 import io.mockk.every
-import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkStatic
@@ -36,7 +34,6 @@ class PomodoroViewModelTest {
 
 	private lateinit var context: Context
 	private lateinit var repoFake: TaskRepositoryFake
-	private lateinit var scheduler: TaskReminderScheduler
 
 	private fun task(pomodoroTimer: Int = -1) = Task(
 		id = 1, uuid = "u1", title = "Focus",
@@ -49,15 +46,12 @@ class PomodoroViewModelTest {
 		mockkStatic("com.vishal2376.snaptick.util.UtilsKt")
 		every { com.vishal2376.snaptick.util.vibrateDevice(any(), any(), any()) } returns Unit
 		repoFake = TaskRepositoryFake()
-		scheduler = mockk(relaxed = true)
-		justRun { scheduler.schedule(any()) }
-		justRun { scheduler.cancel(any()) }
 	}
 
 	@After fun tearDown() { unmockkStatic("com.vishal2376.snaptick.util.UtilsKt") }
 
 	private fun buildVm(id: Int = 1) = PomodoroViewModel(
-		context, repoFake.repo, scheduler, SavedStateHandle(mapOf("id" to id))
+		context, repoFake.repo, SavedStateHandle(mapOf("id" to id))
 	)
 
 	// Let init load DB + spin ticker loop a negligible amount.

@@ -7,7 +7,6 @@ import com.vishal2376.snaptick.data.repositories.TaskRepository
 import com.vishal2376.snaptick.presentation.add_edit_screen.action.AddEditAction
 import com.vishal2376.snaptick.presentation.add_edit_screen.events.AddEditEvent
 import com.vishal2376.snaptick.presentation.add_edit_screen.state.AddEditState
-import com.vishal2376.snaptick.util.TaskReminderScheduler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +19,6 @@ import javax.inject.Inject
 @HiltViewModel
 class AddEditViewModel @Inject constructor(
 	private val repository: TaskRepository,
-	private val reminderScheduler: TaskReminderScheduler,
 	savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -72,7 +70,6 @@ class AddEditViewModel @Inject constructor(
 		viewModelScope.launch {
 			val task = _state.value.toTask()
 			repository.insertTask(task)
-			reminderScheduler.schedule(task)
 			_events.emit(AddEditEvent.TaskSaved)
 		}
 	}
@@ -81,11 +78,6 @@ class AddEditViewModel @Inject constructor(
 		viewModelScope.launch {
 			val task = _state.value.toTask()
 			repository.updateTask(task)
-			if (task.reminder && !task.isCompleted) {
-				reminderScheduler.schedule(task)
-			} else {
-				reminderScheduler.cancel(task.uuid)
-			}
 			_events.emit(AddEditEvent.TaskUpdated)
 		}
 	}
@@ -93,7 +85,6 @@ class AddEditViewModel @Inject constructor(
 	private fun deleteTask() {
 		viewModelScope.launch {
 			val task = _state.value.toTask()
-			reminderScheduler.cancel(task.uuid)
 			repository.deleteTask(task)
 			_events.emit(AddEditEvent.TaskDeleted)
 		}

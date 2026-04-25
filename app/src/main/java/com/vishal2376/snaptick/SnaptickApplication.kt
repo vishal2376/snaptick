@@ -5,11 +5,11 @@ import android.content.Context
 import android.util.Log
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequest
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.vishal2376.snaptick.util.Constants
-import com.vishal2376.snaptick.worker.RepeatTaskWorker
+import com.vishal2376.snaptick.worker.RescheduleAllRemindersWorker
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
@@ -19,8 +19,6 @@ import org.acra.config.CoreConfigurationBuilder
 import org.acra.config.DialogConfigurationBuilder
 import org.acra.config.MailSenderConfigurationBuilder
 import org.acra.data.StringFormat
-import java.time.LocalTime
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltAndroidApp
@@ -35,7 +33,6 @@ class SnaptickApplication : Application(), Configuration.Provider {
 			.setMinimumLoggingLevel(Log.INFO)
 			.setExecutor(Dispatchers.Default.asExecutor())
 			.build()
-
 
 	override fun attachBaseContext(base: Context?) {
 		super.attachBaseContext(base)
@@ -65,32 +62,28 @@ class SnaptickApplication : Application(), Configuration.Provider {
 
 	override fun onCreate() {
 		super.onCreate()
-
-		initWorker()
+		ensureRemindersArmed()
 	}
 
-	private fun initWorker() {
-		val maxTimeSec = LocalTime.MAX.toSecondOfDay() + 1
-		val currentTimeSec = LocalTime.now().toSecondOfDay()
-
-		val delay = (maxTimeSec - currentTimeSec)
-		if (delay > 0) {
-			startRepeatWorker(delay)
-		}
+	/**
+	 * On every cold start, kick a one-shot worker that walks the DB and
+	 * re-arms next-fire alarms. Cheap (single DB read) and covers the case
+	 * where AlarmManager dropped pending alarms (force-stop, "Clear data" of
+	 * the system Settings provider, etc.).
+	 *
+	 * Reboot, package replace, and time/timezone changes are handled by
+	 * `SystemEventReceiver`; this is the safety net for everything else.
+	 */
+	private fun ensureRemindersArmed() {
+		val request = OneTimeWorkRequestBuilder<RescheduleAllRemindersWorker>().build()
+		WorkManager.getInstance(applicationContext).enqueueUniqueWork(
+			UNIQUE_BACKFILL_WORK_NAME,
+			ExistingWorkPolicy.KEEP,
+			request,
+		)
 	}
 
-	private fun startRepeatWorker(delay: Int) {
-		// repeat task request
-		val workRequest =
-			PeriodicWorkRequest.Builder(RepeatTaskWorker::class.java, 1, TimeUnit.DAYS)
-				.setInitialDelay(delay.toLong(), TimeUnit.SECONDS)
-				.build()
-
-		WorkManager.getInstance(applicationContext)
-			.enqueueUniquePeriodicWork(
-				"Repeat-Tasks",
-				ExistingPeriodicWorkPolicy.KEEP,
-				workRequest
-			)
+	companion object {
+		private const val UNIQUE_BACKFILL_WORK_NAME = "snaptick.reminder-backfill"
 	}
 }

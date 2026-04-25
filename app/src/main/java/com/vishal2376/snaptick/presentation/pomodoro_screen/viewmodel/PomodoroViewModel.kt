@@ -9,7 +9,6 @@ import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.pomodoro_screen.action.PomodoroAction
 import com.vishal2376.snaptick.presentation.pomodoro_screen.events.PomodoroEvent
 import com.vishal2376.snaptick.presentation.pomodoro_screen.state.PomodoroState
-import com.vishal2376.snaptick.util.TaskReminderScheduler
 import com.vishal2376.snaptick.util.vibrateDevice
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -33,7 +32,6 @@ import javax.inject.Inject
 class PomodoroViewModel @Inject constructor(
 	@ApplicationContext private val context: Context,
 	private val repository: TaskRepository,
-	private val reminderScheduler: TaskReminderScheduler,
 	savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -115,7 +113,6 @@ class PomodoroViewModel @Inject constructor(
 		viewModelScope.launch {
 			val updated = task.copy(isCompleted = true, pomodoroTimer = -1)
 			repository.updateTask(updated)
-			reminderScheduler.cancel(task.uuid)
 			_events.emit(PomodoroEvent.TaskMarkedCompleted)
 		}
 	}
