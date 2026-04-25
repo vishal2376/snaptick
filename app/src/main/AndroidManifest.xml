@@ -35,10 +35,25 @@
             </intent-filter>
         </activity>
 
+        <!--
+            Per-task reminder fire receiver. Triggered only by the AlarmManager
+            PendingIntents we create ourselves, so exported is false. A third-
+            party app cannot deliver intents to this receiver.
+        -->
         <receiver
             android:name=".receiver.ReminderReceiver"
             android:exported="false" />
 
+        <!--
+            System event receiver: re-arms reminders on boot, package replace,
+            time / timezone change. Must be exported because Android delivers
+            these intents from the system server. Cannot be spoofed by a
+            third-party app: every action below is a "protected broadcast"
+            (declared in framework/base/core/res/AndroidManifest.xml), which
+            means only the system itself is allowed to dispatch them. Setting
+            exported="false" here would silently break boot recovery on every
+            device.
+        -->
         <receiver
             android:name=".receiver.SystemEventReceiver"
             android:exported="true">
@@ -51,6 +66,13 @@
             </intent-filter>
         </receiver>
 
+        <!--
+            AppWidget host receiver. Required by the AppWidget framework to be
+            exported so the system's AppWidget service can call APPWIDGET_UPDATE
+            on it. APPWIDGET_UPDATE is a protected broadcast, so a third-party
+            app cannot trigger it. Setting exported="false" here would break
+            the widget altogether.
+        -->
         <receiver
             android:name=".widget.receiver.WidgetReceiver"
             android:exported="true">

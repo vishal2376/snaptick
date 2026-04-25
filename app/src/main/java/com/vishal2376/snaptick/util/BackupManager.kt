@@ -6,6 +6,7 @@ import android.net.Uri
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.google.gson.stream.JsonReader
 import com.vishal2376.snaptick.domain.model.BackupData
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
@@ -47,8 +48,13 @@ class BackupManager @Inject constructor(
 		return withContext(Dispatchers.IO) {
 			try {
 				context.contentResolver.openInputStream(uri)?.use { inputStream ->
-					val jsonData = inputStream.bufferedReader().use { it.readText() }
-					gson.fromJson(jsonData, BackupData::class.java)
+					// Strict (non-lenient) reader rejects malformed JSON early
+					// instead of silently swallowing comments, single quotes,
+					// trailing commas etc. Combined with MainViewModel's task
+					// count cap, this bounds the parser's blast radius.
+					val reader = JsonReader(inputStream.bufferedReader())
+					reader.isLenient = false
+					reader.use { gson.fromJson<BackupData>(it, BackupData::class.java) }
 				}
 			} catch (e: Exception) {
 				Log.e(TAG, "Backup read failed", e)

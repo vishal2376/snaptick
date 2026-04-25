@@ -15,6 +15,7 @@ import com.google.gson.JsonParseException
 import com.google.gson.JsonPrimitive
 import com.google.gson.JsonSerializationContext
 import com.google.gson.JsonSerializer
+import com.google.gson.stream.JsonReader
 import com.vishal2376.snaptick.widget.model.WidgetState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -65,11 +66,16 @@ object WidgetStateDefinition : GlanceStateDefinition<WidgetState> {
 		override suspend fun readFrom(input: InputStream): WidgetState {
 			return try {
 				input.use { stream ->
-					val reader = stream.reader()
-					gson.fromJson(reader, WidgetState::class.java) ?: defaultValue
+					// Strict reader: reject malformed JSON instead of swallowing
+					// it. The widget DataStore file is app-private but a
+					// non-lenient parser saves us if the file ever gets
+					// corrupted by a hostile backup tool or an extracted
+					// device-transfer archive.
+					val reader = JsonReader(stream.reader())
+					reader.isLenient = false
+					reader.use { gson.fromJson(it, WidgetState::class.java) ?: defaultValue }
 				}
 			} catch (e: JsonParseException) {
-				e.printStackTrace()
 				throw CorruptionException("Could not read widget state JSON: ${e.message}", e)
 			}
 		}
