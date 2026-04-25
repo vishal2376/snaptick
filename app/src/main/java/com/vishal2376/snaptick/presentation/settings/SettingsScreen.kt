@@ -118,7 +118,7 @@ fun SettingsScreen(
 
 	val settingsCalendar = listOf(
 		SettingCategoryItem(
-			title = stringResource(R.string.sync_tasks_to_device_calendar),
+			title = stringResource(R.string.device_calendar),
 			resId = R.drawable.ic_calendar_sync,
 			onClick = { showBottomSheetById = R.string.calendar_sync }
 		),

@@ -98,6 +98,7 @@
     <string name="complete">Complete</string>
     <string name="calendar_sync">Calendar Sync</string>
     <string name="sync_tasks_to_device_calendar">Sync tasks to device calendar</string>
+    <string name="device_calendar">Device calendar</string>
     <string name="pick_calendar">Pick calendar</string>
     <string name="no_calendar_selected">No calendar selected</string>
     <string name="import_events">Import events</string>

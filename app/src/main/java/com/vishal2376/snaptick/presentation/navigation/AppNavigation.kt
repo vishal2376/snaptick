@@ -3,13 +3,7 @@ package com.vishal2376.snaptick.presentation.navigation
 import android.widget.Toast
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.EaseOut
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -92,25 +86,7 @@ fun AppNavigation(
 
 	NavHost(
 		navController = navController,
-		startDestination = actualStartDestination,
-		enterTransition = {
-			slideInHorizontally(
-				initialOffsetX = { it / 3 },
-				animationSpec = spring(dampingRatio = 0.82f, stiffness = Spring.StiffnessMediumLow)
-			) + fadeIn(animationSpec = tween(durationMillis = 220))
-		},
-		exitTransition = {
-			fadeOut(animationSpec = tween(durationMillis = 180))
-		},
-		popEnterTransition = {
-			fadeIn(animationSpec = tween(durationMillis = 220))
-		},
-		popExitTransition = {
-			slideOutHorizontally(
-				targetOffsetX = { it / 3 },
-				animationSpec = spring(dampingRatio = 0.82f, stiffness = Spring.StiffnessMediumLow)
-			) + fadeOut(animationSpec = tween(durationMillis = 180))
-		}
+		startDestination = actualStartDestination
 	) {
 		composable(route = Routes.HomeScreen.name) {
 			val taskListViewModel: TaskListViewModel = hiltViewModel()
