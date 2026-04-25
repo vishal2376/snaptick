@@ -45,6 +45,9 @@ class MainActivity : ComponentActivity() {
 	/** Most recently picked `.ics` file URI; consumed by the import sheet. */
 	var lastPickedIcsUri: Uri? = null
 
+	/** When true, next .ics pick auto-imports all events instead of showing preview. */
+	var pendingIcsAutoImport: Boolean = false
+
 	override fun onCreate(savedInstanceState: Bundle?) {
 		setTheme(SplashThemeMirror.startingThemeRes(this))
 		installSplashScreen()
@@ -90,6 +93,12 @@ class MainActivity : ComponentActivity() {
 				if (result.resultCode == RESULT_OK) {
 					result.data?.data?.let { uri: Uri ->
 						lastPickedIcsUri = uri
+						if (pendingIcsAutoImport) {
+							pendingIcsAutoImport = false
+							mainViewModel.onAction(MainAction.ImportIcsFile(uri))
+						} else {
+							mainViewModel.onAction(MainAction.ParseIcsFile(uri))
+						}
 					}
 				}
 			}

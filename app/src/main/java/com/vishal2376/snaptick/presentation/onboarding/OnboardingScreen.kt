@@ -25,11 +25,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.flow.drop
 import com.vishal2376.snaptick.presentation.common.AppTheme
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.presentation.main.action.MainAction
@@ -47,11 +52,19 @@ fun OnboardingScreen(
 	state: MainState,
 	onAction: (MainAction) -> Unit,
 	onRestoreBackup: () -> Unit,
+	onPickIcsFile: () -> Unit,
 	onToggleCalendarSync: (Boolean) -> Unit,
 	onFinish: () -> Unit,
 ) {
 	val pagerState = rememberPagerState(pageCount = { TOTAL_PAGES })
 	val scope = rememberCoroutineScope()
+	val haptic = LocalHapticFeedback.current
+
+	LaunchedEffect(pagerState) {
+		snapshotFlow { pagerState.currentPage }
+			.drop(1)
+			.collect { haptic.performHapticFeedback(HapticFeedbackType.LongPress) }
+	}
 
 	Column(
 		modifier = Modifier
@@ -87,6 +100,7 @@ fun OnboardingScreen(
 				2 -> RestoreAndSyncPage(
 					calendarSyncEnabled = state.calendarSyncEnabled,
 					onRestoreClick = onRestoreBackup,
+					onPickIcsClick = onPickIcsFile,
 					onCalendarSyncToggle = onToggleCalendarSync
 				)
 			}

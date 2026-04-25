@@ -103,6 +103,7 @@ class MainViewModel @Inject constructor(
 			}
 			is MainAction.ImportTasks -> importTasks(action.tasks)
 			is MainAction.ParseIcsFile -> parseIcsFile(action.uri)
+			is MainAction.ImportIcsFile -> importIcsFile(action.uri)
 			is MainAction.ClearImportPreview -> _state.update { it.copy(importPreview = emptyList()) }
 			is MainAction.SyncAllTasksNow -> viewModelScope.launch {
 				repository.syncAllTasksNow()
@@ -122,9 +123,31 @@ class MainViewModel @Inject constructor(
 					calendarImporter.previewFromIcs(stream.reader())
 				}.orEmpty()
 				_state.update { it.copy(importPreview = tasks) }
-				if (tasks.isEmpty()) _events.emit(MainEvent.ImportFailed("No events found in file"))
+				if (tasks.isEmpty()) {
+					_events.emit(MainEvent.ImportFailed("No events found in file"))
+				} else {
+					_events.emit(MainEvent.IcsParsedReady(tasks.size))
+				}
 			} catch (e: Exception) {
 				_events.emit(MainEvent.ImportFailed(e.message ?: "Failed to read .ics file"))
+			}
+		}
+	}
+
+	private fun importIcsFile(uri: android.net.Uri) {
+		viewModelScope.launch {
+			try {
+				val tasks = context.contentResolver.openInputStream(uri)?.use { stream ->
+					calendarImporter.previewFromIcs(stream.reader())
+				}.orEmpty()
+				if (tasks.isEmpty()) {
+					_events.emit(MainEvent.ImportFailed("No events found in file"))
+					return@launch
+				}
+				tasks.forEach { repository.insertTask(it) }
+				_events.emit(MainEvent.ImportComplete(tasks.size))
+			} catch (e: Exception) {
+				_events.emit(MainEvent.ImportFailed(e.message ?: "Failed to import .ics file"))
 			}
 		}
 	}

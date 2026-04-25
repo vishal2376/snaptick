@@ -58,6 +58,8 @@ fun AppNavigation(
 					showToast(activity, "Calendar sync complete", Toast.LENGTH_SHORT)
 				is MainEvent.ImportComplete ->
 					showToast(activity, "Imported ${event.count} tasks", Toast.LENGTH_SHORT)
+				is MainEvent.IcsParsedReady ->
+					showToast(activity, "Found ${event.count} events", Toast.LENGTH_SHORT)
 				is MainEvent.ImportFailed ->
 					showToast(activity, event.message, Toast.LENGTH_LONG)
 				is MainEvent.CalendarPermissionRequired ->
@@ -279,6 +281,19 @@ fun AppNavigation(
 				onAction = mainViewModel::onAction,
 				onRestoreBackup = {
 					activity.restorePickerLauncher.launch(activity.backupManager.getLoadBackupFilePickerIntent())
+				},
+				onPickIcsFile = {
+					activity.pendingIcsAutoImport = true
+					activity.icsPickerLauncher.launch(
+						android.content.Intent(android.content.Intent.ACTION_OPEN_DOCUMENT).apply {
+							addCategory(android.content.Intent.CATEGORY_OPENABLE)
+							type = "*/*"
+							putExtra(
+								android.content.Intent.EXTRA_MIME_TYPES,
+								arrayOf("text/calendar", "application/octet-stream")
+							)
+						}
+					)
 				},
 				onToggleCalendarSync = { enabled ->
 					mainViewModel.onAction(

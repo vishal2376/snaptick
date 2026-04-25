@@ -1,8 +1,7 @@
 package com.vishal2376.snaptick.presentation.onboarding.pages
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,13 +12,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,78 +30,89 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.common.AppTheme
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.VisibilityThreshold
+import androidx.compose.animation.core.spring
+import androidx.compose.ui.unit.IntOffset
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h3TextStyle
 import com.vishal2376.snaptick.presentation.common.infoDescTextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.presentation.home_screen.components.TaskComponent
+import com.vishal2376.snaptick.presentation.onboarding.components.AnimatedBorderCard
 import java.time.LocalDate
 import java.time.LocalTime
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ThemePreviewPage(
 	selectedTheme: AppTheme,
 	onThemeSelected: (AppTheme) -> Unit,
 ) {
-	val demos = demoTasks()
+	val initialDemos = remember { demoTasks() }
+	var demoOrder by remember { mutableStateOf(initialDemos) }
+
+	LaunchedEffect(selectedTheme) {
+		demoOrder = demoOrder.shuffled()
+	}
 
 	Column(
 		modifier = Modifier
 			.fillMaxSize()
-			.verticalScroll(rememberScrollState())
 			.padding(horizontal = 24.dp, vertical = 16.dp),
 		horizontalAlignment = Alignment.CenterHorizontally
 	) {
 		Text(
-			text = "Make it yours",
+			text = "Choose your Theme",
 			style = h1TextStyle,
 			color = MaterialTheme.colorScheme.onBackground,
 			textAlign = TextAlign.Center
 		)
-		Spacer(Modifier.height(8.dp))
+		Spacer(Modifier.height(6.dp))
 		Text(
 			modifier = Modifier
 				.fillMaxWidth()
 				.padding(horizontal = 8.dp),
-			text = "Pick a theme below. Preview updates live as you tap.",
+			text = "Tap a theme below to see how Snaptick looks.",
 			style = infoDescTextStyle,
-			color = MaterialTheme.colorScheme.onPrimaryContainer,
+			color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.85f),
 			textAlign = TextAlign.Center
 		)
 		Spacer(Modifier.height(20.dp))
 
-		Text(
-			modifier = Modifier.fillMaxWidth(),
-			text = "Preview",
-			style = h3TextStyle,
-			color = MaterialTheme.colorScheme.onBackground
-		)
-		Spacer(Modifier.height(10.dp))
-
-		demos.forEach { task ->
-			TaskComponent(
-				task = task,
-				onEdit = {},
-				onComplete = {},
-				onPomodoro = {},
-				onDelete = {},
-				is24HourTimeFormat = false
-			)
-			Spacer(Modifier.height(8.dp))
+		Box(modifier = Modifier.weight(1f)) {
+			LazyColumn(
+				modifier = Modifier.fillMaxSize(),
+				verticalArrangement = Arrangement.spacedBy(8.dp)
+			) {
+				items(demoOrder, key = { it.uuid }) { task ->
+					Box(
+						modifier = Modifier.animateItemPlacement(
+							spring(
+								dampingRatio = 0.85f,
+								stiffness = Spring.StiffnessLow,
+								visibilityThreshold = IntOffset.VisibilityThreshold
+							)
+						)
+					) {
+						TaskComponent(
+							task = task,
+							onEdit = {},
+							onComplete = {},
+							onPomodoro = {},
+							onDelete = {},
+							is24HourTimeFormat = false
+						)
+					}
+				}
+			}
 		}
 
-		Spacer(Modifier.height(20.dp))
-		Text(
-			modifier = Modifier.fillMaxWidth(),
-			text = "Choose your theme",
-			style = h3TextStyle,
-			color = MaterialTheme.colorScheme.onBackground
-		)
-		Spacer(Modifier.height(10.dp))
+		Spacer(Modifier.height(24.dp))
 
 		Row(
 			modifier = Modifier.fillMaxWidth(),
-			horizontalArrangement = Arrangement.spacedBy(10.dp)
+			horizontalArrangement = Arrangement.spacedBy(12.dp)
 		) {
 			AppTheme.entries.forEach { theme ->
 				ThemeCard(
@@ -120,38 +134,34 @@ private fun ThemeCard(
 	modifier: Modifier = Modifier,
 ) {
 	val swatch = themeSwatch(theme)
-	val borderColor =
+	val labelColor =
 		if (selected) MaterialTheme.colorScheme.primary
-		else MaterialTheme.colorScheme.primaryContainer
+		else MaterialTheme.colorScheme.onPrimaryContainer
 
-	Column(
+	AnimatedBorderCard(
+		selected = selected,
+		onClick = onClick,
+		borderColor = MaterialTheme.colorScheme.primary,
+		idleBorderColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.15f),
+		background = MaterialTheme.colorScheme.primaryContainer,
 		modifier = modifier
-			.background(
-				MaterialTheme.colorScheme.primaryContainer,
-				RoundedCornerShape(16.dp)
-			)
-			.border(
-				width = if (selected) 2.dp else 1.dp,
-				color = borderColor,
-				shape = RoundedCornerShape(16.dp)
-			)
-			.clickable { onClick() }
-			.padding(vertical = 14.dp, horizontal = 12.dp),
-		horizontalAlignment = Alignment.CenterHorizontally,
-		verticalArrangement = Arrangement.spacedBy(8.dp)
 	) {
-		Box(
-			modifier = Modifier
-				.size(36.dp)
-				.background(swatch, CircleShape)
-				.border(1.dp, MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.2f), CircleShape)
-		)
-		Text(
-			text = theme.name,
-			style = taskTextStyle,
-			color = if (selected) MaterialTheme.colorScheme.primary
-			else MaterialTheme.colorScheme.onPrimaryContainer
-		)
+		Column(
+			modifier = Modifier.padding(vertical = 16.dp, horizontal = 12.dp),
+			horizontalAlignment = Alignment.CenterHorizontally,
+			verticalArrangement = Arrangement.spacedBy(10.dp)
+		) {
+			Box(
+				modifier = Modifier
+					.size(36.dp)
+					.background(swatch, CircleShape)
+			)
+			Text(
+				text = theme.name,
+				style = if (selected) h3TextStyle else taskTextStyle,
+				color = labelColor
+			)
+		}
 	}
 }
 
