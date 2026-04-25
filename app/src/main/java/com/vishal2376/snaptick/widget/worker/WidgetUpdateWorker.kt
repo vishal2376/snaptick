@@ -47,11 +47,13 @@ class WidgetUpdateWorker @AssistedInject constructor(
 		try {
 			if (BuildConfig.DEBUG) Log.d(TAG, "Starting widget data sync")
 
-			// Fetch today's tasks
-			val allTasks = taskRepository.getTodayTasks().first()
+			// Fetch today's tasks with per-date completion merged. For repeat
+			// templates, `isCompleted` reflects today's row in `task_completions`;
+			// for one-offs, it reflects the row's own flag.
+			val allTasks = taskRepository.getTodayTasksWithCompletions().first()
 			val dayOfWeek = LocalDate.now().dayOfWeek.value - 1
 
-			// Filter to incomplete tasks, handling repeated tasks
+			// Filter to incomplete tasks, handling repeated tasks' weekday set.
 			val incompleteTasks = allTasks.filter { task ->
 				if (task.isRepeated) {
 					task.getRepeatWeekList().contains(dayOfWeek)

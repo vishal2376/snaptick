@@ -4,14 +4,23 @@ import android.content.Context
 import androidx.glance.GlanceId
 import androidx.glance.action.ActionParameters
 import androidx.glance.appwidget.action.ActionCallback
-import com.vishal2376.snaptick.data.local.TaskDatabase
+import com.vishal2376.snaptick.widget.di.WidgetEntryPoint
 import com.vishal2376.snaptick.widget.worker.WidgetUpdateWorker
+import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
 
 /**
- * Action callback for toggling task completion directly from the widget.
- * This updates the task in the database and refreshes the widget.
+ * Toggles task completion from the widget.
+ *
+ * Routes through `TaskRepository` (via Hilt entry point) so the same
+ * per-date completion semantics apply as in the home screen:
+ *
+ * - One-off task: flips `Task.isCompleted`. Repository cancels the alarm
+ *   and re-schedules if needed.
+ * - Repeat template: writes (or removes) a row in `task_completions`
+ *   for today, leaving the template untouched.
  */
 class ToggleTaskAction : ActionCallback {
 
@@ -27,16 +36,23 @@ class ToggleTaskAction : ActionCallback {
 		val taskId = parameters[TaskIdKey] ?: return
 
 		withContext(Dispatchers.IO) {
-			// Get task from database
-			val database = TaskDatabase.getInstance(context)
-			val taskDao = database.taskDao()
-			val task = taskDao.getTaskById(taskId) ?: return@withContext
+			val repo = EntryPointAccessors
+				.fromApplication(context.applicationContext, WidgetEntryPoint::class.java)
+				.taskRepository()
 
-			// Toggle completion status
-			val updatedTask = task.copy(isCompleted = !task.isCompleted)
-			taskDao.updateTask(updatedTask)
+			val task = repo.getTaskById(taskId) ?: return@withContext
 
-			// Refresh widget
+			if (task.isRepeated) {
+				val today = LocalDate.now()
+				if (repo.isCompletedOn(task.uuid, today)) {
+					repo.unmarkCompletedForDate(task.uuid, today)
+				} else {
+					repo.markCompletedForDate(task.uuid, today)
+				}
+			} else {
+				repo.updateTask(task.copy(isCompleted = !task.isCompleted))
+			}
+
 			WidgetUpdateWorker.enqueueWorker(context)
 		}
 	}
