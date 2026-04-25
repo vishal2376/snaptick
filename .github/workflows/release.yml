@@ -14,6 +14,13 @@ name: Release Build
 #   SNAPTICK_KEYSTORE_PASSWORD  - keystore password
 #   SNAPTICK_KEY_ALIAS          - key alias
 #   SNAPTICK_KEY_PASSWORD       - key password
+#
+# Optional repository secrets:
+#   SNAPTICK_ACRA_EMAIL  - destination for crash reports. When set, the
+#                          workflow passes it to Gradle via -PacraEmail and
+#                          the resulting APK ships with ACRA enabled. When
+#                          unset, ACRA stays off (no crash reports leave
+#                          the user's device).
 
 on:
   push:
@@ -64,7 +71,17 @@ jobs:
           SNAPTICK_KEYSTORE_PASSWORD: ${{ secrets.SNAPTICK_KEYSTORE_PASSWORD }}
           SNAPTICK_KEY_ALIAS: ${{ secrets.SNAPTICK_KEY_ALIAS }}
           SNAPTICK_KEY_PASSWORD: ${{ secrets.SNAPTICK_KEY_PASSWORD }}
-        run: ./gradlew :app:assembleRelease
+          ACRA_EMAIL: ${{ secrets.SNAPTICK_ACRA_EMAIL }}
+        # GitHub Release distribution = APK only. No AAB.
+        # acraEmail flows through to the build only when the secret is set.
+        # When unset, the build skips the property and SnaptickApplication's
+        # shouldInitAcra gate keeps ACRA off in the resulting APK.
+        run: |
+          ARGS=""
+          if [ -n "$ACRA_EMAIL" ]; then
+            ARGS="-PacraEmail=$ACRA_EMAIL"
+          fi
+          ./gradlew :app:assembleRelease $ARGS
 
       - name: Verify signing identity is NOT the public debug key
         run: |
