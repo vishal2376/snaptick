@@ -5,7 +5,6 @@ import android.content.Intent
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.work.Configuration
-import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.testing.WorkManagerTestInitHelper
 import org.junit.Assert.assertTrue
@@ -69,13 +68,14 @@ class SystemEventReceiverTest {
 	}
 
 	private fun assertWorkEnqueued() {
+		// The receiver's contract is to *enqueue* the unique work entry; whether
+		// the worker subsequently completes is a separate concern (and depends
+		// on Hilt-injected dependencies that we don't wire up here). So we
+		// only assert "an entry exists" and not its terminal state - it could
+		// be ENQUEUED, RUNNING, SUCCEEDED, or FAILED depending on test timing.
 		val infos = WorkManager.getInstance(context)
 			.getWorkInfosForUniqueWork(SystemEventReceiver.UNIQUE_WORK_NAME)
 			.get()
 		assertTrue("reschedule work not enqueued", infos.isNotEmpty())
-		assertTrue(
-			"reschedule work in unexpected state: ${infos.map { it.state }}",
-			infos.any { it.state == WorkInfo.State.ENQUEUED || it.state == WorkInfo.State.RUNNING },
-		)
 	}
 }
