@@ -6,6 +6,9 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.vishal2376.snaptick.domain.model.Task
 
+import net.sqlcipher.database.SQLiteDatabase
+import net.sqlcipher.database.SupportFactory
+
 @Database(
 	entities = [Task::class],
 	version = 2,
@@ -23,6 +26,16 @@ abstract class TaskDatabase : RoomDatabase() {
 		 */
 		fun getInstance(context: Context): TaskDatabase {
 			return INSTANCE ?: synchronized(this) {
+
+				// Initialize SQLCipher engine (Required for this version!)
+				SQLiteDatabase.loadLibs(context)
+
+				// Define the encryption key
+				val passphrase = "SuperSecretKey123!".toByteArray()
+
+				// Create the SQLCipher factory
+				val factory = SupportFactory(passphrase)
+
 				val instance = Room.databaseBuilder(
 					context.applicationContext,
 					TaskDatabase::class.java,
@@ -30,6 +43,7 @@ abstract class TaskDatabase : RoomDatabase() {
 				)
 					.fallbackToDestructiveMigration()
 					.addMigrations(MIGRATION_1_2)
+					.openHelperFactory(factory) // ATTACH THE ENCRYPTION FIX HERE
 					.build()
 				INSTANCE = instance
 				instance
