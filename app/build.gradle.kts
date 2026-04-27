@@ -1,9 +1,16 @@
+import java.util.Properties
+
 plugins {
 	id("com.android.application")
 	id("org.jetbrains.kotlin.android")
 	id("com.google.devtools.ksp")
 	kotlin("kapt")
 	id("com.google.dagger.hilt.android")
+}
+
+val localProperties: Properties = Properties().apply {
+	val f = rootProject.file("local.properties")
+	if (f.exists()) f.inputStream().use { load(it) }
 }
 
 android {
@@ -21,20 +28,14 @@ android {
 		vectorDrawables {
 			useSupportLibrary = true
 		}
-
-		// ACRA mail destination is read from a Gradle property so the source
-		// repo doesn't carry a personal email address. Set `acraEmail` in
-		// ~/.gradle/gradle.properties (local dev) or as a CI secret env var.
-		// If unset, ACRA init is skipped at runtime - crash reports go nowhere.
-		val acraEmail: String = (project.findProperty("acraEmail") as String?) ?: ""
-		buildConfigField("String", "ACRA_EMAIL", "\"$acraEmail\"")
 	}
 
 	signingConfigs {
 		create("release") {
-			// Env vars (CI) take precedence over local ~/.gradle/gradle.properties.
 			fun signingProp(name: String): String? {
-				return (System.getenv(name) ?: project.findProperty(name) as String?)
+				return (localProperties.getProperty(name)
+					?: System.getenv(name)
+					?: project.findProperty(name) as String?)
 					?.takeIf { it.isNotBlank() }
 			}
 
@@ -50,7 +51,6 @@ android {
 				keyAlias = kAlias
 				keyPassword = kPassword
 			}
-			// Otherwise fields stay null. The fail-fast block below catches it.
 		}
 	}
 
@@ -106,7 +106,7 @@ android {
 
 // Fail fast on misconfigured release builds. Catches:
 // - Forgotten env vars in CI.
-// - Local clones that don't have ~/.gradle/gradle.properties set.
+// - Local clones that don't have local.properties set.
 // - Anyone trying to ship a release APK signed with the public Android debug key.
 //
 // Hooked into gradle.taskGraph.whenReady so the guard fires BEFORE any release
@@ -125,7 +125,7 @@ gradle.taskGraph.whenReady {
 	val alias = sc.keyAlias
 	require(storeFile != null && storeFile.exists()) {
 		"Release keystore not configured. Set SNAPTICK_KEYSTORE_FILE in " +
-			"~/.gradle/gradle.properties (local) or as an env var (CI)."
+			"local.properties (local dev) or as an env var (CI)."
 	}
 	require(alias != null && alias != "androiddebugkey") {
 		"Refusing to sign release with the public Android debug key alias."

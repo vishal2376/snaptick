@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.widget.Toast
+import androidx.core.net.toUri
 import com.vishal2376.snaptick.R
 import java.time.LocalTime
 
@@ -60,7 +61,7 @@ fun openMail(context: Context, title: String) {
 	val uriString = uriBuilder.toString()
 
 	val intentTitle = "Send $title"
-	val intent = Intent(Intent.ACTION_SENDTO, Uri.parse(uriString))
+	val intent = Intent(Intent.ACTION_SENDTO, uriString.toUri())
 	context.startActivity(Intent.createChooser(intent, intentTitle))
 }
 
@@ -73,7 +74,7 @@ private val ALLOWED_URL_SCHEMES: Set<String> = setOf("https")
  * deeplink launcher if a future feature ever feeds a dynamic URL through it.
  */
 fun openUrl(context: Context, urlString: String) {
-	val uri = runCatching { Uri.parse(urlString) }.getOrNull() ?: return
+	val uri = runCatching { urlString.toUri() }.getOrNull() ?: return
 	if (uri.scheme?.lowercase() !in ALLOWED_URL_SCHEMES) return
 	context.startActivity(Intent(Intent.ACTION_VIEW, uri))
 }

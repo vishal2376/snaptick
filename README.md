@@ -85,7 +85,7 @@ or build it yourself from source.
 ### Releasing (maintainer-only)
 
 Release builds require a real signing keystore. The repo carries no keystore;
-each maintainer wires their own via `~/.gradle/gradle.properties`:
+each maintainer wires their own via `local.properties`:
 
 ```properties
 SNAPTICK_KEYSTORE_FILE=/absolute/path/to/your-release.jks
@@ -94,56 +94,14 @@ SNAPTICK_KEY_ALIAS=...
 SNAPTICK_KEY_PASSWORD=...
 ```
 
-Optional: add `acraEmail=you@example.com` to the same file to enable ACRA
-crash reporting in your local builds. Without it, ACRA stays off.
-
 `./gradlew :app:assembleRelease` will fail-fast if the keystore env is
 missing or if the alias is the public Android debug key — the build refuses
 to produce a debug-signed release APK.
 
-CI builds run via the [Release workflow](.github/workflows/release.yml).
-Pushing a `vX.Y.Z` tag triggers an automated signed build, attaches the APK
-to the matching GitHub Release, and embeds its SHA-256 in the release body.
-
-## Verifying your downloaded APK
-
-Snaptick is open source and distributed only through GitHub Releases. Anyone
-can rehost a malicious build under the same name, so verify what you
-downloaded actually came from this repository before installing.
-
-### 1. Verify the SHA-256 matches the release body
-
-Each Release page lists the expected SHA-256 of its APK. Compare locally:
-
-```bash
-sha256sum snaptick-vX.Y.Z.apk
-```
-
-The output must match the value in the Release notes character-for-character.
-
-### 2. Verify the signing certificate matches the project key
-
-Even with a matching SHA, you can confirm the APK was signed by the project's
-keystore using `apksigner` from the Android SDK build-tools:
-
-```bash
-$ANDROID_HOME/build-tools/<version>/apksigner verify --print-certs snaptick-vX.Y.Z.apk
-```
-
-The signing certificate's SHA-256 fingerprint must equal:
-
-```
-<paste your keystore's cert SHA-256 fingerprint here on first release>
-```
-
-> **Maintainer note:** after the first signed Release, run
-> `apksigner verify --print-certs snaptick-vX.Y.Z.apk` locally and paste the
-> `Signer #1 certificate SHA-256 digest:` value into the line above. That
-> publishes the project's identity. Any future build that fails this check
-> is not from this repository.
-
-If either check fails, the APK was tampered with or rebuilt outside the
-official pipeline. **Do not install it.**
+1. Clone the repository
+``` git clone https://github.com/vishal2376/snaptick.git ```
+2. Open the project in Android Studio
+3. Build and run the app
 
 ## Contributing
 
