@@ -31,6 +31,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,6 +52,7 @@ import com.vishal2376.snaptick.presentation.calender_screen.component.DaysOfWeek
 import com.vishal2376.snaptick.presentation.calender_screen.component.MonthDayComponent
 import com.vishal2376.snaptick.presentation.calender_screen.component.WeekDayComponent
 import com.vishal2376.snaptick.presentation.common.CalenderView
+import com.vishal2376.snaptick.presentation.common.animation.SnaptickMotion
 import com.vishal2376.snaptick.presentation.common.SnackbarController.showCustomSnackbar
 import com.vishal2376.snaptick.presentation.common.filterTasksByDate
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
@@ -61,10 +63,10 @@ import com.vishal2376.snaptick.presentation.main.state.MainState
 import com.vishal2376.snaptick.presentation.navigation.Routes
 import com.vishal2376.snaptick.presentation.task_list.action.TaskListAction
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
-import com.vishal2376.snaptick.util.Constants
 import com.vishal2376.snaptick.util.DummyTasks
 import com.vishal2376.snaptick.util.SoundEvent
 import com.vishal2376.snaptick.util.playSound
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.YearMonth
@@ -228,6 +230,14 @@ fun CalenderScreen(
 			)
 
 			val selectedDayTasks = filterTasksByDate(tasks, selectedDay)
+			// Cascade fires only during the first paint after a day change; after
+			// ~700ms scroll-in items get 0 delay so they animate immediately as
+			// they enter the viewport instead of sitting at alpha=0 in a black gap.
+			var firstPaintDone by remember(selectedDay) { mutableStateOf(false) }
+			LaunchedEffect(selectedDay) {
+				delay(700)
+				firstPaintDone = true
+			}
 			if (selectedDayTasks.isEmpty()) {
 				EmptyTaskComponent()
 			} else {
@@ -239,7 +249,7 @@ fun CalenderScreen(
 				) {
 					itemsIndexed(
 						items = selectedDayTasks,
-						key = { index, task ->
+						key = { _, task ->
 							task.id
 						}) { index, task ->
 						Box(
@@ -286,7 +296,8 @@ fun CalenderScreen(
 											onTaskAction(TaskListAction.UndoDelete)
 										})
 								},
-								animDelay = index * Constants.LIST_ANIMATION_DELAY
+								animDelay = if (firstPaintDone) -1
+								else index.coerceAtMost(SnaptickMotion.MAX_STAGGERED_ITEMS) * 110
 							)
 						}
 						Spacer(modifier = Modifier.height(10.dp))

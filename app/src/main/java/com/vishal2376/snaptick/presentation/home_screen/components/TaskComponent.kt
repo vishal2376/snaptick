@@ -1,7 +1,12 @@
 package com.vishal2376.snaptick.presentation.home_screen.components
 
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
+import androidx.compose.ui.platform.LocalDensity
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
@@ -44,7 +49,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
-import com.vishal2376.snaptick.presentation.common.animation.SnaptickMotion
 import com.vishal2376.snaptick.presentation.common.taskDescTextStyle
 import com.vishal2376.snaptick.presentation.common.taskTextStyle
 import com.vishal2376.snaptick.presentation.common.utils.formatTaskTime
@@ -72,23 +76,37 @@ fun TaskComponent(
 	// Optimistic flip on tap; resets when upstream task id or isCompleted lands.
 	var localCompleted by remember(task.id, task.isCompleted) { mutableStateOf(task.isCompleted) }
 
-	val alphaAnimation = remember { Animatable(initialValue = 0f) }
+	// Onboarding-style entrance: 28dp slide-up + fade, FastOutSlowInEasing,
+	// matching WelcomePage.Staggered exactly. Caller signals scroll-in via a
+	// negative animDelay so we snap to final state instead of running the tween;
+	// otherwise even a 0-delay 520ms fade-in flickers through alpha < 0.3 first.
+	val skipEntry = animDelay < 0
+	val alphaAnim = remember { Animatable(if (skipEntry) 1f else 0f) }
+	val translateAnim = remember { Animatable(if (skipEntry) 0f else 28f) }
+	val density = LocalDensity.current
 
 	LaunchedEffect(animDelay) {
-		// Cap staggered delay so 50+ item lists don't animate for seconds on low-end devices.
-		val cappedDelay = animDelay.coerceAtMost(
-			SnaptickMotion.MAX_STAGGERED_ITEMS * 40
-		)
-		alphaAnimation.animateTo(
-			targetValue = 1f,
-			animationSpec = tween(durationMillis = 220, delayMillis = cappedDelay)
-		)
+		if (skipEntry) {
+			alphaAnim.snapTo(1f)
+			translateAnim.snapTo(0f)
+			return@LaunchedEffect
+		}
+		if (animDelay > 0) delay(animDelay.toLong())
+		coroutineScope {
+			launch {
+				alphaAnim.animateTo(1f, tween(520, easing = FastOutSlowInEasing))
+			}
+			launch {
+				translateAnim.animateTo(0f, tween(560, easing = FastOutSlowInEasing))
+			}
+		}
 	}
 
 	Box(
 		modifier = Modifier
 			.graphicsLayer {
-				alpha = alphaAnimation.value
+				alpha = alphaAnim.value
+				translationY = with(density) { translateAnim.value.dp.toPx() }
 			}
 			.fillMaxWidth()
 			.background(

@@ -27,7 +27,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -36,13 +40,14 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.vishal2376.snaptick.R
 import com.vishal2376.snaptick.domain.model.Task
+import com.vishal2376.snaptick.presentation.common.animation.SnaptickMotion
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.infoTextStyle
 import com.vishal2376.snaptick.presentation.home_screen.components.EmptyTaskComponent
 import com.vishal2376.snaptick.presentation.home_screen.components.TaskComponent
+import kotlinx.coroutines.delay
 import com.vishal2376.snaptick.presentation.main.state.MainState
 import com.vishal2376.snaptick.ui.theme.SnaptickTheme
-import com.vishal2376.snaptick.util.Constants
 import com.vishal2376.snaptick.util.DummyTasks
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -125,6 +130,11 @@ fun ThisWeekTaskScreen(
 
 		Column(modifier = Modifier.padding(innerPadding)) {
 
+			var firstPaintDone by remember { mutableStateOf(false) }
+			LaunchedEffect(Unit) {
+				delay(700)
+				firstPaintDone = true
+			}
 			if (thisWeekTasks.isEmpty()) {
 				EmptyTaskComponent()
 			} else {
@@ -139,7 +149,7 @@ fun ThisWeekTaskScreen(
 				) {
 					itemsIndexed(
 						items = thisWeekTasks,
-						key = { index, task ->
+						key = { _, task ->
 							task.id
 						}) { index, task ->
 						Box(
@@ -159,7 +169,8 @@ fun ThisWeekTaskScreen(
 								},
 								onComplete = {},
 								onPomodoro = {},
-								animDelay = index * Constants.LIST_ANIMATION_DELAY
+								animDelay = if (firstPaintDone) -1
+								else index.coerceAtMost(SnaptickMotion.MAX_STAGGERED_ITEMS) * 110
 							)
 						}
 						Spacer(modifier = Modifier.height(10.dp))

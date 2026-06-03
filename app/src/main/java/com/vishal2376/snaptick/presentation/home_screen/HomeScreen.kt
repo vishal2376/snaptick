@@ -58,6 +58,7 @@ import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.common.SnackbarController.showCustomSnackbar
 import com.vishal2376.snaptick.presentation.common.SortTask
 import com.vishal2376.snaptick.presentation.common.SwipeActionBox
+import com.vishal2376.snaptick.presentation.common.animation.SnaptickMotion
 import com.vishal2376.snaptick.presentation.common.h1TextStyle
 import com.vishal2376.snaptick.presentation.common.h2TextStyle
 import com.vishal2376.snaptick.presentation.home_screen.components.EmptyTaskComponent
@@ -78,6 +79,7 @@ import com.vishal2376.snaptick.util.DummyTasks
 import com.vishal2376.snaptick.util.SoundEvent
 import com.vishal2376.snaptick.util.getFreeTime
 import com.vishal2376.snaptick.util.playSound
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
@@ -354,6 +356,12 @@ fun HomeScreen(
 						})
 					}
 
+					// First-paint cascade only; scroll-in items snap to final state.
+					var firstPaintDone by remember { mutableStateOf(false) }
+					LaunchedEffect(Unit) {
+						delay(700)
+						firstPaintDone = true
+					}
 					LazyColumn(
 						modifier = Modifier
 							.fillMaxSize()
@@ -425,7 +433,8 @@ fun HomeScreen(
 										onPomodoro = { taskId ->
 											onNavigate("${Routes.PomodoroScreen.name}/$taskId")
 										},
-										animDelay = index * Constants.LIST_ANIMATION_DELAY
+										animDelay = if (firstPaintDone) -1
+										else index.coerceAtMost(SnaptickMotion.MAX_STAGGERED_ITEMS) * 110
 									)
 								}
 							}
