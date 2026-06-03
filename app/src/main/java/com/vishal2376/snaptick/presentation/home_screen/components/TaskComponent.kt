@@ -92,7 +92,7 @@ fun TaskComponent(
 			}
 			.fillMaxWidth()
 			.background(
-				priorityColors[task.priority],
+				priorityColors[task.priority.coerceIn(0, priorityColors.lastIndex)],
 				RoundedCornerShape(
 					topStart = 8.dp,
 					bottomStart = 8.dp,
