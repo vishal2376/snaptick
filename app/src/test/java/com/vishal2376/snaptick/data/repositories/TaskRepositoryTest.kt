@@ -13,6 +13,8 @@ import com.vishal2376.snaptick.widget.worker.WidgetUpdateWorker
 import io.mockk.coEvery
 import io.mockk.coJustRun
 import io.mockk.coVerify
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.mockkObject
@@ -191,6 +193,28 @@ class TaskRepositoryTest {
 
 		assertEquals(2, repo.deletePushedCalendarEvents())
 		coVerify(exactly = 1) { calendarPusher.deleteAllPushedEvents(tasks) }
+	}
+
+	@Test
+	fun `getTodayTasksWithCompletions merges completion for repeat created today`() = runTest {
+		// Repeating task created today shows up in BOTH getTasksByDate AND getActiveRepeats.
+		// Bug repro: the dated-loop used to win and skip the task_completions merge,
+		// leaving isCompleted = false after the tickbox tap.
+		val today = LocalDate.now()
+		val weekdayIndex = today.dayOfWeek.value - 1
+		val repeat = task(id = 9, uuid = "uRepeat", isRepeated = true).copy(
+			repeatWeekdays = weekdayIndex.toString(),
+			date = today,
+		)
+		val todayIso = today.toString()
+		coEvery { dao.getTasksByDate(todayIso) } returns flowOf(listOf(repeat))
+		coEvery { dao.getActiveRepeats(todayIso) } returns flowOf(listOf(repeat))
+		coEvery { completionDao.completedUuidsOn(todayIso) } returns flowOf(listOf("uRepeat"))
+
+		val list = repo.getTodayTasksWithCompletions().first()
+
+		assertEquals(1, list.size)
+		assertTrue(list[0].isCompleted)
 	}
 
 	@Test

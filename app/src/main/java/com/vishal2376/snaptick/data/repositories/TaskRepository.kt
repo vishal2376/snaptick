@@ -104,14 +104,17 @@ class TaskRepository(
 			val completedSet = completedUuids.toHashSet()
 			val seen = HashSet<Int>()
 			val out = ArrayList<Task>(dated.size + repeats.size)
+			fun mergeCompletion(task: Task): Task =
+				if (task.isRepeated && task.uuid in completedSet) task.copy(isCompleted = true) else task
+			// Repeating task with date == today appears in both queries; merge completion
+			// in both loops so the dated branch doesn't shadow the task_completions row.
 			for (task in dated) {
-				if (seen.add(task.id) && task.shouldOccurOn(today)) out += task
+				if (seen.add(task.id) && task.shouldOccurOn(today)) out += mergeCompletion(task)
 			}
 			for (task in repeats) {
 				if (task.id in seen) continue
 				if (!task.shouldOccurOn(today)) continue
-				val merged = if (task.uuid in completedSet) task.copy(isCompleted = true) else task
-				out += merged
+				out += mergeCompletion(task)
 				seen += task.id
 			}
 			out
