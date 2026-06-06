@@ -65,7 +65,12 @@
     <string name="scroll">Scroll</string>
     <string name="set_sleep_time">Set Sleep Time</string>
     <string name="min_max">Min - %1$s \t\t Max - %2$s</string>
-    <string name="select_language" translatable="false">Select Language</string>
+    <string name="select_language">Select Language</string>
+    <string name="backup">Backup</string>
+    <string name="restore">Restore</string>
+    <string name="low">Low</string>
+    <string name="medium">Medium</string>
+    <string name="high">High</string>
 
     <string name="unchecked_circle_desc" translatable="false">Unchecked Circle</string>
     <string name="glance_preview_task_1" translatable="false">Task 1</string>
