@@ -51,6 +51,7 @@ import com.vishal2376.snaptick.presentation.settings.components.EventImportOptio
 import com.vishal2376.snaptick.presentation.settings.components.LanguageOptionComponent
 import com.vishal2376.snaptick.presentation.settings.components.SettingsCategoryComponent
 import com.vishal2376.snaptick.presentation.settings.components.SleepTimeOptionComponent
+import com.vishal2376.snaptick.presentation.settings.components.PomodoroOptionComponent
 import com.vishal2376.snaptick.presentation.settings.components.SoundOptionComponent
 import com.vishal2376.snaptick.presentation.settings.components.SwipeActionOptionComponent
 import com.vishal2376.snaptick.presentation.settings.components.ThemeOptionComponent
@@ -136,6 +137,11 @@ fun SettingsScreen(
 			title = stringResource(R.string.sounds),
 			resId = R.drawable.ic_clock,
 			onClick = { showBottomSheetById = R.string.sounds }
+		),
+		SettingCategoryItem(
+			title = stringResource(R.string.default_pomodoro_duration),
+			resId = R.drawable.ic_timer,
+			onClick = { showBottomSheetById = R.string.default_pomodoro_duration }
 		),
 		SettingCategoryItem(
 			title = stringResource(R.string.add_widget),
@@ -258,6 +264,13 @@ fun SettingsScreen(
 							SoundOptionComponent(
 								enabled = appState.soundEnabled,
 								onToggle = { onAction(MainAction.UpdateSoundEnabled(it)) },
+							)
+						}
+
+						R.string.default_pomodoro_duration -> {
+							PomodoroOptionComponent(
+								selectedMins = appState.defaultPomodoroDuration,
+								onSelect = { onAction(MainAction.UpdateDefaultPomodoroDuration(it)) },
 							)
 						}
 

@@ -51,6 +51,7 @@ sealed interface MainAction {
 	data object SyncAllTasksNow : MainAction
 	data object CompleteOnboarding : MainAction
 	data class UpdateSoundEnabled(val enabled: Boolean) : MainAction
+	data class UpdateDefaultPomodoroDuration(val mins: Int) : MainAction
 	data class CheckForUpdates(val ignoreThrottle: Boolean = false) : MainAction
 	data object DismissUpdateBanner : MainAction
 	data object DismissUpdateStatus : MainAction

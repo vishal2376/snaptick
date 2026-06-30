@@ -43,6 +43,7 @@ class SettingsStore(val context: Context) {
 		private val ONBOARDING_COMPLETED_KEY = booleanPreferencesKey("onboarding_completed_key")
 		private val SOUND_ENABLED_KEY = booleanPreferencesKey("sound_enabled_key")
 		private val LAST_UPDATE_CHECK_AT_KEY = longPreferencesKey("last_update_check_at_key")
+		private val DEFAULT_POMODORO_DURATION_KEY = intPreferencesKey("default_pomodoro_duration_key")
 
 		private const val DEFAULT_LANGUAGE = "en"
 		private val DEFAULT_THEME = AppTheme.Amoled.ordinal
@@ -61,6 +62,7 @@ class SettingsStore(val context: Context) {
 		private const val DEFAULT_CALENDAR_SYNC_CALENDAR_ID = ""
 		private const val DEFAULT_ONBOARDING_COMPLETED = false
 		private const val DEFAULT_SOUND_ENABLED = true
+		const val DEFAULT_POMODORO_DURATION_MINS = 25
 	}
 
 
@@ -136,6 +138,10 @@ class SettingsStore(val context: Context) {
 
 	val lastUpdateCheckAtKey: Flow<Long> = context.dataStore.data.map { preferences ->
 		preferences[LAST_UPDATE_CHECK_AT_KEY] ?: 0L
+	}
+
+	val defaultPomodoroDurationKey: Flow<Int> = context.dataStore.data.map { preferences ->
+		preferences[DEFAULT_POMODORO_DURATION_KEY] ?: DEFAULT_POMODORO_DURATION_MINS
 	}
 
 	suspend fun setTheme(theme: Int) {
@@ -237,6 +243,10 @@ class SettingsStore(val context: Context) {
 
 	suspend fun setLastUpdateCheckAt(epochMillis: Long) {
 		context.dataStore.edit { it[LAST_UPDATE_CHECK_AT_KEY] = epochMillis }
+	}
+
+	suspend fun setDefaultPomodoroDuration(mins: Int) {
+		context.dataStore.edit { it[DEFAULT_POMODORO_DURATION_KEY] = mins }
 	}
 
 }

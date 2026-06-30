@@ -209,6 +209,11 @@ class MainViewModel @Inject constructor(
 				settingsStore.setSoundEnabled(action.enabled)
 			}
 
+			is MainAction.UpdateDefaultPomodoroDuration -> persist {
+				_state.update { it.copy(defaultPomodoroDuration = action.mins) }
+				settingsStore.setDefaultPomodoroDuration(action.mins)
+			}
+
 			is MainAction.CheckForUpdates -> viewModelScope.launch {
 				checkForUpdates(ignoreThrottle = action.ignoreThrottle)
 			}
@@ -560,6 +565,11 @@ class MainViewModel @Inject constructor(
 						soundEnabled = v
 					)
 				}
+			}
+		}
+		viewModelScope.launch {
+			settingsStore.defaultPomodoroDurationKey.collect { v ->
+				_state.update { it.copy(defaultPomodoroDuration = v) }
 			}
 		}
 		viewModelScope.launch {

@@ -36,6 +36,7 @@ data class MainState(
 	val onboardingCompleted: Boolean = true,
 	val bootResolved: Boolean = false,
 	val soundEnabled: Boolean = true,
+	val defaultPomodoroDuration: Int = 25,
 	val updateAvailable: GitHubRelease? = null,
 	val updateCheckInFlight: Boolean = false,
 	val updateCheckFailed: Boolean = false,

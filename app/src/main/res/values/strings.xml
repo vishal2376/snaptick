@@ -131,4 +131,7 @@
     <string name="import_selected">Import selected</string>
     <string name="calendar_permission_required">Calendar permission is required</string>
     <string name="no_writable_calendars_found">No writable calendars found</string>
+    <string name="default_pomodoro_duration">Default Pomodoro Duration</string>
+    <string name="choose_pomodoro_duration">Choose Default Pomodoro Duration</string>
+    <string name="minutes_format">%d min</string>
 </resources>
