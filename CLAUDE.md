@@ -6,7 +6,7 @@ repository.
 ## Project
 
 Snaptick — offline-first Android task planner (Kotlin + Jetpack Compose). Single-module Gradle
-project (`:app`), `minSdk=26`, `compileSdk=34`. Current version: **4.0** (`versionCode 12`).
+project (`:app`), `minSdk=26`, `compileSdk=36`, `targetSdk=36`. Current version: **4.1** (`versionCode 13`).
 
 ## Common commands
 
@@ -25,7 +25,7 @@ Run from repo root using the Gradle wrapper.
 
 Debug build has `applicationIdSuffix=.debug`, so debug + release can coexist on one device.
 
-The project's Gradle + AGP (8.2) targets JDK 17. If the system default is JDK 19+, invoke Gradle
+The project's Gradle (8.11.1) + AGP (8.10.1) targets JDK 17. If the system default is JDK 19+, invoke Gradle
 with `JAVA_HOME=/path/to/jdk17 ./gradlew …`.
 
 ## Architecture

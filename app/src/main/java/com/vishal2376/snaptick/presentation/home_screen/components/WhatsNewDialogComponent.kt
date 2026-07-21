@@ -85,6 +85,10 @@ fun WhatsNewDialogComponent(
 			"Home-screen Widget",
 			"Today's tasks at a glance with one-tap complete."
 		),
+		NewItem(
+			"Bug Fixes",
+			"Fixed crashes and improved stability."
+		),
 	)
 
 	Dialog(onDismissRequest = { safeClose(true) }) {

@@ -15,14 +15,14 @@ val localProperties: Properties = Properties().apply {
 
 android {
 	namespace = "com.vishal2376.snaptick"
-	compileSdk = 34
+	compileSdk = 36
 
 	defaultConfig {
 		applicationId = "com.vishal2376.snaptick"
 		minSdk = 26
-		targetSdk = 34
-		versionCode = 12
-		versionName = "4.0"
+		targetSdk = 36
+		versionCode = 13
+		versionName = "4.1"
 
 		testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 		vectorDrawables {
