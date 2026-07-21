@@ -10,6 +10,8 @@ import androidx.work.Configuration
 import androidx.work.testing.WorkManagerTestInitHelper
 import com.vishal2376.snaptick.data.local.TaskDatabase
 import com.vishal2376.snaptick.domain.model.Task
+import com.vishal2376.snaptick.widget.model.WidgetState
+import com.vishal2376.snaptick.widget.state.WidgetStateDefinition
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -34,6 +36,9 @@ class ToggleTaskActionTest {
 			context,
 			Configuration.Builder().build()
 		)
+		// Stale widget state from earlier runs routes onAction into
+		// GlanceAppWidget.update(), which rejects the test's fake GlanceId.
+		WidgetStateDefinition.updateState(context, WidgetState())
 		db = TaskDatabase.getInstance(context)
 		db.taskDao().deleteAllTasks()
 		db.taskDao().insertTask(
