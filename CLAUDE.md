@@ -6,7 +6,7 @@ repository.
 ## Project
 
 Snaptick — offline-first Android task planner (Kotlin + Jetpack Compose). Single-module Gradle
-project (`:app`), `minSdk=26`, `compileSdk=36`, `targetSdk=36`. Current version: **4.1** (`versionCode 13`).
+project (`:app`), `minSdk=26`, `compileSdk=36`, `targetSdk=36`. Current version: **4.2** (`versionCode 14`).
 
 ## Common commands
 
