@@ -24,3 +24,6 @@ keystore.properties
 
 # Claude Code session files
 .claude/
+
+# Local test-coverage snapshot, not committed
+/TEST_COVERAGE.md
