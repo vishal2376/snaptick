@@ -6,8 +6,11 @@ Snaptick is a user-friendly app designed to boost your productivity by helping y
 
 * 📝 Create and Edit Tasks
 * ⏲️ Pomodoro Timer
-* 💾 Offline Backup
-* 🔄 Sort Tasks
+* 🔔 Multiple Reminders
+* 🧩 Home-screen Widget
+* 🗓️ Calendar Sync & ICS Import
+* 💾 Backup & Restore
+* 🔄 Customizable Swipe Actions
 * ⏰ Analyze Free Time
 * 😴 Set Sleep Time
 * 🗓️ Manage tasks in Calendar View
@@ -16,7 +19,7 @@ Snaptick is a user-friendly app designed to boost your productivity by helping y
 * 🎬 Smooth Animations
 * 🎨 Modern UI with Cool Themes
 * 🌐 Available in 15+ Languages
-* 🧩 Create Widgets
+* 🆙 In-app Update Checker (opt-in, manual check from Settings)
 
 Download Snaptick now and simplify your daily planning. Boost your productivity with a clutter-free, ad-free, and efficient task planner that adapts to your unique style. Start your journey to increased productivity today!
 
