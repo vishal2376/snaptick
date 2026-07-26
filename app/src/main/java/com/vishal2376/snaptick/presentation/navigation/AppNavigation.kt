@@ -36,7 +36,6 @@ import com.vishal2376.snaptick.presentation.analytics_screen.AnalyticsScreen
 import com.vishal2376.snaptick.presentation.analytics_screen.viewmodel.AnalyticsViewModel
 import com.vishal2376.snaptick.presentation.calender_screen.CalenderScreen
 import com.vishal2376.snaptick.presentation.common.BackupRestoreConfirmDialog
-import com.vishal2376.snaptick.presentation.common.UpdateAvailableDialog
 import com.vishal2376.snaptick.presentation.completed_task_screen.CompletedTaskScreen
 import com.vishal2376.snaptick.presentation.free_time_screen.FreeTimeScreen
 import com.vishal2376.snaptick.presentation.home_screen.HomeScreen
@@ -50,7 +49,6 @@ import com.vishal2376.snaptick.presentation.settings.SettingsScreen
 import com.vishal2376.snaptick.presentation.task_list.viewmodel.TaskListViewModel
 import com.vishal2376.snaptick.presentation.this_week_task_screen.ThisWeekTaskScreen
 import com.vishal2376.snaptick.util.openMail
-import com.vishal2376.snaptick.util.openUrl
 import com.vishal2376.snaptick.util.showToast
 
 @Composable
@@ -97,17 +95,6 @@ fun AppNavigation(
 				is MainEvent.LanguageChanged -> activity.recreate()
 			}
 		}
-	}
-
-	mainState.updateAvailable?.let { release ->
-		UpdateAvailableDialog(
-			release = release,
-			onOpenInBrowser = {
-				openUrl(activity, release.htmlUrl)
-				mainViewModel.onAction(MainAction.DismissUpdateBanner)
-			},
-			onDismiss = { mainViewModel.onAction(MainAction.DismissUpdateBanner) },
-		)
 	}
 
 	if (!mainState.bootResolved) {

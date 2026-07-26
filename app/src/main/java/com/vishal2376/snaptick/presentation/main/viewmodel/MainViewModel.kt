@@ -75,7 +75,6 @@ class MainViewModel @Inject constructor(
 	init {
 		loadPersistedState()
 		loadBuildVersion()
-		viewModelScope.launch { checkForUpdates(ignoreThrottle = false) }
 	}
 
 	fun onAction(action: MainAction) {
@@ -213,7 +212,6 @@ class MainViewModel @Inject constructor(
 				checkForUpdates(ignoreThrottle = action.ignoreThrottle)
 			}
 
-			is MainAction.DismissUpdateBanner -> _state.update { it.copy(updateAvailable = null) }
 			is MainAction.DismissUpdateStatus -> _state.update {
 				it.copy(
 					updateCheckFailed = false,

@@ -52,7 +52,6 @@ sealed interface MainAction {
 	data object CompleteOnboarding : MainAction
 	data class UpdateSoundEnabled(val enabled: Boolean) : MainAction
 	data class CheckForUpdates(val ignoreThrottle: Boolean = false) : MainAction
-	data object DismissUpdateBanner : MainAction
 	data object DismissUpdateStatus : MainAction
 	data object RefreshWritableCalendars : MainAction
 }
