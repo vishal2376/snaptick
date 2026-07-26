@@ -17,6 +17,12 @@ android {
 	namespace = "com.vishal2376.snaptick"
 	compileSdk = 36
 
+	// Google-key-encrypted block only Google can verify; F-Droid/IzzyOnDroid reject it.
+	dependenciesInfo {
+		includeInApk = false
+		includeInBundle = false
+	}
+
 	defaultConfig {
 		applicationId = "com.vishal2376.snaptick"
 		minSdk = 26
