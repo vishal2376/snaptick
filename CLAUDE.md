@@ -13,8 +13,8 @@ project (`:app`), `minSdk=26`, `compileSdk=36`, `targetSdk=36`. Current version:
 Run from repo root using the Gradle wrapper.
 
 - Build debug APK: `./gradlew assembleDebug`
-- Build release APK: `./gradlew assembleRelease` (release signing config + R8 shrink/obfuscate; CI
-  keystore via base64 GitHub secret)
+- Build release APK: `./gradlew assembleRelease` (release signing config + R8 shrink/obfuscate;
+  signed locally via `keystore.properties`)
 - Install debug on connected device: `./gradlew installDebug`
 - Unit tests: `./gradlew test` (single variant: `./gradlew testDebugUnitTest`)
 - Single unit test class:
@@ -228,9 +228,9 @@ workers must be `@HiltWorker` + `@AssistedInject`.
 - `jitpack.io` repo is enabled (for `WheelPickerCompose`).
   `repositoriesMode = FAIL_ON_PROJECT_REPOS`, so any new repo must be added in
   `settings.gradle.kts`.
-- Release build is signed via CI: GitHub Actions decodes a base64 keystore secret at build time.
-  Local release builds need `keystore.properties` (gitignored) or fall back to debug-signing for
-  sideloaded checks only.
+- Release build is signed manually, not via CI. Needs `keystore.properties` (gitignored) present
+  locally, or falls back to debug-signing for sideloaded checks only. There is no release GitHub
+  Actions workflow; releases are built and uploaded to GitHub Releases by hand.
 
 ### Backup format
 
