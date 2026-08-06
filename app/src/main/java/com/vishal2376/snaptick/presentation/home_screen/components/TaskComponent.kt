@@ -29,6 +29,7 @@ import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Update
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -68,6 +69,7 @@ fun TaskComponent(
 	onComplete: (Int) -> Unit,
 	onPomodoro: (Int) -> Unit,
 	onDelete: (Int) -> Unit = {},
+	onPostpone: (Int) -> Unit = {},
 	animDelay: Int = 100,
 	is24HourTimeFormat: Boolean = false,
 	today: LocalDate = LocalDate.now()
@@ -269,6 +271,18 @@ fun TaskComponent(
 							painter = painterResource(id = R.drawable.ic_timer),
 							tint = MaterialTheme.colorScheme.onPrimaryContainer,
 							contentDescription = null
+						)
+					}
+				}
+				if (task.date < today && !task.isRepeated && !task.isCompleted) {
+					IconButton(
+						onClick = { onPostpone(task.id) },
+						modifier = Modifier.weight(0.1f)
+					) {
+						Icon(
+							imageVector = Icons.Default.Update,
+							tint = MaterialTheme.colorScheme.onPrimaryContainer,
+							contentDescription = stringResource(R.string.postpone_task)
 						)
 					}
 				}

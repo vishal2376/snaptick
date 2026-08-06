@@ -59,6 +59,14 @@ class TaskListViewModel @Inject constructor(
 			is TaskListAction.UndoDelete -> viewModelScope.launch {
 				deletedTask?.let { task -> repository.insertTask(task) }
 			}
+
+			is TaskListAction.PostponeTask -> viewModelScope.launch {
+				val task = repository.getTaskById(action.taskId) ?: return@launch
+				if (task.isRepeated) return@launch
+				val today = LocalDate.now()
+				val nextDate = if (task.date < today) today else today.plusDays(1)
+				repository.updateTask(task.copy(date = nextDate, isCompleted = false))
+			}
 		}
 	}
 
