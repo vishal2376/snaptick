@@ -7,4 +7,5 @@ sealed interface TaskListAction {
 	data class SwipeTask(val task: Task) : TaskListAction
 	data class DeleteTask(val taskId: Int) : TaskListAction
 	data object UndoDelete : TaskListAction
+	data class PostponeTask(val taskId: Int) : TaskListAction
 }
