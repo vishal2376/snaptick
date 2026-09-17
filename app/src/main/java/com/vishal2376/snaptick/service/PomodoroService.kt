@@ -17,6 +17,9 @@ import com.vishal2376.snaptick.data.repositories.TaskRepository
 import com.vishal2376.snaptick.domain.model.Task
 import com.vishal2376.snaptick.presentation.common.utils.formatDurationTimestamp
 import com.vishal2376.snaptick.service.PomodoroService.Companion.startForTask
+import com.vishal2376.snaptick.util.SoundEvent
+import com.vishal2376.snaptick.util.SettingsStore
+import com.vishal2376.snaptick.util.playSound
 import com.vishal2376.snaptick.util.vibrateDevice
 import com.vishal2376.snaptick.widget.presentation.EXTRA_NAVIGATE_TO
 import dagger.hilt.android.AndroidEntryPoint
@@ -61,9 +64,13 @@ class PomodoroService : Service() {
 	@Inject
 	lateinit var repository: TaskRepository
 
+	@Inject
+	lateinit var settingsStore: SettingsStore
+
 	private val scope = CoroutineScope(Dispatchers.Default + SupervisorJob())
 	private var tickerJob: Job? = null
 	private var currentTask: Task? = null
+	private var soundEnabled: Boolean = true
 
 	private val _state = MutableStateFlow(ServiceTimerState())
 	val state: StateFlow<ServiceTimerState> = _state.asStateFlow()
@@ -71,6 +78,13 @@ class PomodoroService : Service() {
 	private val binder = PomodoroBinder(this)
 
 	override fun onBind(intent: Intent?): IBinder = binder
+
+	override fun onCreate() {
+		super.onCreate()
+		scope.launch {
+			settingsStore.soundEnabledKey.collect { soundEnabled = it }
+		}
+	}
 
 	override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 		ensureChannel()
@@ -197,6 +211,9 @@ class PomodoroService : Service() {
 					vibrateDevice(applicationContext)
 					updateNotification(showCompleted = true)
 				} else {
+					if (newLeft % 60 == 0L) {
+						playSound(applicationContext, SoundEvent.POMODORO_TICK, soundEnabled)
+					}
 					updateNotification()
 				}
 			}
