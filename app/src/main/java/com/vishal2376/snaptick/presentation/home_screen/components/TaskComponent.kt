@@ -2,6 +2,9 @@ package com.vishal2376.snaptick.presentation.home_screen.components
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.ui.platform.LocalDensity
 import kotlinx.coroutines.coroutineScope
@@ -75,6 +78,22 @@ fun TaskComponent(
 
 	// Optimistic flip on tap; resets when upstream task id or isCompleted lands.
 	var localCompleted by remember(task.id, task.isCompleted) { mutableStateOf(task.isCompleted) }
+
+	// Spring-bounce on the check icon: 0 → 1 when first completed, 1 → 0 when unchecked.
+	val checkScale by animateFloatAsState(
+		targetValue = if (localCompleted) 1f else 0f,
+		animationSpec = spring(
+			dampingRatio = Spring.DampingRatioMediumBouncy,
+			stiffness = Spring.StiffnessMedium
+		),
+		label = "checkScale"
+	)
+	// Fade title slightly when done so it reads as "resolved".
+	val titleAlpha by animateFloatAsState(
+		targetValue = if (localCompleted) 0.45f else 1f,
+		animationSpec = tween(durationMillis = 300),
+		label = "titleAlpha"
+	)
 
 	// Onboarding-style entrance: 28dp slide-up + fade, FastOutSlowInEasing,
 	// matching WelcomePage.Staggered exactly. Caller signals scroll-in via a
@@ -155,7 +174,9 @@ fun TaskComponent(
 							painter = painterResource(id = R.drawable.ic_check_circle),
 							contentDescription = null,
 							tint = if (isSystemInDarkTheme()) LightGreen else DarkGreen,
-							modifier = Modifier.size(20.dp)
+							modifier = Modifier
+								.size(20.dp)
+								.graphicsLayer { scaleX = checkScale; scaleY = checkScale }
 						)
 					} else {
 						Box(
@@ -182,7 +203,8 @@ fun TaskComponent(
 						Text(
 							modifier = Modifier
 								.fillMaxWidth()
-								.basicMarquee(delayMillis = 1000),
+								.basicMarquee(delayMillis = 1000)
+								.graphicsLayer { alpha = titleAlpha },
 							text = task.title,
 							style = taskTextStyle,
 							fontWeight = FontWeight.Bold,
