@@ -108,14 +108,14 @@ fun NavigationDrawerComponent(
 
 			NavDrawerItemUI(
 				icon = Icons.Default.Backup,
-				label = "Backup"
+				label = stringResource(R.string.backup)
 			) { onClickBackup() }
 
 			Spacer(modifier = Modifier.height(8.dp))
 
 			NavDrawerItemUI(
 				icon = Icons.Default.Restore,
-				label = "Restore"
+				label = stringResource(R.string.restore)
 			) { onClickRestore() }
 
 			Divider(
